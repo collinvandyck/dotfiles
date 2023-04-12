@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+#
+# Starts neovim listening on a socket if the socket does not already exist.
+# If the socket does exist, it will attempt to connect to the socket.
+
+set -eopipefail
+
+PIPE=~/.cache/nvim/server.pipe
+
+if [ ! -e $PIPE ]; then 
+	echo "pipe does not exist"
+	mkdir -p $(dirname $PIPE)
+	exec nvim --listen $PIPE $@
+else 
+	exec nvim --server $PIPE $@
+fi
+
+

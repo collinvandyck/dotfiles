@@ -1,0 +1,88 @@
+#!/usr/bin/env zsh
+
+# recreates the dev env until it succeeds
+
+set -eopipefail
+
+source ~/.dotfiles/bin/cd-ngrok
+
+args=()
+for arg ; do
+	case $arg in
+
+	"--e2e=true")
+		e2e=true
+		args+=($arg)
+		;;
+	"--once")
+		once=true
+		;;
+	*)
+		args+=($arg)
+		;;
+
+	esac
+done
+
+if [[ $e2e != "true" ]]; then
+	args+=("--e2e=false")
+fi
+
+start=$(epoch)
+attempt=0
+
+run() {
+	run_start=$(epoch)
+	attempt=$((attempt+1))
+	nd env create --recreate $args && nd go install ngrok
+}
+
+# record marks the attempt in the database
+record() {
+	local success=$1
+	local db=~/telemetry.db
+	local branch=$(git rev-parse --abbrev-ref HEAD)
+	local commit=$(git rev-parse HEAD)
+	local now=$(epoch)
+	local duration=$((now - run_start))
+	if [ ! -e $db ]; then
+		sqlite3 $db <<- eos
+		create table ngrok_builds (
+			timestamp datetime not null default CURRENT_TIMESTAMP,
+			success   int,
+			duration  int,
+			attempt   int,
+			branch    string,
+			sha       string
+		);
+		eos
+	fi
+	sqlite3 $db <<- eos
+	insert into ngrok_builds (timestamp, attempt, success, duration, branch, sha) 
+	                  values (CURRENT_TIMESTAMP, $attempt, $success, $duration, '$branch', '$commit');
+	eos
+}
+
+loop() {
+	while :; do
+		if run; then
+			record true
+			return
+		else
+			# failure
+			record false
+			if [ "$once" = "true" ]; then
+				return
+			fi
+		fi
+	done
+}
+
+# loop until it succeeds
+loop
+
+stop=$(epoch)
+duration=$((stop-start))
+
+echo "attempts: $attempt duration: $(duration $duration)"
+

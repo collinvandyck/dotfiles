@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodically triggers ngrok cleanup tasks
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+Unit=com.fightcpu.ngrok-tidy.service
+
+[Install]
+WantedBy=timers.target

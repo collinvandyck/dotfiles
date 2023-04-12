@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+#
+# ~/.dotfiles/bin/dockerc
+
+set -u
+
+echo "Cleaning up volumes"
+docker volume rm $(docker volume ls -qf dangling=true) 2>/dev/null
+docker volume ls -qf dangling=true | xargs -r docker volume rm 2>/dev/null
+
+echo "Cleaning up images"
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc) 2>/dev/null
+docker rmi $(docker images | grep "none" | awk '/ / { print $3 }') 2>/dev/null
+
+echo "Cleaning up containers"
+docker rm $(docker ps -qa --no-trunc --filter "status=exited") 2>/dev/null

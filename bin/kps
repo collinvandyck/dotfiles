@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+
+# temp file to dump the stack of a hung go process
+
+INITIAL_QUERY="${*:-}"
+(date; ps -ef) | \
+fzf \
+    --ansi \
+	--exact \
+	--height="100%" \
+	--header-lines=2 \
+	--reverse \
+	--bind='ctrl-h:first' \
+	--bind='ctrl-k:execute(kill -9 {2})+reload(date; ps -ef)' \
+	--bind='ctrl-r:reload(date; ps -ef)' \
+	--bind='ctrl-x:preview(ps --forest {2})' \
+	--bind='ctrl-/:change-preview-window(hidden|)' \
+	--bind='enter:execute: kill-sig {2}' \
+	--bind='enter:+reload(date; ps -ef)' \
+	--preview-window='down,75%,wrap' \
+	--preview 'ps -o args -p {2}; echo; pstree -s -T -a -l -U -h -n -c {2}' \
+	--query "${INITIAL_QUERY}" \
+|| true

@@ -1,0 +1,9 @@
+[Unit]
+Description=Echos a log statement every 1h
+
+[Service]
+ExecStart=bash -c 'while :; do date; sleep 3600; done'
+
+[Install]
+WantedBy=multi-user.target
+

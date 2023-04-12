@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# ~/.dotfiles/bin/psroots
+#
+# This shows the current process along with the ancestors
+
+set -e
+
+ppids=()
+add() {
+	for p in ${ppids[@]}; do
+		if [ $p = $1 ]; then
+			return 0
+		fi
+	done
+	ppids+=($1)
+}
+add $$
+
+parents=$(ps -o ppid=)
+for p in ${parents[@]}; do
+	add $p
+done
+
+for p in ${ppids[@]}; do
+	ps -o pid,comm,args $p | sed 1d
+done

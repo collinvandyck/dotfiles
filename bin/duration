@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# /home/ubuntu/.dotfiles/bin/duration
+#
+# Shows the passed in duration as elapsed time in human 
+# readable format.
+
+set -e
+
+displaytime() {
+  local T=$1
+  local D=$((T/60/60/24))
+  local H=$((T/60/60%24))
+  local M=$((T/60%60))
+  local S=$((T%60))
+  (( $D > 0 )) && printf '%dd ' $D
+  (( $H > 0 )) && printf '%dh ' $H
+  (( $M > 0 )) && printf '%dm ' $M
+  printf '%ds\n' $S
+}
+
+displaytime $1

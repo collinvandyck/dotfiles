@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+#
+# search path searches the PATH for all executable
+# files with the specified name
+#
+# todo: prevent duplicates
+set -e
+
+if [ $# != 1 ]; then
+	echo "usage: searchpath [name]"
+	exit 1
+fi
+
+search=$1
+res=()
+
+add() {
+	for r in ${res[@]}; do
+		if [ $r = $1 ]; then
+			return 0
+		fi
+	done
+	res+=($1)
+}
+
+IFS=':' read -r -a paths <<< "$PATH"
+for path in ${paths[@]}
+do
+	full="$path/$search"
+	if [ -x $full ]; then
+		add $full
+	fi
+done
+
+for r in ${res[@]}; do
+	echo $r
+done
+
+
+
+

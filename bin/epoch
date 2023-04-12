@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# /home/ubuntu/.dotfiles/bin/epoch
+#
+# Shows the current time as an epoch
+
+set -e
+
+date +%s

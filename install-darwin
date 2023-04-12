@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+# install homebrew
+if [ ! $(command -v brew) ]; then
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# update homebrew packages
+brew update --quiet
+brew install --quiet --formula \
+	asciinema \
+	autossh \
+	bandwhich \
+	bash \
+	bat \
+	bottom \
+	cmake \
+	curl \
+	datasette \
+	direnv \
+	dnsmasq \
+	fd \
+	fish \
+	flyctl \
+	fswatch \
+	gcc \
+	git-delta \
+	gource \
+	graphviz \
+	htop \
+	httpie \
+	hugo \
+	imagemagick \
+	jpeg \
+	jq \
+	libsodium \
+	libtermkey \
+	libvterm \
+	lnav \
+	lua-language-server \
+	luajit-openresty \
+	luv \
+	maven \
+	mitmproxy \
+	mosh \
+	msgpack \
+	ninja \
+	node \
+	nvm \
+	openssh \
+	openssl@3 \
+	protoc-gen-go \
+	psgrep \
+	pstree \
+	pv \
+	python@3.10 \
+	ripgrep \
+	rust \
+	shellcheck \
+	sysdig \
+	telnet \
+	tig \
+	tmux \
+	tree \
+	tree-sitter \
+	watch \
+	wireguard-tools \
+	yarn \
+	youtube-dl \
+	zenith
+
+
+# install aws cli v2
+if ! aws --version; then
+	cd $(mktemp -d)
+	curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+	sudo installer -pkg AWSCLIV2.pkg -target /
+	cd ~
+fi
+
+# install go
+if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
+	echo "Installing $DOTFILES_GO_FULL_VERSION"
+	curl -s -L -o /tmp/golang.pkg https://go.dev/dl/${DOTFILES_GO_FULL_VERSION}.pkg
+	sudo installer -pkg /tmp/golang.pkg -target /
+	/usr/local/go/bin/go install golang.org/x/tools/gopls@latest
+fi
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
+
+# neovim
+if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
+	echo "Installing neovim ${DOTFILES_NVIM_VERSION}"
+	curl -s -L -o /tmp/nvim-macos.tar.gz https://github.com/neovim/neovim/releases/download/${DOTFILES_NVIM_VERSION}/nvim-macos.tar.gz
+	xattr -c /tmp/nvim-macos.tar.gz
+	rm -rf /tmp/nvim-macos
+	tar xzf /tmp/nvim-macos.tar.gz -C /tmp
+	sudo rm -rf /usr/local/nvim-macos
+	sudo mv -f /tmp/nvim-macos /usr/local/nvim-macos
+else
+	echo "neovim ${DOTFILES_NVIM_VERSION} already installed"
+fi
+sudo ln -sf /usr/local/nvim-macos/bin/nvim  /usr/local/bin/nvim
+sudo rm -r /usr/local/bin/vim
+sudo rm -r /usr/local/bin/vi
+sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
+sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
+
+# run generic os-agnostic installs
+~/.dotfiles/install-common
+
+# flutter
+flutter_ver=arm64_3.7.5-stable
+flutter_loc=/usr/local/flutter
+if [ ! -d $flutter_loc ]; then
+	cd $(mktemp -d)
+	curl -s -L -o flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_${flutter_ver}.zip
+	unzip flutter.zip
+	sudo mv flutter /usr/local/flutter
+	cd ~
+fi
+
+# cocapods
+sudo gem install cocoapods
+
+# finally, install the launchd daemons
+~/.dotfiles/install-launchd
+
+

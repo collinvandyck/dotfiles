@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+SLEEP=10
+ONCE=$1
+
+usage() {
+	echo "$(basename $0) periodically takes down the awdl0 interface"
+	echo ""
+	echo "usage: $(basename $0) [once]"
+	exit 1
+}
+
+if [[ (($# > 1)) ]]; then
+	usage
+fi
+
+if [[ (($# == 1)) && $ONCE != "once" ]]; then
+	usage
+fi
+
+while :; do
+	sudo ifconfig awdl0 down
+	if [[ $ONCE = "once" ]]; then
+		exit
+	fi
+	sleep $SLEEP
+done

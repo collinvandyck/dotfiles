@@ -1,0 +1,12 @@
+[Unit]
+Description=Does a cleanup of the ngrok environment.
+
+[Service]
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=zsh -c '.dotfiles/bin/ngtidy'
+
+[Install]
+WantedBy=multi-user.target
+

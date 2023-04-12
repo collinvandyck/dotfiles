@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+# yikes
+if [ -f /opt/homebrew/bin/fd ]; then
+	exec /opt/homebrew/bin/fd $@
+fi
+
+exec fdfind $@

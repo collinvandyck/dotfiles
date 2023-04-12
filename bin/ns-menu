@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+#
+# This presents a menu for choices made by ns
+
+ls -l $(dirname $1)| fzf

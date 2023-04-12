@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# Create a new zsh script
+#
+# Usage:
+#
+# # create or open the script named foo
+# newzsh foo 
+
+set -e
+
+name=${1}
+dir=~/.dotfiles/bin
+
+usage() {
+	echo "usage: $(basename $0) [name]"
+	exit 1
+}
+
+if [ "$name" = "" ]; then
+	name=test
+	dir=$(mktemp -d)
+	addmake=true
+fi
+
+file=$dir/$name
+
+if [ ! -f $file ]; then
+cat <<eos > $file
+#!/usr/bin/env zsh
+#
+# ~/.dotfiles/bin/$name
+
+set -eopipefail
+
+eos
+fi
+
+if [ "$addmake" = "true" ]; then
+cat <<eos > $dir/Makefile
+run:
+	./test
+eos
+fi
+
+cd $dir
+chmod 755 $file
+exec nvim $file
+

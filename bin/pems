@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+args=$@
+
+# if no args are given, search for any file ending in .pem
+if [ $# -eq 0 ]; then
+	args+='\.pem'
+fi
+
+# do the search and preview results
+fd $args -S '+1b' | fzf \
+	--preview 'preview-pem {}'  \
+	--no-sort
+

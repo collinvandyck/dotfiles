@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# 
+# prints the os and arch of the current machine
+
+echo "$(uname -s)-$(uname -m)" | tr '[:upper:]' '[:lower:]'

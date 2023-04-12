@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# kills the pid at $1 using a specific signal chosen via fzf
+
+pid=$1
+kill -l | tr ' ' '\n' | fzf \
+    --ansi \
+	--exact | xargs -I SIG kill -SIG $1
+

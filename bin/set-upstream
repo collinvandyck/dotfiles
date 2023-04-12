@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#
+# ~/.dotfiles/bin/set-upstream
+#
+# Sets the current branch to track the upstream version of it.
+
+set -e
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+git branch --set-upstream-to=origin/$branch $branch

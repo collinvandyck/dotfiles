@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+source ~/.dotfiles/bin/cd-ngrok
+
+if [[ $# > 0 ]]; then
+	arg="${1}"
+	shift
+fi
+
+case "${arg}" in
+
+"d"|"dev")
+	arg=dev
+	exec env NGROK_ENV=dev nd "$@"
+	;;
+"p"|"prod")
+	exec env NGROK_ENV=prod nd "$@"
+	;;
+"s"|"stage")
+	exec env NGROK_ENV=stage nd "$@"
+	;;
+"or"|"us"|"eu"|"au"|"ap"|"jp"|"sa"|"in")
+	exec env NGROK_ENV=prod nd -r "${arg}" "$@"
+	;;
+**)
+	exec nd "${arg}" "$@"
+;;
+
+esac

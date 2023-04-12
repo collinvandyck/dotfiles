@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo "Installing Go programs"
+go version
+
+# install our own go utilities from the go folder
+
+dir=$(dirname $0)
+cd $dir
+for dir in $dir/go/*/; do
+	echo "Installing $dir"
+	cd $dir
+	go install .
+	cd ..
+done
+
+# Install commonly used go utilities that live elsewhere
+export PATH=/usr/local/go/bin:$PATH
+
+echo "Installing gopls"
+go install golang.org/x/tools/gopls@latest
+
+echo "Installing golang-migrate"
+# https://github.com/golang-migrate/migrate/blob/master/cmd/migrate/README.md
+go install -tags 'sqlite' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+

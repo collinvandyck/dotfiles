@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+# hl uses rg to highlight occurrances of the specified args
+
+expr="^"
+for arg; do
+	expr="$expr|$arg"
+done
+exec rg -i $expr

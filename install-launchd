@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# This script does all of the steps required to launch and start
+# launchd programs
+
+launchctl unload ~/.dotfiles/launchd/com.fightcpu.awd.plist 2>/dev/null
+launchctl load ~/.dotfiles/launchd/com.fightcpu.awd.plist

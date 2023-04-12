@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+# Cleans up the ngrok environment.
+
+set -e
+
+echo "Tidying up ngrok environment"
+
+source ~/.dotfiles/bin/cd-ngrok
+
+echo "Running nd devenv tidy"
+nd devenv tidy
+
+echo "Compacting git"
+git gc # --aggressive
+
+echo "Done"

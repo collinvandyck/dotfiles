@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# /home/ubuntu/.dotfiles/bin/builds
+
+set -e
+
+opt_all="all"
+opt_day="by_day"
+
+options=($opt_all $opt_day)
+
+if [[ $# = 0 ]]; then
+	printf '%s\n' ${options[@]} | fzf \
+		--ansi \
+		--preview='builds {}' \
+		--preview-window='down:90%'
+	exit
+fi
+
+case $1 in
+	$opt_all)
+		sqlite3 ~/telemetry.db <<-eos 
+			select 
+				strftime('%m-%d %H:%M', timestamp) as date,
+				format('%dm%ds', (duration/60), (duration%60)) as duration,
+				substr(branch, 0, 50),
+				success,
+				substr(sha, 1, 10) as sha
+			from ngrok_builds
+			order by date desc
+		eos
+		;;
+	$opt_day)
+		sqlite3 ~/telemetry.db <<-eos 
+			select 
+				strftime('%Y-%m-%d', timestamp) as date,
+				count(*) as count, 
+				cast(avg(duration) as int) as 'avg time'
+			from ngrok_builds
+			group by 1
+			order by 1 desc
+		eos
+		;;
+	**)
+		echo "unsupported option: $1"
+		exit 1
+		;;
+esac
+
+

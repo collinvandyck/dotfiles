@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+
+# Create a quick go dev environment for experimenting with new code.
+#
+# Usage:
+#
+# newgo # creates a random tmp folder
+# newgo foo # creates a project in ~/code/foo or loads it if it already exists
+
+set -eopipefail
+
+project=${1:-program}
+dir=$1
+if [ -z "${dir}" ]; then
+	# create a temporary directory
+	dir=$(mktemp -d)
+else
+	dir=~/code/${dir}
+	if [ -d $dir ]; then
+		echo "${dir} already exists" 
+	else
+		mkdir -p $dir
+	fi
+fi
+
+echo $dir
+cd $dir
+
+# standard main file
+if [ ! -f main.go ]; then
+cat <<eos > main.go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello World!")
+}
+eos
+fi
+
+# standard test file
+if [ ! -f main_test.go ]; then
+cat <<testfile > main_test.go
+package main
+
+import "testing"
+
+func TestProgram(t *testing.T) {
+}
+
+func BenchmarkProgram(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+	}
+}
+testfile
+fi
+
+go mod init $project
+
+# create a Makefile
+if [ ! -f Makefile ]; then
+cat <<eos > Makefile
+run:
+	go run .
+
+bench:
+	go test . -bench .
+
+test:
+	go test .
+eos
+fi
+
+# Set up git
+if [ ! -d .git ]; then
+git init
+git add -A
+git commit -m "Initial Commit"
+fi
+
+exec nvim main.go

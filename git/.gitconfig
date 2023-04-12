@@ -1,0 +1,71 @@
+[user]
+	name = Collin Van Dyck
+	email = collinvandyck@gmail.com
+
+[core]
+	excludesfile = ~/.gitignore_global
+    quotepath = false
+	editor = nvim
+	autocrlf = input
+	pager = "bat"
+
+[color]
+	pager = true
+	ui = auto
+	diff = auto
+
+[merge]
+	#conflictstyle = diff3
+
+[alias]
+	b = branch
+	cat = "!git show \"$1:$2\" #"
+	ci = commit
+	co = checkout
+	current-branch = !git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'
+	g = grep --break --heading --line-number
+	l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
+	l2 = log --name-status --graph
+	last = checkout -
+	ll = log --pretty=oneline --abbrev-commit --decorate --graph
+	lla = !git ll --all
+	put = push origin HEAD
+	shove = push --force-with-lease
+	st = status
+	staged = diff --cached
+	standup = shortlog --since=yesterday
+	uncommit = reset --soft HEAD^
+	unstage = reset HEAD
+	unstaged = diff
+	w = whatchanged
+	x = !gitx --all
+
+[apply]
+    whitespace = warn
+
+[push]
+    default = tracking
+    default = current
+	autoSetupRemote = true
+
+[grep]
+	lineNumber = true
+
+[remote "origin"]
+	prune = true
+
+[merge]
+	conflictStyle = diff3
+
+[commit]
+	verbose = true
+
+[pull]
+	rebase = true
+
+[init]
+	defaultBranch = main
+
+[protocol "keybase"]
+	allow = always
+

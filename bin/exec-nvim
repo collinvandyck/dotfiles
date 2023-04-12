@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#
+# This is copied into /usr/local/bin for vi and vim, which allows
+# kp to find processes by their actual names (nvim) instead of
+# something like a symlink.
+
+set -e
+
+exec nvim $@

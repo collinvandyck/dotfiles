@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+file=${1}
+
+rg "BEGIN" $file | rg -o '[\w ]+'
+
+echo 
+openssl x509 -in $file -text -noout

@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+ls ~/.dotfiles/bin | fzf \
+	--ansi \
+	--bind 'enter:execute:zsh ~/.dotfiles/bin/{}' \
+	--preview 'bat --color=always ~/.dotfiles/bin/{}' \
+|| true

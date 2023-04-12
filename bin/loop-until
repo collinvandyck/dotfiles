@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# loops the command until it is successful
+
+while ! eval $@ 
+do
+	sleep 0	
+done

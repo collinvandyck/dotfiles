@@ -1,0 +1,9 @@
+Host remote
+	HostName ec2
+	User     ubuntu
+
+Host *
+	ServerAliveInterval 200
+	ServerAliveCountMax 2
+	ConnectTimeout 1
+

@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+#
+# /Users/collin/.dotfiles/bin/kp
+
+set -e
+
+cmd=$(basename $0)
+
+choose() {
+	local query=${1:""}
+	(date; ps -ef) | \
+	fzf \
+		--ansi \
+		--exact \
+		--height="100%" \
+		--header-lines=2 \
+		--reverse \
+		--bind='ctrl-h:first' \
+		--bind='ctrl-k:execute(kill -9 {2})+reload(date; ps -ef)' \
+		--bind='ctrl-r:reload(date; ps -ef)' \
+		--bind='ctrl-x:preview(ps --forest {2})' \
+		--bind='ctrl-/:change-preview-window(hidden|)' \
+		--bind='enter:execute(kill -9 {2})+reload(date; ps -ef)' \
+		--preview-window='down,75%,wrap' \
+		--preview "$cmd --show {2}" \
+		--query "$query" \
+	|| true
+}
+
+show() {
+	local pid=$1
+	if [[ $(uname -s) == "Linux" ]]; then
+		# -s show parent processes
+		# -h highlight current process
+		# -c disable compaction of subtrees
+		pstree -p $pid -s -H $pid -l -n -a -T
+	else
+		pstree -p $pid 
+	fi
+}
+
+if [[ $# = 0 ]]; then
+	choose
+	exit 0
+fi
+
+case $1 in
+	"--show")
+		show $2
+		;;
+	**)
+		choose $1
+		exit 0
+		;;
+esac
+

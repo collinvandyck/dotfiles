@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# /home/ubuntu/.dotfiles/bin/gotestprofile
+
+set -e
+
+go test -cpuprofile /tmp/cpu.out -memprofile /tmp/mem.out $@ 

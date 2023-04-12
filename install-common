@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+# this should be called after the main installs are done. It should be os/arch generic if possible.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+# neovim plug.vim
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+sqlite=/usr/local/sqlite3/bin/sqlite3
+if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --version | awk '{print $1}') ]]; then
+	echo "Installing sqlite3 $DOTFILES_SQLITE_VERSION with readline support"
+	cd $(mktemp -d)
+	git clone -b version-$DOTFILES_SQLITE_VERSION --depth 1 https://github.com/sqlite/sqlite.git
+	cd sqlite
+	./configure --enable-all --prefix=/usr/local/sqlite3
+	make
+	sudo make install
+	cd
+fi
+
+# fzf
+if [ ! -e ~/.fzf ]; then
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	~/.fzf/install --all
+fi
+
+# powerlevel 10k theme
+# Todo: this is super messy and creates a project commit in my dotfiles repo
+# I should really just use git submodules.
+# Or just install a symlink to ~/.powerlevel10k
+p10k_location="$HOME/.dotfiles/omz/custom/themes/powerlevel10k"
+if [ ! -e ${p10k_location}/powerlevel10k.zsh-theme ]; then
+	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $p10k_location
+fi
+
+# install gitstatus so that the theme doesn't need to on startup
+~/.dotfiles/omz/custom/themes/powerlevel10k/gitstatus/install -f
+
+# install powerline
+if [ ! -e ~/.powerline ]; then
+	git clone https://github.com/powerline/powerline.git ~/.powerline
+fi
+
+# oh my zsh
+if [ ! -e ~/.oh-my-zsh ]; then
+	KEEP_ZSHRC=yes \
+	CHSH=no \
+	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+fi
+
+# tmux plugin manager
+if [ ! -d ~/.tmux/plugins/tpm ]; then 
+	mkdir -p ~/.tmux/plugins
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+fi
+(cd ~/.tmux/plugins/tpm && git pull)
+
+# install any go programs we have defined in our dotfiles
+~/.dotfiles/install-go
+
+# install nodejs and npm things
+~/.dotfiles/install-js

@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+while read -r line;
+do
+	[ -s $line ] && echo $line
+done

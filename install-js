@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+NVM_VERSION="v0.39.3"
+node_versions=("v19.7.0")
+
+get-nvm-version() {
+	if [ -d ~/.nvm ]; then
+		cd ~/.nvm
+		echo "$(git describe --tags)"
+		cd 
+	fi
+}
+
+if ! [ "$(get-nvm-version)" = $NVM_VERSION ]; then
+	curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_VERSION}/install.sh" | bash
+else
+	echo "nvm ${NVM_VERSION} already installed"
+fi
+
+source ~/.nvm/nvm.sh
+
+for nv in ${node_versions[@]}; do
+	nvm install $nv
+done
+
+npm install --global yarn

@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+
+# meant to be sourced from other scripts. manages
+# to cd into the ngrok dir and then exports
+# the direnv environment.
+
+if ! $(pwd | grep -q ngrok); then 
+	source ~/.nix-profile/etc/profile.d/nix.sh
+	source "${HOME}/ngrok/.cache/ngrok-host-shellhook"
+	cd ~/ngrok 2>/dev/null
+fi
+

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+#
+# ~/.dotfiles/bin/gup
+#
+# "git update"
+#
+# This script attempts to pull from the remote, applying local changes
+# on top of the remote. If the working tree is dirty then changes will
+# be stashed first.
+#
+# This is only meant to be a causal convenience for my own private repos
+# where I dont' care about git commit cleanliness or clarity.
+
+set -e
+
+bail() {
+	echo $1
+	exit 1
+}
+
+usage() {
+	local name=$(basename $0)
+	echo "$name syncs up the current branch with the remote."
+	echo "You must be on a branch."
+	echo
+	echo "name: $(basename $0)"
+	exit 1
+}
+
+if (($# > 0)); then
+	usage
+fi
+
+if [[ $(git rev-parse --is-inside-work-tree 2>/dev/null) != "true" ]]; then 
+	bail "Not in a git repo."
+fi
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+if ! git show-ref --quiet refs/heads/$branch; then
+	bail "Not on a branch."
+fi
+
+bgup=collin/gup-tmp
+remote=origin
+dirty=$(git status -s)
+
+if [ -n "$dirty" ]; then
+	git add -A && git stash
+	stashed=true
+fi
+
+if ! git pull --rebase; then
+	echo "Rebase failed"
+	git rebase --abort
+fi
+
+if [[ $stashed = "true" ]]; then
+	git stash pop
+fi
+
+

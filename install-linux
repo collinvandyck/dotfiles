@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+# Common linux setup. Requires arch-specific installers to
+# set env variables and then call this script.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+sudo apt update
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository -y ppa:jgmath2000/et
+sudo apt update
+sudo apt install -y \
+  apt-transport-https \
+  asciinema \
+  autoconf \
+  automake \
+  build-essential \
+  ca-certificates \
+  cmake \
+  curl \
+  doxygen \
+  et \
+  fd-find \
+  fswatch \
+  g++ \
+  gettext \
+  git \
+  gnupg \
+  htop \
+  httpie \
+  jq \
+  libtool \
+  libtool-bin \
+  lsb-release \
+  man \
+  man-db \
+  nethogs \
+  ninja-build \
+  pkg-config \
+  python3-pip \
+  powerline \
+  powerline-gitstatus \
+  psmisc \
+  ripgrep \
+  shellcheck \
+  sqlite3 \
+  tcl \
+  tig \
+  tmux \
+  tree \
+  unzip \
+  zsh \
+  ;
+sudo apt autoremove -y
+
+pip3 install neovim-remote
+
+sudo chsh -s $(which zsh) $USER
+
+# go
+if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
+	curl -s -L -o /tmp/$DOTFILES_GO_FULL_VERSION https://go.dev/dl/$DOTFILES_GO_FULL_VERSION
+	sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/$DOTFILES_GO_FULL_VERSION
+	rm /tmp/$DOTFILES_GO_FULL_VERSION
+fi
+export PATH=/usr/local/go/bin:$PATH
+export GOHOME=~/go
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
+
+# install aws cli v2
+if ! aws --version; then
+	cd $(mktemp -d)
+	curl "https://awscli.amazonaws.com/${DOTFILES_AWS_CLI_VERSION}" -o "awscliv2.zip"
+	unzip awscliv2.zip 
+	sudo ./aws/install
+	cd ~
+fi
+
+# neovim installs to /usr/local/bin/nvim
+if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
+	echo "installing nvim ${DOTFILES_NVIM_VERSION}"
+	cd $(mktemp -d)
+	git clone https://github.com/neovim/neovim.git
+	cd neovim
+	git reset --hard ${DOTFILES_NVIM_VERSION}
+	make CMAKE_BUILD_TYPE=Release
+	echo "sudo make install"
+	sudo make install
+	echo "done"
+	cd ~
+fi
+echo "creating links for vim and vi"
+sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
+sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
+
+
+# bat
+sudo apt remove -y bat 2>/dev/null
+curl -s -L -o /tmp/bat.deb https://github.com/sharkdp/bat/releases/download/$DOTFILES_BAT_VERSION
+sudo dpkg -i /tmp/bat.deb
+rm /tmp/bat.deb
+
+# bottom
+if [[ $(btm --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_BOTTOM_VERSION} ]]; then
+	echo "installing bottom ${DOTFILES_BOTTOM_VERSION}"
+	cd $(mktemp -d)
+	curl -LO https://github.com/ClementTsang/bottom/releases/download/${DOTFILES_BOTTOM_VERSION}/${DOTFILES_BOTTOM_FULL_VERSION}.deb
+	sudo dpkg -i ${DOTFILES_BOTTOM_FULL_VERSION}.deb
+	cd ~
+fi
+
+# run generic os-agnostic installs
+~/.dotfiles/install-common
+

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#
+# /home/ubuntu/.dotfiles/bin/paths
+
+set -e
+
+echo $PATH | tr ':' '\n'

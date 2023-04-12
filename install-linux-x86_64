@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# installer for linux aarch
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+export DOTFILES_GO_FULL_VERSION=${DOTFILES_GO_VERSION}.linux-amd64.tar.gz
+export DOTFILES_BAT_VERSION=v0.22.1/bat_0.22.1_amd64.deb
+export DOTFILES_BOTTOM_FULL_VERSION=bottom_${DOTFILES_BOTTOM_VERSION}_amd64
+export DOTFILES_AWS_CLI_VERSION=awscli-exe-linux-x86_64.zip
+
+./install-linux

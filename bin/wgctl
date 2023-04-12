@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+#
+# ~/.dotfiles/bin/wgctl
+
+set -e
+
+opts=(status up down)
+
+bail() {
+	echo $1
+	exit 1
+}
+
+wg_darwin() {
+	case $1 in
+	status)
+		sudo wg show all
+		;;
+	up)
+		sudo wg-quick up ngrok
+		;;
+	down)
+		sudo wg-quick down ngrok
+		;;
+	**)
+		return 0
+		;;
+	esac
+}
+
+wg_linux() {
+	case $1 in
+	status)
+		sudo wg show all
+		;;
+	up)
+		sudo wg-quick up wg1
+		;;
+	down)
+		sudo wg-quick down wg1
+		;;
+	**)
+		return 0
+		;;
+	esac
+}
+
+choice=$1
+[ -z "$choice" ] && choice=$(printf '%s\n' ${opts[@]} | fzf --no-sort || true)
+[ -z "$choice" ] && exit
+
+wg_$(echo "$(uname -s)" | tr '[:upper:]' '[:lower:]') $choice

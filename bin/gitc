@@ -1,0 +1,175 @@
+#!/usr/bin/env zsh
+#
+# ~/.dotfiles/bin/gitc
+
+set -eopipefail
+
+apply=false
+if [[ $# > 0 ]]; then
+	if [ "$1" = "--apply" ]; then
+		apply=true
+	else
+		echo "usage: $(basename $0) [--apply]"
+		exit 1
+	fi
+fi
+
+git_main_branch() {
+  command git rev-parse --git-dir &>/dev/null || return
+  local ref
+  for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default}; do
+    if command git show-ref -q --verify $ref; then
+      echo ${ref:t}
+      return
+    fi
+  done
+  echo master
+}
+
+log=~/deleted-branches.log
+remote=origin
+main=$(git_main_branch)
+main_sha=$(git rev-parse $remote/$main)
+origin_url=$(git config --get remote.$remote.url)
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+can_delete() {
+	local branch=$1
+	if [ $branch = $main ]; then
+		# don't delete if we're on main
+		return 1
+	fi
+	if [ $branch = $current_branch ]; then
+		# don't delete the branch we're on
+		return 1
+	fi
+	if [ $branch = "databricks-release" ]; then
+		# yikes
+		return 1
+	fi
+	return 0
+}
+
+# deletes the branch
+delete_branch() {
+	local branch=$1
+	local delete_opts=${2:-"-d"}
+
+	if ! can_delete $branch; then
+		return 0
+	fi
+
+	if [ "$apply" = "true" ]; then
+		echo "$origin_url $branch [$(git rev-parse --short $branch)]" | tee -a $log
+		git branch ${delete_opts} $branch
+	else
+		echo "DRY: git branch ${delete_opts} $branch"
+	fi
+
+	if [[ $branch != */* || $branch == collin/* ]]; then
+		if git ls-remote --exit-code --heads $origin_url $branch >/dev/null ; then
+			if [ "$apply" = "true" ]; then
+				echo "git push $remote --delete $branch" | tee -a $log
+				git push $remote --delete $branch
+			else
+				echo "DRY: git push $remote --delete $branch"
+			fi
+		fi
+	fi
+}
+
+branches=()
+add_branch() {
+	local branch=$1
+	for x in $branches; do
+		if [ $x = $branch ]; then
+			return 0
+		fi
+	done
+	branches+=($branch)
+}
+
+# first, clean up any merged branches
+branches=()
+for branch in $(git for-each-ref --format='%(authordate:format:%Y-%m-%dT%I:%M) %(refname:short)' refs/heads/ | sort | awk '{print $2}'); do
+	if ! can_delete $branch; then
+		continue
+	fi
+	base=$(git merge-base $branch $main_sha)
+	if git merge-base --is-ancestor $branch $main_sha; then
+		add_branch $branch
+	fi
+done
+
+if [[ ${#branches[@]} > 0 ]]; then
+	selected=$(printf '%s\n' $branches | fzf \
+		--no-sort \
+		--delimiter ' ' \
+		--with-nth 1 \
+		--multi \
+		--header "Delete merged branches (TAB:select P:tig)" \
+		--preview="git log -p --color=always {1}" \
+		--bind 'p:execute:tig {1} >&2' \
+		| awk '{print $1}'
+	) || true
+
+	if [[ $selected != "" ]]; then 
+		printf "\nMerged branches to be deleted:\n\n"
+		for branch in $(echo $selected); do
+			echo " * ${branch}"	
+		done
+		echo
+		read -q "REPLY?[y/n] "
+		printf '\n\n'
+		if [ $REPLY = "y" ]; then
+			for branch in $(echo $selected); do
+				delete_branch $branch
+			done
+		fi
+		echo
+	fi
+fi
+
+# then, for any branch that is not merged, collect them into a fzf command to delete them.
+
+branches=()
+for branch in $(git for-each-ref --format='%(authordate:format:%Y-%m-%dT%I:%M) %(refname:short)' refs/heads/ | sort | awk '{print $2}'); do
+	if ! can_delete $branch; then
+		continue
+	fi
+	base=$(git merge-base $branch $main_sha)
+	if ! git merge-base --is-ancestor $branch $main_sha; then
+		add_branch $branch
+	fi
+done
+
+if [[ ${#branches[@]} > 0 ]]; then
+	selected=$(printf '%s\n' $branches | fzf \
+		--no-sort \
+		--delimiter ' ' \
+		--with-nth 1 \
+		--multi \
+		--header "Delete UNMERGED branches (TAB:select P:tig)" \
+		--preview="git log -p --color=always {1}" \
+		--bind 'p:execute:tig {1} >&2' \
+		| awk '{print $1}'
+	) || true
+
+	if [[ $selected != "" ]]; then 
+		printf "\nUnmerged branches to be deleted:\n\n"
+		for branch in $(echo $selected); do
+			echo " * ${branch}"	
+		done
+		echo
+		read -q "REPLY?[y/n] "
+		printf '\n\n'
+		if [ $REPLY = "y" ]; then
+			for branch in $(echo $selected); do
+				delete_branch $branch -D
+			done
+		fi
+		echo
+	fi
+fi
+
+

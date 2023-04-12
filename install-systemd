@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+# installs systemd units from dotfiles
+
+check-active() {
+	local service=$1
+	let x=1
+	while ((x < 10)); do
+		if sudo systemctl is-active --quiet $service; then
+			echo "$service is active"
+			return 0
+		fi
+		echo "$service is not active yet..."
+		sleep 1
+		((x++))
+	done
+	echo "$service is failing"
+	exit 1
+}
+
+enable_service() {
+	local dest=/etc/systemd/system
+	local service=$1
+	sudo cp ~/.dotfiles/systemd/$service $dest
+	sudo systemctl enable $service
+}
+
+restart_service() {
+	local service=$1
+	sudo systemctl restart $service
+}
+
+enable_service com.fightcpu.debug.service
+enable_service com.fightcpu.ngrok-tidy.service
+enable_service com.fightcpu.ngrok-tidy.timer
+
+restart_service com.fightcpu.ngrok-tidy.timer
+restart_service com.fightcpu.debug.service
+
+sudo systemctl daemon-reload
+
+check-active com.fightcpu.debug.service
+check-active com.fightcpu.ngrok-tidy.timer
+

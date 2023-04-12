@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+foo() {
+	git for-each-ref --format='%(authordate:format:%Y-%m-%dT%I:%M) %(refname:short)' refs/heads/ | sort | awk '{print $2}'
+}
+
+for x in $(foo); do
+	echo $x
+done
+
+for x in $(foo); do
+	echo $x
+done

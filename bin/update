@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#
+# This script installs all dotfiles programs and dependencies.
+#
+# It's meant to be called after the initial dotfiles installation
+# completes successfully, as it lives in a path that is set
+# by the dotfiles intentionally.
+
+set -e
+
+# important to be in this directory
+cd ~/.dotfiles/
+
+if [[ $# = 0 ]]; then
+	exec ./install-all
+fi
+
+case $1 in
+	go)
+		exec ./install-go
+		;;
+	js)
+		exec ./install-js
+		;;
+	**)
+		echo "unexpected: $1"
+		exit 1
+esac
