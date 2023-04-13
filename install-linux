@@ -6,6 +6,15 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
+# charm
+if [[ ! -f /etc/apt/sources.list.d/charm.list ]]; then
+	sudo apt update
+	sudo apt install -y curl gnupg
+	sudo mkdir -p /etc/apt/keyrings
+	curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
+	echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
+fi
+
 sudo apt update
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:jgmath2000/et
@@ -26,6 +35,7 @@ sudo apt install -y \
   g++ \
   gettext \
   git \
+  gum \
   gnupg \
   htop \
   httpie \

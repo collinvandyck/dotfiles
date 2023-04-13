@@ -30,6 +30,7 @@ brew install --quiet --formula \
 	git-delta \
 	gource \
 	graphviz \
+	gum \
 	htop \
 	httpie \
 	hugo \
