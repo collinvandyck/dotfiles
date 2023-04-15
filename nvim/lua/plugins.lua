@@ -24,7 +24,6 @@ Plug('hrsh7th/nvim-cmp')
 
 -- plugin_luasnip
 Plug('L3MON4D3/LuaSnip')
-Plug('saadparwaiz1/cmp_luasnip')
 
 -- plugin_session
 Plug('xolox/vim-misc')
