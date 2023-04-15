@@ -7,7 +7,7 @@
     quotepath = false
 	editor = nvim
 	autocrlf = input
-	pager = "bat"
+	pager = "bat --pager='less -R'"
 
 [color]
 	pager = true
