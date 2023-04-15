@@ -1,7 +1,7 @@
 require("toggleterm").setup{
     size = function(term)
         if term.direction == "horizontal" then
-            return 80
+            return vim.o.rows * 0.9
         elseif term.direction == "vertical" then
             return vim.o.columns * 0.9
         end
@@ -9,7 +9,7 @@ require("toggleterm").setup{
     open_mapping = [[<c-t>]],
     hide_numbers = true, -- hide the number column in toggleterm buffers
     shade_filetypes = {},
-    shade_terminals = false,
+    shade_terminals = true,
     shading_factor = '3', -- the degree by which to darken to terminal colour, default: 1 for dark backgrounds, 3 for light
     start_in_insert = true,
     insert_mappings = true, -- whether or not the open mapping applies in insert mode
@@ -25,8 +25,6 @@ require("toggleterm").setup{
         -- the 'curved' border is a custom border type
         -- not natively supported but implemented in this plugin.
         border = 'double' ,
-        width = 185,
-        height = 53,
        --  winblend = 3,
     }
 }
