@@ -95,6 +95,10 @@ if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VER
 	cd neovim
 	git reset --hard ${DOTFILES_NVIM_VERSION}
 	make CMAKE_BUILD_TYPE=Release
+	if [[ -d /usr/local/share/nvim ]]; then
+		echo "removing old nvim state"
+		rm -rf /usr/local/share/nvim
+	fi
 	echo "sudo make install"
 	sudo make install
 	echo "done"
