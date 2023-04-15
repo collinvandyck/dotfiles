@@ -1,5 +1,8 @@
 require("init")
 
+-- disable lsp logging unless we need to troubleshoot
+vim.lsp.set_log_level("off")
+
 vim.opt.ai = true
 vim.opt.autochdir = false
 vim.opt.autoindent = true
