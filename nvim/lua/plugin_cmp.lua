@@ -40,8 +40,8 @@ cmp.setup({
 		entries = "native", -- can be "custom", "wildmenu" or "native"
 	},
 	window = {
-		-- completion = cmp.config.window.bordered(),
-		-- documentation = cmp.config.window.bordered(),
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
 	},
 	formatting = {
 		format = function(entry, item)
