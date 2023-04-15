@@ -3,7 +3,7 @@
 set -e
 
 NVM_VERSION="v0.39.3"
-node_versions=("v19.7.0")
+node_versions=("v19.9.0")
 
 get-nvm-version() {
 	if [ -d ~/.nvm ]; then
@@ -25,4 +25,4 @@ for nv in ${node_versions[@]}; do
 	nvm install $nv
 done
 
-npm install --global yarn
+npm install --global yarn 
