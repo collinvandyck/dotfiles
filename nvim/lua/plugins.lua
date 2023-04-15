@@ -53,7 +53,6 @@ Plug('tpope/vim-rhubarb')             -- git integration with github
 Plug('morhetz/gruvbox') 			  -- gruvbox theme
 Plug('jamespwilliams/bat.vim')        -- bat theme
 Plug('LnL7/vim-nix')                  -- syntax highlighting for nix files
-Plug('rafamadriz/friendly-snippets')  -- commonly useful snippets
 Plug('djoshea/vim-autoread')          -- automatically reload files when they change on disk
 Plug('github/copilot.vim')            -- copilot integration
 -- plugins that i am not sure what they are for
