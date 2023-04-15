@@ -38,7 +38,11 @@ local custom_attach = function(client, bufnr)
 	-- vim.keymap.set('n','<leader>lw', vim.lsp.buf.list_workspace_folders, bufopts)
 end
 
+-- cross plugin dependency
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 require'lspconfig'.gopls.setup {
+	capabilities = capabilities,
 	on_attach = custom_attach,
 	cmd = {"gopls", "serve"},
 	root_dir = lsp_util.root_pattern("go.work", "go.mod", ".git"),
@@ -47,6 +51,7 @@ require'lspconfig'.gopls.setup {
 }
 
 require'lspconfig'.tsserver.setup{
+	capabilities = capabilities,
 	on_attach = custom_attach,
 }
 
