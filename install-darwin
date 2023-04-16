@@ -65,6 +65,7 @@ brew install --quiet --formula \
 	telnet \
 	tig \
 	tmux \
+	tokei \
 	tree \
 	tree-sitter \
 	watch \

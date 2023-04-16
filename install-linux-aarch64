@@ -9,5 +9,6 @@ export DOTFILES_GO_FULL_VERSION=${DOTFILES_GO_VERSION}.linux-arm64.tar.gz
 export DOTFILES_BAT_VERSION=v0.22.1/bat_0.22.1_arm64.deb
 export DOTFILES_BOTTOM_FULL_VERSION=bottom_${DOTFILES_BOTTOM_VERSION}_arm64
 export DOTFILES_AWS_CLI_VERSION=awscli-exe-linux-aarch64.zip
+export DOTFILES_TOKEI_VERSION=tokei-aarch64-unknown-linux-gnu.tar.gz
 
 ./install-linux
