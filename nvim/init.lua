@@ -48,6 +48,11 @@ vim.api.nvim_command('iabbrev reutrn return')
 -- mappings
 local map = vim.api.nvim_set_keymap
 
+-- osc52 copy to clipboard
+vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true })
+vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
+vim.keymap.set('v', '<leader>c', require('osc52').copy_visual)
+
 map('n', ',', 'zz', {noremap = true})
 map('n', '<C-g>', ':GFiles<CR>', {noremap = true})
 map('n', '<C-h>', ':History<CR>', {noremap = true})
