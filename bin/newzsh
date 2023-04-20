@@ -28,8 +28,6 @@ file=$dir/$name
 if [ ! -f $file ]; then
 cat <<eos > $file
 #!/usr/bin/env zsh
-#
-# ~/.dotfiles/bin/$name
 
 set -eopipefail
 
