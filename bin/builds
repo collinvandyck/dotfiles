@@ -5,9 +5,10 @@
 set -e
 
 opt_all="all"
+opt_success="success"
 opt_day="by_day"
 
-options=($opt_all $opt_day)
+options=($opt_all $opt_success $opt_day)
 
 if [[ $# = 0 ]]; then
 	printf '%s\n' ${options[@]} | fzf \
@@ -27,6 +28,19 @@ case $1 in
 				success,
 				substr(sha, 1, 10) as sha
 			from ngrok_builds
+			order by date desc
+		eos
+		;;
+	$opt_success)
+		sqlite3 ~/telemetry.db <<-eos 
+			select 
+				strftime('%m-%d %H:%M', timestamp) as date,
+				format('%dm%ds', (duration/60), (duration%60)) as duration,
+				substr(branch, 0, 50),
+				success,
+				substr(sha, 1, 10) as sha
+			from ngrok_builds
+			where success=1
 			order by date desc
 		eos
 		;;
