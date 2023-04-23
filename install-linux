@@ -28,6 +28,7 @@ sudo apt install -y \
   ca-certificates \
   cmake \
   curl \
+  direnv \
   doxygen \
   et \
   fd-find \
