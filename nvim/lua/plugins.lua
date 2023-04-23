@@ -30,9 +30,6 @@ Plug('saadparwaiz1/cmp_luasnip')
 Plug('xolox/vim-misc')
 Plug('xolox/vim-session')
 
--- plugin_autoclose
-Plug('m4xshen/autoclose.nvim')
-
 -- plugin_toggleterm
 Plug('akinsho/toggleterm.nvim')
 
@@ -74,7 +71,6 @@ require("plugin_telescope")
 require("plugin_cmp")
 require("plugin_luasnip")
 require("plugin_sessions")
-require("plugin_autoclose")
 require("plugin_toggleterm")
 require("plugin_nvimtree")
 require("plugin_project")
