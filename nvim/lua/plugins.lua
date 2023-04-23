@@ -50,6 +50,9 @@ Plug('ojroques/nvim-osc52')
 -- plugin_autopairs
 Plug('windwp/nvim-autopairs')
 
+-- plugin_lualine
+Plug('nvim-lualine/lualine.nvim')
+
 -- plugins without init scripts
 Plug('tpope/vim-fugitive')            -- git integration
 Plug('tpope/vim-rhubarb')             -- git integration with github 
@@ -81,5 +84,6 @@ require("plugin_gruvbox")
 require("plugin_trouble")
 require("plugin_osc52")
 require("plugin_autopairs")
+require("plugin_lualine")
 
 
