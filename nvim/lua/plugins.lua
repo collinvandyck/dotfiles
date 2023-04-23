@@ -30,9 +30,6 @@ Plug('saadparwaiz1/cmp_luasnip')
 Plug('xolox/vim-misc')
 Plug('xolox/vim-session')
 
--- plugin_autoclose
-Plug('m4xshen/autoclose.nvim')
-
 -- plugin_toggleterm
 Plug('akinsho/toggleterm.nvim')
 
@@ -49,6 +46,9 @@ Plug('folke/trouble.nvim')
 
 -- plugin_osc52
 Plug('ojroques/nvim-osc52')
+
+-- plugin_autopairs
+Plug('windwp/nvim-autopairs')
 
 -- plugins without init scripts
 Plug('tpope/vim-fugitive')            -- git integration
@@ -74,12 +74,12 @@ require("plugin_telescope")
 require("plugin_cmp")
 require("plugin_luasnip")
 require("plugin_sessions")
-require("plugin_autoclose")
 require("plugin_toggleterm")
 require("plugin_nvimtree")
 require("plugin_project")
 require("plugin_gruvbox")
 require("plugin_trouble")
 require("plugin_osc52")
+require("plugin_autopairs")
 
 
