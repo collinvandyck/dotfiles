@@ -9,7 +9,7 @@ export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
 
 alias kc='kubectl --kubeconfig /etc/ngrok/devenv.yaml --namespace controlplane'
 alias kd='kubectl --kubeconfig /etc/ngrok/devenv.yaml --namespace us'
-alias n='cd ~/ngrok'
+alias n='cd && cd ~/ngrok'
 alias nn='cd ~ && nvim +":OpenSession ngrok"'
 export GIT_GEN="':!*.pb.go' ':!*.sql.go' ':!**/gen/**'"
 alias ndi='nd go install nd'
