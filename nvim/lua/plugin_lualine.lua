@@ -39,9 +39,21 @@ require('lualine').setup {
 		lualine_z = {'location'}
 	},
 	inactive_sections = {
-		lualine_a = {},
-		lualine_b = {},
-		lualine_c = {'filename'},
+		lualine_a = {'mode'},
+		lualine_b = {'branch', 'diff', 'diagnostics'},
+		lualine_c = { 
+			{
+				'filename', 
+				path = 2, 
+				fmt = function (path)
+					if true then 
+						return path
+					end
+					return table.concat({vim.fs.basename(vim.fs.dirname(path)),
+					vim.fs.basename(path)}, package.config:sub(1, 1))
+				end 
+			} ,
+		},
 		lualine_x = {'location'},
 		lualine_y = {},
 		lualine_z = {}
