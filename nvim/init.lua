@@ -54,7 +54,7 @@ vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
 vim.keymap.set('v', '<leader>c', require('osc52').copy_visual)
 
 map('n', ',', 'zz', {noremap = true})
-map('n', '<C-i>', 'zt', {noremap = true})
+map('n', '<M-i>', 'zt', {noremap = true})
 map('n', '<C-g>', ':GFiles<CR>', {noremap = true})
 map('n', '<C-h>', ':History<CR>', {noremap = true})
 map('n', '<C-p>', ':Files<CR>', {noremap = true})
