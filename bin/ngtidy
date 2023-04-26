@@ -14,4 +14,7 @@ nd devenv tidy
 echo "Compacting git"
 git gc # --aggressive
 
+echo "Pruning git"
+git prune
+
 echo "Done"
