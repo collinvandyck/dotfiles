@@ -71,7 +71,7 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{ name = 'nvim_lsp' },
 		{ name = 'luasnip' }, 
-		{ name = 'buffer' },
+		--{ name = 'buffer' },
 	}),
 	enabled = function()
 		if require"cmp.config.context".in_treesitter_capture("comment")==true or require"cmp.config.context".in_syntax_group("Comment") then

@@ -30,6 +30,7 @@
 	ll = log --pretty=oneline --abbrev-commit --decorate --graph
 	lla = !git ll --all
 	put = push origin HEAD
+	rebsae = rebase
 	shove = push --force-with-lease
 	st = status
 	staged = diff --cached
