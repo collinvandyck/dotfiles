@@ -6,7 +6,7 @@ dir=$(mktemp -d)
 aws s3 --quiet --endpoint-url http://10.110.0.2:30319 sync s3://ngrok-local-bi $dir 
 find $dir -type f | sort -r | xargs cat | jq -c . >> $dir/all.json
 cat $dir/all.json | jq . | bat -l json
-cat $dir/all.json | fzf --exact --no-sort --ansi --preview='echo {} | jq -C .' --preview-window='right,50%'
+# cat $dir/all.json | fzf --exact --no-sort --ansi --preview='echo {} | jq -C .' --preview-window='right,50%'
 
 exit 0
 # todo: make this behavior optional
