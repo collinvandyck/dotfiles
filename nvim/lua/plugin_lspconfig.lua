@@ -2,6 +2,17 @@ local lsp_util = require "lspconfig/util"
 local telescope = require 'telescope.builtin'
 local trouble = require 'trouble.providers.telescope'
 
+-- UI config options
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
+--
+vim.o.updatetime = 250
+vim.cmd([[
+augroup HoverGroup
+  autocmd!
+  autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})
+augroup END
+]])
+
 local custom_attach = function(client, bufnr)
 	local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
