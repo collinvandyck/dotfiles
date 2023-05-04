@@ -97,4 +97,6 @@ map('i', '<c-s>', '<esc>:wa!<CR>', {noremap = true})
 map('i', '<C-E>', '<esc>A', {noremap = true})
 map('c', '<c-a>', '<Home>', {noremap = true})
 map('t', '<Esc>', '<C-\\><C-n>', {noremap = true})
+map('n', '<ScrollWheelLeft>', '<nop>', {noremap = true})
+map('n', '<ScrollWheelRight>', '<nop>', {noremap = true})
 
