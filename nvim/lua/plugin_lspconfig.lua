@@ -6,12 +6,14 @@ local trouble = require 'trouble.providers.telescope'
 -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
 --
 vim.o.updatetime = 250
-vim.cmd([[
-augroup HoverGroup
-  autocmd!
-  autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})
-augroup END
+if false then
+	vim.cmd([[
+	augroup HoverGroup
+	  autocmd!
+	  autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})
+	augroup END
 ]])
+end
 
 local custom_attach = function(client, bufnr)
 	local bufopts = { noremap=true, silent=true, buffer=bufnr }
