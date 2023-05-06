@@ -19,6 +19,7 @@ vim.opt.hlsearch = false
 vim.opt.ignorecase = true
 vim.opt.linebreak = true
 vim.opt.mouse = 'n'
+vim.opt.mousescroll = 'ver:1,hor:1'
 vim.opt.number = true
 vim.opt.numberwidth = 4
 vim.opt.scrollback = 10000
