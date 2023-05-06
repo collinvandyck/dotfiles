@@ -10,6 +10,7 @@ bin/symlink ~/.dotfiles/git/.gitconfig        ~
 bin/symlink ~/.dotfiles/git/.gitignore_global ~
 bin/symlink ~/.dotfiles/runcom/.imwheelrc     ~
 bin/symlink ~/.dotfiles/ssh/config            ~/.ssh/config
+bin/symlink ~/.dotfiles/kitty                 ~/.config/kitty
 bin/symlink ~/.dotfiles/nvim                  ~/.config/nvim
 bin/symlink ~/.dotfiles/direnv                ~/.config/direnv
 bin/symlink ~/.dotfiles/tmux/tmux.conf        ~/.tmux.conf
