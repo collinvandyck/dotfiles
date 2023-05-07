@@ -15,6 +15,20 @@ end
 vim.cmd("command! -nargs=* -bang RG lua RipgrepFzf(<q-args>, <bang>0)")
 
 vim.cmd([[
+function! CustomHistory()
+  let output = filter(
+        \ map(reverse(copy(v:oldfiles)), 'fnamemodify(v:val, ":.p")'),
+        \ 'filereadable(v:val) && !isdirectory(v:val)')
+  call fzf#run(fzf#wrap({
+    \ 'source': output,
+    \ 'options': '--preview ''bat --style=numbers --color=always --line-range :200 {}'' --preview-window=right:50%:wrap --height=100% --no-sort --tac',
+    \ 'sink': 'e'
+    \ }))
+endfunction
+command! CustomHistory call CustomHistory()
+]])
+
+vim.cmd([[
     command! -bang -nargs=? -complete=dir ConfigFiles
                 \ call fzf#vim#files(
                 \ '~/ngrok/config',
@@ -30,14 +44,12 @@ vim.cmd([[
                 \ <bang>0)
 ]])
 
-local function TestFzf(query, fullscreen)
+function _G.TestFzf(query, fullscreen)
     local command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
     local initial_command = string.format(command_fmt, vim.fn.shellescape(query))
     local reload_command = string.format(command_fmt, '{q}')
     local spec = { options = { '--phony', '--query', query, '--bind', 'change:reload:' .. reload_command } }
     local res = vim.call('fzf#vim#grep', initial_command, 1, vim.call('fzf#vim#with_preview', spec), fullscreen)
-    print(res)
-    print("done")
     return res
 end
 
