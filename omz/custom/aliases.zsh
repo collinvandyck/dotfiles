@@ -63,7 +63,6 @@ fi
 alias nowrap='cut -c -$COLUMNS'
 alias gol="goland $(pwd)"
 alias d='cd ~/.dotfiles'
-alias dv='cd ~/.dotfiles && tmux rename-window .dotfiles 2>/dev/null; nvim'
 
 # ls --color makes me sad because it's hard to read.
 unalias ls
