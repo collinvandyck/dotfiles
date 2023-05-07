@@ -8,7 +8,7 @@ idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep .dotfiles | a
 if [ -n "$idx" ]; then
 	tmux select-window -t $idx
 else
-	tmux new-window -n $window_name -c ~/.dotfiles nvim
+	tmux new-window -n $window_name -c ~/.dotfiles zsh -i -c nvim
 fi
 
 idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep .dotfiles | awk -F: '{print $1}')
