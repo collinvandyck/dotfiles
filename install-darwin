@@ -27,9 +27,11 @@ brew install --quiet --formula \
 	flyctl \
 	fswatch \
 	gcc \
+	gh \
 	git-delta \
 	gource \
 	graphviz \
+	glow \
 	gum \
 	htop \
 	httpie \

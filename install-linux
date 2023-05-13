@@ -15,6 +15,16 @@ if [[ ! -f /etc/apt/sources.list.d/charm.list ]]; then
 	echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
 fi
 
+# gh
+if [[ ! -f /etc/apt/sources.list.d/github-cli.list ]]; then
+	type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+	&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+	&& sudo apt update \
+	&& sudo apt install gh -y
+fi
+
 sudo apt update
 sudo apt-get install -y software-properties-common
 sudo add-apt-repository -y ppa:jgmath2000/et
@@ -36,7 +46,9 @@ sudo apt install -y \
   fswatch \
   g++ \
   gettext \
+  gh \
   git \
+  glow \
   gum \
   gnupg \
   htop \
