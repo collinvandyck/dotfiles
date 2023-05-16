@@ -8,7 +8,7 @@ export PAGER='less -RX' # -X turns off the screen clearing function
 export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
 
 alias kc='kubectl --kubeconfig /etc/ngrok/devenv.yaml --namespace controlplane'
-alias kd='kubectl --kubeconfig /etc/ngrok/devenv.yaml --namespace us'
+alias kd='kubectl --kubeconfig /etc/ngrok/devenv.yaml --namespace dataplane'
 alias n='cd && cd ~/ngrok'
 alias nn='cd ~ && nvim +":OpenSession ngrok"'
 export GIT_GEN="':!*.pb.go' ':!*.sql.go' ':!**/gen/**'"
