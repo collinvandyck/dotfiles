@@ -1,5 +1,6 @@
 #export LESS='-R --incsearch'
 export NGROK_LOGS_PAGER="lnav"
+export NGROK_TASKGRAPH_DISABLE_LOG_PAGER="1"
 
 export BAT_STYLE="changes"
 export LESS='-R'
