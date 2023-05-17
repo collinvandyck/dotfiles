@@ -28,6 +28,7 @@ vim.opt.shiftwidth = 4
 vim.opt.sidescrolloff = 20
 vim.opt.signcolumn = 'number'
 vim.opt.smartcase = true
+vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline=""
