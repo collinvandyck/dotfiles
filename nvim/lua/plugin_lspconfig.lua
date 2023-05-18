@@ -22,6 +22,15 @@ local custom_attach = function(client, bufnr)
 		vim.diagnostic.open_float(nil, {focus=false})
 	end
 
+	vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
+		buffer = bufnr,
+		callback = vim.lsp.buf.document_highlight
+	})
+	vim.api.nvim_create_autocmd({"CursorMoved"}, {
+		buffer = bufnr,
+		callback = vim.lsp.buf.clear_references
+	})
+
 	-- set keymaps
 	vim.keymap.set('n','gD',         vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set('n','K' ,         vim.lsp.buf.hover, bufopts)
