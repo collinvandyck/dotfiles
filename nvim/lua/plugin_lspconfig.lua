@@ -2,22 +2,11 @@ local lsp_util = require "lspconfig/util"
 local telescope = require 'telescope.builtin'
 local trouble = require 'trouble.providers.telescope'
 
--- UI config options
--- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#show-line-diagnostics-automatically-in-hover-window
---
-vim.o.updatetime = 250
-if false then
-	vim.cmd([[
-	augroup HoverGroup
-	  autocmd!
-	  autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})
-	augroup END
-]])
-end
-
 local custom_attach = function(client, bufnr)
+	-- common buffer opts
 	local bufopts = { noremap=true, silent=true, buffer=bufnr }
 
+	-- override the lsp request so that we notify on error
 	local req = client.request
 	client.request = function(method, params, handler, bufnr, config_or_callback)
 		local newConfig = {
@@ -29,7 +18,11 @@ local custom_attach = function(client, bufnr)
 		return req(method, params, handler, bufnr, newConfig)
 	end
 
+	local show_help = function(ev)
+		vim.diagnostic.open_float(nil, {focus=false})
+	end
 
+	-- set keymaps
 	vim.keymap.set('n','gD',         vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set('n','K' ,         vim.lsp.buf.hover, bufopts)
 	vim.keymap.set('n','gt',         vim.lsp.buf.type_definition, bufopts)
@@ -40,6 +33,7 @@ local custom_attach = function(client, bufnr)
 	vim.keymap.set('n','gi',         '<cmd>Trouble lsp_implementations<CR>', bufopts)
 	vim.keymap.set('n','gI',         telescope.lsp_incoming_calls, bufopts)
 	vim.keymap.set('n','gO',         telescope.lsp_outgoing_calls, bufopts)
+	vim.keymap.set('n','gh',         show_help, bufopts)
 	vim.keymap.set('n','<leader>gw', vim.lsp.buf.document_symbol, bufopts)
 	vim.keymap.set('n','<leader>gW', vim.lsp.buf.workspace_symbol, bufopts)
 	vim.keymap.set('n','<leader>ah', vim.lsp.buf.hover, bufopts)
