@@ -28,7 +28,6 @@ vim.opt.shiftwidth = 4
 vim.opt.sidescrolloff = 20
 vim.opt.signcolumn = 'number'
 vim.opt.smartcase = true
-vim.opt.smartindent = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline=""
@@ -102,24 +101,4 @@ map('c', '<c-a>', '<Home>', {noremap = true})
 map('t', '<Esc>', '<C-\\><C-n>', {noremap = true})
 map('n', '<ScrollWheelLeft>', '<nop>', {noremap = true})
 map('n', '<ScrollWheelRight>', '<nop>', {noremap = true})
-
--- startup commands
-
-vim.cmd([[
-  augroup StartupCommands
-    autocmd!
-    autocmd VimEnter * lua check_empty_and_toggle_tree()
-  augroup END
-]])
-
-function check_empty_and_toggle_tree()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local buf_name = vim.api.nvim_buf_get_name(bufnr)
-  local buf_line_count = vim.api.nvim_buf_line_count(bufnr)
-
-  if buf_name == "" and buf_line_count == 1 then
-    vim.cmd("silent! NvimTreeToggle")
-    vim.cmd("wincmd l")
-  end
-end
 
