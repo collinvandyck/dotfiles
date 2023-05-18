@@ -68,7 +68,7 @@ bench:
 	go test . -bench .
 
 test:
-	go test .
+	go test -v -race .
 eos
 fi
 
