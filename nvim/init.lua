@@ -78,6 +78,7 @@ map('n', '<Leader>w', ':Windows<CR>', {noremap = true})
 map('n', '<Leader>W', ':set wrap!<CR>', {noremap = true})
 map('n', '<leader>ve', ':e $MYVIMRC<CR>' , {noremap = true})
 map('n', '<leader>R', ':source $MYVIMRC<CR>' , {noremap = true})
+map('n', '<Leader>f', ':NvimTreeFindFile<CR>', {noremap = true})
 map('n', '<Leader>n', ':NvimTreeToggle<CR>zz<C-w>=', {noremap = true})
 map('n', '<Leader>xx', ':TroubleToggle<CR>', {noremap = true})
 map('n', '<Leader>xw', ':TroubleToggle workspace_diagnostics<CR>', {noremap = true})
@@ -102,3 +103,11 @@ map('t', '<Esc>', '<C-\\><C-n>', {noremap = true})
 map('n', '<ScrollWheelLeft>', '<nop>', {noremap = true})
 map('n', '<ScrollWheelRight>', '<nop>', {noremap = true})
 
+-- startup commands
+vim.cmd([[
+	augroup StartupComands
+	  autocmd!
+	  autocmd VimEnter * :silent! NvimTreeToggle
+	  autocmd VimEnter * :wincmd l
+	augroup END
+]])

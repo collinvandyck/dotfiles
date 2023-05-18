@@ -104,45 +104,49 @@ local function on_attach(bufnr)
 end
 
 require'nvim-tree'.setup {
-  on_attach = on_attach,
-  actions = {
-	  open_file = {
-		  resize_window = false,
-		  window_picker = {
-			  enable = false,
-		  },
-	  },
-  },
-  diagnostics = {
-	  enable = true,
-	  severity = {
-		min = vim.diagnostic.severity.ERROR,
-	  },
-  },
-  filesystem_watchers = {
-	  enable = true,
-  },
-  filters = {
-	  dotfiles = false,
-  },
-  git = {
-	  ignore = false,
-	  enable = false,
-  },
-  renderer = {
-	  symlink_destination = false,
-  },
-  update_cwd = true,
-  update_focused_file = {
-    enable = true,
-    update_cwd = false,
-    update_root = false,
-  },
-  view = {
-	width = 45,
-    adaptive_size = false,
-    centralize_selection = true,
-  },
+	disable_netrw = false, -- setting this to true interferes with GBrowse.
+	on_attach = on_attach,
+	actions = {
+		open_file = {
+			resize_window = false,
+			window_picker = {
+				enable = false,
+			},
+		},
+	},
+	diagnostics = {
+		enable = true,
+		severity = {
+			min = vim.diagnostic.severity.ERROR,
+		},
+	},
+	filesystem_watchers = {
+		enable = true,
+	},
+	filters = {
+		dotfiles = false,
+	},
+	git = {
+		ignore = false,
+		enable = false,
+	},
+	renderer = {
+		symlink_destination = false,
+	},
+	update_cwd = true,
+	update_focused_file = {
+		enable = true,
+		update_cwd = false,
+		update_root = false,
+	},
+	view = {
+		width = {
+			min = 45,
+			max = 80,
+			padding = 1,
+		},
+		centralize_selection = true,
+	},
 }
 
 
