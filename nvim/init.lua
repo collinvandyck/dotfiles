@@ -35,6 +35,7 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 500
+vim.opt.updatetime = 500
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.g.mapleader = " "
