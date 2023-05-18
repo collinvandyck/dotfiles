@@ -35,16 +35,16 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 500
-vim.opt.updatetime = 250
+vim.opt.updatetime = 100
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.g.mapleader = " "
 vim.g.maplocalleader = "-"
 
 vim.cmd([[
-	hi LspReferenceRead cterm=bold ctermbg=237 guibg=#45403d
-	hi LspReferenceText cterm=bold ctermbg=237 guibg=#45403d
-	hi LspReferenceWrite cterm=bold ctermbg=237 guibg=#45403d
+	hi LspReferenceRead cterm=bold ctermbg=237 gui=bold guibg=#45403d
+	hi LspReferenceText cterm=bold ctermbg=237  gui=bold guibg=#45403d
+	hi LspReferenceWrite cterm=bold ctermbg=237 gui=bold guibg=#45403d
 ]])
 
 -- abbreviations
