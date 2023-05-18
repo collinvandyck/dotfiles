@@ -141,7 +141,7 @@ require'nvim-tree'.setup {
 	},
 	view = {
 		width = {
-			min = 45,
+			min = 40,
 			max = 80,
 			padding = 1,
 		},
