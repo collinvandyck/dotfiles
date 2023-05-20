@@ -53,6 +53,9 @@ Plug('windwp/nvim-autopairs')
 -- plugin_lualine
 Plug('nvim-lualine/lualine.nvim')
 
+-- plugin_github_theme
+Plug('projekt0n/github-nvim-theme')
+
 -- plugins without init scripts
 Plug('tpope/vim-fugitive')            -- git integration
 Plug('tpope/vim-rhubarb')             -- git integration with github 
