@@ -55,6 +55,7 @@ brew install --quiet --formula \
 	nvm \
 	openssh \
 	openssl@3 \
+	pandoc \
 	protoc-gen-go \
 	psgrep \
 	pstree \
