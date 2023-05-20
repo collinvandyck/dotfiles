@@ -61,7 +61,6 @@ fi
 
 # other
 alias nowrap='cut -c -$COLUMNS'
-alias gol="goland $(pwd)"
 alias d='cd ~/.dotfiles'
 
 # ls --color makes me sad because it's hard to read.
