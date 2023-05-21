@@ -23,6 +23,7 @@ brew install --quiet --formula \
 	direnv \
 	dnsmasq \
 	fd \
+	fftw \
 	fish \
 	flyctl \
 	fswatch \
@@ -56,6 +57,7 @@ brew install --quiet --formula \
 	openssh \
 	openssl@3 \
 	pandoc \
+	portaudio \
 	protoc-gen-go \
 	psgrep \
 	pstree \
