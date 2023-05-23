@@ -45,6 +45,7 @@ vim.cmd([[
 	hi LspReferenceRead cterm=bold ctermbg=237 gui=bold guibg=#45403d
 	hi LspReferenceText cterm=bold ctermbg=237  gui=bold guibg=#45403d
 	hi LspReferenceWrite cterm=bold ctermbg=237 gui=bold guibg=#45403d
+	hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 ]])
 
 -- abbreviations
