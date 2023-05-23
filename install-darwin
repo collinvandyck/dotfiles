@@ -64,7 +64,6 @@ brew install --quiet --formula \
 	pv \
 	python@3.10 \
 	ripgrep \
-	rust \
 	shellcheck \
 	sysdig \
 	telnet \
