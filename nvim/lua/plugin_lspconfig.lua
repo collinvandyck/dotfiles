@@ -74,3 +74,14 @@ require'lspconfig'.tsserver.setup{
 	on_attach = custom_attach,
 }
 
+require'lspconfig'.rust_analyzer.setup{
+	capabilities = capabilities,
+	on_attach = custom_attach,
+	settings = {
+		['rust-analyzer'] = {
+			diagnostics = {
+				enable = true;
+			}
+		}
+	}
+}
