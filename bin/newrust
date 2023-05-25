@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+dir=$(mktemp -d)
+cd $dir
+cargo new rusty
+cd rusty
+
+cat <<eos > Makefile
+run:
+	cargo run
+
+release:
+	cargo build --release
+
+test:
+	cargo test
+
+eos
+
+nvim
