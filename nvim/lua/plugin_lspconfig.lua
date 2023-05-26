@@ -22,6 +22,14 @@ local custom_attach = function(client, bufnr)
 		vim.diagnostic.open_float(nil, {focus=false})
 	end
 
+	vim.api.nvim_create_autocmd({"BufWritePre"}, {
+		buffer = bufnr,
+		callback = function(ev)
+			vim.api.nvim_command("silent! lua require('vim.lsp.buf').format(nil, 10000)")
+			vim.api.nvim_command("silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
+		end,
+	})
+
 	vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
 		buffer = bufnr,
 		callback = vim.lsp.buf.document_highlight
