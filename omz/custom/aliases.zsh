@@ -1,3 +1,5 @@
+alias c='bat'
+
 # git aliases
 alias gst='git status'
 alias gcav='git add -A && git commit -v'
