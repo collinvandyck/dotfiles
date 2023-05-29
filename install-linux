@@ -140,6 +140,16 @@ if [[ "$(hyperfine --version 2>/dev/null | awk '{print $2}')" != "$(
 	sudo dpkg -i $dir/hyperfine.deb
 fi
 
+# hexyl
+if [[ "$(hexyl --version 2>/dev/null | awk '{print $2}')" != "$(
+	basename $DOTFILES_HEXYL_VERSION | sed 's/.*_\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\)_.*/\1/')" ]]; then
+	echo "installing hexyl ${DOTFILES_HEXYL_VERSION}"
+	dir=$(mktemp -d)
+	url="https://github.com/sharkdp/hexyl/releases/download/${DOTFILES_HEXYL_VERSION}"
+	curl -s -L -o $dir/hexyl.deb $url
+	sudo dpkg -i $dir/hexyl.deb
+fi
+
 # bottom
 if [[ $(btm --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_BOTTOM_VERSION} ]]; then
 	echo "installing bottom ${DOTFILES_BOTTOM_VERSION}"
