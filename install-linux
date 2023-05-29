@@ -130,6 +130,16 @@ curl -s -L -o /tmp/bat.deb https://github.com/sharkdp/bat/releases/download/$DOT
 sudo dpkg -i /tmp/bat.deb
 rm /tmp/bat.deb
 
+# hyperfine
+if [[ "$(hyperfine --version 2>/dev/null | awk '{print $2}')" != "$(
+	basename $DOTFILES_HYPERFINE_VERSION | sed 's/.*_\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\)_.*/\1/')" ]]; then
+	echo "installing hyperfine ${DOTFILES_HYPERFINE_VERSION}"
+	dir=$(mktemp -d)
+	url="https://github.com/sharkdp/hyperfine/releases/download/${DOTFILES_HYPERFINE_VERSION}"
+	curl -s -L -o $dir/hyperfine.deb $url
+	sudo dpkg -i $dir/hyperfine.deb
+fi
+
 # bottom
 if [[ $(btm --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_BOTTOM_VERSION} ]]; then
 	echo "installing bottom ${DOTFILES_BOTTOM_VERSION}"
