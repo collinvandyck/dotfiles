@@ -39,6 +39,7 @@ brew install --quiet --formula \
 	htop \
 	httpie \
 	hugo \
+	hyperfine \
 	imagemagick \
 	jpeg \
 	jq \
