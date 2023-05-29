@@ -134,7 +134,8 @@ if [ ! -d $flutter_loc ]; then
 fi
 
 # cocapods
-sudo gem install cocoapods
+echo "Skipping cocapods install"
+#sudo gem install cocoapods
 
 # finally, install the launchd daemons
 ~/.dotfiles/install-launchd
