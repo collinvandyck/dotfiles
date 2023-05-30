@@ -3,13 +3,13 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
+# enable homebrew in path in case we just installed it.
+export PATH=/opt/homebrew/bin:$PATH
+
 # install homebrew
 if [ ! $(command -v brew) ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
-
-# enable homebrew in path in case we just installed it.
-export PATH=/opt/homebrew/bin:$PATH
 
 # update homebrew packages
 brew update --quiet
@@ -94,6 +94,9 @@ if ! aws --version; then
 	sudo installer -pkg AWSCLIV2.pkg -target /
 	cd ~
 fi
+
+# enable go in path in case we just installed it.
+export PATH=/usr/local/go/bin:$PATH
 
 # install go
 if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
