@@ -120,8 +120,8 @@ else
 	echo "neovim ${DOTFILES_NVIM_VERSION} already installed"
 fi
 sudo ln -sf /usr/local/nvim-macos/bin/nvim  /usr/local/bin/nvim
-sudo rm -r /usr/local/bin/vim
-sudo rm -r /usr/local/bin/vi
+sudo rm -rf /usr/local/bin/vim
+sudo rm -rf /usr/local/bin/vi
 sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
 sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
 
