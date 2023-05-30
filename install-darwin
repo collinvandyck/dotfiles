@@ -8,6 +8,9 @@ if [ ! $(command -v brew) ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# enable homebrew in path in case we just installed it.
+export PATH=/opt/homebrew/bin:$PATH
+
 # update homebrew packages
 brew update --quiet
 brew install --quiet --formula \
