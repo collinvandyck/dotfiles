@@ -23,7 +23,9 @@ bin/symlink ~/.dotfiles/runcom/ripgrep.conf   ~/.ripgrep.conf
 bin/symlink ~/.dotfiles/runcom/p10k.zsh       ~/.p10k.zsh
 bin/symlink ~/.dotfiles/powerline             ~/.config/powerline
 
-mkdir -p /usr/local/bin
+sudo mkdir -p /usr/local/bin
+sudo chown $USER /usr/local/bin
+
 sudo bin/symlink ~/.dotfiles/bin/tm            /usr/local/bin
 
 touch ~/.tmux.custom.conf
