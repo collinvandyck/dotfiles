@@ -50,6 +50,9 @@ if [ ! -e ~/.powerline ]; then
 	git clone https://github.com/powerline/powerline.git ~/.powerline
 fi
 
+# ensure powerline-status
+pip3 install powerline-status
+
 # oh my zsh
 if [ ! -e ~/.oh-my-zsh ]; then
 	KEEP_ZSHRC=yes \
