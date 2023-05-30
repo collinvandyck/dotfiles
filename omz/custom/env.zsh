@@ -37,6 +37,7 @@ addPaths=(
 	~/.local/bin
 	~/.cargo/bin
 	~/.tfenv/bin
+	~/.powerline/scripts
 	/opt/homebrew/bin
 	/usr/local/go/bin
 	/usr/local/bin

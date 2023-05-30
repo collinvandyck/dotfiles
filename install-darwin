@@ -82,7 +82,6 @@ brew install --quiet --formula \
 	tree-sitter \
 	watch \
 	wireguard-tools \
-	yarn \
 	youtube-dl \
 	zenith
 
