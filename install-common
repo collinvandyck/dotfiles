@@ -33,18 +33,6 @@ if [ ! -e ~/.fzf ]; then
 	~/.fzf/install --all
 fi
 
-# powerlevel 10k theme
-# Todo: this is super messy and creates a project commit in my dotfiles repo
-# I should really just use git submodules.
-# Or just install a symlink to ~/.powerlevel10k
-p10k_location="$HOME/.dotfiles/omz/custom/themes/powerlevel10k"
-if [ ! -e ${p10k_location}/powerlevel10k.zsh-theme ]; then
-	git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $p10k_location
-fi
-
-# install gitstatus so that the theme doesn't need to on startup
-~/.dotfiles/omz/custom/themes/powerlevel10k/gitstatus/install -f
-
 # install powerline
 if [ ! -e ~/.powerline ]; then
 	git clone https://github.com/powerline/powerline.git ~/.powerline
