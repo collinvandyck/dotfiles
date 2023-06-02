@@ -79,4 +79,5 @@ git add -A
 git commit -m "Initial Commit"
 fi
 
-exec nvim main.go
+nvim main.go
+exec zsh
