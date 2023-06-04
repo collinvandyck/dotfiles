@@ -31,7 +31,7 @@ sudo bin/symlink ~/.dotfiles/bin/tm            /usr/local/bin
 touch ~/.tmux.custom.conf
 
 export DOTFILES_GOLINT_VERSION=v1.51.2
-export DOTFILES_GO_VERSION=go1.20.2
+export DOTFILES_GO_VERSION=go1.20.4
 export DOTFILES_NVIM_VERSION=v0.9.1
 export DOTFILES_SQLITE_VERSION=3.41.0
 export DOTFILES_BOTTOM_VERSION=0.8.0
