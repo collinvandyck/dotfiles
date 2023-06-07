@@ -75,6 +75,7 @@ brew install --quiet --formula \
 	shellcheck \
 	sysdig \
 	telnet \
+	temporal \
 	tig \
 	tmux \
 	tokei \
