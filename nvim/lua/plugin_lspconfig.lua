@@ -74,6 +74,7 @@ require'lspconfig'.gopls.setup {
 	root_dir = lsp_util.root_pattern("go.work", "go.mod", ".git"),
 	settings = {
 		semanticTokens = true,
+		usePlaceholders = false,
 	},
 }
 
