@@ -32,11 +32,15 @@ local custom_attach = function(client, bufnr)
 
 	vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
 		buffer = bufnr,
-		callback = vim.lsp.buf.document_highlight
+		callback = function(ev)
+			vim.api.nvim_command("silent! lua require('vim.lsp.buf').document_highlight()")
+		end,
 	})
 	vim.api.nvim_create_autocmd({"CursorMoved"}, {
 		buffer = bufnr,
-		callback = vim.lsp.buf.clear_references
+		callback = function(ev)
+			vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
+		end,
 	})
 
 	-- set keymaps
