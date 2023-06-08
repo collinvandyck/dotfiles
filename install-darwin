@@ -23,6 +23,7 @@ brew install --quiet --formula \
 	bat \
 	bottom \
 	cmake \
+	cowsay \
 	curl \
 	datasette \
 	direnv \
