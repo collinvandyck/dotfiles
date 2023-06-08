@@ -73,6 +73,7 @@ brew install --quiet --formula \
 	python@3.10 \
 	ripgrep \
 	shellcheck \
+	sampler \
 	sysdig \
 	telnet \
 	temporal \
