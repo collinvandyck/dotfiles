@@ -32,7 +32,6 @@ brew install --quiet --formula \
 	fd \
 	fftw \
 	fish \
-	flyctl \
 	fswatch \
 	gcc \
 	gh \
@@ -89,7 +88,7 @@ brew install --quiet --formula \
 	youtube-dl \
 	zenith
 
-brew install --cask unnaturalscrollwheels
+brew install --quiet --cask unnaturalscrollwheels
 
 # install aws cli v2
 if ! aws --version; then
