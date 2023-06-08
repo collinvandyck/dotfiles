@@ -89,6 +89,7 @@ brew install --quiet --formula \
 	youtube-dl \
 	zenith
 
+brew install --cask unnaturalscrollwheels
 
 # install aws cli v2
 if ! aws --version; then
