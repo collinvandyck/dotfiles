@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "Installing rust utilities"
+
+cargo install watchexec-cli
