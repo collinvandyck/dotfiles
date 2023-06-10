@@ -58,5 +58,8 @@ fi
 # install any go programs we have defined in our dotfiles
 ~/.dotfiles/install-go
 
+# install any rust programs 
+~/.dotfiles/install-rust
+
 # install nodejs and npm things
 ~/.dotfiles/install-js
