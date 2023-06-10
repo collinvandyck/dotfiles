@@ -26,3 +26,6 @@ echo "Installing golang-migrate"
 # https://github.com/golang-migrate/migrate/blob/master/cmd/migrate/README.md
 go install -tags 'sqlite' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
+echo "Installing charm mods"
+go install github.com/charmbracelet/mods@latest
+
