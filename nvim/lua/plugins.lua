@@ -56,6 +56,9 @@ Plug('nvim-lualine/lualine.nvim')
 -- plugin_github_theme
 Plug('projekt0n/github-nvim-theme')
 
+-- plugin_indent_blankline
+Plug('lukas-reineke/indent-blankline.nvim')
+
 -- plugins without init scripts
 Plug('tpope/vim-fugitive')            -- git integration
 Plug('tpope/vim-rhubarb')             -- git integration with github 
@@ -88,5 +91,6 @@ require("plugin_trouble")
 require("plugin_osc52")
 require("plugin_autopairs")
 require("plugin_lualine")
+require("plugin_indent_blankline")
 
 
