@@ -45,6 +45,7 @@ pip3 install powerline-status
 if [ ! -e ~/.oh-my-zsh ]; then
 	KEEP_ZSHRC=yes \
 	CHSH=no \
+	RUNZSH=no \
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
