@@ -29,7 +29,8 @@ if [ ! -f $file ]; then
 cat <<eos > $file
 #!/usr/bin/env bash
 
-set -e
+set -e # exit on failure
+set -u # fail if vars are not defined
 
 eos
 fi

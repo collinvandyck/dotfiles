@@ -40,7 +40,6 @@ sudo apt install -y \
   curl \
   direnv \
   doxygen \
-  et \
   fatrace \
   fd-find \
   fswatch \
@@ -63,10 +62,11 @@ sudo apt install -y \
   nethogs \
   ninja-build \
   pkg-config \
-  python3-pip \
   powerline \
   powerline-gitstatus \
   psmisc \
+  python3-pip \
+  python-is-python3 \
   ripgrep \
   shellcheck \
   sqlite3 \
