@@ -89,6 +89,7 @@ brew install --quiet --formula \
 	zenith
 
 brew install --quiet --cask \
+	logseq \
 	sublime-text \
 	unnaturalscrollwheels 
 
