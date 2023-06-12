@@ -1,4 +1,7 @@
-setopt sh_word_split
+if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
+	setopt sh_word_split
+fi
+
 setopt noauto_cd
 
 # setup easy access to cd paths
