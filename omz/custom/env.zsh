@@ -32,13 +32,15 @@ addPath() {
 }
 
 addPaths=(
+	/opt/homebrew/bin
+	/opt/homebrew/sbin
+	~/Library/Python/3.9/bin
 	~/go/bin
 	~/bin
 	~/.local/bin
 	~/.cargo/bin
 	~/.tfenv/bin
 	~/.powerline/scripts
-	/opt/homebrew/bin
 	/usr/local/go/bin
 	/usr/local/bin
 	~/.dotfiles/bin

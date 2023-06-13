@@ -1,5 +1,3 @@
-alias c='bat'
-
 # git aliases
 alias gst='git status'
 alias gcav='git add -A && git commit -v'
@@ -64,6 +62,7 @@ fi
 # other
 alias nowrap='cut -c -$COLUMNS'
 alias d='cd ~/.dotfiles'
+alias c='cd ~/code'
 
 # ls --color makes me sad because it's hard to read.
 unalias ls
