@@ -88,7 +88,9 @@ brew install --quiet --formula \
 	youtube-dl \
 	zenith
 
+brew tap homebrew/cask-fonts
 brew install --quiet --cask \
+	font-fantasque-sans-mono \
 	logseq \
 	sublime-text \
 	unnaturalscrollwheels 
