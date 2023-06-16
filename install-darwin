@@ -91,6 +91,7 @@ brew install --quiet --formula \
 brew tap homebrew/cask-fonts
 brew install --quiet --cask \
 	font-fantasque-sans-mono \
+	imhex \
 	logseq \
 	sublime-text \
 	unnaturalscrollwheels 
