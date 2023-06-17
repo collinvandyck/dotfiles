@@ -2,4 +2,7 @@
 
 echo "Installing rust utilities"
 
+# increase the timeout for cargo for slow systems.
+export CARGO_HTTP_TIMEOUT=600
+
 cargo install watchexec-cli
