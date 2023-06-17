@@ -25,6 +25,7 @@ alias put='git put'
 alias gla='git last'
 alias shove='git shove'
 alias show='git show'
+alias lg='lazygit'
 
 # remove things that the git plugin defines
 unalias gup
