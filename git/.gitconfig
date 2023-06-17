@@ -70,3 +70,5 @@
 [protocol "keybase"]
 	allow = always
 
+[http]
+	postBuffer = 1048576000
