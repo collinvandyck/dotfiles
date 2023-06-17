@@ -48,7 +48,7 @@ brew install --quiet --formula \
 	imagemagick \
 	jpeg \
 	jq \
-	lazygit \
+	jesseduffield/lazygit/lazygit \
 	libsodium \
 	libtermkey \
 	libtool \
