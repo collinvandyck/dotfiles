@@ -106,9 +106,9 @@ fi
 if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
 	echo "installing nvim ${DOTFILES_NVIM_VERSION}"
 	cd $(mktemp -d)
-	git clone --depth 1 https://github.com/neovim/neovim.git
+	git clone --depth 1 --branch ${DOTFILES_NVIM_VERSION} https://github.com/neovim/neovim.git
 	cd neovim
-	git reset --hard ${DOTFILES_NVIM_VERSION}
+	#git reset --hard ${DOTFILES_NVIM_VERSION}
 	make CMAKE_BUILD_TYPE=Release
 	if [[ -d /usr/local/share/nvim ]]; then
 		echo "removing old nvim state"
