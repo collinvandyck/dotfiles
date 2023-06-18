@@ -5,4 +5,11 @@ echo "Installing rust utilities"
 # increase the timeout for cargo for slow systems.
 export CARGO_HTTP_TIMEOUT=600
 
-cargo install watchexec-cli
+if [[ $(hostname) = "nas" ]]; then
+	echo "skip rust install on nas"
+	exit 0
+fi
+
+cargo install \
+	diskonaut \
+	watchexec-cli
