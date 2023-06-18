@@ -5,8 +5,8 @@ echo "Installing rust utilities"
 # increase the timeout for cargo for slow systems.
 export CARGO_HTTP_TIMEOUT=600
 
-if [[ $(hostname) = "nas" ]]; then
-	echo "skip rust install on nas"
+if [[ "${DOTFILES_SKIP_RUST_UTILS}" = "true" ]]; then
+	echo "Skipping rust utils"
 	exit 0
 fi
 
