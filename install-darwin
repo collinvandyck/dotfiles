@@ -77,6 +77,7 @@ brew install --quiet --formula \
 	ripgrep \
 	shellcheck \
 	sampler \
+	spotify-tui \
 	sysdig \
 	telnet \
 	temporal \
