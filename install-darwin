@@ -29,6 +29,7 @@ brew install --quiet --formula \
 	datasette \
 	direnv \
 	dnsmasq \
+	dua-cli \
 	fd \
 	fftw \
 	fish \
