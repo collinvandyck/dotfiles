@@ -64,6 +64,7 @@ brew install --quiet --formula \
 	msgpack \
 	ninja \
 	node \
+	node_exporter \
 	nvm \
 	openssh \
 	openssl@3 \
