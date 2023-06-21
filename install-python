@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "Setting up python"
+
+bin/symlink $(which python3) /usr/local/bin/python
+bin/symlink $(which pip3) /usr/local/bin/pip
