@@ -59,6 +59,9 @@ fi
 # install any go programs we have defined in our dotfiles
 ~/.dotfiles/install-go
 
+# install python stuff
+~/.dotfiles/install-python
+
 # install any rust programs 
 ~/.dotfiles/install-rust
 
