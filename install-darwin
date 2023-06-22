@@ -37,6 +37,7 @@ brew install --quiet --formula \
 	gcc \
 	gh \
 	git-delta \
+	go-task \
 	gource \
 	graphviz \
 	glow \
