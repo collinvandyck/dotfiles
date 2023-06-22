@@ -13,6 +13,11 @@ fi
 
 # update homebrew packages
 brew update --quiet
+
+# taps
+brew tap homebrew/cask-fonts
+brew tap samwho/spacer
+
 brew install --quiet --formula \
 	asciinema \
 	autoconf \
@@ -79,6 +84,7 @@ brew install --quiet --formula \
 	ripgrep \
 	shellcheck \
 	sampler \
+	spacer \
 	spotify-tui \
 	sysdig \
 	telnet \
@@ -93,7 +99,6 @@ brew install --quiet --formula \
 	youtube-dl \
 	zenith
 
-brew tap homebrew/cask-fonts
 brew install --quiet --cask \
 	alt-tab \
 	font-fantasque-sans-mono \
