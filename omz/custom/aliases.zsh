@@ -72,4 +72,4 @@ unalias ls
 alias show_fs_usage_top="sudo fs_usage -w -t 5 -f filesys | tee fs_usage.log | egrep -o '(/.+?) {3}' | sed -e 's/\/dev\/disk[^ ]+  //' | sort | uniq -c | sort -nr | head -10"
 
 alias batlog='bat --pager=never -l log --color=always'
-
+alias tk=task
