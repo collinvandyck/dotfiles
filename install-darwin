@@ -98,6 +98,7 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono \
 	imhex \
 	logseq \
+	ngrok \
 	sublime-text \
 	unnaturalscrollwheels 
 
