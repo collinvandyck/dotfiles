@@ -5,6 +5,6 @@ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-
 
 echo "Installing rust utilities"
 
-cargo binstall \
+cargo binstall -y \
 	diskonaut \
 	watchexec-cli
