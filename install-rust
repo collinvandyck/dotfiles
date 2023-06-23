@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
 
+echo "Installing cargo binstall"
+curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | bash
+
 echo "Installing rust utilities"
 
-# increase the timeout for cargo for slow systems.
-export CARGO_HTTP_TIMEOUT=600
-
-if [[ "${DOTFILES_SKIP_RUST_UTILS}" = "true" ]]; then
-	echo "Skipping rust utils"
-	exit 0
-fi
-
-cargo install \
+cargo binstall \
 	diskonaut \
 	watchexec-cli
