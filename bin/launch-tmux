@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# convenience script to launch new tmux sessions for very specific
+# purposes. this is not a general purpose tmux launcher.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+if [[ $# == 0 ]]; then
+	echo "Usage: $(basename $0) <target>"
+	exit 1
+fi
+
+launch_dotfiles() {
+	local original_idx=$(tmux display-message -p "#I")
+	local window_name='.dotfiles'
+	local idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep $window_name | awk -F: '{print $1}')
+	if [ -n "$idx" ]; then
+		tmux select-window -t $idx
+	else
+		tmux new-window -n $window_name -c ~/.dotfiles zsh -i -c nvim
+		original_idx=$((original_idx+1))
+	fi
+	idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep $window_name | awk -F: '{print $1}')
+	while [ $idx -gt 0 ]; do
+		tmux swap-window -s $idx -t $((idx-1))
+		idx=$((idx-1))
+	done
+	tmux select-window -t $original_idx
+	tmux select-window -t 0
+}
+
+launch_gpterm() {
+	local original_idx=$(tmux display-message -p "#I")
+	local window_name='.gpterm'
+	local idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep $window_name | awk -F: '{print $1}')
+	if [ -n "$idx" ]; then
+		tmux select-window -t $idx
+	else
+		tmux new-window -n $window_name gpterm
+		original_idx=$((original_idx+1))
+	fi
+	idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep $window_name | awk -F: '{print $1}')
+	local dotfiles_idx=$(tmux list-windows -F "#{window_index}:#{window_name}" | grep dotfiles | awk -F: '{print $1}')
+	if [[ "$dotfiles_idx" == "0" ]]; then
+		# we want the gpterm to be at index 1
+		while [ $idx -gt 1 ]; do
+			tmux swap-window -s $idx -t $((idx-1))
+			idx=$((idx-1))
+		done
+		tmux select-window -t $original_idx
+		tmux select-window -t 1
+	else 
+		# we want the gpterm to be at index 0
+		while [ $idx -gt 0 ]; do
+			tmux swap-window -s $idx -t $((idx-1))
+			idx=$((idx-1))
+		done
+		tmux select-window -t $original_idx
+		tmux select-window -t 0
+	fi
+}
+
+target=$1
+case $target in
+	dotfiles)
+		launch_dotfiles
+		;;
+	gpterm)
+		launch_gpterm
+		;;
+	*)
+		echo "Unknown target: $target"
+		exit 1
+		;;
+esac
+
