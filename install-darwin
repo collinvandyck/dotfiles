@@ -106,6 +106,7 @@ brew install --quiet --cask \
 	imhex \
 	logseq \
 	ngrok \
+	raycast \
 	sublime-text \
 	unnaturalscrollwheels 
 
