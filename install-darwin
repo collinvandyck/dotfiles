@@ -27,6 +27,7 @@ brew install --quiet --formula \
 	bash \
 	bat \
 	bottom \
+	broot \
 	btop \
 	cmake \
 	cowsay \
