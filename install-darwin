@@ -162,6 +162,10 @@ if [ ! -d $flutter_loc ]; then
 	cd ~
 fi
 
+# set darwin defaults
+defaults write com.apple.Dock autohide-delay -float 0
+defaults write -g NSWindowShouldDragOnGesture -bool true  
+
 # cocapods
 echo "Skipping cocapods install"
 #sudo gem install cocoapods
