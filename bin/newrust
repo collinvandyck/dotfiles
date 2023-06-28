@@ -19,5 +19,16 @@ test:
 
 eos
 
+cat <<eos > Taskfile.yml
+version: '3'
+vars:
+tasks:
+  default:
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - cargo run
+    silent: true
+eos
+
 nvim
 exec zsh
