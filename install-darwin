@@ -36,7 +36,6 @@ brew install --quiet --formula \
 	direnv \
 	dnsmasq \
 	dua-cli \
-	erdtree \
 	fd \
 	fftw \
 	fish \
