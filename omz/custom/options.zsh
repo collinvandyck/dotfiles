@@ -5,7 +5,13 @@ fi
 setopt noauto_cd
 
 # setup easy access to cd paths
-cdpath=($HOME/ngrok $HOME/code $HOME)
+cdpath=(
+	$HOME/code/rust-learning/pragprog 
+	$HOME/code/rust-learning/oreilly 
+	$HOME/code/rust-learning 
+	$HOME/code 
+	$HOME
+)
 
 ulimit -n 2400
 ulimit -n 10000 2>/dev/null
