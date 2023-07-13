@@ -106,6 +106,7 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono \
 	imhex \
 	logseq \
+	mks \
 	ngrok \
 	raycast \
 	sublime-text \
