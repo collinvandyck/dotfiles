@@ -86,6 +86,7 @@ brew install --quiet --formula \
 	ripgrep \
 	shellcheck \
 	sampler \
+	sniffnet \
 	spacer \
 	spotify-tui \
 	sysdig \
