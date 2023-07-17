@@ -31,3 +31,10 @@ go install github.com/charmbracelet/mods@latest
 
 echo "Installing codesearch"
 go install github.com/boyter/cs@${DOTFILES_CODESEARCH_VERSION}
+
+# we have to install task manually since it's not in apt
+if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then 
+	echo "Installing task ${DOTFILES_TASK_VERSION}"
+	go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
+fi
+
