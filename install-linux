@@ -76,6 +76,7 @@ sudo apt install -y \
   tmux \
   tree \
   unzip \
+  valgrind \
   zsh \
   ;
 sudo apt autoremove -y
