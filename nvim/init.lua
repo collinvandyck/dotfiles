@@ -34,6 +34,7 @@ vim.opt.statusline=""
 vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
+vim.opt.tw = 80
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 100
 vim.opt.wildignore:append('*.a')
