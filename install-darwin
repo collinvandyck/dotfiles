@@ -107,7 +107,8 @@ brew install --quiet --cask \
 	ngrok \
 	raycast \
 	sublime-text \
-	unnaturalscrollwheels 
+	unnaturalscrollwheels \
+	xquartz
 
 # install aws cli v2
 if ! aws --version; then
