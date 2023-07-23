@@ -17,4 +17,4 @@ ulimit -n 2400
 ulimit -n 10000 2>/dev/null
 
 # disable control-alt-fX keys
-setxkbmap -option srvrkeys:none 2>/dev/null
+# setxkbmap -option srvrkeys:none 2>/dev/null
