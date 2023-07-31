@@ -166,6 +166,7 @@ fi
 # set darwin defaults
 defaults write com.apple.Dock autohide-delay -float 0
 defaults write -g NSWindowShouldDragOnGesture -bool true  
+defaults write -g ApplePressAndHoldEnabled -bool false
 
 # cocapods
 echo "Skipping cocapods install"
