@@ -85,6 +85,7 @@ brew install --quiet --formula \
 	shellcheck \
 	sampler \
 	spacer \
+	speedtest-cli \
 	spotify-tui \
 	sysdig \
 	telnet \
