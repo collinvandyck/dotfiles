@@ -101,6 +101,7 @@ brew install --quiet --formula \
 
 brew install --quiet --cask \
 	alt-tab \
+	docker \
 	font-fantasque-sans-mono \
 	imhex \
 	logseq \
