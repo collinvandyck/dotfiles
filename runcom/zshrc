@@ -170,6 +170,8 @@ if [[ -n "$USE_NVM" ]]; then
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
+# pyenv init
+command -v pyenv >/dev/null 2>&1 && eval "$(pyenv init -)"
 
 if [[ -f ~/.config/broot/launcher/bash/br ]]; then
   source ~/.config/broot/launcher/bash/br
