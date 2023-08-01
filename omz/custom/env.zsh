@@ -11,6 +11,7 @@ export HOMEBREW_NO_GOOGLE_ANALYTICS=1
 export KUBE_EDITOR=nvim
 export LESS="-XFR"
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+export PANTS_LINT=true
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
