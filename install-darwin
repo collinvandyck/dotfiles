@@ -81,6 +81,7 @@ brew install --quiet --formula \
 	pstree \
 	pv \
 	pyenv \
+	pyenv-virtualenv \
 	python@3.10 \
 	ripgrep \
 	shellcheck \
