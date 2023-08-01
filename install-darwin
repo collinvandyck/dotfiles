@@ -80,6 +80,7 @@ brew install --quiet --formula \
 	psgrep \
 	pstree \
 	pv \
+	pyenv \
 	python@3.10 \
 	ripgrep \
 	shellcheck \
@@ -97,6 +98,7 @@ brew install --quiet --formula \
 	tree-sitter \
 	watch \
 	wireguard-tools \
+	xz \
 	youtube-dl \
 	zenith
 
