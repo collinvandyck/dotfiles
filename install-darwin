@@ -111,6 +111,7 @@ brew install --quiet --cask \
 	logseq \
 	ngrok \
 	raycast \
+	session-manager-plugin \
 	sublime-text \
 	unnaturalscrollwheels \
 	xquartz
