@@ -5,6 +5,3 @@ echo "Setting up python"
 cd ~/.dotfiles
 bin/symlink $(which python3) /usr/local/bin/python
 bin/symlink $(which pip3) /usr/local/bin/pip
-
-pyenv install -s 3.9.5 3.10.5
-pyenv global 3.10.5

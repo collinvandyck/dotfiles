@@ -169,6 +169,12 @@ if [[ $(tokei --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_TOKEI_VERS
 	cd ~
 fi
 
+# pyenv
+export PATH=~/.pyenv/bin:$PATH
+if [[ "$(command -v pyenv)" == "" ]]; then
+	curl https://pyenv.run | bash
+fi
+
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
 
