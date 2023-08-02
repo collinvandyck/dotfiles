@@ -102,6 +102,7 @@ brew install --quiet --formula \
 	wireguard-tools \
 	xz \
 	youtube-dl \
+	yq \
 	zenith
 
 brew install --quiet --cask \
