@@ -12,6 +12,7 @@ export KUBE_EDITOR=nvim
 export LESS="-XFR"
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export PANTS_LINT=true
+export HOSTNAME=$(hostname)
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
