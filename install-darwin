@@ -115,6 +115,7 @@ brew install --quiet --cask \
 	session-manager-plugin \
 	sublime-text \
 	unnaturalscrollwheels \
+	utm \
 	xquartz
 
 # install aws cli v2
