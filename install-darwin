@@ -114,6 +114,7 @@ brew install --quiet --cask \
 	ngrok \
 	raycast \
 	session-manager-plugin \
+	signal \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
