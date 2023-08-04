@@ -183,7 +183,7 @@ echo "Skipping cocapods install"
 #sudo gem install cocoapods
 
 # finally, install the launchd daemons
-if [ ! -z "$DOTFILES_INSTALL_LAUNCHD" ]; then
+if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
 	~/.dotfiles/install-launchd
 fi
 

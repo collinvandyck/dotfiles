@@ -4,5 +4,6 @@ set -e # exit on failure
 set -u # fail if vars are not defined
 
 export DOTFILES_GO_FULL_VERSION=${DOTFILES_GO_VERSION}.darwin-arm64
+export DOTFILES_INSTALL_LAUNCHD=0
 
 ./install-darwin
