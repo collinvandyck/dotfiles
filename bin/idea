@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# launches idea if it is available.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+mac="/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea"
+
+if [[ $# == 0 ]]; then
+	# push . onto args
+	args=(".")
+else 
+	args=$@
+fi
+
+if [[ -e $mac ]]; then
+	exec "$mac" $args >/dev/null 2>&1
+fi
