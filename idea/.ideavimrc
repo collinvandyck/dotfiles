@@ -6,11 +6,16 @@
 set visualbell
 set noerrorbell
 set timeoutlen=200
+set ideajoin
 
 let mapleader=" "
 
 map <leader>ar <Action>(RenameElement)
 nmap gh <Action>(ShowErrorDescription)
+nmap K <Action>(QuickJavaDoc)
+
+nnoremap gn :action GotoNextError<CR>
+nnoremap gp :action GotoPreviousError<CR>
 
 inoremap jk <Esc>
 inoremap <c-e> <Esc>A
