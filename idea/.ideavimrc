@@ -5,9 +5,15 @@
 
 set visualbell
 set noerrorbell
+set timeoutlen=200
+
+let mapleader=" "
+
+map <leader>ar <Action>(RenameElement)
+nmap gh <Action>(ShowErrorDescription)
+
 inoremap jk <Esc>
 inoremap <c-e> <Esc>A
-set timeoutlen=200
 
 "" -- Suggested options --
 " Show a few lines of context around the cursor. Note that this makes the
