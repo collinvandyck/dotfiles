@@ -12,6 +12,7 @@ bin/symlink ~/.dotfiles/runcom/.imwheelrc     ~
 bin/symlink ~/.dotfiles/ssh/config            ~/.ssh/config
 bin/symlink ~/.dotfiles/kitty                 ~/.config/kitty
 bin/symlink ~/.dotfiles/nvim                  ~/.config/nvim
+bin/symlink ~/.dotfiles/idea/.ideavimrc       ~/.ideavimrc
 bin/symlink ~/.dotfiles/direnv                ~/.config/direnv
 bin/symlink ~/.dotfiles/tmux/tmux.conf        ~/.tmux.conf
 bin/symlink ~/.dotfiles/dlv                   ~/.config/dlv
