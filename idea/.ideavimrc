@@ -7,6 +7,8 @@ set visualbell
 set noerrorbell
 set timeoutlen=200
 set ideajoin
+set scrolloff=10
+set incsearch
 
 let mapleader=" "
 
@@ -17,16 +19,18 @@ nmap K <Action>(QuickJavaDoc)
 nnoremap gn :action GotoNextError<CR>
 nnoremap gp :action GotoPreviousError<CR>
 
-inoremap jk <Esc>
+innoremap gd :action GotoDeclaration<CR>
+nnoremap gD :action GotoTypeDeclaration<CR>
+nnoremap g[ :action Back<CR>
+nnoremap g] :action Forward<CR>
+
+noremap jk <Esc>
 inoremap <c-e> <Esc>A
 
 "" -- Suggested options --
 " Show a few lines of context around the cursor. Note that this makes the
 " text scroll if you mouse-click near the start or end of the window.
-set scrolloff=5
 
-" Do incremental searching.
-set incsearch
 
 " Don't use Ex mode, use Q for formatting.
 map Q gq
@@ -37,7 +41,8 @@ map Q gq
 Plug 'machakann/vim-highlightedyank'
 " Commentary plugin
 Plug 'tpope/vim-commentary'
-
+" NERDTREE
+Plug 'preservim/nerdtree'
 
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
 "" Map \r to the Reformat Code action
