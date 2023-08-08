@@ -1,5 +1,6 @@
 -- general commands
---
+
+-- VimEnter: when we enter vim for the first time.
 vim.api.nvim_create_augroup("Startup", {clear=true})
 vim.api.nvim_create_autocmd({"VimEnter"}, {
 	group = "Startup",
@@ -15,6 +16,19 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
 		end
 	end,
 })
+
+-- TabNew
+-- Always toggle nvimtree when creating a new tab
+vim.api.nvim_create_augroup("TabNew", {clear=true})
+vim.api.nvim_create_autocmd({"TabNew"}, {
+	group = "TabNew",
+	pattern = {"*"},
+	callback = function(ev)
+		vim.cmd("silent! NvimTreeToggle")
+	end,
+})
+
+
 
 vim.api.nvim_create_augroup("CommandLine", {clear=true})
 vim.api.nvim_create_autocmd({"CmdlineLeave"}, {
