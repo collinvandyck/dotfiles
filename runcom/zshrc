@@ -177,3 +177,7 @@ if [[ -f ~/.config/broot/launcher/bash/br ]]; then
   source ~/.config/broot/launcher/bash/br
 fi
 
+# fix for zsh alt left / right not working while in tmux
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;3D" backward-word
+
