@@ -62,6 +62,7 @@ sudo apt install -y \
   man \
   man-db \
   nethogs \
+  net-tools \
   ninja-build \
   pkg-config \
   powerline \
