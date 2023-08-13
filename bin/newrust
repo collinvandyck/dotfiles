@@ -2,10 +2,28 @@
 
 set -e
 
-dir=$(mktemp -d)
+name=${1}
+dir=~/code
+
+usage() {
+	echo "usage: $(basename $0) [name]"
+	exit 1
+}
+
+if [ "$name" = "" ]; then
+	name=test
+	dir=$(mktemp -d)
+fi
+
 cd $dir
-cargo new rusty
-cd rusty
+
+if [ -d $name ]; then
+	echo "error: $name already exists"
+	exit 1
+fi
+
+cargo new $name
+cd $name
 
 cat <<eos > Makefile
 run:
@@ -23,6 +41,11 @@ cat <<eos > Taskfile.yml
 version: '3'
 vars:
 tasks:
+  test:
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - cargo test
+    silent: true
   default:
     dir: '{{.USER_WORKING_DIR}}'
     cmds:

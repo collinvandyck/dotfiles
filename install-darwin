@@ -100,6 +100,7 @@ brew install --quiet --formula \
 	tokei \
 	tree \
 	tree-sitter \
+	ttyplot \
 	watch \
 	wireguard-tools \
 	xz \
@@ -111,6 +112,7 @@ brew install --quiet --cask \
 	alt-tab \
 	docker \
 	font-fantasque-sans-mono \
+	geekbench \
 	imhex \
 	logseq \
 	ngrok \
