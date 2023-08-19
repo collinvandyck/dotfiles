@@ -11,7 +11,7 @@ usage() {
 }
 
 if [ "$name" = "" ]; then
-	name=test
+	name=wip
 	dir=$(mktemp -d)
 fi
 
@@ -42,11 +42,13 @@ version: '3'
 vars:
 tasks:
   test:
+    aliases: ['t']
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
       - cargo test
     silent: true
   default:
+    aliases: ['r']
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
       - cargo run
