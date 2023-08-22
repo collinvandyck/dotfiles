@@ -67,6 +67,7 @@ brew install --quiet --formula \
 	luajit-openresty \
 	luv \
 	maven \
+	mingw-w64 \
 	mitmproxy \
 	mold \
 	mosh \
