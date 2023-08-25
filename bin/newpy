@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+set -e # exit on failure
+
+# https://realpython.com/python-typer-cli/
+
+name=${1}
+dir=~/code
+
+usage() {
+	echo "usage: $(basename $0) [name]"
+	exit 1
+}
+
+if [ "$name" = "" ]; then
+	name=wip
+	dir=$(mktemp -d)
+fi
+
+cd $dir
+
+if [ -d $name ]; then
+	echo "error: $name already exists"
+	exit 1
+fi
+
+mkdir $name
+cd $name
+python -m venv ./venv
+source venv/bin/activate
+
+cat <<eos > main.py
+print("Hello world!")
+eos
+
+cat <<eos > Taskfile.yml
+version: '3'
+vars:
+tasks:
+  test:
+    aliases: ['t']
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - echo idk
+    silent: true
+  default:
+    aliases: ['r']
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - python main.py
+    silent: true
+eos
+
+nvim
+exec zsh
