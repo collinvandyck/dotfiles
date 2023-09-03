@@ -37,6 +37,8 @@ unalias gup
 alias reload='source ~/.zshrc'
 alias ll='ls -lF'
 alias lla='ll -a'
+alias llh='ll -h'
+alias llr='ls -lrth'
 
 # k8s things
 alias mk='minikube'
