@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+set -e
+
+name=${1}
+dir=~/code/rust-learning
+cd $dir
+
+cargo init $name
+cd $name
+cargo add \
+	thiserror \
+	anyhow \
+	tokio \
+	tracing \
+	tracing-subscriber \
+	--features tokio/full \
+	--features tracing-subscriber/env-filter
+
+cat <<eos > src/main.rs
+use anyhow::Result;
+
+#[tokio::main]
+async fn main() -> Result<()> {
+	println!("Hello, world!");
+	Ok(())
+}
+eos
+
+nvim
+exec zsh
