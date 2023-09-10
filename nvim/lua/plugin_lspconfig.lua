@@ -92,6 +92,11 @@ require'lspconfig'.rust_analyzer.setup{
 	on_attach = custom_attach,
 	settings = {
 		['rust-analyzer'] = {
+			cargo = {
+			},
+			check = {
+				extraArgs = { "--target-dir", "target/rust-analyzer" },
+			},
 			inlay_hints = { enabled = true },
 			diagnostics = {
 				enable = true;
