@@ -181,3 +181,7 @@ fi
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
+if command -v starship >/dev/null 2>&1; then
+  ZSH_THEME=""
+  eval "$(starship init zsh)"
+fi
