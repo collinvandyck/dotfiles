@@ -153,6 +153,9 @@ function zshaddhistory() {
 	if [[ $1 =~ "commentedoutcommandshere" ]]; then
 		1="# $1"
 	fi
+	if [[ $1 =~ "^builtin cd -- " ]]; then
+		1=$(echo $1 | sed 's/builtin cd --/cd/')
+	fi
 	# write to usual history location
 	print -sr -- ${1%%$'\n'}
 	# do not save the history line. if you have a chain of zshaddhistory
