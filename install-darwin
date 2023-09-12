@@ -110,7 +110,9 @@ brew install --quiet --formula \
 	youtube-dl \
 	yt-dlp \
 	yq \
-	zenith
+	zenith \
+	zsh-autosuggestions \
+	;
 
 brew install --quiet --cask \
 	alt-tab \

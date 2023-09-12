@@ -6,24 +6,25 @@ mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
 
-bin/symlink ~/.dotfiles/git/.gitconfig        ~
-bin/symlink ~/.dotfiles/git/.gitignore_global ~
-bin/symlink ~/.dotfiles/runcom/.imwheelrc     ~
-bin/symlink ~/.dotfiles/taskfile/taskfile.yml ~
-bin/symlink ~/.dotfiles/ssh/config            ~/.ssh/config
-bin/symlink ~/.dotfiles/kitty                 ~/.config/kitty
-bin/symlink ~/.dotfiles/nvim                  ~/.config/nvim
-bin/symlink ~/.dotfiles/idea/.ideavimrc       ~/.ideavimrc
-bin/symlink ~/.dotfiles/direnv                ~/.config/direnv
-bin/symlink ~/.dotfiles/tmux/tmux.conf        ~/.tmux.conf
-bin/symlink ~/.dotfiles/dlv                   ~/.config/dlv
-bin/symlink ~/.dotfiles/sqlite/sqliterc       ~/.sqliterc
-bin/symlink ~/.dotfiles/tmux/tmux.conf        ~/.tmux.conf
-bin/symlink ~/.dotfiles/git/tigrc             ~/.tigrc
-bin/symlink ~/.dotfiles/runcom/zshrc          ~/.zshrc
-bin/symlink ~/.dotfiles/runcom/ripgrep.conf   ~/.ripgrep.conf
-bin/symlink ~/.dotfiles/runcom/p10k.zsh       ~/.p10k.zsh
-bin/symlink ~/.dotfiles/powerline             ~/.config/powerline
+bin/symlink ~/.dotfiles/git/.gitconfig         ~
+bin/symlink ~/.dotfiles/git/.gitignore_global  ~
+bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~
+bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~
+bin/symlink ~/.dotfiles/ssh/config             ~/.ssh/config
+bin/symlink ~/.dotfiles/kitty                  ~/.config/kitty
+bin/symlink ~/.dotfiles/starship/starship.toml ~/.config/
+bin/symlink ~/.dotfiles/nvim                   ~/.config/nvim
+bin/symlink ~/.dotfiles/idea/.ideavimrc        ~/.ideavimrc
+bin/symlink ~/.dotfiles/direnv                 ~/.config/direnv
+bin/symlink ~/.dotfiles/tmux/tmux.conf         ~/.tmux.conf
+bin/symlink ~/.dotfiles/dlv                    ~/.config/dlv
+bin/symlink ~/.dotfiles/sqlite/sqliterc        ~/.sqliterc
+bin/symlink ~/.dotfiles/tmux/tmux.conf         ~/.tmux.conf
+bin/symlink ~/.dotfiles/git/tigrc              ~/.tigrc
+bin/symlink ~/.dotfiles/runcom/zshrc           ~/.zshrc
+bin/symlink ~/.dotfiles/runcom/ripgrep.conf    ~/.ripgrep.conf
+bin/symlink ~/.dotfiles/runcom/p10k.zsh        ~/.p10k.zsh
+bin/symlink ~/.dotfiles/powerline              ~/.config/powerline
 
 sudo mkdir -p /usr/local/bin
 sudo chown $USER /usr/local/bin
