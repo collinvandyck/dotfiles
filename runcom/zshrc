@@ -185,3 +185,10 @@ if command -v starship >/dev/null 2>&1; then
   ZSH_THEME=""
   eval "$(starship init zsh)"
 fi
+
+# zsh-autosuggestion setup 
+autosuggest_path=$(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+if [ -f $autosuggest_path ]; then
+	# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
