@@ -25,7 +25,6 @@ export FZF_CTRL_T_COMMAND="fd --hidden --exclude '.git' --exclude 'Library'"
 export FZF_CTRL_T_OPTS="
 	--height 100%
 	--scheme path
-	--tiebreak 'length,chunk'
 	--preview 'bat -n --color=always {}'
 	--bind 'ctrl-/:change-preview-window(down|hidden|)'
 	"
@@ -34,7 +33,6 @@ export FZF_ALT_C_COMMAND="fd --hidden --exclude '.git' --exclude 'Library' --typ
 export FZF_ALT_C_OPTS="
 	--height 100% 
 	--scheme path
-	--tiebreak 'length,chunk'
 	--preview 'tree -C {}'
 	"
 
