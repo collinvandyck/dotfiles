@@ -5,14 +5,9 @@
 # ctrl-t: find multiple and paste to command line.
 
 export FZF_COMPLETION_TRIGGER='..'
+export FZF_TMUX_OPTS="-p80%,80%"
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!.git"'
-export FZF_ALT_C_COMMAND="fd --hidden --exclude '.git' --type 'd'"
-export FZF_CTRL_T_COMMAND="fd --hidden --exclude '.git' --type 'd'"
-
-export FZF_TMUX_OPTS="
-	-p80%,80%
-	"
 export FZF_DEFAULT_OPTS="\
 	--reverse \
 	--border rounded \
@@ -25,11 +20,24 @@ export FZF_DEFAULT_OPTS="\
 	--bind 'ctrl-d:' \
 	--no-hscroll \
 	"
+
+export FZF_CTRL_T_COMMAND="fd --hidden --exclude '.git' --exclude 'Library'"
 export FZF_CTRL_T_OPTS="
 	--height 100%
+	--scheme path
+	--tiebreak 'length,chunk'
 	--preview 'bat -n --color=always {}'
 	--bind 'ctrl-/:change-preview-window(down|hidden|)'
 	"
+
+export FZF_ALT_C_COMMAND="fd --hidden --exclude '.git' --exclude 'Library' --type 'd'"
+export FZF_ALT_C_OPTS="
+	--height 100% 
+	--scheme path
+	--tiebreak 'length,chunk'
+	--preview 'tree -C {}'
+	"
+
 export FZF_CTRL_R_OPTS="
 	--height 100%
 	--no-sort
@@ -39,10 +47,6 @@ export FZF_CTRL_R_OPTS="
 	--bind 'ctrl-y:execute-silent(echo -n {2..} | pbcopy)+abort'
 	--color header:italic
 	--header 'Press CTRL-Y to copy command into clipboard'
-  "
-export FZF_ALT_C_OPTS="
-	--height 100% 
-	--preview 'tree -C {}'
 	"
 export FZF_GIT_OPTS="
 	--height 100%
