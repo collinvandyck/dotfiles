@@ -28,9 +28,11 @@ if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --vers
 fi
 
 # fzf
-if [ ! -e ~/.fzf ]; then
+if [ ! -d ~/.fzf ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install --all
+else 
+	(cd ~/.fzf && git pull)
 fi
 
 # install powerline
