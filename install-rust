@@ -8,5 +8,6 @@ echo "Installing rust utilities"
 cargo binstall -y \
 	diskonaut \
 	erdtree \
+	mdbook \
 	watchexec-cli \
 	;
