@@ -122,8 +122,6 @@ source $ZSH/oh-my-zsh.sh
 
 
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 if [ -e ~/.nix-profile/etc/profile.d/nix.sh ]; then . ~/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
 
 if [ -f "${HOME}/ngrok/.cache/ngrok-host-shellhook" ]; then
