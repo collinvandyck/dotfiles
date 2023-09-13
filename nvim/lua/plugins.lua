@@ -62,12 +62,15 @@ Plug('lukas-reineke/indent-blankline.nvim')
 -- plugins without init scripts
 Plug('tpope/vim-fugitive')            -- git integration
 Plug('tpope/vim-rhubarb')             -- git integration with github 
-Plug('morhetz/gruvbox') 			  -- gruvbox theme
 Plug('jamespwilliams/bat.vim')        -- bat theme
 Plug('LnL7/vim-nix')                  -- syntax highlighting for nix files
 Plug('djoshea/vim-autoread')          -- automatically reload files when they change on disk
 Plug('github/copilot.vim')            -- copilot integration
 -- plugins that i am not sure what they are for
+
+-- color schemes
+Plug('morhetz/gruvbox')
+Plug('bluz71/vim-moonfly-colors', {['as'] = 'moonfly' })
 
 -- plugins that I am going to stop using
 -- Plug('sebdah/vim-delve')
