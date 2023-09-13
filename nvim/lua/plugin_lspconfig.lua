@@ -68,6 +68,26 @@ local custom_attach = function(client, bufnr)
 	-- vim.keymap.set('n','<leader>lw', vim.lsp.buf.list_workspace_folders, bufopts)
 end
 
+vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guibg=#1f2335]]
+vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
+
+local border = {
+      {"🭽", "FloatBorder"},
+      {"▔", "FloatBorder"},
+      {"🭾", "FloatBorder"},
+      {"▕", "FloatBorder"},
+      {"🭿", "FloatBorder"},
+      {"▁", "FloatBorder"},
+      {"🭼", "FloatBorder"},
+      {"▏", "FloatBorder"},
+}
+
+-- LSP settings (for overriding per client)
+local handlers =  {
+  ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
+  ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
+}
+
 -- cross plugin dependency
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
@@ -88,6 +108,7 @@ require'lspconfig'.tsserver.setup{
 }
 
 require'lspconfig'.rust_analyzer.setup{
+	handlers = handlers,
 	capabilities = capabilities,
 	on_attach = custom_attach,
 	settings = {
