@@ -116,12 +116,12 @@ brew install --quiet --formula \
 
 brew install --quiet --cask \
 	alt-tab \
-	dash \
 	docker \
 	font-fantasque-sans-mono \
 	geekbench \
 	imhex \
 	logseq \
+	monitorcontrol \
 	ngrok \
 	raycast \
 	session-manager-plugin \
