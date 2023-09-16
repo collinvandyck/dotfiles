@@ -104,6 +104,7 @@ brew install --quiet --formula \
 	tree \
 	tree-sitter \
 	ttyplot \
+	wasmer \
 	watch \
 	wireguard-tools \
 	xz \
