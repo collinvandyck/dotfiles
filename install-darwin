@@ -103,6 +103,7 @@ brew install --quiet --formula \
 	tokei \
 	tree \
 	tree-sitter \
+	typescript-language-server \
 	ttyplot \
 	wasmer \
 	watch \
