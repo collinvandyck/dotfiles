@@ -112,6 +112,7 @@ brew install --quiet --formula \
 	youtube-dl \
 	yt-dlp \
 	yq \
+	zellij \
 	zenith \
 	zsh-autosuggestions \
 	;
