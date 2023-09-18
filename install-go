@@ -32,6 +32,9 @@ go install github.com/charmbracelet/mods@latest
 echo "Installing codesearch"
 go install github.com/boyter/cs@${DOTFILES_CODESEARCH_VERSION}
 
+echo "Installing gpterm"
+go install github.com/collinvandyck/gpterm/cmd/gpterm@latest
+
 # we have to install task manually since it's not in apt
 if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then 
 	echo "Installing task ${DOTFILES_TASK_VERSION}"
