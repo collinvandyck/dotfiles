@@ -67,6 +67,7 @@ brew install --quiet --formula \
 	lua-language-server \
 	luajit-openresty \
 	luv \
+	make \
 	maven \
 	mingw-w64 \
 	mitmproxy \
