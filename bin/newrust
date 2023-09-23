@@ -27,10 +27,8 @@ cd $name
 cargo add \
 	thiserror \
 	anyhow \
-	tokio \
 	tracing \
 	tracing-subscriber \
-	--features tokio/full \
 	--features tracing-subscriber/env-filter
 
 cat <<eos > Makefile

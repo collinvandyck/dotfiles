@@ -5,7 +5,7 @@
 # ctrl-t: find multiple and paste to command line.
 
 export FZF_COMPLETION_TRIGGER='..'
-export FZF_TMUX_OPTS="-p80%,80%"
+export FZF_TMUX_OPTS="-p90%,90%"
 
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!.git"'
 export FZF_DEFAULT_OPTS="\
