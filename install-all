@@ -9,7 +9,7 @@ chmod 600 ~/.dotfiles/ssh/config
 bin/symlink ~/.dotfiles/git/.gitconfig         ~
 bin/symlink ~/.dotfiles/git/.gitignore_global  ~
 bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~
-bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~
+bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~/.taskfile
 bin/symlink ~/.dotfiles/ssh/config             ~/.ssh/config
 bin/symlink ~/.dotfiles/kitty                  ~/.config/kitty
 bin/symlink ~/.dotfiles/starship/starship.toml ~/.config/
