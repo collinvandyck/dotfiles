@@ -27,6 +27,7 @@ cd $name
 cargo add \
 	thiserror \
 	anyhow \
+	rand \
 	tracing \
 	tracing-subscriber \
 	--features tracing-subscriber/env-filter

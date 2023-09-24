@@ -124,6 +124,7 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono \
 	geekbench \
 	imhex \
+	karabiner-elements \
 	logseq \
 	monitorcontrol \
 	ngrok \
@@ -191,6 +192,7 @@ fi
 defaults write com.apple.Dock autohide-delay -float 0
 defaults write -g NSWindowShouldDragOnGesture -bool true  
 defaults write -g ApplePressAndHoldEnabled -bool false
+defaults write -g KeyRepeat -int 1
 
 # cocapods
 echo "Skipping cocapods install"
