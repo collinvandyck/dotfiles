@@ -10,9 +10,9 @@
 # Whether to hide the average cpu entry.
 hide_avg_cpu = true
 # Whether to use dot markers rather than braille.
-dot_marker = true
+dot_marker = false
 # The update rate of the application.
-rate = 500
+rate = 1000
 # Whether to put the CPU legend to the left.
 #left_legend = false
 # Whether to set CPU% on a process to be based on the total CPU or just current usage.
@@ -56,7 +56,7 @@ hide_time = true
 # Disable mouse clicks
 #disable_click = false
 # Built-in themes.  Valid values are "default", "default-light", "gruvbox", "gruvbox-light", "nord", "nord-light"
-#color = "default"
+color = "nord"
 # Show memory values in the processes widget as values by default
 #mem_as_value = false
 # Show tree mode by default in the processes widget.
@@ -159,11 +159,11 @@ columns = ["PID", "Name", "CPU%", "Mem%", "R/s", "W/s", "T.Read", "T.Write", "Us
 #    default=true
 
 [[row]]
-  ratio=30
+  ratio=50
   [[row.child]]
   type="cpu"
 [[row]]
-    ratio=40
+    ratio=20
     [[row.child]]
       ratio=4
       type="mem"
@@ -188,6 +188,13 @@ columns = ["PID", "Name", "CPU%", "Mem%", "R/s", "W/s", "T.Read", "T.Write", "Us
 #case_sensitive = false
 #whole_word = false
 
+[disk_filter]
+is_list_ignored = false
+list = ["/dev/sda\\d+", "/dev/nvme0n1p2", "/dev/disk3s1.*"]
+regex = true
+case_sensitive = false
+whole_word = false
+
 #[mount_filter]
 #is_list_ignored = true
 #list = ["/mnt/.*", "/boot"]
@@ -208,4 +215,5 @@ columns = ["PID", "Name", "CPU%", "Mem%", "R/s", "W/s", "T.Read", "T.Write", "Us
 #regex = true
 #case_sensitive = false
 #whole_word = false
+
 
