@@ -3,6 +3,7 @@
 set -e
 
 mkdir -p ~/.ssh
+mkdir -p ~/.config/bottom
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
 
@@ -13,6 +14,7 @@ bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~/.taskfile
 bin/symlink ~/.dotfiles/ssh/config             ~/.ssh/config
 bin/symlink ~/.dotfiles/kitty                  ~/.config/kitty
 bin/symlink ~/.dotfiles/starship/starship.toml ~/.config/
+bin/symlink ~/.dotfiles/btm/bottom.toml        ~/.config/bottom/
 bin/symlink ~/.dotfiles/nvim                   ~/.config/nvim
 bin/symlink ~/.dotfiles/idea/.ideavimrc        ~/.ideavimrc
 bin/symlink ~/.dotfiles/direnv                 ~/.config/direnv
@@ -28,7 +30,6 @@ bin/symlink ~/.dotfiles/powerline              ~/.config/powerline
 
 sudo mkdir -p /usr/local/bin
 sudo chown $USER /usr/local/bin
-
 sudo bin/symlink ~/.dotfiles/bin/tm            /usr/local/bin
 
 touch ~/.tmux.custom.conf
