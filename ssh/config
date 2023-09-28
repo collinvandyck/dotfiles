@@ -3,6 +3,9 @@ Host remote
 	User     ubuntu
 
 Host *
+	IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+
+Host *
 	ServerAliveInterval 200
 	ServerAliveCountMax 2
 	ConnectTimeout 1
