@@ -10,5 +10,6 @@ cargo binstall -y \
 	erdtree \
 	mdbook \
 	starship \
+	cargo-watch \
 	watchexec-cli \
 	;
