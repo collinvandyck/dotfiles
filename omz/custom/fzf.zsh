@@ -29,7 +29,7 @@ export FZF_CTRL_T_OPTS="
 	--bind 'ctrl-/:change-preview-window(down|hidden|)'
 	"
 
-export FZF_ALT_C_COMMAND="fd -u --exclude '.git' --exclude 'Library' --exclude 'go/pkg/mod' --exclude '.cache' --type 'd'"
+export FZF_ALT_C_COMMAND="fd -u --exclude '.git' --exclude 'Library' --exclude 'go/pkg/mod' --exclude '.cache' --exclude '.vscode' --type 'd'"
 export FZF_ALT_C_OPTS="
 	--height 100% 
 	--scheme path
