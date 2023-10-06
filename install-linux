@@ -110,6 +110,7 @@ fi
 # neovim installs to /usr/local/bin/nvim
 if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
 	echo "installing nvim ${DOTFILES_NVIM_VERSION}"
+	sudo rm -rf /usr/local/share/nvim
 	cd $(mktemp -d)
 	git clone --depth 1 --branch ${DOTFILES_NVIM_VERSION} https://github.com/neovim/neovim.git
 	cd neovim
