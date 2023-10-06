@@ -89,6 +89,7 @@ brew install --quiet --formula \
 	pyenv \
 	pyenv-virtualenv \
 	python@3.10 \
+	qemu \
 	ripgrep \
 	shellcheck \
 	sampler \
