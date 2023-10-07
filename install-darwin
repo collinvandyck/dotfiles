@@ -61,7 +61,6 @@ brew install --quiet --formula \
 	libsodium \
 	libtermkey \
 	libtool \
-	libvirt \
 	libvterm \
 	lima \
 	lnav \
