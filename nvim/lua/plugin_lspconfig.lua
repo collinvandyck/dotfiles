@@ -119,7 +119,10 @@ require'lspconfig'.rust_analyzer.setup{
 			inlay_hints = { enabled = true },
 			diagnostics = {
 				enable = true;
-			}
+			},
+			rustfmt = {
+				extraArgs = { "+nightly" },
+			},
 		}
 	}
 }

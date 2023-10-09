@@ -21,7 +21,7 @@ choose() {
 		--bind='ctrl-x:preview(ps --forest {2})' \
 		--bind='ctrl-/:change-preview-window(hidden|)' \
 		--bind='enter:execute(kill -9 {2})+reload(date; ps -ef)' \
-		--preview-window='down,75%,wrap' \
+		--preview-window='down,50%,wrap' \
 		--preview "$cmd --show {2}" \
 		--query "$query" \
 	|| true
