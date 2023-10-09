@@ -10,6 +10,7 @@ curl https://sh.rustup.rs -sSf | bash -s -- -y
 export PATH="$HOME/.cargo/bin:$PATH"
 rustup component add rust-src
 rustup component add rust-analyzer
+rustup target add wasm32-unknown-unknown
 
 # neovim plug.vim
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \

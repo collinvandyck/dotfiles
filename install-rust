@@ -6,10 +6,11 @@ curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-
 echo "Installing rust utilities"
 
 cargo binstall -y \
+	cargo-watch \
 	diskonaut \
 	erdtree \
 	mdbook \
 	starship \
-	cargo-watch \
+	trunk \
 	watchexec-cli \
 	;
