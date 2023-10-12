@@ -32,6 +32,18 @@ cargo add \
 	tracing-subscriber \
 	--features tracing-subscriber/env-filter
 
+
+
+cat <<eos > rustfmt.toml
+# https://github.com/rust-lang/rustfmt/blob/master/Configurations.md
+
+group_imports = "One"
+imports_granularity = "Crate"
+use_field_init_shorthand = true
+use_small_heuristics = "Max"
+wrap_comments = false
+eos
+
 cat <<eos > Makefile
 run:
 	cargo run
