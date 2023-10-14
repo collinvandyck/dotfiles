@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+set -e 
+set -u
+
+cd $(mktemp -d)
+
+LINUX_NUM=$(uname -r | cut -d'.' -f1)
+LINUX_VER=$(uname -r | cut -d'.' -f1-3 | cut -d'-' -f1)
+
+wget "https://cdn.kernel.org/pub/linux/kernel/v$LINUX_NUM.x/linux-$LINUX_VER.tar.xz"
+tar -xf "./linux-$LINUX_VER.tar.xz"
+cd "linux-$LINUX_VER/tools/perf/"
+sudo apt-get update
+sudo apt -y install \
+	binutils-dev \
+	bison \
+	flex \
+	libbabeltrace-dev \
+	libcap-dev \
+	libdw-dev \
+	libnuma-dev \
+	libpfm4-dev \
+	libtraceevent-dev \
+	libunwind-dev \
+	libzstd-dev \
+	ocaml \
+	python3-dev \
+	systemtap-sdt-dev \
+    libelf-dev \
+    libperl-dev \
+	;
+
+make -C .
+make install
+cp perf /usr/local/bin
+
+

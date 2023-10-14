@@ -80,6 +80,7 @@ sudo apt install -y \
   tree \
   unzip \
   valgrind \
+  wget \
   zsh \
   ;
 sudo apt autoremove -y
