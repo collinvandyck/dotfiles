@@ -52,6 +52,7 @@ sudo apt install -y \
   gnupg \
   htop \
   httpie \
+  iproute2 \
   iputils-ping \
   jq \
   libluajit-5.1-dev \
