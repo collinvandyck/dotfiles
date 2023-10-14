@@ -195,10 +195,6 @@ defaults write -g NSWindowShouldDragOnGesture -bool true
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g KeyRepeat -int 2
 
-# cocapods
-echo "Skipping cocapods install"
-#sudo gem install cocoapods
-
 # finally, install the launchd daemons
 if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
 	~/.dotfiles/install-launchd
