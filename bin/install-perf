@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# adapted from https://opeonikute.dev/posts/how-to-use-perf-on-macos
+
 set -e 
 set -u
 
