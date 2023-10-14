@@ -7,7 +7,9 @@ mkdir -p ~/.config/bottom
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
 
-bin/symlink ~/.dotfiles/git/.gitconfig         ~
+# process templated files
+bin/envsub ~/.dotfiles/git/.gitconfig ~/.gitconfig
+
 bin/symlink ~/.dotfiles/git/.gitignore_global  ~
 bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~
 bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~/.taskfile

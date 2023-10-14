@@ -26,13 +26,7 @@ function loc-test() {
 }
 
 function tmp() {
-	rnd=$1
-	if [[ "$rnd" == "" ]]; then
-		rnd="$(head -c 10 /dev/urandom | md5sum | head -c 6)"
-	fi
-	dir="/tmp/${rnd}"
-	mkdir -p "${dir}"
-	cd "${dir}"
+	cd $(mktemp -d)
 }
 
 function notifywait() {
