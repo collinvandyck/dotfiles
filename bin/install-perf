@@ -29,8 +29,8 @@ sudo apt -y install \
 	ocaml \
 	python3-dev \
 	systemtap-sdt-dev \
-    libelf-dev \
-    libperl-dev \
+	libelf-dev \
+	libperl-dev \
 	;
 
 make -C .
