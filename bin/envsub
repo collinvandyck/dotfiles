@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# 
+# A wrapper around envsubst that reads env variables from the .env.dist and .env
+# override file.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+dir=$(dirname $0)
+
+usage() {
+	echo "envsub [[infile] [outfile]]"
+	exit 1
+}
+
+infile=""
+outfile=""
+case $# in
+	0) 
+		;;
+	2)
+		infile=$1
+		outfile=$2
+		;;
+	*)
+		usage
+		;;
+esac
+
+
+# source and export the specified env file
+export_file() {
+	if [ -f $1 ]; then
+		source $1
+		export $(cat $1 | cut -d= -f1) >/dev/null
+	fi
+}
+
+export_file $dir/../.env.dist
+export_file $dir/../.env
+
+if [ -n $infile ]; then
+	# clean up symlink from old install
+	if [ -L $outfile ]; then
+		rm $outfile
+	fi
+	tmp=$(mktemp)
+	envsubst < $infile > $tmp
+	mv $tmp $outfile
+else
+	exec envsubst
+fi
+
