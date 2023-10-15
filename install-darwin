@@ -121,7 +121,6 @@ brew install --quiet --formula \
 	;
 
 brew install --quiet --cask \
-	alt-tab \
 	docker \
 	font-fantasque-sans-mono \
 	geekbench \
@@ -136,6 +135,10 @@ brew install --quiet --cask \
 	unnaturalscrollwheels \
 	utm \
 	xquartz
+
+brew remove --quiet -f \
+	alt-tab \
+	;
 
 # install aws cli v2
 if ! aws --version; then
