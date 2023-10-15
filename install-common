@@ -31,7 +31,7 @@ fi
 # fzf
 if [ ! -d ~/.fzf ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install --all
+	~/.fzf/install --all --no-zsh
 else 
 	(cd ~/.fzf && git pull)
 fi
