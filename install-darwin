@@ -125,6 +125,7 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono \
 	geekbench \
 	imhex \
+	kitty \
 	logseq \
 	monitorcontrol \
 	ngrok \
