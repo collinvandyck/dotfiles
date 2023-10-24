@@ -136,12 +136,12 @@ brew install --quiet --cask \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
-	xquartz \
 	yubico-yubikey-manager \
 	;
 
 brew remove --quiet -f \
 	alt-tab \
+	xquartz \
 	;
 
 # install aws cli v2
