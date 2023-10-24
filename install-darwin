@@ -136,7 +136,9 @@ brew install --quiet --cask \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
-	xquartz
+	xquartz \
+	yubico-yubikey-manager \
+	;
 
 brew remove --quiet -f \
 	alt-tab \
