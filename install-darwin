@@ -133,6 +133,7 @@ brew install --quiet --cask \
 	raycast \
 	session-manager-plugin \
 	signal \
+	slack \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
