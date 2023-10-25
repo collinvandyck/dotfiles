@@ -195,3 +195,4 @@ fi
 	# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # fi
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

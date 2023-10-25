@@ -34,6 +34,7 @@ if [ ! -d ~/.fzf ]; then
 	~/.fzf/install --all --no-zsh
 else 
 	(cd ~/.fzf && git pull)
+	~/.fzf/install --all --no-zsh
 fi
 
 # install powerline
