@@ -6,4 +6,4 @@
 
 set -e
 
-exec nvim $@
+exec nvim "$@"
