@@ -41,6 +41,7 @@ brew install --quiet --formula \
 	fftw \
 	fish \
 	fswatch \
+	fx \
 	gcc \
 	gh \
 	git-delta \
