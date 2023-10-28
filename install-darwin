@@ -135,6 +135,7 @@ brew install --quiet --cask \
 	session-manager-plugin \
 	signal \
 	slack \
+	spotify \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
