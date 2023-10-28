@@ -46,6 +46,7 @@ local custom_attach = function(client, bufnr)
 	-- set keymaps
 	vim.keymap.set('n','gD',         vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set('n','K' ,         vim.lsp.buf.hover, bufopts)
+	vim.keymap.set('n','ga',         vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set('n','gt',         vim.lsp.buf.type_definition, bufopts)
 	vim.keymap.set('n','gd',         '<cmd>Trouble lsp_definitions<CR>', bufopts)
 	vim.keymap.set('n','gr',         '<cmd>Trouble lsp_references<CR>', bufopts)

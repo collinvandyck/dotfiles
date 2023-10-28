@@ -11,6 +11,7 @@ Plug('junegunn/fzf.vim')
 -- plugin_telescope
 Plug('nvim-telescope/telescope.nvim', { ['branch'] = '0.1.x'  } )
 Plug('nvim-lua/plenary.nvim')
+Plug('nvim-telescope/telescope-ui-select.nvim')
 
 -- plugin_lspconfig -- requires telescope
 Plug('neovim/nvim-lspconfig')
