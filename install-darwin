@@ -123,6 +123,7 @@ brew install --quiet --formula \
 	;
 
 brew install --quiet --cask \
+	bartender \
 	docker \
 	font-fantasque-sans-mono \
 	font-fantasque-sans-mono-nerd-font \
