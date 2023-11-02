@@ -130,6 +130,7 @@ brew install --quiet --cask \
 	geekbench \
 	google-chrome \
 	imhex \
+	istat-menus \
 	kitty \
 	logseq \
 	monitorcontrol \
