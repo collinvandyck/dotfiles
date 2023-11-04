@@ -113,3 +113,7 @@ function lines_underscores() {
     setopt promptsubst
     PS1=$'${(r:$COLUMNS::_:)}'$PS1
 }
+
+preview() {
+	qlmanage -p "$@" > /dev/null
+}
