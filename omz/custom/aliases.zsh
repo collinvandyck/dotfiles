@@ -1,5 +1,8 @@
 # rust aliases
 alias co='cargo'
+alias we='watchexec'
+alias wer='we -e rs'
+alias wert='we -e rs cargo t'
 
 # git aliases
 alias gst='git status'
