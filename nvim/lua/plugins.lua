@@ -79,6 +79,7 @@ Plug('bluz71/vim-moonfly-colors', {['as'] = 'moonfly' })
 -- Plug('ray-x/lsp_signature.nvim')      -- show function signature
 
 Plug('kevinhwang91/nvim-bqf')
+Plug('j-hui/fidget.nvim')
 
 vim.call('plug#end')
 
@@ -98,5 +99,6 @@ require("plugin_osc52")
 require("plugin_autopairs")
 require("plugin_lualine")
 require("plugin_indent_blankline")
-
+require("plugin_bqf")
+require("plugin_fidget")
 

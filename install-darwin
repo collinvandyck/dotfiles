@@ -136,7 +136,9 @@ brew install --quiet --cask \
 	imhex \
 	istat-menus \
 	kitty \
+	knockknock \
 	logseq \
+	microsoft-remote-desktop \
 	monitorcontrol \
 	ngrok \
 	obsidian \
