@@ -78,6 +78,8 @@ Plug('bluz71/vim-moonfly-colors', {['as'] = 'moonfly' })
 -- Plug('easymotion/vim-easymotion')
 -- Plug('ray-x/lsp_signature.nvim')      -- show function signature
 
+Plug('kevinhwang91/nvim-bqf')
+
 vim.call('plug#end')
 
 require("plugin_treesitter")
