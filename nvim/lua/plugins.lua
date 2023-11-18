@@ -66,7 +66,7 @@ Plug('tpope/vim-rhubarb')             -- git integration with github
 Plug('jamespwilliams/bat.vim')        -- bat theme
 Plug('LnL7/vim-nix')                  -- syntax highlighting for nix files
 Plug('djoshea/vim-autoread')          -- automatically reload files when they change on disk
-Plug('github/copilot.vim')            -- copilot integration
+-- Plug('github/copilot.vim') 
 -- plugins that i am not sure what they are for
 
 -- color schemes
