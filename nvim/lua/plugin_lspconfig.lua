@@ -112,20 +112,46 @@ require'lspconfig'.rust_analyzer.setup{
 	handlers = handlers,
 	capabilities = capabilities,
 	on_attach = custom_attach,
-	settings = {
-		['rust-analyzer'] = {
-			check = {
-				extraArgs = { "--target-dir", "target/rust-analyzer" },
-			},
-			inlay_hints = { enabled = true },
-			diagnostics = {
-				enable = true;
-			},
-			rustfmt = {
-				extraArgs = { "+nightly" },
+	on_init = function(client) 
+		-- setup defaults
+		local cargo = { }
+		local check = {
+			extraArgs = { 
+				"--target-dir", 
+				"target/rust-analyzer",
 			},
 		}
-	}
+		local rustfmt = {
+			extraArgs = { "+nightly" },
+		}
+		local diagnostics = {
+			enable = true,
+		}
+		local inlay_hints = { 
+			enabled = true,
+		}
+		-- override based on RA_TARGET
+		-- RA_TARGET=x86_64-pc-windows-msvc neovim
+		local ra_target = os.getenv("RA_TARGET")
+		if ra_target then
+			cargo.target = ra_target
+			table.insert(check.extraArgs, "--target")
+			table.insert(check.extraArgs, ra_target)
+		end
+		-- build the final settings table and set on client config
+		local ra_settings = {
+			cargo = cargo,
+			check = check,
+			inlay_hints = inlay_hints,
+			diagnostics = diagnostics,
+			rustfmt = rustfmt,
+		}
+		client.config.settings = {
+			['rust-analyzer'] = ra_settings,
+		}
+		-- Send the didChangeConfiguration notification
+        client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+	end,
 }
 
 -- require'lspconfig'.pyright.setup{}
