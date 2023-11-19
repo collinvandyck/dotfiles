@@ -17,6 +17,7 @@ brew update --quiet
 # taps
 brew tap homebrew/cask-fonts
 brew tap samwho/spacer
+brew tap homebrew/cask-versions
 
 brew install --quiet --formula \
 	asciinema \
@@ -151,6 +152,10 @@ brew install --quiet --cask \
 	unnaturalscrollwheels \
 	utm \
 	yubico-yubikey-manager \
+	;
+
+brew install --quiet --cask --no-quarantine \
+	wine-stable \
 	;
 
 brew remove --quiet -f \
