@@ -27,7 +27,7 @@ echo "Installing golang-migrate"
 go install -tags 'sqlite' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 
 echo "Installing charm mods"
-go install github.com/charmbracelet/mods@latest
+# go install github.com/charmbracelet/mods@latest
 
 echo "Installing codesearch"
 go install github.com/boyter/cs@${DOTFILES_CODESEARCH_VERSION}
