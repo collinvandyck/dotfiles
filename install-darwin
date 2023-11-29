@@ -45,6 +45,7 @@ brew install --quiet --formula \
 	fx \
 	gcc \
 	gh \
+	gitui \
 	git-delta \
 	gource \
 	graphviz \
@@ -112,6 +113,7 @@ brew install --quiet --formula \
 	tree-sitter \
 	typescript-language-server \
 	ttyplot \
+	universal-ctags \
 	vhs \
 	wasmer \
 	watch \
@@ -127,6 +129,7 @@ brew install --quiet --formula \
 	;
 
 brew install --quiet --cask \
+	discord \
 	bartender \
 	discord \
 	docker \
@@ -147,7 +150,6 @@ brew install --quiet --cask \
 	session-manager-plugin \
 	signal \
 	slack \
-	spotify \
 	sublime-text \
 	unnaturalscrollwheels \
 	utm \
