@@ -1,2 +1,6 @@
 gui:
+  scrollHeight: 4 # how many lines you scroll by
   nerdFontsVersion: "3"
+os:
+  copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
+
