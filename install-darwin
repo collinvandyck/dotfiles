@@ -137,6 +137,7 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono-nerd-font \
 	geekbench \
 	google-chrome \
+	hammerspoon \
 	imhex \
 	istat-menus \
 	kitty \

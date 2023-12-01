@@ -4,6 +4,7 @@ set -e
 
 mkdir -p ~/.ssh
 mkdir -p ~/.config/bottom
+
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
 
@@ -20,6 +21,7 @@ fi
 
 bin/symlink ~/.dotfiles/git/.gitignore_global  ~
 bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~
+bin/symlink ~/.dotfiles/hammerspoon            ~/.hammerspoon
 bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~/.taskfile
 bin/symlink ~/.dotfiles/ssh/config             ~/.ssh/config
 bin/symlink ~/.dotfiles/kitty                  ~/.config/kitty
