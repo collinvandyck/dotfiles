@@ -47,6 +47,7 @@ brew install --quiet --formula \
 	gh \
 	gitui \
 	git-delta \
+	gnuplot \
 	gource \
 	graphviz \
 	glow \
