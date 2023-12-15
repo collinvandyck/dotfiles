@@ -66,6 +66,7 @@ vim.keymap.set('v', '<leader>c', require('osc52').copy_visual)
 
 map('n', ',', 'zz', {noremap = true})
 map('n', '<M-i>', 'zt', {noremap = true})
+map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', {noremap = true})
 map('n', '<C-g>', ':GFiles<CR>', {noremap = true})
 map('n', '<C-h>', ':History<CR>', {noremap = true})
 map('n', '<C-p>', ':Files<CR>', {noremap = true})
