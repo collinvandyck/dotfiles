@@ -80,6 +80,7 @@ Plug('bluz71/vim-moonfly-colors', {['as'] = 'moonfly' })
 
 Plug('kevinhwang91/nvim-bqf')
 Plug('j-hui/fidget.nvim')
+Plug('Canop/nvim-bacon')
 
 vim.call('plug#end')
 
@@ -101,4 +102,4 @@ require("plugin_lualine")
 require("plugin_indent_blankline")
 require("plugin_bqf")
 require("plugin_fidget")
-
+require("plugin_bacon")
