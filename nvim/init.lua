@@ -49,6 +49,10 @@ vim.g.maplocalleader = "-"
 --	hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 -- ]])
 
+-- mappings
+local map = vim.api.nvim_set_keymap
+
+-- quickfix mappings
 function toggle_quickfix()
   local windows = vim.fn.getwininfo()
   for _, win in pairs(windows) do
@@ -59,6 +63,12 @@ function toggle_quickfix()
   end
   vim.cmd.copen()
 end
+map('n', '<Leader>i', '<cmd>lua toggle_quickfix()<CR>', {noremap = true, silent = true })
+map('n', 'qi', '<cmd>lua toggle_quickfix()<CR>', {noremap = true, silent = true })
+map('n', 'qn', ':cn<CR>', {noremap = true, silent = true })
+map('n', 'qp', ':cp<CR>', {noremap = true, silent = true })
+map('n', '<C-j>', ':cn<CR>', {noremap = true, silent = true })
+map('n', '<C-k>', ':cp<CR>', {noremap = true, silent = true })
 
 -- abbreviations
 vim.api.nvim_command('iabbrev adn and')
@@ -66,9 +76,6 @@ vim.api.nvim_command('iabbrev waht what')
 vim.api.nvim_command('iabbrev tehn then')
 vim.api.nvim_command('iabbrev reutrn return')
 vim.api.nvim_command('iabbrev reutnr return')
-
--- mappings
-local map = vim.api.nvim_set_keymap
 
 -- osc52 copy to clipboard
 vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true })
@@ -85,7 +92,6 @@ map('n', '<C-s>', ':wa!<CR>', {noremap = true})
 map('n', '<C-w>t', ':tabnew %<CR>', {noremap = true})
 map('n', '<Leader>gb', ':Git blame<CR>', {noremap = true})
 map('n', '<Leader>h', ':vertical res -5<CR>', {noremap = true})
-map('n', '<Leader>i', '<cmd>lua toggle_quickfix()<CR>', {noremap = true, silent = true })
 map('n', '<Leader>j', ':res +5<CR>', {noremap = true})
 map('n', '<Leader>k', ':res -5<CR>', {noremap = true})
 map('n', '<Leader>l', ':vertical res +5<CR>', {noremap = true})
