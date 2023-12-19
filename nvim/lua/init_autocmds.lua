@@ -17,7 +17,7 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
 	end,
 })
 
--- TabNew
+--[[
 -- Always toggle nvimtree when creating a new tab
 vim.api.nvim_create_augroup("TabNew", {clear=true})
 vim.api.nvim_create_autocmd({"TabNew"}, {
@@ -29,7 +29,6 @@ vim.api.nvim_create_autocmd({"TabNew"}, {
 })
 
 
-
 vim.api.nvim_create_augroup("CommandLine", {clear=true})
 vim.api.nvim_create_autocmd({"CmdlineLeave"}, {
 	group = "CommandLine",
@@ -39,4 +38,4 @@ vim.api.nvim_create_autocmd({"CmdlineLeave"}, {
 	end,
 })
 
-
+--]]

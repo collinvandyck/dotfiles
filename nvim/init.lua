@@ -35,8 +35,8 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.tw = 80
-vim.opt.timeoutlen = 500
-vim.opt.updatetime = 100
+--vim.opt.timeoutlen = 500
+--vim.opt.updatetime = 100
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.g.mapleader = " "
@@ -52,7 +52,7 @@ vim.g.maplocalleader = "-"
 -- mappings
 local map = vim.api.nvim_set_keymap
 
--- quickfix mappings
+-- q leader key maps
 function toggle_quickfix()
   local windows = vim.fn.getwininfo()
   for _, win in pairs(windows) do
@@ -65,10 +65,14 @@ function toggle_quickfix()
 end
 map('n', '<Leader>i', '<cmd>lua toggle_quickfix()<CR>', {noremap = true, silent = true })
 map('n', 'qi', '<cmd>lua toggle_quickfix()<CR>', {noremap = true, silent = true })
-map('n', 'qn', ':cn<CR>', {noremap = true, silent = true })
-map('n', 'qp', ':cp<CR>', {noremap = true, silent = true })
+map('n', 'qg', ':Telescope live_grep<CR>', {noremap = true})
 map('n', '<C-j>', ':cn<CR>', {noremap = true, silent = true })
 map('n', '<C-k>', ':cp<CR>', {noremap = true, silent = true })
+
+-- treesitter
+vim.keymap.set("n", "[c", function()
+  require("treesitter-context").go_to_context()
+end, { silent = true })
 
 -- abbreviations
 vim.api.nvim_command('iabbrev adn and')

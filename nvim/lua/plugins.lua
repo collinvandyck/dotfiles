@@ -3,6 +3,7 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
 
 -- plugin_treesitter
 Plug('nvim-treesitter/nvim-treesitter', { ['do'] = ':TSUpdate'})
+Plug('nvim-treesitter/nvim-treesitter-context')
 
 -- plugin_fzf
 Plug('junegunn/fzf', { ['do'] = function() vim.call('fzf#install') end })
