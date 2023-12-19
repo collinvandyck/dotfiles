@@ -1,5 +1,7 @@
 local actions = require("telescope.actions")
+local action_state = require('telescope.actions.state')
 local trouble = require("trouble.providers.telescope")
+
 require('telescope').setup{
 	defaults = {
 		layout_strategy = "vertical",
@@ -15,9 +17,11 @@ require('telescope').setup{
 				["<esc>"] = actions.close,
 				["<C-u>"] = false, -- enable clearing prompt
 				["<C-t>"] = trouble.open_with_trouble,
+				--["<M-q>"] = actions.send_to_qflist,
 			},
 			n = {
 				["<C-t>"] = trouble.open_with_trouble,
+				--["<M-q>"] = actions.send_to_qflist,
 			},
 		}
 	},
