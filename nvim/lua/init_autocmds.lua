@@ -1,6 +1,7 @@
 -- general commands
 
 -- VimEnter: when we enter vim for the first time.
+--[[
 vim.api.nvim_create_augroup("Startup", {clear=true})
 vim.api.nvim_create_autocmd({"VimEnter"}, {
 	group = "Startup",
@@ -16,6 +17,7 @@ vim.api.nvim_create_autocmd({"VimEnter"}, {
 		end
 	end,
 })
+--]]
 
 --[[
 -- Always toggle nvimtree when creating a new tab

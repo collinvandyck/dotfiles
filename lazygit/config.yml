@@ -1,5 +1,5 @@
 gui:
-  windowSize: 'half'
+  #windowSize: 'half'
   scrollHeight: 4 # how many lines you scroll by
   nerdFontsVersion: "3"
 os:
