@@ -33,6 +33,8 @@ alias shove='git shove'
 alias show='git show'
 alias lg='lazygit'
 alias amend='git commit --amend'
+alias gdo='gd origin/$(git rev-parse --abbrev-ref HEAD)'
+alias gdob='gdo | bat'
 
 # remove things that the git plugin defines
 unalias gup
