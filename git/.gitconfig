@@ -1,6 +1,6 @@
 [user]
-	name = $GIT_USER_NAME
-	email = $GIT_EMAIL
+	name = "Collin Van Dyck"
+	email = "collinvandyck@gmail.com"
 
 [core]
 	excludesfile = ~/.gitignore_global
@@ -13,9 +13,6 @@
 	pager = true
 	ui = auto
 	diff = auto
-
-[merge]
-	#conflictstyle = diff3
 
 [alias]
 	b = branch
@@ -57,6 +54,11 @@
 
 [merge]
 	conflictStyle = diff3
+	tool = vimdiff
+
+[mergetool]
+	prompt = false
+	keepBackup = false
 
 [commit]
 	verbose = true
