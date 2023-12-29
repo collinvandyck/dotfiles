@@ -61,6 +61,7 @@ brew install --quiet --formula \
 	imagemagick \
 	jpeg \
 	jq \
+	just \
 	jesseduffield/lazygit/lazygit \
 	lcov \
 	libsodium \
@@ -155,6 +156,7 @@ brew install --quiet --cask \
 	signal \
 	slack \
 	sublime-text \
+	tailscale \
 	unnaturalscrollwheels \
 	utm \
 	yubico-yubikey-manager \

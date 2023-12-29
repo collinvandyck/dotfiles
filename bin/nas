@@ -3,8 +3,9 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
+NAS_HOST=${NAS_HOST:=192.168.0.150}
 export COMPOSE_FILE=docker-compose-nas.yml
-export DOCKER_HOST='ssh://collin@192.168.0.150:22' 
+export DOCKER_HOST="ssh://collin@${NAS_HOST}:22" 
 
 # so we can use dc (docker-compose) from anywhere
 export PATH=~/.dotfiles/bin:$PATH
