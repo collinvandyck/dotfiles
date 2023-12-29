@@ -3,5 +3,5 @@
 .project
 .terraform.lock.hcl
 .tsconfig.json
-tf/roots/aws/prod/secrets.auto.tfvars.json
 profile*.svg
+.bacon-locations
