@@ -50,6 +50,7 @@ brew install --quiet --formula \
 	gnuplot \
 	gource \
 	graphviz \
+	groff \
 	glow \
 	gum \
 	hexyl \
@@ -136,6 +137,7 @@ brew install --quiet --cask \
 	docker \
 	font-fantasque-sans-mono \
 	font-fantasque-sans-mono-nerd-font \
+	font-hack-nerd-font \
 	geekbench \
 	google-chrome \
 	hammerspoon \

@@ -1,27 +1,11 @@
 local lsp_util = require "lspconfig/util"
 local telescope = require 'telescope.builtin'
 local trouble = require 'trouble.providers.telescope'
-
 local custom_attach = function(client, bufnr)
-	-- common buffer opts
 	local bufopts = { noremap=true, silent=true, buffer=bufnr }
-
-	-- override the lsp request so that we notify on error
-	local req = client.request
-	client.request = function(method, params, handler, bufnr, config_or_callback)
-		local newConfig = {
-			timeout = 10000,
-			on_error = function(err, method, params, client_id)
-				vim.notify("Error on request", err, method, params, client_id)
-			end
-		}
-		return req(method, params, handler, bufnr, newConfig)
-	end
-
 	local show_help = function(ev)
 		vim.diagnostic.open_float(nil, {focus=false})
 	end
-
 	vim.api.nvim_create_autocmd({"BufWritePre"}, {
 		buffer = bufnr,
 		callback = function(ev)
@@ -29,7 +13,6 @@ local custom_attach = function(client, bufnr)
 			vim.api.nvim_command("silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
 		end,
 	})
-
 	vim.api.nvim_create_autocmd({"CursorHold", "CursorHoldI"}, {
 		buffer = bufnr,
 		callback = function(ev)
@@ -42,8 +25,6 @@ local custom_attach = function(client, bufnr)
 			vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
 		end,
 	})
-
-	-- set keymaps
 	vim.keymap.set('n','gD',         vim.lsp.buf.declaration, bufopts)
 	vim.keymap.set('n','K' ,         vim.lsp.buf.hover, bufopts)
 	vim.keymap.set('n','ga',         vim.lsp.buf.code_action, bufopts)
@@ -63,9 +44,9 @@ local custom_attach = function(client, bufnr)
 	vim.keymap.set('n','<leader>ah', vim.lsp.buf.hover, bufopts)
 	vim.keymap.set('n','<leader>af', vim.lsp.buf.code_action, bufopts)
 	vim.keymap.set('n','<leader>ar', vim.lsp.buf.rename, bufopts)
-	-- vim.keymap.set('n','<leader>aF', vim.lsp.buf.formatting, bufopts)
 	vim.keymap.set('n','<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
 	vim.keymap.set('n','<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
+	-- vim.keymap.set('n','<leader>aF', vim.lsp.buf.formatting, bufopts)
 	-- vim.keymap.set('n','<leader>lw', vim.lsp.buf.list_workspace_folders, bufopts)
 end
 
@@ -82,8 +63,6 @@ local border = {
       {"🭼", "FloatBorder"},
       {"▏", "FloatBorder"},
 }
-
--- LSP settings (for overriding per client)
 local handlers =  {
   ["textDocument/hover"] =  vim.lsp.with(vim.lsp.handlers.hover, {border = border}),
   ["textDocument/signatureHelp"] =  vim.lsp.with(vim.lsp.handlers.signature_help, {border = border }),
