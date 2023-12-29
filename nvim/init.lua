@@ -60,13 +60,26 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{ "nvim-tree/nvim-web-devicons", },
-	{ "bluz71/vim-moonfly-colors",               name = "moonfly",                                   lazy = false, priority = 1000, },
+	{ "bluz71/vim-moonfly-colors",               name = "moonfly",                                 lazy = false, priority = 1000, },
 	{ "folke/which-key.nvim" },
 	{ "folke/neoconf.nvim",                      cmd = "Neoconf" },
 	{ "folke/neodev.nvim" },
 	{ "kevinhwang91/nvim-bqf",                   config = function() require('bqf').setup({}) end, },
 	{ "nvim-telescope/telescope-ui-select.nvim", },
-	{ "nvim-lualine/lualine.nvim",               config = function() require('lualine').setup() end, },
+	{
+		"nvim-lualine/lualine.nvim",
+		dependencies = {
+			"nvim-tree/nvim-web-devicons"
+		},
+		config = function()
+			require('lualine').setup({
+				sections = {
+					lualine_b = { 'branch', 'diff', 'diagnostics' },
+					lualine_c = { { 'filename', path = 3, } },
+				},
+			})
+		end,
+	},
 	{
 		"windwp/nvim-autopairs",
 		config = function()
