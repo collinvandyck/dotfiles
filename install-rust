@@ -13,6 +13,7 @@ cargo binstall -y \
 	diskonaut \
 	erdtree \
 	mdbook \
+	miniserve \
 	starship \
 	trunk \
 	watchexec-cli \

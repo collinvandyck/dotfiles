@@ -40,7 +40,7 @@ sync_address = "https://atuin.collinvandyck.com"
 
 ## With workspace filtering enabled, Atuin will filter for commands executed
 ## in any directory within a git repositiry tree (default: false)
-# workspaces = false
+workspaces = false
 
 ## which filter mode to use when atuin is invoked from a shell up-key binding
 ## the accepted values are identical to those of "filter_mode"
@@ -55,6 +55,7 @@ sync_address = "https://atuin.collinvandyck.com"
 ## which style to use
 ## possible values: auto, full, compact
 # style = "auto"
+style = "compact"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
