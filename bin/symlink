@@ -10,7 +10,7 @@ set -e
 
 src=$1
 dst=$2
-mkdir -p $(dirname "$dst")
+mkdir -p "$(dirname "$dst")"
 if [[ -L "$dst" && $(readlink -f "$dst") = "$src" ]]; then
 	# symlink already exists
 	exit 0
