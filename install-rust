@@ -20,3 +20,8 @@ cargo binstall -y \
 	trunk \
 	watchexec-cli \
 	;
+
+cargo binstall --locked -y \
+	xh \
+	;
+
