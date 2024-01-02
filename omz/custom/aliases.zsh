@@ -84,3 +84,7 @@ alias show_fs_usage_top="sudo fs_usage -w -t 5 -f filesys | tee fs_usage.log | e
 
 alias batlog='bat --pager=never -l log --color=always'
 alias tk=task
+
+# lsd config
+alias ls=lsd
+
