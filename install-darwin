@@ -121,6 +121,7 @@ brew install --quiet --formula \
 	vhs \
 	wasmer \
 	watch \
+	wget \
 	wireguard-tools \
 	xz \
 	youtube-dl \
