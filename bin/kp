@@ -16,11 +16,11 @@ choose() {
 		--header-lines=2 \
 		--reverse \
 		--bind='ctrl-h:first' \
-		--bind='ctrl-k:execute(kill -9 {2})+reload(date; ps -ef)' \
-		--bind='ctrl-r:reload(date; ps -ef)' \
+		--bind="ctrl-k:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
+		--bind="ctrl-r:reload(date; ps -ef | grep -v \"${cmd}\")" \
 		--bind='ctrl-x:preview(ps --forest {2})' \
 		--bind='ctrl-/:change-preview-window(hidden|)' \
-		--bind='enter:execute(kill -9 {2})+reload(date; ps -ef)' \
+		--bind="enter:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
 		--preview-window='down,50%,wrap' \
 		--preview "$cmd --show {2}" \
 		--query "$query" \
