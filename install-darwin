@@ -53,6 +53,7 @@ brew install --quiet --formula \
 	groff \
 	glow \
 	gum \
+	helix \
 	hexyl \
 	htop \
 	httpie \
