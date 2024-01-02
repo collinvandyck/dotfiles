@@ -285,6 +285,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-tree/nvim-tree.lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("nvim-tree").setup({
 				disable_netrw = false, -- setting this to true interferes with GBrowse.
