@@ -87,6 +87,6 @@ alias tk=task
 
 # lsd config
 alias ls=lsd
-alias lt='ls --tree'
-alias llt='ll --tree'
+alias lt='ls --tree --color=always'
+alias llt='ll --tree --color=always'
 
