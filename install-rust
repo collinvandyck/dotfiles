@@ -14,7 +14,9 @@ cargo binstall -y \
 	erdtree \
 	mdbook \
 	miniserve \
+	pipr \
 	starship \
+	tldr \
 	trunk \
 	watchexec-cli \
 	;
