@@ -79,3 +79,5 @@ if command -v starship >/dev/null 2>&1; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+command -v atuin &> /dev/null && eval "$(atuin init zsh)"
