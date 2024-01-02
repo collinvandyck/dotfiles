@@ -7,8 +7,8 @@ set -e
 cmd=$(basename $0)
 
 choose() {
-	local query=${1:""}
-	(date; ps -ef) | \
+	local query="${@-""}"
+	(date; ps -ef | grep -v "${cmd}") | \
 	fzf \
 		--ansi \
 		--exact \
@@ -49,7 +49,7 @@ case $1 in
 		show $2
 		;;
 	**)
-		choose $1
+		choose "$@"
 		exit 0
 		;;
 esac
