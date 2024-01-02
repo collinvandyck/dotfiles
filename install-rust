@@ -17,7 +17,7 @@ cargo binstall -y \
 	miniserve \
 	pipr \
 	starship \
-	tldr \
+	tealdeer \
 	trunk \
 	watchexec-cli \
 	;
