@@ -13,6 +13,8 @@ cargo binstall -y \
 	diskonaut \
 	erdtree \
 	eva \
+	gitui \
+	lsd \
 	mdbook \
 	miniserve \
 	pipr \
