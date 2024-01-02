@@ -12,6 +12,7 @@ cargo binstall -y \
 	cargo-watch \
 	diskonaut \
 	erdtree \
+	eva \
 	mdbook \
 	miniserve \
 	pipr \
