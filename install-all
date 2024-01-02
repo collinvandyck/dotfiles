@@ -25,6 +25,7 @@ bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~
 bin/symlink ~/.dotfiles/hammerspoon            ~/.hammerspoon
 bin/symlink ~/.dotfiles/taskfile/taskfile.yml  ~/.taskfile
 bin/symlink ~/.dotfiles/ssh/config             ~/.ssh/config
+bin/symlink ~/.dotfiles/atuin                  ~/.config/atuin
 bin/symlink ~/.dotfiles/kitty                  ~/.config/kitty
 bin/symlink ~/.dotfiles/zellij                 ~/.config/zellij
 bin/symlink ~/.dotfiles/starship/starship.toml ~/.config/
