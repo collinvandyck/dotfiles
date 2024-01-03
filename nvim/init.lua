@@ -59,6 +59,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+	{ "isobit/vim-caddyfile" },
 	{ "preservim/nerdcommenter" },
 	{ "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000, },
 	{ "folke/which-key.nvim" },
