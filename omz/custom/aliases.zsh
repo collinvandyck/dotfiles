@@ -89,4 +89,7 @@ alias tk=task
 alias ls=lsd
 alias lt='ls --tree --color=always'
 alias llt='ll --tree --color=always'
+for i in $(seq 1 9); do
+	alias "llt${i}"="ll --tree --color=always --depth ${i}"
+done
 
