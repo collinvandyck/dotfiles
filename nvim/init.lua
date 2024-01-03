@@ -60,11 +60,14 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{ "preservim/nerdcommenter" },
-	{ "bluz71/vim-moonfly-colors",               name = "moonfly",                                 lazy = false, priority = 1000, },
+	{ "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000, },
 	{ "folke/which-key.nvim" },
-	{ "folke/neoconf.nvim",                      cmd = "Neoconf" },
+	{ "folke/neoconf.nvim",        cmd = "Neoconf" },
 	{ "folke/neodev.nvim" },
-	{ "kevinhwang91/nvim-bqf",                   config = function() require('bqf').setup({}) end, },
+	{
+		"kevinhwang91/nvim-bqf",
+		config = function() require('bqf').setup({}) end,
+	},
 	{ "nvim-telescope/telescope-ui-select.nvim", },
 	{
 		"nvim-tree/nvim-web-devicons",
