@@ -30,6 +30,7 @@ brew install --quiet --formula \
 	bottom \
 	broot \
 	btop \
+	caddy \
 	cmake \
 	cowsay \
 	curl \
