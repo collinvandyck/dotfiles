@@ -264,9 +264,17 @@ require("lazy").setup({
 							["<esc>"] = actions.close,
 							["<C-u>"] = false, -- enable clearing prompt
 							["<C-t>"] = trouble.open_with_trouble,
+							["<C-k>"] = actions.move_selection_previous,
+							["<C-p>"] = actions.move_selection_previous,
+							["<C-j>"] = actions.move_selection_next,
+							["<C-n>"] = actions.move_selection_next,
 						},
 						n = {
 							["<C-t>"] = trouble.open_with_trouble,
+							["<C-k>"] = actions.move_selection_previous,
+							["<C-p>"] = actions.move_selection_previous,
+							["<C-j>"] = actions.move_selection_next,
+							["<C-n>"] = actions.move_selection_next,
 						},
 					}
 				},
