@@ -69,6 +69,25 @@ require("lazy").setup({
 		"kevinhwang91/nvim-bqf",
 		config = function() require('bqf').setup({}) end,
 	},
+	{
+		'stevearc/aerial.nvim',
+		opts = {},
+		-- Optional dependencies
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-tree/nvim-web-devicons"
+		},
+		config = function()
+			require("aerial").setup({
+				layout = {
+					--default_direction = "right",
+					--placement = "edge",
+				},
+				attach_mode = "global",
+				highlight_on_jump = false,
+			})
+		end,
+	},
 	{ "nvim-telescope/telescope-ui-select.nvim", },
 	{
 		"nvim-tree/nvim-web-devicons",
@@ -244,10 +263,17 @@ require("lazy").setup({
 	{
 		"nvim-telescope/telescope.nvim",
 		tag = '0.1.5',
+		dependencies = {
+			"stevearc/aerial.nvim",
+		},
 		config = function()
 			local actions = require("telescope.actions")
 			local action_state = require('telescope.actions.state')
 			local trouble = require("trouble.providers.telescope")
+
+			require("telescope").load_extension("ui-select")
+			require("telescope").load_extension("aerial")
+
 			require('telescope').setup {
 				defaults = {
 					layout_strategy = "vertical",
@@ -284,10 +310,17 @@ require("lazy").setup({
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown {}
-					}
+					},
+					aerial = {
+						-- Display symbols as <root>.<parent>.<symbol>
+						show_nesting = {
+							["_"] = false, -- This key will be the default
+							json = true, -- You can set the option for specific filetypes
+							yaml = true,
+						},
+					},
 				},
 			}
-			require("telescope").load_extension("ui-select")
 		end
 	},
 	{
@@ -798,6 +831,7 @@ map('n', 'n', 'nzz', { noremap = true })
 map('n', 'N', 'Nzz', { noremap = true })
 map('n', '*', '*zz', { noremap = true })
 map('n', '#', '#zz', { noremap = true })
+map('n', 'ge', '<cmd>AerialToggle<CR>', { noremap = true })
 map('n', 'g*', 'g*zz', { noremap = true })
 map('n', 'g#', 'g#zz', { noremap = true })
 map('i', 'jk', '<esc>', { noremap = true })
