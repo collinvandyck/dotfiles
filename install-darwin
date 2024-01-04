@@ -139,6 +139,7 @@ brew install --quiet --cask \
 	bartender \
 	discord \
 	docker \
+	firefox \
 	font-fantasque-sans-mono \
 	font-fantasque-sans-mono-nerd-font \
 	font-hack-nerd-font \
