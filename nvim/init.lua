@@ -283,9 +283,6 @@ require("lazy").setup({
 			local action_state = require('telescope.actions.state')
 			local trouble = require("trouble.providers.telescope")
 
-			require("telescope").load_extension("ui-select")
-			require("telescope").load_extension("aerial")
-
 			require('telescope').setup {
 				defaults = {
 					layout_strategy = "vertical",
@@ -333,6 +330,8 @@ require("lazy").setup({
 					},
 				},
 			}
+			require("telescope").load_extension("ui-select")
+			require("telescope").load_extension("aerial")
 		end
 	},
 	{
