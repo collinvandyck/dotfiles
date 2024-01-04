@@ -85,6 +85,18 @@ require("lazy").setup({
 				},
 				attach_mode = "global",
 				highlight_on_jump = false,
+				filter_kind = {
+					['_'] = {
+						"Class",
+						"Constructor",
+						"Enum",
+						"Function",
+						"Interface",
+						"Module",
+						"Method",
+						"Struct",
+					}
+				},
 			})
 		end,
 	},
