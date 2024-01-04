@@ -93,3 +93,5 @@ for i in $(seq 1 9); do
 	alias "llt${i}"="ll --tree --color=always --depth ${i}"
 done
 
+# hyperfine
+alias hf='hyperfine 2>/dev/null'
