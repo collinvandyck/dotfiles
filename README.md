@@ -2,6 +2,12 @@
 
 This dotfiles is reponsible for provisioning my standard environment.
 
+# Warning
+
+The `git/.gitconfig` file gets symlinked to `~/.gitconfig` which has my own
+name/email address for commits, so if you do decide to use this repo please fork
+it and change those values.
+
 # Usage
 
 If you want to bootstrap your own env, it's recommended to fork this repo so
@@ -17,18 +23,6 @@ Once you're done installing, you can run the dotfiles installs again by using
     % update
 
 This will keep your apt and brew dependencies up to date when run periodically.
-
-# Customization
-
-My defaults are in the `.env.dist` environment file. You can create your own
-`.env` file in the same directory. Note that the `.env` file is ignored by git.
-
-    % cat .env.dist
-    GIT_USER_NAME="Collin Van Dyck"
-    GIT_EMAIL="collinvandyck@gmail.com"
-
-You should at the least set your own variables here so that you don't commit as
-me :)
 
 # Neovim
 
