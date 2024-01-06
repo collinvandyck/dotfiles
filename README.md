@@ -11,24 +11,22 @@ it and change those values.
 # Usage
 
 If you want to bootstrap your own env, it's recommended to fork this repo so
-that you can make your own changes over time. However, it's not necessary, and
-some configuration can be overridden through the use of environment files.
+that you can make your own changes over time. Most importantly, change the
+values in `git/.gitconfig`  to match your own.
 
-    % git clone https://github.com/collinvandyck/dotfiles.git ~/.dotfiles
-    cd .dotfiles
-    ./install-all
+```sh
+git clone ${YOUR_FORK} ~/.dotfiles
+cd .dotfiles
+# IMPORTANT
+vi ~/.dotfiles/git/.gitconfig #=> change name and email
+./install-all
+```
+Once you're done installing, start a new shell and you're good to go. Youc an
+always trigger the dotfiles uppdates by running:
 
-Once you're done installing, you can run the dotfiles installs again by using
-
-    % update
+```sh
+update
+```
 
 This will keep your apt and brew dependencies up to date when run periodically.
-
-# Neovim
-
-My neovim setup is included in this repo and after the first install you should
-probably run the following to get the neovim plugins setup:
-
-    % nvim +PlugInstall
-
 
