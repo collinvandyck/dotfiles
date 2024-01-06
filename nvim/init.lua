@@ -59,10 +59,21 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+	},
+	{
+		"bluz71/vim-moonfly-colors",
+		lazy = false,
+		name = "moonfly",
+		priority = 1000,
+	},
 	{ "isobit/vim-caddyfile" },
 	{ "preservim/nerdcommenter" },
-	{ "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000, },
-	{ "folke/neoconf.nvim",        cmd = "Neoconf" },
+	{ "folke/neoconf.nvim",     cmd = "Neoconf" },
 	{ "folke/neodev.nvim" },
 	{
 		"folke/which-key.nvim",
@@ -128,10 +139,14 @@ require("lazy").setup({
 	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
-			"nvim-tree/nvim-web-devicons"
+			"nvim-tree/nvim-web-devicons",
+			"folke/tokyonight.nvim"
 		},
 		config = function()
 			require('lualine').setup({
+				options = {
+					theme = 'tokyonight',
+				},
 				sections = {
 					lualine_b = { 'branch', 'diff', 'diagnostics' },
 					lualine_c = { { 'filename', path = 3, } },
@@ -160,6 +175,9 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
+		dependencies = {
+			"HiPhish/nvim-ts-rainbow2",
+		},
 		build = ":TSUpdate",
 		config = function()
 			local configs = require("nvim-treesitter.configs")
@@ -181,6 +199,15 @@ require("lazy").setup({
 						node_decremental = "-",
 					},
 				},
+				rainbow = {
+					enable = true,
+					-- list of languages you want to disable the plugin for
+					-- disable = { 'jsx', 'cpp' },
+					-- Which query to use for finding delimiters
+					query = 'rainbow-parens',
+					-- Highlight the entire buffer all at once
+					strategy = require('ts-rainbow').strategy.global,
+				}
 			})
 		end
 	},
@@ -772,10 +799,11 @@ require("lazy").setup({
 	},
 })
 
-vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-
 -- important to set this after lazy has finished loading
-vim.cmd('colorscheme moonfly')
+-- vim.cmd('colorscheme moonfly')
+vim.cmd('colorscheme tokyonight-moon')
+
+vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 
 -- mappings
 local map = vim.api.nvim_set_keymap
