@@ -71,6 +71,15 @@ require("lazy").setup({
 		name = "moonfly",
 		priority = 1000,
 	},
+	{
+		"cpea2506/one_monokai.nvim",
+		config = function()
+			require("one_monokai").setup({
+				-- your options
+				transparent = true,
+			})
+		end,
+	},
 	{ "isobit/vim-caddyfile" },
 	{ "preservim/nerdcommenter" },
 	{ "folke/neoconf.nvim",     cmd = "Neoconf" },
