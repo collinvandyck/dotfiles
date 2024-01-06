@@ -62,9 +62,21 @@ require("lazy").setup({
 	{ "isobit/vim-caddyfile" },
 	{ "preservim/nerdcommenter" },
 	{ "bluz71/vim-moonfly-colors", name = "moonfly", lazy = false, priority = 1000, },
-	{ "folke/which-key.nvim" },
 	{ "folke/neoconf.nvim",        cmd = "Neoconf" },
 	{ "folke/neodev.nvim" },
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		init = function()
+			vim.o.timeout = true
+			vim.o.timeoutlen = 300
+		end,
+		opts = {
+			-- your configuration comes here
+			-- or leave it empty to use the default settings
+			-- refer to the configuration section below
+		}
+	},
 	{
 		"kevinhwang91/nvim-bqf",
 		config = function() require('bqf').setup({}) end,
