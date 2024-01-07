@@ -8,6 +8,7 @@ echo "Installing rust utilities"
 cargo binstall -y \
 	atuin \
 	bacon \
+	cargo-expand \
 	cargo-nextest \
 	cargo-watch \
 	diskonaut \
