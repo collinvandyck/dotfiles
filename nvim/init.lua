@@ -64,6 +64,14 @@ require("lazy").setup({
 		lazy = false,
 		priority = 1000,
 		opts = {},
+		init = function()
+			require("tokyonight").setup({
+				style = "night",
+				colors = function(colors)
+					-- colors.error = "#ff0000"
+				end
+			})
+		end,
 	},
 	{
 		"bluz71/vim-moonfly-colors",
@@ -810,7 +818,11 @@ require("lazy").setup({
 
 -- important to set this after lazy has finished loading
 -- vim.cmd('colorscheme moonfly')
+
+-- Note: use :Inspect to find the highlight groups for a particular code block.
 vim.cmd('colorscheme tokyonight-night')
+vim.cmd [[highlight DiagnosticUnderlineHint gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
+vim.cmd [[highlight DiagnosticUnnecessary gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
 
 vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 
