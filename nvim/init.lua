@@ -823,6 +823,7 @@ require("lazy").setup({
 vim.cmd('colorscheme tokyonight-night')
 vim.cmd [[highlight DiagnosticUnderlineHint gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
 vim.cmd [[highlight DiagnosticUnnecessary gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
+vim.cmd [[highlight TabLine guisp=#8a8a8a guifg=#8a8a8a]]
 
 vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 
