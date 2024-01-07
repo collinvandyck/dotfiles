@@ -810,7 +810,7 @@ require("lazy").setup({
 
 -- important to set this after lazy has finished loading
 -- vim.cmd('colorscheme moonfly')
-vim.cmd('colorscheme tokyonight-moon')
+vim.cmd('colorscheme tokyonight-night')
 
 vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 
