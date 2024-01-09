@@ -138,6 +138,7 @@ brew install --quiet --formula \
 brew install --quiet --cask \
 	discord \
 	bartender \
+	caffeine \
 	discord \
 	docker \
 	firefox \
