@@ -28,8 +28,11 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline = ""
-vim.opt.swapfile = false
 vim.opt.tabstop = 4
+
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.writebackup = false
 -- recommended for nvim-tree
 -- vim.g.loaded_netrw = 1
 -- vim.g.loaded_netrwPlugin = 1
