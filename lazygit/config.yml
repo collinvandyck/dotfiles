@@ -6,5 +6,6 @@ os:
   copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
   # editPreset: 'nvim-remote'
 git:
-  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' {{branchName}} --
+
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --pretty=format:"%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar" {{branchName}} --
   allBranchesLogCmd: git log --graph --color=always --all --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' --
