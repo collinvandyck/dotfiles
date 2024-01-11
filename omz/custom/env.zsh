@@ -18,6 +18,7 @@ export LESS='-R'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER='less -RX' # -X turns off the screen clearing function
 export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
+export HTOPRC=~/.dotfiles/htop/htop.rc
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
