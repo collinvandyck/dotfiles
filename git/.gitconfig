@@ -24,6 +24,7 @@
 	l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
 	l2 = log --name-status --graph
 	last = checkout -
+	llx = log --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s'
 	ll = log --pretty=oneline --abbrev-commit --decorate --graph
 	lla = !git ll --all
 	put = push origin HEAD
