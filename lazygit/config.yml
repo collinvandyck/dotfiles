@@ -1,3 +1,5 @@
+promptToReturnFromSubprocess: false
+
 gui:
   #windowSize: 'half'
   scrollHeight: 4 # how many lines you scroll by
@@ -5,6 +7,8 @@ gui:
 os:
   copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
   edit: 'nvr {{filename}}'
+  editAtLine: 'nvr +{{line}} {{filename}}'
+  editAtLineAndWait: 'nvr +{{line}} {{filename}}'
 
 git:
 
