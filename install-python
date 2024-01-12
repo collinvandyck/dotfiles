@@ -9,3 +9,4 @@ bin/symlink $(which pip3) /usr/local/bin/pip
 pip install pyright
 pip install visidata
 pip install urlwatch
+pip install neovim-remote
