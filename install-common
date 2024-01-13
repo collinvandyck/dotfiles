@@ -12,10 +12,6 @@ rustup component add rust-src
 rustup component add rust-analyzer
 rustup target add wasm32-unknown-unknown
 
-# neovim plug.vim
-curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 sqlite=/usr/local/sqlite3/bin/sqlite3
 if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --version | awk '{print $1}') ]]; then
 	echo "Installing sqlite3 $DOTFILES_SQLITE_VERSION with readline support"
