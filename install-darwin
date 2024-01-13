@@ -155,12 +155,14 @@ brew install --quiet --cask \
 	logseq \
 	microsoft-remote-desktop \
 	monitorcontrol \
+	neovide \
 	ngrok \
 	obsidian \
 	raycast \
 	session-manager-plugin \
 	signal \
 	slack \
+	stellarium \
 	sublime-text \
 	tailscale \
 	unnaturalscrollwheels \
