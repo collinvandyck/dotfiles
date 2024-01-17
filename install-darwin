@@ -132,6 +132,7 @@ brew install --quiet --formula \
 	zellij \
 	zenith \
 	zig \
+	zoxide \
 	zsh-autosuggestions \
 	;
 
