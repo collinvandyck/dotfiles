@@ -63,6 +63,20 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{
+		"folke/zen-mode.nvim",
+		opts = {
+			window = {
+				backdrop = 0.75,
+				width = .70,
+			},
+			plugins = {
+				options = {
+					laststatus = 0,
+				},
+			},
+		},
+	},
+	{
 		"folke/tokyonight.nvim",
 		lazy = false,
 		priority = 1000,
@@ -900,6 +914,7 @@ map('n', '<Leader>xd', ':TroubleToggle document_diagnostics<CR>', { noremap = tr
 map('n', '<Leader>xq', ':TroubleToggle quickfix<CR>', { noremap = true })
 map('n', '<Leader>xl', ':TroubleToggle loclist<CR>', { noremap = true })
 map('n', '<Leader>xr', ':TroubleToggle lsp_references<CR>', { noremap = true })
+map('n', '<Leader>z', ':ZenMode<CR>', { noremap = true })
 map('n', 'tn', ':tabnext<CR>', { noremap = true })
 map('n', 'tp', ':tabprevious<CR>', { noremap = true })
 map('n', 'T', ':Telescope<CR>', { noremap = true })
