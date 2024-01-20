@@ -63,6 +63,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{
+		"nanotee/zoxide.vim",
+	},
+	{
 		"folke/zen-mode.nvim",
 		opts = {
 			window = {
