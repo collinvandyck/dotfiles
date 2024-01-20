@@ -521,7 +521,7 @@ require("lazy").setup({
 				vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
 				vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
 				vim.keymap.set('n', 'gd', '<cmd>Trouble lsp_definitions<CR>', bufopts)
-				vim.keymap.set('n', 'gr', '<cmd>Trouble lsp_references<CR>', bufopts)
+				vim.keymap.set('n', 'gr', telescope.lsp_references, bufopts)
 				vim.keymap.set('n', 'gs', telescope.lsp_document_symbols, bufopts)
 				vim.keymap.set('n', 'gS', telescope.lsp_workspace_symbols, bufopts)
 				vim.keymap.set('n', 'gi', '<cmd>Trouble lsp_implementations<CR>', bufopts)
