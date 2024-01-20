@@ -13,7 +13,7 @@ export LESS="-XFR"
 export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 export PANTS_LINT=true
 export HOSTNAME=$(hostname)
-export BAT_STYLE="changes"
+export BAT_STYLE="plain"
 export LESS='-R'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER='less -RX' # -X turns off the screen clearing function
