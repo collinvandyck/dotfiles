@@ -131,47 +131,41 @@ require("lazy").setup({
 	},
 	{
 		'stevearc/aerial.nvim',
-		opts = {},
-		-- Optional dependencies
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-tree/nvim-web-devicons"
 		},
-		config = function()
-			require("aerial").setup({
-				layout = {
-					--default_direction = "right",
-					--placement = "edge",
-				},
-				attach_mode = "global",
-				highlight_on_jump = false,
-				filter_kind = {
-					['_'] = {
-						"Class",
-						"Constructor",
-						"Enum",
-						"Function",
-						"Interface",
-						"Module",
-						"Method",
-						"Struct",
-					}
-				},
-			})
-		end,
+		opts = {
+			layout = {
+				default_direction = "right",
+				--placement = "edge",
+			},
+			attach_mode = "global",
+			highlight_on_jump = false,
+			filter_kind = {
+				['_'] = {
+					"Class",
+					"Constructor",
+					"Enum",
+					"Function",
+					"Interface",
+					"Module",
+					"Method",
+					"Struct",
+				}
+			},
+		},
 	},
 	{ "nvim-telescope/telescope-ui-select.nvim", },
 	{
 		"nvim-tree/nvim-web-devicons",
-		config = function()
-			require 'nvim-web-devicons'.setup {
-				override_by_extension = {
-					["rs"] = {
-						icon = "🦀",
-					}
-				},
-			}
-		end,
+		opts = {
+			override_by_extension = {
+				["rs"] = {
+					icon = "🦀",
+				}
+			},
+		}
 	},
 	{
 		"nvim-lualine/lualine.nvim",
@@ -179,17 +173,15 @@ require("lazy").setup({
 			"nvim-tree/nvim-web-devicons",
 			"folke/tokyonight.nvim"
 		},
-		config = function()
-			require('lualine').setup({
-				options = {
-					theme = 'tokyonight',
-				},
-				sections = {
-					lualine_b = { 'branch', 'diff', 'diagnostics' },
-					lualine_c = { { 'filename', path = 3, } },
-				},
-			})
-		end,
+		opts = {
+			options = {
+				theme = 'tokyonight',
+			},
+			sections = {
+				lualine_b = { 'branch', 'diff', 'diagnostics' },
+				lualine_c = { { 'filename', path = 3, } },
+			},
+		},
 	},
 	{
 		"windwp/nvim-autopairs",
@@ -250,27 +242,25 @@ require("lazy").setup({
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
-		config = function()
-			require 'treesitter-context'.setup {
-				enable = false, -- Enable this plugin (Can be enabled/disabled later via commands)
-				max_lines = 1, -- How many lines the window should span. Values <= 0 mean no limit.
-				min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-				line_numbers = true,
-				multiline_threshold = 20, -- Maximum number of lines to show for a single context
-				trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-				mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
-				separator = '─',
-				zindex = 20,  -- The Z-index of the context window
-				on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-			}
-		end
+		opts = {
+			enable = false,  -- Enable this plugin (Can be enabled/disabled later via commands)
+			max_lines = 1,   -- How many lines the window should span. Values <= 0 mean no limit.
+			min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+			line_numbers = true,
+			multiline_threshold = 20, -- Maximum number of lines to show for a single context
+			trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+			mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+			separator = '─',
+			zindex = 20,     -- The Z-index of the context window
+			on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+		},
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		config = function()
-			require("ibl").setup {
+			require("ibl").setup({
 				scope = { enabled = false },
-			}
+			})
 		end,
 	},
 	{
