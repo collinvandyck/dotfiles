@@ -3,8 +3,20 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
-if !command -v sentry-cli --version &>/dev/null; then
-	curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="2.26.0" sh
+SENTRY=/usr/local/bin/sentry-cli
+VERSION="2.26.0"
+
+install() {
+	curl -sL https://sentry.io/get-cli/ | SENTRY_CLI_VERSION="${VERSION}" sh
+}
+
+if ! [ -x $SENTRY ]; then
+	install
 fi
 
-sentry-cli "$@"
+if [[ "$($SENTRY --version)" != "sentry-cli ${VERSION}" ]]; then
+	echo "bad version: $($SENTRY --version)"
+	install
+fi
+
+exec $SENTRY "$@"
