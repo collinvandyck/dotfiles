@@ -91,8 +91,11 @@ function newPassword() {
 
 function td()
 {
-    dir=$(basename `pwd`)
-    tmux rename-window $dir 2>/dev/null
+	if [[ $# > 0 ]]; then
+		tmux rename-window "$@" 2>/dev/null
+	else
+		tmux rename-window "$(basename $(pwd))" 2>/dev/null
+	fi
 }
 
 function fixssh() {
