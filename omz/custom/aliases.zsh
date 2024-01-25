@@ -45,6 +45,7 @@ alias ll='ls -lF'
 alias lla='ll -a'
 alias llh='ll -h'
 alias llr='ls -lrth'
+alias r=z #disable r builtin
 
 # k8s things
 alias mk='minikube'
