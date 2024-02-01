@@ -237,7 +237,7 @@ defaults write com.apple.Dock autohide-delay -float 0
 defaults write -g NSWindowShouldDragOnGesture -bool true  
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g KeyRepeat -int 2
-defaults write com.apple.dock autohide-time-modifier -float 0.5
+defaults write com.apple.dock autohide-time-modifier -float 0.75
 
 # finally, install the launchd daemons
 if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
