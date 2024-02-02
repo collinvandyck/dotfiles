@@ -574,6 +574,11 @@ require("lazy").setup({
 					usePlaceholders = false,
 				},
 			})
+			require("lspconfig").pyright.setup({
+				capabilities = capabilities,
+				handlers = handlers,
+				on_attach = custom_attach,
+			})
 			require("lspconfig").rust_analyzer.setup({
 				capabilities = capabilities,
 				handlers = handlers,
