@@ -28,10 +28,11 @@ cargo add \
 	thiserror \
 	anyhow \
 	rand \
+	tokio \
 	tracing \
 	tracing-subscriber \
-	--features tracing-subscriber/env-filter
-
+	--features tracing-subscriber/env-filter \
+	--features tokio/full
 
 
 cat <<eos > rustfmt.toml
@@ -72,6 +73,16 @@ tasks:
     cmds:
       - cargo run
     silent: true
+eos
+
+cat <<eos > src/main.rs
+use tracing::*;
+
+#[tokio::main]
+async fn main() {
+    tracing_subscriber::fmt().init();
+    info!("Hello world!");
+}
 eos
 
 nvim
