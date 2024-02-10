@@ -85,5 +85,5 @@ async fn main() {
 }
 eos
 
-nvim
+nvim src/main.rs
 exec zsh
