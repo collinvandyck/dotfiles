@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# executes bat against the first argument if it is a file.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+if [[ $# != 1 ]]; then
+	echo "usage: bw [ident]"
+	exit -1
+fi
+if ! [ -f "$(which $1 2>/dev/null)" ]; then
+	echo "$1 is not a file"
+	exit -1
+fi
+
+exec bat $(which $1)
