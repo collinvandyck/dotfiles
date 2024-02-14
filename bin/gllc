@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Runs git log, specifying main and master globs.
+#
+# Any additional args will be globbed as well. If there are not args, the
+# current user will be globbed.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+globs=""
+globs+=" --glob="refs/*/main""
+globs+=" --glob="refs/*/master""
+
+if [[ $# > 0 ]]; then
+	for arg in $@; do
+		globs+=" --glob="refs/*/*${arg}*/*""
+	done
+else
+	globs+=" --glob="refs/*/${USER}/*""
+fi
+
+git ll $globs
+
