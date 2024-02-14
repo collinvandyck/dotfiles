@@ -1,6 +1,19 @@
 # remove functions set by oh my zsh
 unset -f d
 
+# bat $(which $1)
+bw() {
+	if [[ $# != 1 ]]; then
+		echo "usage: bw [ident]"
+		return -1
+	fi
+	if ! [ -f "$(which $1 2>/dev/null)" ]; then
+		echo "$1 is not a file"
+		return -1
+	fi
+	bat $(which $1)
+}
+
 # cd's into an ngrok directory
 function cdn() {
 	cd ~/ngrok/$(cd ~/ngrok && find -type d -not -path '*/.*' | fzf --preview 'ls -lh {}')
