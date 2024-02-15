@@ -30,7 +30,7 @@ if [ ! -d ~/.fzf ]; then
 	~/.fzf/install --all --no-zsh
 else 
 	(cd ~/.fzf && git pull)
-	~/.fzf/install --all --no-zsh
+	~/.fzf/install --all
 fi
 
 # install powerline
