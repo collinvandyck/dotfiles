@@ -10,3 +10,7 @@ pip install pyright
 pip install visidata
 pip install urlwatch
 pip install neovim-remote
+
+if command -v pipx &>/dev/null; then
+	pipx install toolong
+fi
