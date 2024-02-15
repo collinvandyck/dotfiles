@@ -92,6 +92,7 @@ brew install --quiet --formula \
 	openssh \
 	openssl@3 \
 	pandoc \
+	pipx \
 	pnpm \
 	portaudio \
 	protoc-gen-go \
