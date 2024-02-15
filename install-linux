@@ -82,6 +82,7 @@ sudo apt install -y \
   unzip \
   valgrind \
   wget \
+  zoxide \
   zsh \
   ;
 sudo apt autoremove -y

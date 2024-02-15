@@ -45,6 +45,7 @@ addPaths=(
 	~/Library/Python/3.9/bin
 	~/go/bin
 	~/bin
+	~/.fzf/bin
 	~/.local/bin
 	~/.cargo/bin
 	~/.tfenv/bin
