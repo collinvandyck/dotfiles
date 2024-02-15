@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# check out a pr
+#
+# Not great right now because I think this should probably be a function so i
+# can stay in the same shell instead of invoking a new one.
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+usage() {
+	echo "$(basename $0) [pr spec]"
+	exit 1
+}
+
+bail() {
+	echo "welp"
+	exit 1
+}
+
+[[ $# != 1 ]] && usage
+
+if ! git rev-parse --show-toplevel &>/dev/null; then
+	echo "Not in a git repo"
+	exit 1
+fi
+
+cd $(git rev-parse --show-toplevel 2>/dev/null)
+
+main_branch=$(git branch -l master main | awk '{print $2}')
+git worktrees add worktrees/prs origin/${main_branch} &>/dev/null || true
+cd worktrees/prs
+gh pr checkout "$1"
+tmux rename-window "$(git rev-parse --abbrev-ref HEAD)" &> /dev/null
+exec zsh
