@@ -104,6 +104,7 @@ brew install --quiet --formula \
 	python@3.10 \
 	qemu \
 	ripgrep \
+	sad \
 	shellcheck \
 	sampler \
 	spacer \
