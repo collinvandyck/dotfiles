@@ -646,6 +646,9 @@ require("lazy").setup({
 					vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 			end
 			cmp.setup({
+				performance = {
+					debounce = 250, -- 250ms debounce for completion
+				},
 				enabled = function()
 					-- disable completion in comments
 					local context = require 'cmp.config.context'
