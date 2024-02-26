@@ -494,6 +494,7 @@ require("lazy").setup({
 							"silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
 					end,
 				})
+				--[[
 				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 					buffer = bufnr,
 					callback = function()
@@ -506,6 +507,7 @@ require("lazy").setup({
 						vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
 					end,
 				})
+				]]
 				vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
 				vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 				vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
