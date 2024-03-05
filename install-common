@@ -25,6 +25,7 @@ if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --vers
 fi
 
 # fzf
+echo "installing fzf"
 if [ ! -d ~/.fzf ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install --all --no-zsh
@@ -34,14 +35,17 @@ else
 fi
 
 # install powerline
+echo "installing powerline"
 if [ ! -e ~/.powerline ]; then
 	git clone https://github.com/powerline/powerline.git ~/.powerline
 fi
 
 # ensure powerline-status
-pip3 install powerline-status
+echo "installing powerline-status"
+pipx install powerline-status
 
 # oh my zsh
+echo "installing oh-my-zsh"
 if [ ! -e ~/.oh-my-zsh ]; then
 	KEEP_ZSHRC=yes \
 	CHSH=no \
@@ -50,6 +54,7 @@ if [ ! -e ~/.oh-my-zsh ]; then
 fi
 
 # tmux plugin manager
+echo "installing tpm"
 if [ ! -d ~/.tmux/plugins/tpm ]; then 
 	mkdir -p ~/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

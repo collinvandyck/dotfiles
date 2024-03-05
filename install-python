@@ -6,10 +6,10 @@ cd ~/.dotfiles
 bin/symlink $(which python3) /usr/local/bin/python
 bin/symlink $(which pip3) /usr/local/bin/pip
 
-pip install pyright
-pip install visidata
-pip install urlwatch
-pip install neovim-remote
+pipx install pyright
+pipx install visidata
+pipx install urlwatch
+pipx install neovim-remote
 
 if command -v pipx &>/dev/null; then
 	pipx install toolong
