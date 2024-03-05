@@ -87,7 +87,7 @@ sudo apt install -y \
   ;
 sudo apt autoremove -y
 
-pip3 install neovim-remote
+pipx install neovim-remote
 
 sudo chsh -s $(which zsh) $USER
 
