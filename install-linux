@@ -65,6 +65,7 @@ sudo apt install -y \
   nethogs \
   net-tools \
   ninja-build \
+  pipx \
   pkg-config \
   powerline \
   powerline-gitstatus \
