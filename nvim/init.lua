@@ -589,11 +589,11 @@ require("lazy").setup({
 					local cargo = {}
 					local check = {
 						extraArgs = {
-							"--target-dir",
-							"target/rust-analyzer",
+							-- "--target-dir",
+							-- "target/rust-analyzer",
 						},
 					}
-					local rustfmt = { extraArgs = { "+nightly" }, }
+					local rustfmt = { extraArgs = { "+nightly-2023-11-17" }, }
 					local diagnostics = { enable = true, }
 					local inlay_hints = { enabled = true, }
 					-- RA_TARGET=x86_64-pc-windows-gnu neovim
