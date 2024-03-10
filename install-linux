@@ -66,6 +66,7 @@ sudo apt install -y \
   nethogs \
   net-tools \
   ninja-build \
+  openssh-server \
   pipx \
   pkg-config \
   powerline \
