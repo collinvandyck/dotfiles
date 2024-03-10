@@ -49,6 +49,7 @@ sudo apt install -y \
   git \
   glow \
   gum \
+  gnome-tweaks \
   gnupg \
   htop \
   httpie \
