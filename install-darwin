@@ -140,6 +140,7 @@ brew install --quiet --formula \
 	;
 
 brew install --quiet --cask \
+	alacritty \
 	discord \
 	bartender \
 	caffeine \
