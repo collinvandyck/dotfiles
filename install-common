@@ -6,12 +6,14 @@ set -e # exit on failure
 set -u # fail if vars are not defined
 
 # rust
-curl https://sh.rustup.rs -sSf | bash -s -- -y
+echo "Updating rust"
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
 export PATH="$HOME/.cargo/bin:$PATH"
 rustup component add rust-src
 rustup component add rust-analyzer
 rustup target add wasm32-unknown-unknown
 
+echo "Updating sqlite"
 sqlite=/usr/local/sqlite3/bin/sqlite3
 if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --version | awk '{print $1}') ]]; then
 	echo "Installing sqlite3 $DOTFILES_SQLITE_VERSION with readline support"
