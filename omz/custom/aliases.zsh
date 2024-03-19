@@ -1,3 +1,7 @@
+# kitty
+
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
+
 # rust aliases
 alias co='cargo'
 alias we='watchexec'
