@@ -10,9 +10,17 @@ chmod 600 ~/.dotfiles/ssh/config
 
 # os specific symlinking
 if [[ "$(uname)" =~ "Darwin" ]]; then
+	# lazygit
 	mkdir -p ~/Library/Application\ Support/lazygit
 	bin/symlink ~/.dotfiles/lazygit/config.yml ~/Library/Application\ Support/lazygit
+
+	# urlwatch
 	bin/symlink ~/.dotfiles/urlwatch ~/Library/Application\ Support/urlwatch
+
+	# nushell
+	mkdir -p ~/Library/Application\ Support/nushell
+	bin/symlink ~/.dotfiles/nushell/config.nu ~/Library/Application\ Support/nushell
+	bin/symlink ~/.dotfiles/nushell/env.nu ~/Library/Application\ Support/nushell
 else
 	mkdir -p ~/.config/lazygit
 	bin/symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit/config.yml
