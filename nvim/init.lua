@@ -206,6 +206,8 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = {
 			"HiPhish/nvim-ts-rainbow2",
+			{ "nushell/tree-sitter-nu" },
+
 		},
 		build = ":TSUpdate",
 		config = function()

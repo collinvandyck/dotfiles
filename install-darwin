@@ -88,6 +88,7 @@ brew install --quiet --formula \
 	neofetch \
 	ninja \
 	node \
+	nushell \
 	nvm \
 	openssh \
 	openssl@3 \
