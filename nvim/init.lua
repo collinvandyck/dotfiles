@@ -178,7 +178,7 @@ require("lazy").setup({
 				theme = 'tokyonight',
 			},
 			sections = {
-				lualine_b = { 'branch', 'diff', 'diagnostics' },
+				lualine_b = { 'diff', 'diagnostics' },
 				lualine_c = { { 'filename', path = 3, } },
 			},
 		},
