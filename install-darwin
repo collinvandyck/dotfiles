@@ -81,7 +81,6 @@ brew install --quiet --formula \
 	maven \
 	mingw-w64 \
 	mitmproxy \
-	mold \
 	mosh \
 	msgpack \
 	mutagen-io/mutagen/mutagen \
