@@ -184,7 +184,15 @@ require("lazy").setup({
 		},
 	},
 	{
+		"echasnovski/mini.pairs",
+		event = "VeryLazy",
+		config = function(_, opts)
+			require("mini.pairs").setup(opts)
+		end,
+	},
+	{
 		"windwp/nvim-autopairs",
+		enabled = false,
 		config = function()
 			require("nvim-autopairs").setup({})
 		end,
@@ -420,6 +428,7 @@ require("lazy").setup({
 	},
 	{
 		"nvim-tree/nvim-tree.lua",
+		enabled = true,
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = function()
 			require("nvim-tree").setup({
@@ -438,7 +447,7 @@ require("lazy").setup({
 				filters = { dotfiles = false, },
 				git = {
 					ignore = true,
-					enable = false,
+					enable = true,
 				},
 				renderer = {
 					symlink_destination = false,
@@ -587,36 +596,52 @@ require("lazy").setup({
 				capabilities = capabilities,
 				handlers = handlers,
 				on_attach = custom_attach,
-				on_init = function(client)
-					local cargo = {}
-					local check = {
-						extraArgs = {
-							-- "--target-dir",
-							-- "target/rust-analyzer",
+				settings = (function()
+					local ra_settings = {
+						cargo = {
+							allFeatures = true,
+						},
+						check = {
+							extraArgs = {
+								"--target-dir",
+								"target/rust-analzyer",
+							},
+						},
+						checkOnSave = {
+							--enable = false,
+							--command = 'clippy',
+						},
+						inlayHints = {
+							locationLinks = false
+						},
+						diagnostics = {
+							enable = true,
+							experimental = {
+								enable = true,
+							},
+						},
+						rustfmt = {
+							extraArgs = {
+								"+nightly-2024-03-29",
+							},
 						},
 					}
-					local rustfmt = { extraArgs = { "+nightly-2023-11-17" }, }
-					local diagnostics = { enable = true, }
-					local inlay_hints = { enabled = true, }
+
 					-- RA_TARGET=x86_64-pc-windows-gnu neovim
 					local ra_target = os.getenv("RA_TARGET")
 					if ra_target then
-						cargo.target = ra_target
-						table.insert(check.extraArgs, "--target")
-						table.insert(check.extraArgs, ra_target)
+						print("using custom target")
+						ra_settings.cargo.target = ra_target
+						table.insert(ra_settings.check.extraArgs, "--target")
+						table.insert(ra_settings.check.extraArgs, ra_target)
 					end
-					local ra_settings = {
-						cargo = cargo,
-						check = check,
-						inlay_hints = inlay_hints,
-						diagnostics = diagnostics,
-						rustfmt = rustfmt,
-					}
-					client.config.settings = {
+
+					local settings = {
 						['rust-analyzer'] = ra_settings,
 					}
-					client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
-				end,
+					--print(vim.inspect(settings));
+					return settings
+				end)(),
 			})
 		end
 	},
