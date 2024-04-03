@@ -451,6 +451,11 @@ require("lazy").setup({
 				},
 				renderer = {
 					symlink_destination = false,
+					icons = {
+						show = {
+							git = false,
+						},
+					},
 				},
 				update_cwd = true,
 				update_focused_file = {
