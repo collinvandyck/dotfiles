@@ -622,7 +622,7 @@ require("lazy").setup({
 						diagnostics = {
 							enable = true,
 							experimental = {
-								enable = true,
+								enable = false,
 							},
 						},
 						rustfmt = {
