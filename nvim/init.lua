@@ -866,6 +866,7 @@ require("lazy").setup({
 			vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 		end,
 	},
+	{ "Eandrju/cellular-automaton.nvim" },
 })
 
 -- important to set this after lazy has finished loading
