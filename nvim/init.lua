@@ -867,6 +867,12 @@ require("lazy").setup({
 		end,
 	},
 	{ "Eandrju/cellular-automaton.nvim" },
+	{
+		"levouh/tint.nvim",
+		config = function()
+			require("tint").setup()
+		end
+	},
 })
 
 -- important to set this after lazy has finished loading
