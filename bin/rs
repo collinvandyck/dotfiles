@@ -7,4 +7,51 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
+query="$@"
+script="$0"
+search="$script --search"
+
+# what does the ripgrep search
+rg() {
+	command rg \
+		--column \
+		--color=always \
+		--line-number \
+		--no-heading \
+		--smart-case "$@"
+}
+
+# performs the fzf
+fzf() {
+	: | command fzf \
+		--query "$query" \
+		--ansi \
+		--disabled \
+		--color "hl:-1:underline,hl+:-1:underline:reverse" \
+		--delimiter : \
+		--preview 'bat --color=always {1} --highlight-line {2}' \
+		--preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+		--prompt '1. ripgrep> ' \
+		--header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' \
+		--bind "start:reload:${search} {q}" \
+		--bind "change:reload:${search} {q} || true" \
+		--bind 'enter:become(vim {1} +{2})' \
+		--bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(2. fzf> )+enable-search+rebind(ctrl-r)+transform-query(echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f)" \
+		--bind "ctrl-r:unbind(ctrl-r)+change-prompt(1. ripgrep> )+disable-search+reload(${search} {q} || true)+rebind(change,ctrl-f)+transform-query(echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r)" \
+		--bind "alt-enter:unbind(change,alt-enter)+change-prompt(2. fzf> )+enable-search+clear-query" 
+}
+
+if [[ $# > 0 ]]; then
+	case $1 in
+		--search)
+			shift
+			rg "$@"
+			;;
+		*)
+			fzf
+			;;
+	esac
+else
+	fzf
+fi
 
