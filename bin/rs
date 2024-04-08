@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# ripgrep search
+#
+# a utility which searches using ripgrep and fzf as well
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+
