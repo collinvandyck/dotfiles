@@ -477,11 +477,13 @@ require("lazy").setup({
 	},
 	{
 		"williamboman/mason.nvim",
+		enabled = false,
 		lazy = false,
 		config = function() require("mason").setup({}) end
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
+		enabled = false,
 		config = function() require("mason-lspconfig").setup({}) end
 	},
 	{
@@ -869,6 +871,7 @@ require("lazy").setup({
 	{ "Eandrju/cellular-automaton.nvim" },
 	{
 		"levouh/tint.nvim",
+		enabled = false,
 		config = function()
 			require("tint").setup()
 		end
