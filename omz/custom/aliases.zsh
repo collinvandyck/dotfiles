@@ -100,3 +100,6 @@ done
 
 # hyperfine
 alias hf='hyperfine 2>/dev/null'
+
+# ripgrep + fzf
+alias rs='~/.dotfiles/bin/rs'
