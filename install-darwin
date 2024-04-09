@@ -161,7 +161,6 @@ brew install --quiet --cask \
 	knockknock \
 	logseq \
 	microsoft-remote-desktop \
-	neovide \
 	ngrok \
 	obsidian \
 	raycast \
