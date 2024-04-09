@@ -2,6 +2,11 @@
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
+# vim
+alias vi=nvim
+alias vim=nvim
+
+
 # rust aliases
 alias co='cargo'
 alias we='watchexec'
