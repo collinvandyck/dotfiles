@@ -205,7 +205,9 @@ fi
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
 
 # neovim
-if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
+echo "Checking for neovim ${DOTFILES_NVIM_VERSION}"
+nvim_version=$(nvim -v 2>/dev/null | head -1 | awk '{print $2}')
+if [[ "$nvim_version" != ${DOTFILES_NVIM_VERSION} ]]; then
 	echo "Installing neovim ${DOTFILES_NVIM_VERSION}"
 	curl -s -L -o /tmp/nvim-macos.tar.gz https://github.com/neovim/neovim/releases/download/${DOTFILES_NVIM_VERSION}/nvim-macos.tar.gz
 	echo "Unpacking neovim"
@@ -215,14 +217,13 @@ if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VER
 	sudo rm -rf /usr/local/nvim-macos
 	sudo mv -f /tmp/nvim-macos /usr/local/nvim-macos
 else
-	echo "neovim ${DOTFILES_NVIM_VERSION} already installed"
+	echo "neovim ${DOTFILES_NVIM_VERSION} already installed: $nvim_version"
+	echo "neovim is located at $(which nvim)"
 fi
 echo "Creating neovim links"
 sudo ln -sf /usr/local/nvim-macos/bin/nvim  /usr/local/bin/nvim
 sudo rm -rf /usr/local/bin/vim
 sudo rm -rf /usr/local/bin/vi
-sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
-sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
 
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
