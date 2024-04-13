@@ -17,7 +17,6 @@
 [alias]
 	b = branch
 	cat = "!git show \"$1:$2\" #"
-	ci = commit
 	co = checkout
 	current-branch = !git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'
 	g = grep --break --heading --line-number

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+git ci "$@"
+git put

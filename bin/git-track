@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+git_current_branch () {
+	local ref
+	ref=$(git symbolic-ref --quiet HEAD 2> /dev/null)
+	local ret=$?
+	if [[ $ret != 0 ]]
+	then
+		[[ $ret == 128 ]] && return
+		ref=$(git rev-parse --short HEAD 2> /dev/null)  || return
+	fi
+	echo ${ref#refs/heads/}
+}
+
+branch=$(git_current_branch)
+if [ -z $branch ]; then
+	exit 1
+fi
+
+git branch --set-upstream-to=origin/${branch}
