@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+if [[ $# > 0 ]]; then
+	tmux rename-window "$@" 2>/dev/null
+else
+	tmux rename-window "$(basename $(pwd))" 2>/dev/null
+fi
+

@@ -1,13 +1,5 @@
-function ci() {
-    msg=${@:-wip}
-    git add -A
-    git commit -m "${msg}"
-}
-
-function cip() {
-    ci ${@}; put
-    fg 2>/dev/null || true
-}
+alias ci='git ci'
+alias cip='git cip'
 
 function bookmark() {
 	name=$(echo "$@" | tr ' ' '-')
