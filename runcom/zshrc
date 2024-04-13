@@ -19,7 +19,11 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 ZSH_THEME="robbyrussell"
 ZSH_THEME="collin"
 
-plugins=(git)
+plugins=(
+	git
+	macos
+	rust
+)
 source $ZSH/oh-my-zsh.sh
 
 HISTFILE="$HOME/.zsh_history"
