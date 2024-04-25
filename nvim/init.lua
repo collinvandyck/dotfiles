@@ -14,6 +14,7 @@ vim.opt.hidden = true
 vim.opt.history = 10000
 vim.opt.hlsearch = false
 vim.opt.ignorecase = true
+vim.opt.jumpoptions = 'stack'
 vim.opt.linebreak = true
 vim.opt.mouse = 'n'
 vim.opt.mousescroll = 'ver:1,hor:1'
