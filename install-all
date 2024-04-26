@@ -21,6 +21,10 @@ if [[ "$(uname)" =~ "Darwin" ]]; then
 	mkdir -p ~/Library/Application\ Support/nushell
 	bin/symlink ~/.dotfiles/nushell/config.nu ~/Library/Application\ Support/nushell
 	bin/symlink ~/.dotfiles/nushell/env.nu ~/Library/Application\ Support/nushell
+
+	# bacon
+	mkdir -p ~/Library/Application\ Support/org.dystroy.bacon
+	bin/symlink ~/.dotfiles/bacon/prefs.toml ~/Library/Application\ Support/org.dystroy.bacon
 else
 	mkdir -p ~/.config/lazygit
 	bin/symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit/config.yml
