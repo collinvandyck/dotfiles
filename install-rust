@@ -8,6 +8,7 @@ echo "Installing rust utilities"
 cargo binstall -y \
 	ast-grep \
 	bacon \
+	cargo-generate \
 	cargo-expand \
 	cargo-nextest \
 	cargo-watch \
