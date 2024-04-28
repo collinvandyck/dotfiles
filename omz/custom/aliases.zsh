@@ -6,13 +6,13 @@
 alias vi=nvim
 alias vim=nvim
 
-
 # rust aliases
 alias co='cargo'
 alias we='watchexec'
 alias wer='we -e rs'
 alias wert='we -e rs cargo t'
 alias cnr='cargo nextest run'
+alias j='just'
 
 # git aliases
 alias gst='git status'
