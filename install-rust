@@ -22,6 +22,7 @@ cargo binstall -y \
 	starship \
 	tealdeer \
 	trunk \
+	wasm-pack \
 	watchexec-cli \
 	;
 
