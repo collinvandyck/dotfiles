@@ -877,6 +877,9 @@ require("lazy").setup({
 			require("tint").setup()
 		end
 	},
+	{
+		"NoahTheDuke/vim-just"
+	},
 })
 
 -- important to set this after lazy has finished loading
