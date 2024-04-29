@@ -28,4 +28,4 @@ done
 npm install --global yarn 
 
 # https://rustwasm.github.io/docs/book/game-of-life/setup.html
-npm install npm@latest -g
+# npm install npm@latest -g
