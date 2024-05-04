@@ -984,6 +984,12 @@ map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
 
+-- this is how you create a command.
+-- you can run it programatically using
+-- 		:lua vim.cmd.Hello()
+vim.api.nvim_create_user_command('Hello', function()
+	print('hello!');
+end, {});
 
 
 -- autocommand examples
