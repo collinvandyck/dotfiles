@@ -499,7 +499,7 @@ require("lazy").setup({
 		config = function()
 			local lsp_util = require "lspconfig/util"
 			local telescope = require 'telescope.builtin'
-			local trouble = require 'trouble.providers.telescope'
+			-- local trouble = require 'trouble.providers.telescope'
 			local custom_attach = function(client, bufnr)
 				local bufopts = { noremap = true, silent = true, buffer = bufnr }
 				local show_help = function()
@@ -513,7 +513,6 @@ require("lazy").setup({
 							"silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
 					end,
 				})
-				--[[
 				vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 					buffer = bufnr,
 					callback = function()
@@ -526,7 +525,6 @@ require("lazy").setup({
 						vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
 					end,
 				})
-				]]
 				vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
 				vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 				vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
