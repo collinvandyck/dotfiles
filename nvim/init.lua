@@ -64,6 +64,34 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	{
+		lazy = false,
+		"rcarriga/nvim-notify",
+		config = function()
+			require("notify").setup({
+				background_colour = "NotifyBackground",
+				fps = 60,
+				icons = {
+					DEBUG = "",
+					ERROR = "",
+					INFO = "",
+					TRACE = "✎",
+					WARN = ""
+				},
+				level = 2,
+				minimum_width = 50,
+				render = "compact",
+				stages = "fade_in_slide_out",
+				time_formats = {
+					notification = "%T",
+					notification_history = "%FT%T"
+				},
+				timeout = 1000,
+				top_down = false
+			})
+			vim.notify = require("notify")
+		end
+	},
+	{
 		"nanotee/zoxide.vim",
 	},
 	{
@@ -636,7 +664,7 @@ require("lazy").setup({
 					-- RA_TARGET=x86_64-pc-windows-gnu neovim
 					local ra_target = os.getenv("RA_TARGET")
 					if ra_target then
-						print("using custom target")
+						require("notify")(ra_target)
 						ra_settings.cargo.target = ra_target
 						table.insert(ra_settings.check.extraArgs, "--target")
 						table.insert(ra_settings.check.extraArgs, ra_target)
@@ -696,13 +724,9 @@ require("lazy").setup({
 					end
 				end,
 				sources = cmp.config.sources({
-					{ name = 'copilot' },
-				}, {
 					{ name = 'nvim_lsp' },
-					{ name = 'nvim_lsp_signature_help' },
 				}, {
-					--					{ name = 'luasnip' },
-					--				}, {
+					{ name = 'luasnip' },
 					{ name = 'buffer' },
 				}),
 				snippet = {
@@ -725,24 +749,6 @@ require("lazy").setup({
 						})[entry.source.name]
 						return item
 					end,
-				},
-				sorting = {
-					priority_weight = 2,
-					comparators = {
-						-- require("copilot_cmp.comparators").prioritize,
-
-						-- Below is the default comparitor list and order for nvim-cmp
-						cmp.config.compare.offset,
-						-- cmp.config.compare.scopes, --this is commented in nvim-cmp too
-						cmp.config.compare.exact,
-						cmp.config.compare.score,
-						cmp.config.compare.recently_used,
-						cmp.config.compare.locality,
-						cmp.config.compare.kind,
-						cmp.config.compare.sort_text,
-						cmp.config.compare.length,
-						cmp.config.compare.order,
-					},
 				},
 				mapping = cmp.mapping.preset.insert({
 					['<C-b>'] = cmp.mapping.scroll_docs(-4),
