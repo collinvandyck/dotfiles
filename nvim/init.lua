@@ -1003,6 +1003,24 @@ vim.api.nvim_create_user_command('Hello', function()
 	print('hello!');
 end, {});
 
+vim.api.nvim_create_user_command('ProfileStart', function()
+	vim.cmd([[
+		profile start /tmp/neovim-profile.log
+		profile func *
+		profile file *
+	]])
+	vim.notify("started profiling")
+end, {});
+
+vim.api.nvim_create_user_command('ProfileStop', function()
+	vim.cmd([[
+		profile stop
+		edit /tmp/neovim-profile.log
+	]])
+	vim.notify("stopped profiling")
+end, {});
+
+
 
 -- autocommand examples
 -- VimEnter: when we enter vim for the first time.
