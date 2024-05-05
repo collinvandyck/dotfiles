@@ -16,6 +16,7 @@
   "fzf.vim": { "branch": "master", "commit": "269c08641ed5a842a19c03ca14e3eac3ac7ea74b" },
   "indent-blankline.nvim": { "branch": "master", "commit": "3d08501caef2329aba5121b753e903904088f7e6" },
   "lazy.nvim": { "branch": "main", "commit": "3f13f080434ac942b150679223d54f5ca91e0d52" },
+  "lox.vim": { "branch": "master", "commit": "4b1950d299fe804925162b3530ce570ed73d8fcd" },
   "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
   "mini.pairs": { "branch": "main", "commit": "5c975d8f68dc1e11bf4b20ced71e7987ed782513" },
   "moonfly": { "branch": "master", "commit": "d43001d901599ba7273dc5700db26948ffc0bac6" },

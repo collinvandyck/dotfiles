@@ -878,6 +878,10 @@ require("lazy").setup({
 	{
 		"NoahTheDuke/vim-just"
 	},
+	{
+		-- lox syntax highlighting
+		"timmyjose-projects/lox.vim"
+	},
 })
 
 -- important to set this after lazy has finished loading
