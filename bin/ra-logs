@@ -3,5 +3,5 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
-tail -n 1000 -F /Users/collin/.local/state/nvim/lsp.log | sed 's/\\n/\
+tail -n 1000 -F ~/.local/state/nvim/lsp.log | sed -u 's/\\n/\
 /g' | tspin
