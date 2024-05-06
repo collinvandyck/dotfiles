@@ -890,6 +890,15 @@ require("lazy").setup({
 		-- lox syntax highlighting
 		"timmyjose-projects/lox.vim"
 	},
+	{
+		"shortcuts/no-neck-pain.nvim",
+		version = "*",
+		config = function()
+			require("no-neck-pain").setup({
+				width = 120,
+			})
+		end
+	},
 })
 
 -- important to set this after lazy has finished loading
