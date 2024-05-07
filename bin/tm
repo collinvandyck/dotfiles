@@ -11,7 +11,7 @@ if [[ $# > 0 ]]; then
 fi
 
 if [ -f ~/.dotfiles/tmuxinator/$session.yml ]; then
-	exec tmuxinator $session
+	exec tmuxinator start $session "$@"
 fi
 
 if [ -z "$TMUX" ]; then
