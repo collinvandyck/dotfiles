@@ -4,7 +4,7 @@ root: ~/code/rippling-client/rippling-rust
 windows:
   - editor: rrv
   - rr: 
-  - ed-logs:
+  - nvim-logs:
       layout: even-vertical
       panes: 
         - nvim-logs

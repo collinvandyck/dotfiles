@@ -1,0 +1,7 @@
+name: prs
+root: ~/code/rippling-client/worktrees/prs/rippling-rust
+
+windows:
+  - pr:
+      panes: 
+        - gh pr checkout <%= @args[0] %> && git pull && tmux splitw -h && tmux select-pane -t 0 && vi

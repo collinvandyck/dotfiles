@@ -1,0 +1,12 @@
+name: ripwin
+root: ~/code/rippling-client/rippling-rust
+
+windows:
+  - ripwin:
+      layout: even-horizontal
+      panes: 
+        - ssh ripwin2
+        - ssh ripwin2
+
+
+
