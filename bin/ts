@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# tmuxinator chrome
+#
+# usage: ts [name]
+
+set -e # exit on failure
+set -u # fail if vars are not defined
+
+if [[ $# == 0 ]]; then
+	exec tmuxinator "$@"
+else
+	exec tmuxinator start $1 
+fi

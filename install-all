@@ -31,6 +31,9 @@ else
 	bin/symlink ~/.dotfiles/urlwatch ~/.cofnig/urlwatch
 fi
 
+bin/symlink ~/.dotfiles/tmuxinator             ~/.config/tmuxinator
+bin/symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
+
 bin/symlink ~/.dotfiles/git/.gitignore_global  ~
 bin/symlink ~/.dotfiles/git/.gitconfig         ~
 bin/symlink ~/.dotfiles/runcom/.imwheelrc      ~

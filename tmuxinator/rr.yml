@@ -1,0 +1,13 @@
+name: rr
+root: ~/code/rippling-client/rippling-rust
+
+windows:
+  - editor: rrv
+  - rr: 
+  - ed-logs:
+      layout: even-vertical
+      panes: 
+        - nvim-logs
+        - ra-logs
+
+
