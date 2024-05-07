@@ -17,7 +17,6 @@ brew update --quiet
 # taps
 brew tap homebrew/cask-fonts
 brew tap samwho/spacer
-brew tap homebrew/cask-versions
 
 brew install --quiet --formula \
 	asciinema \
@@ -118,6 +117,7 @@ brew install --quiet --formula \
 	tailspin \
 	tig \
 	tmux \
+	tmuxinator \
 	tokei \
 	tree \
 	tree-sitter \
