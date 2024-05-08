@@ -163,7 +163,6 @@ brew install --quiet --cask \
 	ngrok \
 	obsidian \
 	raycast \
-	session-manager-plugin \
 	signal \
 	slack \
 	stellarium \
