@@ -75,7 +75,6 @@ sudo apt install -y \
   psmisc \
   python3-pip \
   python-is-python3 \
-  python3.10-venv \
   ripgrep \
   shellcheck \
   sqlite3 \
