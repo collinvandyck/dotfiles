@@ -168,10 +168,11 @@ brew install --quiet --cask \
 	stellarium \
 	sublime-text \
 	tailscale \
-	unnaturalscrollwheels \
 	utm \
 	yubico-yubikey-manager \
 	;
+
+brew remove -f unnaturalscrollwheels session-manager-plugin
 
 brew install --quiet --cask --no-quarantine \
 	wine-stable \
