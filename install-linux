@@ -80,6 +80,7 @@ sudo apt install -y \
   tig \
   tmux \
   tree \
+  libtree-sitter-dev \
   unzip \
   valgrind \
   wget \
@@ -91,6 +92,24 @@ sudo apt autoremove -y
 pipx install neovim-remote
 
 sudo chsh -s $(which zsh) $USER
+
+# docker installation
+(
+	# Install the keyring
+	if ! [ -f /etc/apt/keyrings/docker.asc ]; then
+		sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+		sudo chmod a+r /etc/apt/keyrings/docker.asc
+	fi
+	# Add the repository to Apt sources:
+	if ! [ -f /etc/apt/sources.list.d/docker.list ]; then
+		echo \
+		  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+		  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+		  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+		sudo apt-get update
+	fi
+	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
+)
 
 # go
 if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
