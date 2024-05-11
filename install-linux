@@ -93,6 +93,32 @@ pipx install neovim-remote
 
 sudo chsh -s $(which zsh) $USER
 
+# add tailscale
+(
+
+	# Exit node stuff
+	ts_conf=/etc/sysctl.d/99-tailscale.conf
+	if ! [ -f $ts_conf ]; then
+		echo 'net.ipv4.ip_forward = 1' | sudo tee -a $ts_conf
+		echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
+		sudo sysctl -p $ts_conf
+	fi
+ 
+
+	# Add Tailscale's GPG key
+	sudo mkdir -p --mode=0755 /usr/share/keyrings
+	curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+	# Add the tailscale repository
+	curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+	# Install Tailscale
+	sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth 
+	# Start Tailscale!
+	sudo tailscale up --advertise-exit-node
+
+	# enable tailscale nginx auth
+	sudo systemctl enable --now tailscale.nginx-auth.socket
+)
+
 # docker installation
 (
 	# Install the keyring
