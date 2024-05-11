@@ -32,7 +32,6 @@ cargo binstall -y \
 	watchexec-cli \
 	;
 
-cargo binstall --locked -y \
-	xh \
-	;
+cargo binstall -y atuin --version 18.1.0
+cargo binstall -y --locked xh 
 
