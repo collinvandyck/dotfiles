@@ -404,10 +404,13 @@
 	export TMUX_POWERLINE_SEG_XKB_LAYOUT_ICON="⌨ "
 # }
 
+export TMUX_POWERLINE_DEFAULT_BACKGROUND_COLOR=""
+export TMUX_POWERLINE_DEFAULT_FOREGROUND_COLOR=""
+
 export TMUX_POWERLINE_WINDOW_STATUS_CURRENT=""
 export TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
-		"hostname 33 0"
-		"tmux_session_info 148 234"
+		"hostname 17 15"
+		"tmux_session_info 26 15"
 		#"mode_indicator 165 0"
 		#"ifstat 30 255"
 		#"ifstat_sys 30 255"
