@@ -526,7 +526,7 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 					buffer = bufnr,
 					callback = function()
-						vim.api.nvim_command("silent! lua require('vim.lsp.buf').format({})")
+						vim.api.nvim_command("lua require('vim.lsp.buf').format({})")
 						--[[
 						vim.api.nvim_command(
 							"silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")

@@ -9,9 +9,13 @@ set -u # fail if vars are not defined
 echo "Updating rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
 export PATH="$HOME/.cargo/bin:$PATH"
+rustup default 1.78.0
 rustup component add rust-src
 rustup component add rust-analyzer
 rustup target add wasm32-unknown-unknown
+rustup target add x86_64-pc-windows-gnu
+rustup target add aarch64-apple-darwin
+rustup toolchain install nightly-2024-03-29
 
 echo "Updating sqlite"
 sqlite=/usr/local/sqlite3/bin/sqlite3
@@ -30,21 +34,22 @@ fi
 echo "installing fzf"
 if [ ! -d ~/.fzf ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	~/.fzf/install --all --no-zsh
+	~/.fzf/install --all
 else 
 	(cd ~/.fzf && git pull)
-	~/.fzf/install --all --no-zsh
+	~/.fzf/install --all
 fi
 
 # install powerline
-echo "installing powerline"
-if [ ! -e ~/.powerline ]; then
-	git clone https://github.com/powerline/powerline.git ~/.powerline
-fi
+#echo "installing powerline"
+#if [ ! -e ~/.powerline ]; then
+	#git clone https://github.com/powerline/powerline.git ~/.powerline
+#fi
 
 # ensure powerline-status
-echo "installing powerline-status"
-pipx install powerline-status
+#echo "installing powerline-status"
+#pipx install powerline-status
+#pip3 install powerline-status
 
 # oh my zsh
 echo "installing oh-my-zsh"

@@ -9,6 +9,7 @@ cargo binstall -y \
 	ag \
 	ast-grep \
 	bacon \
+	bat \
 	cargo-generate \
 	cargo-expand \
 	cargo-nextest \
@@ -16,11 +17,14 @@ cargo binstall -y \
 	diskonaut \
 	erdtree \
 	eva \
+	fd-find \
 	gitui \
+	just \
 	lsd \
 	mdbook \
 	miniserve \
 	pipr \
+	ripgrep \
 	starship \
 	tealdeer \
 	trunk \

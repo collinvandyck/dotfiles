@@ -28,11 +28,7 @@ done
 # addPath adds the path if it exists and is not already in PATH
 addPath() {
 	local add=$1
-	for p in ${paths[@]}; do
-		if [ "$p" = "$add" ]; then
-			return 0
-		fi
-	done
+	paths=("${(@)paths:#$add}")
 	if ! [ -d $add ]; then
 		return 0
 	fi

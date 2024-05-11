@@ -3,6 +3,22 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
+# add git via xcode cli tools
+if ! command -v git &>/dev/null; then
+	xcode-select --install
+fi
+
+# setup rosetta
+if [[ `uname -m` != "arm64" ]] ; then
+    echo "not arm64"
+else
+    if ! (arch -arch x86_64 uname -m > /dev/null) ; then
+        echo "arm64: no Rosetta installed"
+        softwareupdate --install-rosetta --agree-to-license
+    fi
+fi
+
+
 # enable homebrew in path in case we just installed it.
 export PATH=/opt/homebrew/bin:$PATH
 
@@ -16,136 +32,39 @@ brew update --quiet
 
 # taps
 brew tap homebrew/cask-fonts
-brew tap samwho/spacer
 
 brew install --quiet --formula \
-	asciinema \
-	autoconf \
-	automake \
-	autossh \
-	bandwhich \
-	bash \
-	bat \
-	bottom \
+	fd \
 	broot \
 	btop \
-	caddy \
-	cmake \
-	cowsay \
-	curl \
-	datasette \
 	direnv \
-	dust \
-	dnsmasq \
-	dua-cli \
-	fd \
-	fftw \
-	fish \
-	fswatch \
-	fx \
-	gcc \
-	gh \
-	gitui \
-	git-delta \
-	gnuplot \
-	gource \
-	gping \
-	graphviz \
-	groff \
 	glow \
-	gum \
-	helix \
-	hexyl \
+	gh \
 	htop \
-	httpie \
-	hugo \
-	hyperfine \
-	imagemagick \
-	jpeg \
-	jq \
-	just \
 	jesseduffield/lazygit/lazygit \
-	lcov \
-	libsodium \
-	libtermkey \
-	libtool \
-	libvterm \
-	lima \
-	lnav \
+	lazygit \
 	lua \
 	lua-language-server \
 	luajit-openresty \
-	luv \
-	make \
-	maven \
 	mingw-w64 \
-	mitmproxy \
-	mosh \
-	msgpack \
-	mutagen-io/mutagen/mutagen \
-	neofetch \
-	ninja \
-	node \
-	nushell \
-	nvm \
-	openssh \
-	openssl@3 \
-	pandoc \
 	pam-reattach \
-	pipx \
-	pnpm \
-	portaudio \
-	protoc-gen-go \
-	psgrep \
 	pstree \
-	pv \
-	pyenv \
-	pyenv-virtualenv \
-	python@3.10 \
-	qemu \
 	ripgrep \
-	sad \
-	shellcheck \
-	sampler \
-	spacer \
-	speedtest-cli \
-	spotify-tui \
-	starship \
-	sysdig \
-	telnet \
-	temporal \
 	tailspin \
 	tig \
-	tmux \
-	tmuxinator \
-	tokei \
 	tree \
-	tree-sitter \
-	typescript-language-server \
-	ttyplot \
-	universal-ctags \
-	vhs \
-	wasmer \
-	watch \
-	wget \
-	wireguard-tools \
-	xz \
-	youtube-dl \
-	yt-dlp \
-	yq \
-	zellij \
-	zenith \
-	zig \
+	tmux \
 	zoxide \
-	zsh-autosuggestions \
 	;
 
 brew install --quiet --cask \
+	1password \
 	alacritty \
-	discord \
 	bartender \
 	caffeine \
 	chatbox \
+	cleanshot \
+	discord \
 	discord \
 	docker \
 	firefox \
@@ -153,35 +72,25 @@ brew install --quiet --cask \
 	font-fantasque-sans-mono-nerd-font \
 	font-hack-nerd-font \
 	google-chrome \
-	hammerspoon \
 	imhex \
-	istat-menus \
 	kitty \
-	knockknock \
-	logseq \
+	logi-options-plus \
 	microsoft-remote-desktop \
 	ngrok \
 	obsidian \
 	raycast \
 	signal \
 	slack \
-	stellarium \
+	steam \
+	spotify \
 	sublime-text \
 	tailscale \
 	utm \
 	yubico-yubikey-manager \
+	zoom \
 	;
 
-brew remove -f unnaturalscrollwheels session-manager-plugin
-
-brew install --quiet --cask --no-quarantine \
-	wine-stable \
-	;
-
-brew remove --quiet -f \
-	alt-tab \
-	xquartz \
-	;
+brew autoremove;
 
 # install aws cli v2
 if ! aws --version; then
@@ -226,17 +135,6 @@ sudo rm -rf /usr/local/bin/vi
 
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
-
-# flutter
-flutter_ver=arm64_3.7.5-stable
-flutter_loc=/usr/local/flutter
-if [ ! -d $flutter_loc ]; then
-	cd $(mktemp -d)
-	curl -s -L -o flutter.zip https://storage.googleapis.com/flutter_infra_release/releases/stable/macos/flutter_macos_${flutter_ver}.zip
-	unzip flutter.zip
-	sudo mv flutter /usr/local/flutter
-	cd ~
-fi
 
 # set darwin defaults
 defaults write com.apple.Dock autohide-delay -float 0
