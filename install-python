@@ -1,16 +1,3 @@
 #!/usr/bin/env bash
 
-echo "Setting up python"
-
-cd ~/.dotfiles
-bin/symlink $(which python3) /usr/local/bin/python
-bin/symlink $(which pip3) /usr/local/bin/pip
-
-pipx install pyright
-pipx install visidata
-pipx install urlwatch
-pipx install neovim-remote
-
-if command -v pipx &>/dev/null; then
-	pipx install toolong
-fi
+# clean start. nothing installed for python atm.

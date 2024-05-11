@@ -70,8 +70,6 @@ sudo apt install -y \
   openssh-server \
   pipx \
   pkg-config \
-  powerline \
-  powerline-gitstatus \
   psmisc \
   python3-pip \
   python-is-python3 \

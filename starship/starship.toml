@@ -5,6 +5,8 @@ add_newline = false
 
 [git_status]
 style = 'cyan'
+ignore_submodules = true
+#format = '([\[$up_to_date\]]($style) )'
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
