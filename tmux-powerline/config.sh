@@ -406,12 +406,12 @@
 
 export TMUX_POWERLINE_WINDOW_STATUS_CURRENT=""
 export TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
+		"hostname 33 0"
 		"tmux_session_info 148 234"
-		#"hostname 33 0"
 		#"mode_indicator 165 0"
 		#"ifstat 30 255"
 		#"ifstat_sys 30 255"
-		"lan_ip 24 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}"
+		#"lan_ip 24 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}"
 		#"vpn 24 255 ${TMUX_POWERLINE_SEPARATOR_RIGHT_THIN}"
 		#"wan_ip 24 255"
 		#"vcs_branch 29 88"
