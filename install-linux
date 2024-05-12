@@ -137,6 +137,15 @@ sudo chsh -s $(which zsh) $USER
 	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
 )
 
+# lazygit
+(
+	cd $(mktemp -d)
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+	tar xf lazygit.tar.gz lazygit
+	sudo install lazygit /usr/local/bin
+)
+
 # go
 if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
 	curl -s -L -o /tmp/$DOTFILES_GO_FULL_VERSION https://go.dev/dl/$DOTFILES_GO_FULL_VERSION
