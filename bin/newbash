@@ -7,7 +7,7 @@
 # # create or open the script named foo
 # newgo foo 
 
-set -e
+set -euo pipefail
 
 name=${1}
 dir=~/.dotfiles/bin
@@ -29,8 +29,7 @@ if [ ! -f $file ]; then
 cat <<eos > $file
 #!/usr/bin/env bash
 
-set -e # exit on failure
-set -u # fail if vars are not defined
+set -euo pipefail
 
 eos
 fi
