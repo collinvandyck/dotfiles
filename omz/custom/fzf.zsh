@@ -21,7 +21,7 @@ export FZF_DEFAULT_OPTS="\
 	--no-hscroll \
 	"
 
-export FZF_CTRL_T_COMMAND="fd --hidden --exclude '.git' --exclude 'Library'"
+export FZF_CTRL_T_COMMAND="fd -I --hidden --exclude '.git' --exclude 'Library'"
 export FZF_CTRL_T_OPTS="
 	--height 100%
 	--scheme path
