@@ -95,7 +95,6 @@ sudo chsh -s $(which zsh) $USER
 
 # add tailscale
 (
-
 	# Exit node stuff
 	ts_conf=/etc/sysctl.d/99-tailscale.conf
 	if ! [ -f $ts_conf ]; then
@@ -103,7 +102,6 @@ sudo chsh -s $(which zsh) $USER
 		echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
 		sudo sysctl -p $ts_conf
 	fi
- 
 
 	# Add Tailscale's GPG key
 	sudo mkdir -p --mode=0755 /usr/share/keyrings
@@ -114,7 +112,6 @@ sudo chsh -s $(which zsh) $USER
 	sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth 
 	# Start Tailscale!
 	sudo tailscale up --advertise-exit-node
-
 	# enable tailscale nginx auth
 	sudo systemctl enable --now tailscale.nginx-auth.socket
 )
