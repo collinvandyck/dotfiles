@@ -7,5 +7,13 @@ if [ -z $gh ]; then
 	exit 1
 fi
 
-exec $gh "$@"
+if [ $# -gt 0 ]; then
+	cmd=`compgen -A function | grep "^$1\$" | head -1`
+	if ! [ -z $cmd ]; then
+		shift;
+		$cmd "$@"
+		exit 0
+	fi
+fi
 
+exec $gh "$@"
