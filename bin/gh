@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+gh=$(searchpath gh | grep -v .dotfiles | head -1)
+if [ -z $gh ]; then
+	exit 1
+fi
+
+exec $gh "$@"
+
