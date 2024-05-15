@@ -21,7 +21,7 @@
   "lualine.nvim": { "branch": "master", "commit": "0a5a66803c7407767b799067986b4dc3036e1983" },
   "mini.pairs": { "branch": "main", "commit": "5c975d8f68dc1e11bf4b20ced71e7987ed782513" },
   "moonfly": { "branch": "master", "commit": "d43001d901599ba7273dc5700db26948ffc0bac6" },
-  "neoconf.nvim": { "branch": "main", "commit": "43b197ed8fc4dbe33cb2d37e14259cc97a2c3c63" },
+  "neoconf.nvim": { "branch": "main", "commit": "d94663fc86813b00bbb99ed40f9822e18cf4e831" },
   "neodev.nvim": { "branch": "main", "commit": "ce9a2e8eaba5649b553529c5498acb43a6c317cd" },
   "nerdcommenter": { "branch": "master", "commit": "7bb1f72e802a80e37bdda5f6906c69b5a93de1eb" },
   "no-neck-pain.nvim": { "branch": "main", "commit": "34625be12649666b7ccb08761087cc97bb788552" },
