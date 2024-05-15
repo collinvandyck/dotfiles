@@ -497,12 +497,20 @@ require("lazy").setup({
 	{
 		"williamboman/mason.nvim",
 		enabled = false,
+		priority = 1,
 		lazy = false,
-		config = function() require("mason").setup({}) end
+		config = function()
+			require("mason").setup({
+
+			})
+		end
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
 		enabled = false,
+		dependencies = {
+			"williamboman/mason.nvim",
+		},
 		config = function() require("mason-lspconfig").setup({}) end
 	},
 	{
@@ -902,7 +910,11 @@ require("lazy").setup({
 					previewer = false,
 				},
 				post_restore_cmds = { function()
-					require("nvim-tree.api").tree.open({ focus = false })
+					local nt_api = require("nvim-tree.api")
+					if require('nvim-tree.view').is_visible() then
+						nt_api.tree.open({ focus = false })
+						vim.notify("opened!")
+					end
 				end }
 			}
 		end,
