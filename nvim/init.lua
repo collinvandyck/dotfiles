@@ -534,7 +534,7 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 					buffer = bufnr,
 					callback = function()
-						vim.api.nvim_command("lua require('vim.lsp.buf').format({nil})")
+						require('vim.lsp.buf').format({ nil })
 						--[[
 						vim.api.nvim_command(
 							"silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
@@ -943,6 +943,10 @@ require("lazy").setup({
 				-- Configuration here, or leave empty to use defaults
 			})
 		end
+	},
+	{
+		'stevearc/dressing.nvim',
+		opts = {},
 	},
 	"nanotee/zoxide.vim",
 	"NoahTheDuke/vim-just",
