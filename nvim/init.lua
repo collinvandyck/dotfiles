@@ -1,3 +1,4 @@
+--
 -- disable lsp logging unless we need to troubleshoot
 vim.lsp.set_log_level("off")
 vim.opt.ai = true
@@ -30,6 +31,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline = ""
 vim.opt.tabstop = 4
+
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -90,9 +92,6 @@ require("lazy").setup({
 			})
 			vim.notify = require("notify")
 		end
-	},
-	{
-		"nanotee/zoxide.vim",
 	},
 	{
 		"folke/zen-mode.nvim",
@@ -185,7 +184,6 @@ require("lazy").setup({
 			},
 		},
 	},
-	{ "nvim-telescope/telescope-ui-select.nvim", },
 	{
 		"nvim-tree/nvim-web-devicons",
 		opts = {
@@ -372,6 +370,7 @@ require("lazy").setup({
 		tag = '0.1.5',
 		dependencies = {
 			"stevearc/aerial.nvim",
+			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		config = function()
 			local actions = require("telescope.actions")
@@ -427,6 +426,7 @@ require("lazy").setup({
 			}
 			require("telescope").load_extension("ui-select")
 			require("telescope").load_extension("aerial")
+			require("telescope").load_extension("session-lens")
 		end
 	},
 	{
@@ -526,7 +526,7 @@ require("lazy").setup({
 				vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 					buffer = bufnr,
 					callback = function()
-						vim.api.nvim_command("lua require('vim.lsp.buf').format({})")
+						vim.api.nvim_command("lua require('vim.lsp.buf').format({nil})")
 						--[[
 						vim.api.nvim_command(
 							"silent! lua require('vim.lsp.buf').code_action({ context = { only = { 'source.organizeImports' } }, apply = true})")
@@ -874,13 +874,6 @@ require("lazy").setup({
 		end
 	},
 	{
-		"NoahTheDuke/vim-just"
-	},
-	{
-		-- lox syntax highlighting
-		"timmyjose-projects/lox.vim"
-	},
-	{
 		"shortcuts/no-neck-pain.nvim",
 		version = "*",
 		config = function()
@@ -889,6 +882,36 @@ require("lazy").setup({
 			})
 		end
 	},
+	{
+		"rmagatti/auto-session",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function()
+			vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+			require("auto-session").setup {
+				log_level = vim.log.levels.ERROR,
+				auto_session_suppress_dirs = { "~/", "~/Downloads", "/" },
+				-- This will only work if Telescope.nvim is installed
+				-- The following are already the default values, no need to provide them if these are already the settings you want.
+				session_lens = {
+					-- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+					buftypes_to_ignore = {}, -- list of buffer types what should not be deleted from current session
+					load_on_setup = true,
+					theme_conf = { border = true },
+					previewer = false,
+				},
+				post_restore_cmds = { function()
+					require("nvim-tree.api").tree.open({ focus = false })
+				end }
+			}
+		end,
+	},
+	"nanotee/zoxide.vim",
+	"NoahTheDuke/vim-just",
+	"timmyjose-projects/lox.vim",
+	--"chrisbra/Colorizer",
+	"mtdl9/vim-log-highlighting",
 })
 
 -- important to set this after lazy has finished loading
