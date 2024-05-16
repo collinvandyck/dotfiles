@@ -60,7 +60,6 @@ brew install --quiet --formula \
 brew install --quiet --cask \
 	1password \
 	alacritty \
-	bartender \
 	caffeine \
 	chatbox \
 	cleanshot \
