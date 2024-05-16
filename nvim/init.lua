@@ -10,7 +10,6 @@ vim.opt.background = 'dark'
 vim.opt.cursorline = true
 vim.opt.equalalways = false
 vim.opt.expandtab = false
-vim.opt.foldenable = false
 vim.opt.hidden = true
 vim.opt.history = 10000
 vim.opt.hlsearch = false
@@ -955,6 +954,26 @@ require("lazy").setup({
 					}
 				}
 			})
+		end
+	},
+	{
+		"kevinhwang91/nvim-ufo",
+		dependencies = {
+			"kevinhwang91/promise-async",
+		},
+		enabled = false,
+		config = function()
+			--vim.o.foldcolumn = '1' -- '0' is not bad
+			--vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+			--vim.o.foldlevelstart = 99
+			--vim.o.foldenable = true
+			--vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
+			--vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
+			--require('ufo').setup({
+			--provider_selector = function(bufnr, filetype, buftype)
+			--return { 'treesitter', 'indent' }
+			--end
+			--})
 		end
 	},
 	"nanotee/zoxide.vim",
