@@ -10,8 +10,10 @@ cargo binstall -y \
 	ast-grep \
 	bacon \
 	bat \
+	cargo-asm \
 	cargo-generate \
 	cargo-expand \
+	cargo-lipo \
 	cargo-nextest \
 	cargo-watch \
 	diskonaut \
