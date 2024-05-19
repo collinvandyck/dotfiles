@@ -17,6 +17,7 @@ usage() {
 	exit 1
 }
 
+addmake=""
 if [ "$name" = "" ]; then
 	name=test
 	dir=$(mktemp -d)
