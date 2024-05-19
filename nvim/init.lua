@@ -1011,7 +1011,7 @@ function ToggleQuickfix()
 end
 
 map('n', '<Leader>i', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true })
-map('n', 'qi', '<cmd>lua toggle_quickfix()<CR>', { noremap = true, silent = true })
+map('n', 'qi', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true })
 map('n', 'qg', ':Telescope live_grep<CR>', { noremap = true })
 map('n', '<C-j>', ':cn<CR>', { noremap = true, silent = true })
 map('n', '<C-k>', ':cp<CR>', { noremap = true, silent = true })
