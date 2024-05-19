@@ -5,4 +5,4 @@
 
 set -euo pipefail
 
-head -$(( $(tput lines) - 4 ))
+head -$(( $(tput lines) - 4 )) "$@"
