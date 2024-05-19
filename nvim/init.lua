@@ -999,7 +999,7 @@ vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 local map = vim.api.nvim_set_keymap
 
 -- q leader key maps
-function toggle_quickfix()
+function ToggleQuickfix()
 	local windows = vim.fn.getwininfo()
 	for _, win in pairs(windows) do
 		if win["quickfix"] == 1 then
@@ -1010,7 +1010,7 @@ function toggle_quickfix()
 	vim.cmd.copen()
 end
 
-map('n', '<Leader>i', '<cmd>lua toggle_quickfix()<CR>', { noremap = true, silent = true })
+map('n', '<Leader>i', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true })
 map('n', 'qi', '<cmd>lua toggle_quickfix()<CR>', { noremap = true, silent = true })
 map('n', 'qg', ':Telescope live_grep<CR>', { noremap = true })
 map('n', '<C-j>', ':cn<CR>', { noremap = true, silent = true })
