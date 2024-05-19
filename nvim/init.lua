@@ -1117,9 +1117,11 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 	group = "QuitHooks",
 	pattern = { "*" },
 	callback = function()
+		local tab = vim.api.nvim_get_current_tabpage()
+		local wins = vim.api.nvim_tabpage_list_wins(tab)
 		local normal_found = false
 		local nvim_tree_win = nil
-		for _, win in ipairs(vim.api.nvim_list_wins()) do
+		for _, win in ipairs(wins) do
 			local buf = vim.api.nvim_win_get_buf(win);
 			local ft = vim.api.nvim_buf_get_option(buf, 'filetype');
 			local bt = vim.api.nvim_buf_get_option(buf, 'buftype');
