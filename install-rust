@@ -21,6 +21,7 @@ cargo binstall -y \
 	eva \
 	fd-find \
 	gitui \
+	hyperfine \
 	just \
 	lsd \
 	mdbook \
