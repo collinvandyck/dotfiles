@@ -1028,15 +1028,6 @@ vim.api.nvim_command('iabbrev tehn then')
 vim.api.nvim_command('iabbrev reutrn return')
 vim.api.nvim_command('iabbrev reutnr return')
 
--- osc52 copy to clipboard
--- vim.keymap.set('n', '<leader>c', require('osc52').copy_operator, {expr = true })
--- vim.keymap.set('n', '<leader>cc', '<leader>c_', {remap = true})
--- vim.keymap.set('v', '<leader>c', require('osc52').copy_visual)
-
--- I want to start using , and ; to repeat motions, so this is not going to work
--- for now.
--- map('n', ',', 'zz', { noremap = true })
-
 map('n', '<M-i>', 'zt', { noremap = true })
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', { noremap = true })
 map('n', '<C-g>', ':GFiles<CR>', { noremap = true })
