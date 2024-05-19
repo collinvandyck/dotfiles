@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# hd: head: prompt-specific head directive to only show the lines that will fit
+# on the current terminal window.
+
+set -euo pipefail
+
+head -$(( $(tput lines) - 4 ))
