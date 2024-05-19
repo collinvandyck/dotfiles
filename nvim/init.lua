@@ -1087,9 +1087,8 @@ map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
 
--- this is how you create a command.
--- you can run it programatically using
--- 		:lua vim.cmd.Hello()
+-- :lua vim.cmd.Hello()
+-- :Hello
 vim.api.nvim_create_user_command('Hello', function()
 	vim.notify("Hello")
 end, {});
@@ -1111,7 +1110,8 @@ vim.api.nvim_create_user_command('ProfileStop', function()
 	vim.notify("stopped profiling")
 end, {});
 
-
+-- if while closing a buffer we only have one normal buffer left, close
+-- nvim-tree so that the tab is destroyed.
 vim.api.nvim_create_augroup("QuitHooks", { clear = true })
 vim.api.nvim_create_autocmd({ "QuitPre" }, {
 	group = "QuitHooks",
@@ -1119,7 +1119,7 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 	callback = function()
 		local tab = vim.api.nvim_get_current_tabpage()
 		local wins = vim.api.nvim_tabpage_list_wins(tab)
-		local normal_found = false
+		local normals = 0
 		local nvim_tree_win = nil
 		for _, win in ipairs(wins) do
 			local buf = vim.api.nvim_win_get_buf(win);
@@ -1128,54 +1128,11 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 			if ft == 'NvimTree' then
 				nvim_tree_win = win
 			elseif bt == "" then
-				normal_found = true
+				normals = normals + 1
 			end
-			if nvim_tree_win and not normal_found then
-				vim.api.nvim_win_close(win, false)
-			end
+		end
+		if nvim_tree_win and normals == 1 then
+			vim.api.nvim_win_close(nvim_tree_win, false)
 		end
 	end,
 })
-
--- autocommand examples
--- VimEnter: when we enter vim for the first time.
---[[
-vim.api.nvim_create_augroup("Startup", {clear=true})
-vim.api.nvim_create_autocmd({"VimEnter"}, {
-	group = "Startup",
-	pattern = {"*"},
-	callback = function(ev)
-		local bufnr = vim.api.nvim_get_current_buf()
-		local buf_name = vim.api.nvim_buf_get_name(bufnr)
-		local buf_line_count = vim.api.nvim_buf_line_count(bufnr)
-
-		if buf_name == "" and buf_line_count == 1 then
-			vim.cmd("silent! NvimTreeToggle")
-			vim.cmd("wincmd l")
-		end
-	end,
-})
---]]
-
---[[
--- Always toggle nvimtree when creating a new tab
-vim.api.nvim_create_augroup("TabNew", {clear=true})
-vim.api.nvim_create_autocmd({"TabNew"}, {
-	group = "TabNew",
-	pattern = {"*"},
-	callback = function(ev)
-		vim.cmd("silent! NvimTreeToggle")
-	end,
-})
-
-
-vim.api.nvim_create_augroup("CommandLine", {clear=true})
-vim.api.nvim_create_autocmd({"CmdlineLeave"}, {
-	group = "CommandLine",
-	pattern = {"*"},
-	callback = function(ev)
-		vim.defer_fn( function()vim.cmd('echom ""') end, 3000)
-	end,
-})
-
---]]
