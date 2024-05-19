@@ -1091,7 +1091,7 @@ map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
 -- you can run it programatically using
 -- 		:lua vim.cmd.Hello()
 vim.api.nvim_create_user_command('Hello', function()
-	print('hello!');
+	vim.notify("Hello")
 end, {});
 
 vim.api.nvim_create_user_command('ProfileStart', function()
@@ -1112,6 +1112,23 @@ vim.api.nvim_create_user_command('ProfileStop', function()
 end, {});
 
 
+vim.api.nvim_create_augroup("QuitHooks", { clear = true })
+vim.api.nvim_create_autocmd({ "QuitPre" }, {
+	group = "QuitHooks",
+	pattern = { "*" },
+	callback = function(ev)
+		if #vim.api.nvim_list_wins() ~= 2 then
+			return
+		end
+		for _, win in ipairs(vim.api.nvim_list_wins()) do
+			local buf = vim.api.nvim_win_get_buf(win);
+			local ft = vim.api.nvim_buf_get_option(buf, 'filetype');
+			if ft == 'NvimTree' and buf ~= vim.api.nvim_get_current_buf() then
+				vim.api.nvim_win_close(win, false)
+			end
+		end
+	end,
+})
 
 -- autocommand examples
 -- VimEnter: when we enter vim for the first time.
