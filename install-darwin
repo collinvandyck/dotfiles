@@ -30,9 +30,6 @@ fi
 # update homebrew packages
 brew update --quiet
 
-# taps
-brew tap homebrew/cask-fonts
-
 brew install --quiet --formula \
 	fd \
 	broot \
