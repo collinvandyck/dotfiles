@@ -10,6 +10,7 @@ vim.opt.background = 'dark'
 vim.opt.cursorline = true
 vim.opt.equalalways = false
 vim.opt.expandtab = false
+vim.opt.foldenable = false
 vim.opt.hidden = true
 vim.opt.history = 10000
 vim.opt.hlsearch = false
@@ -949,7 +950,7 @@ require("lazy").setup({
 		config = function()
 			require('dressing').setup({
 				input = {
-					relative = "win",
+					relative = "editor",
 					win_options = {
 						-- winhighlight = 'NormalFloat:DiagnosticError'
 					}

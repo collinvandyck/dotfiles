@@ -425,7 +425,7 @@ export TMUX_POWERLINE_LEFT_STATUS_SEGMENTS=(
 	)
 TMUX_POWERLINE_RIGHT_STATUS_SEGMENTS=(
 		#"earthquake 3 0"
-		"pwd 89 211"
+		#"pwd 89 211"
 		#"macos_notification_count 29 255"
 		#"mailcount 9 255"
 		#"now_playing 234 37"
