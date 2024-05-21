@@ -1089,6 +1089,10 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 	group = "QuitHooks",
 	pattern = { "*" },
 	callback = function()
+		if vim.bo.filetype == 'fugitiveblame' then
+			-- don't do anything if we're closing a blame buffer
+			return
+		end
 		local tab = vim.api.nvim_get_current_tabpage()
 		local wins = vim.api.nvim_tabpage_list_wins(tab)
 		local normals = 0
