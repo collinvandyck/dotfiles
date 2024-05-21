@@ -9,7 +9,7 @@
 
 set -euo pipefail
 
-name=${1}
+name=${1:-""}
 dir=~/.dotfiles/bin
 
 usage() {
