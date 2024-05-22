@@ -31,14 +31,17 @@ fi
 brew update --quiet
 
 brew install --quiet --formula \
-	clojure \
-	clojure-lsp \
-	fd \
+	bat-extras \
 	broot \
 	btop \
+	clojure \
+	clojure-lsp \
 	direnv \
-	glow \
+	fd \
+	fd \
+	fd \
 	gh \
+	glow \
 	htop \
 	jesseduffield/lazygit/lazygit \
 	lazygit \
@@ -51,8 +54,8 @@ brew install --quiet --formula \
 	ripgrep \
 	tailspin \
 	tig \
-	tree \
 	tmux \
+	tree \
 	zoxide \
 	;
 
