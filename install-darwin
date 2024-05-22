@@ -31,6 +31,8 @@ fi
 brew update --quiet
 
 brew install --quiet --formula \
+	clojure \
+	clojure-lsp \
 	fd \
 	broot \
 	btop \
