@@ -55,6 +55,7 @@ brew install --quiet --formula \
 	tailspin \
 	tig \
 	tmux \
+	typescript-language-server \
 	tree \
 	zoxide \
 	;
