@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# tails the specified files using tailspin
+
+set -euo pipefail
+
+tail -F -n 10000 "$@" | tspin
+
