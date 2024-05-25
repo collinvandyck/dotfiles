@@ -43,7 +43,7 @@ vim.opt.writebackup = false
 vim.g.mapleader = " "
 vim.g.maplocalleader = "-"
 
-require("start_lazy")
+require("plugs")
 require("commands")
 
 
@@ -56,11 +56,7 @@ vim.cmd [[highlight Comment guisp=#8a8a8a guifg=#8a8a8a]]
 vim.cmd [[highlight DiagnosticUnderlineHint gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
 vim.cmd [[highlight DiagnosticUnnecessary gui=undercurl guisp=#8a8a8a guifg=#8a8a8a]]
 vim.cmd [[highlight TabLine guisp=#8a8a8a guifg=#8a8a8a]]
-
 vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
-
--- mappings
-local map = vim.api.nvim_set_keymap
 
 -- q leader key maps
 function ToggleQuickfix()
@@ -73,6 +69,9 @@ function ToggleQuickfix()
 	end
 	vim.cmd.copen()
 end
+
+-- mappings
+local map = vim.api.nvim_set_keymap
 
 map('n', '<Leader>i', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true })
 map('n', 'qi', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true })
