@@ -1,5 +1,7 @@
 vim.lsp.set_log_level("off")
 
+vim.g.mapleader = " "
+vim.g.maplocalleader = "-"
 vim.opt.ai = true
 vim.opt.autochdir = false
 vim.opt.autoindent = true
@@ -40,15 +42,10 @@ vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.opt.writebackup = false
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = "-"
-
 require("plugs")
 require("commands")
 require("abbreviations")
-
--- important to set this after lazy has finished loading
--- vim.cmd('colorscheme moonfly')
+require("autocmds")
 
 -- Note: use :Inspect to find the highlight groups for a particular code block.
 vim.cmd('colorscheme tokyonight-night')
@@ -78,13 +75,6 @@ map('n', 'qi', '<cmd>lua ToggleQuickfix()<CR>', { noremap = true, silent = true 
 map('n', 'qg', ':Telescope live_grep<CR>', { noremap = true })
 map('n', '<C-j>', ':cn<CR>', { noremap = true, silent = true })
 map('n', '<C-k>', ':cp<CR>', { noremap = true, silent = true })
-
--- treesitter
-vim.keymap.set("n", "[c", function()
-	require("treesitter-context").go_to_context()
-end, { silent = true })
-
-
 map('n', '<M-i>', 'zt', { noremap = true })
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', { noremap = true })
 map('n', '<C-g>', ':GFiles<CR>', { noremap = true })
@@ -134,34 +124,3 @@ map('c', '<c-a>', '<Home>', { noremap = true })
 map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
-
--- if while closing a buffer we only have one normal buffer left, close
--- nvim-tree so that the tab is destroyed.
-vim.api.nvim_create_augroup("QuitHooks", { clear = true })
-vim.api.nvim_create_autocmd({ "QuitPre" }, {
-	group = "QuitHooks",
-	pattern = { "*" },
-	callback = function()
-		if vim.bo.filetype == 'fugitiveblame' then
-			-- don't do anything if we're closing a blame buffer
-			return
-		end
-		local tab = vim.api.nvim_get_current_tabpage()
-		local wins = vim.api.nvim_tabpage_list_wins(tab)
-		local normals = 0
-		local nvim_tree_win = nil
-		for _, win in ipairs(wins) do
-			local buf = vim.api.nvim_win_get_buf(win);
-			local ft = vim.api.nvim_buf_get_option(buf, 'filetype');
-			local bt = vim.api.nvim_buf_get_option(buf, 'buftype');
-			if ft == 'NvimTree' then
-				nvim_tree_win = win
-			elseif bt == "" then
-				normals = normals + 1
-			end
-		end
-		if nvim_tree_win and normals == 1 then
-			vim.api.nvim_win_close(nvim_tree_win, false)
-		end
-	end,
-})

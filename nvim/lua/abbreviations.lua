@@ -1,5 +1,11 @@
-vim.api.nvim_command('iabbrev adn and')
-vim.api.nvim_command('iabbrev waht what')
-vim.api.nvim_command('iabbrev tehn then')
-vim.api.nvim_command('iabbrev reutrn return')
-vim.api.nvim_command('iabbrev reutnr return')
+local abbreviations = {
+	{ "adn",    "and" },
+	{ "waht",   "what" },
+	{ "tehn",   "then" },
+	{ "reutrn", "return" },
+	{ "reutnr", "return" },
+}
+for _, tuple in ipairs(abbreviations) do
+	local from, to = unpack(tuple)
+	vim.api.nvim_command('iabbrev ' .. from .. ' ' .. to)
+end
