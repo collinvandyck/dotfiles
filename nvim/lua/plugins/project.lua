@@ -1,5 +1,8 @@
 return {
 	"ahmedkhalf/project.nvim",
+	dependencies = {
+		"nvim-telescope/telescope.nvim",
+	},
 	enable = true,
 	config = function()
 		require("project_nvim").setup {
@@ -16,5 +19,6 @@ return {
 				"package.json",
 			},
 		}
+		require("telescope").load_extension("projects")
 	end
 }
