@@ -41,5 +41,6 @@ return {
 				--nt_api.tree.reload()
 			end }
 		}
+		require("telescope").load_extension("session-lens")
 	end,
 }
