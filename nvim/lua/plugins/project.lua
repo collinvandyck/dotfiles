@@ -5,18 +5,15 @@ return {
 	},
 	config = function()
 		require("project_nvim").setup {
+			detection_methods = { "lsp" },
+
 			-- rules applied in order
 			patterns = {
-				".git",
 				"Cargo.toml",
-				"!=rust-learning",
-				"_darcs",
-				".hg",
-				".bzr",
-				".svn",
-				"Makefile",
-				"package.json",
 			},
+
+			-- for debugging
+			silent_chdir = true,
 		}
 		require("telescope").load_extension("projects")
 	end
