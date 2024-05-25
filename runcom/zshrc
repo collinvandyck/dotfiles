@@ -1,5 +1,4 @@
 stty -ixon # disable scroll lock
-export TERM=xterm-256color
 
 if [[ $TERM_PROGRAM != "WarpTerminal" ]]; then
 	# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
