@@ -60,7 +60,6 @@ return {
 		}
 		require("telescope").load_extension("ui-select")
 		require("telescope").load_extension("aerial")
-		require("telescope").load_extension("session-lens")
 		require("telescope").load_extension("projects")
 	end
 }
