@@ -1,12 +1,12 @@
---
--- disable lsp logging unless we need to troubleshoot
 vim.lsp.set_log_level("off")
+
 vim.opt.ai = true
 vim.opt.autochdir = false
 vim.opt.autoindent = true
 vim.opt.autoread = true
 vim.opt.autowrite = true
 vim.opt.background = 'dark'
+vim.opt.backup = false
 vim.opt.cursorline = true
 vim.opt.equalalways = false
 vim.opt.expandtab = false
@@ -30,28 +30,22 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.statusline = ""
-vim.opt.tabstop = 4
-
-
 vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.writebackup = false
--- recommended for nvim-tree
--- vim.g.loaded_netrw = 1
--- vim.g.loaded_netrwPlugin = 1
+vim.opt.tabstop = 4
 vim.opt.termguicolors = true
-vim.opt.tw = 80
-
--- these affect hover states
 vim.opt.timeoutlen = 500
+vim.opt.tw = 80
 vim.opt.updatetime = 100
-
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
+vim.opt.writebackup = false
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = "-"
 
 require("start_lazy")
+require("commands")
+
 
 -- important to set this after lazy has finished loading
 -- vim.cmd('colorscheme moonfly')
@@ -147,29 +141,6 @@ map('c', '<c-a>', '<Home>', { noremap = true })
 map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
-
--- :lua vim.cmd.Hello()
--- :Hello
-vim.api.nvim_create_user_command('Hello', function()
-	vim.notify("Hello")
-end, {});
-
-vim.api.nvim_create_user_command('ProfileStart', function()
-	vim.cmd([[
-		profile start /tmp/neovim-profile.log
-		profile func *
-		profile file *
-	]])
-	vim.notify("started profiling")
-end, {});
-
-vim.api.nvim_create_user_command('ProfileStop', function()
-	vim.cmd([[
-		profile stop
-		edit /tmp/neovim-profile.log
-	]])
-	vim.notify("stopped profiling")
-end, {});
 
 -- if while closing a buffer we only have one normal buffer left, close
 -- nvim-tree so that the tab is destroyed.
