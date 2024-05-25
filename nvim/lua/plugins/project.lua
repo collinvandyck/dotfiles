@@ -5,11 +5,11 @@ return {
 	},
 	config = function()
 		require("project_nvim").setup {
-			detection_methods = { "lsp" },
+			detection_methods = { "pattern" },
 
 			-- rules applied in order
 			patterns = {
-				"Cargo.toml",
+				".git",
 			},
 
 			-- for debugging
