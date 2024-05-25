@@ -3,7 +3,6 @@ return {
 	dependencies = {
 		"nvim-telescope/telescope.nvim",
 	},
-	enable = true,
 	config = function()
 		require("project_nvim").setup {
 			-- rules applied in order
