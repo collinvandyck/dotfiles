@@ -32,7 +32,7 @@
   "nvim-osc52": { "branch": "main", "commit": "04cfaba1865ae5c53b6f887c3ca7304973824fb2" },
   "nvim-surround": { "branch": "main", "commit": "79aaa42da1f698ed31bcbe7f83081f69dca7ba17" },
   "nvim-tree.lua": { "branch": "master", "commit": "4c8ddee4539052f8e94c907c4e02a3ffd2511ea4" },
-  "nvim-treesitter": { "branch": "master", "commit": "78e11ab7cedabe5dfb3b600c6682712271c59acf" },
+  "nvim-treesitter": { "branch": "master", "commit": "488e39a8f1fcb7935deaaf1852e3d6c28ca253d0" },
   "nvim-treesitter-context": { "branch": "master", "commit": "f62bfe19e0fbc13ae95649dfb3cf22f4ff85b683" },
   "nvim-web-devicons": { "branch": "master", "commit": "b77921fdc44833c994fdb389d658ccbce5490c16" },
   "one_monokai.nvim": { "branch": "main", "commit": "bafc4e9ed069e47439cce077592aefb126da2bfa" },
