@@ -1,0 +1,5 @@
+vim.api.nvim_command('iabbrev adn and')
+vim.api.nvim_command('iabbrev waht what')
+vim.api.nvim_command('iabbrev tehn then')
+vim.api.nvim_command('iabbrev reutrn return')
+vim.api.nvim_command('iabbrev reutnr return')
