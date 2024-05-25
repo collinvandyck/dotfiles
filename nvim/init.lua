@@ -45,7 +45,7 @@ vim.g.maplocalleader = "-"
 
 require("plugs")
 require("commands")
-
+require("abbreviations")
 
 -- important to set this after lazy has finished loading
 -- vim.cmd('colorscheme moonfly')
@@ -84,12 +84,6 @@ vim.keymap.set("n", "[c", function()
 	require("treesitter-context").go_to_context()
 end, { silent = true })
 
--- abbreviations
-vim.api.nvim_command('iabbrev adn and')
-vim.api.nvim_command('iabbrev waht what')
-vim.api.nvim_command('iabbrev tehn then')
-vim.api.nvim_command('iabbrev reutrn return')
-vim.api.nvim_command('iabbrev reutnr return')
 
 map('n', '<M-i>', 'zt', { noremap = true })
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', { noremap = true })
