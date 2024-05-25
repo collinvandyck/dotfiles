@@ -1,5 +1,6 @@
 return {
 	"ahmedkhalf/project.nvim",
+	enable = true,
 	config = function()
 		require("project_nvim").setup {
 			-- rules applied in order
