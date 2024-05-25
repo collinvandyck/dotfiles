@@ -24,6 +24,7 @@ return {
 		require("nvim-tree").setup({
 			on_attach = on_attach,
 			disable_netrw = false, -- setting this to true interferes with GBrowse.
+			hijack_cursor = true,
 			actions = {
 				open_file = {
 					resize_window = false,
@@ -48,10 +49,8 @@ return {
 					},
 				},
 			},
-			update_cwd = true,
 			update_focused_file = {
 				enable = true,
-				update_cwd = false,
 				update_root = false,
 			},
 			view = {
