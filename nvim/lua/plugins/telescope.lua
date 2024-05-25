@@ -4,6 +4,7 @@ return {
 	dependencies = {
 		"stevearc/aerial.nvim",
 		"nvim-telescope/telescope-ui-select.nvim",
+		"ahmedkhalf/project.nvim",
 	},
 	config = function()
 		local actions = require("telescope.actions")
@@ -60,5 +61,6 @@ return {
 		require("telescope").load_extension("ui-select")
 		require("telescope").load_extension("aerial")
 		require("telescope").load_extension("session-lens")
+		require("telescope").load_extension("projects")
 	end
 }

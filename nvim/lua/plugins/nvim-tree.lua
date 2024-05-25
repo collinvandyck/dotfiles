@@ -49,10 +49,6 @@ return {
 					},
 				},
 			},
-			update_focused_file = {
-				enable = true,
-				update_root = false,
-			},
 			view = {
 				width = {
 					min = 40,
@@ -60,6 +56,19 @@ return {
 					padding = 1,
 				},
 				centralize_selection = true,
+			},
+			-- old settings
+			--update_focused_file = {
+			--enable = true,
+			--update_root = false,
+			--},
+			--
+			-- these settings are to make nvim-tree play nice with project.nvim.
+			sync_root_with_cwd = true,
+			respect_buf_cwd = true,
+			update_focused_file = {
+				enable = true,
+				update_root = true,
 			},
 		})
 	end,
