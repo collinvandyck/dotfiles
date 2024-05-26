@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-set -e # exit on failure
-set -u # fail if vars are not defined
+set -euo pipefail
+
+export HOMEBREW_NO_ENV_HINTS=1
 
 # add git via xcode cli tools
 if ! command -v git &>/dev/null; then
@@ -41,6 +42,8 @@ brew install --quiet --formula \
 	fd \
 	fd \
 	gh \
+	git-extras \
+	git-machete \
 	glow \
 	htop \
 	jesseduffield/lazygit/lazygit \
