@@ -58,6 +58,7 @@ brew install --quiet --formula \
 	tmux \
 	typescript-language-server \
 	tree \
+	wget \
 	zoxide \
 	;
 
