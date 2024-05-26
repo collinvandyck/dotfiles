@@ -52,6 +52,7 @@ brew install --quiet --formula \
 	pam-reattach \
 	pstree \
 	ripgrep \
+	shellcheck \
 	tailspin \
 	tig \
 	tmux \
