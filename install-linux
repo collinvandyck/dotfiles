@@ -112,7 +112,7 @@ sudo chsh -s $(which zsh) $USER
 	# Install Tailscale
 	sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth 
 	# Start Tailscale!
-	sudo tailscale up --advertise-exit-node
+	sudo tailscale up --advertise-exit-node || true
 	# enable tailscale nginx auth
 	sudo systemctl enable --now tailscale.nginx-auth.socket
 )
