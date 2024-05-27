@@ -90,7 +90,6 @@ brew install --quiet --cask \
 	signal \
 	slack \
 	steam \
-	spotify \
 	sublime-text \
 	tailscale \
 	utm \
