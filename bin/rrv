@@ -4,5 +4,5 @@ set -e # exit on failure
 set -u # fail if vars are not defined
 
 cd ~/code/rippling-client
-tmux rename-window rr-mac 2>/dev/null
+tmux rename-window rr-mac 2>/dev/null || true
 exec nvim "$@"
