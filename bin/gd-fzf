@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# git diff, with fzf on top
+
+set -euo pipefail
+
+cd $(gitroot)
+git diff "$@" --name-only -- . |\
+	fzf --ansi \
+	--preview "git diff --color=always "$@" -- {}"
