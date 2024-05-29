@@ -50,9 +50,7 @@ return {
 				},
 			},
 			view = {
-				cursorline = true,
 				width = 40,
-				centralize_selection = true,
 			},
 			-- these settings are to make nvim-tree play nice with project.nvim.
 			sync_root_with_cwd = true,
