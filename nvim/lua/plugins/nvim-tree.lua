@@ -50,11 +50,6 @@ return {
 				},
 			},
 			view = {
-				width = {
-					min = 40,
-					max = 80,
-					padding = 1,
-				},
 				centralize_selection = true,
 			},
 			-- these settings are to make nvim-tree play nice with project.nvim.
