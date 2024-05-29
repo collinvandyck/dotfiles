@@ -1,5 +1,6 @@
 return {
 	"nvim-lualine/lualine.nvim",
+	enabled = true,
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		"folke/tokyonight.nvim"
