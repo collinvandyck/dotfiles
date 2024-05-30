@@ -47,7 +47,6 @@ sudo apt install -y \
   g++ \
   gettext \
   gh \
-  git \
   glow \
   gum \
   gnome-tweaks \
