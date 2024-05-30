@@ -23,10 +23,6 @@ function deltag()
     git tag -d $1 ; git push origin :refs/tags/$1
 }
 
-function sha() {
-    echo -n $(git rev-parse --short HEAD)
-}
-
 function gdom() {
 	git diff $(git merge-base HEAD origin/$(git_main_branch)) 
 }
