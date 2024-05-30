@@ -1,18 +1,6 @@
 alias ci='git ci'
 alias cip='git cip'
 
-function bookmark() {
-	name=$(echo "$@" | tr ' ' '-')
-	if [[ "$name" == "" ]]; then
-		name=bookmark
-	fi
-    name="collin/${name}"
-    git branch "${name}" 2>/dev/null
-    git branch --force "${name}" HEAD
-    git co "${name}"
-}
-
-# TODO: how to enable git completion for this?
 function delbranch()
 {
     git branch -D $1 ; git push origin :refs/heads/$1
