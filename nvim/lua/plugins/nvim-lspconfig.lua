@@ -68,8 +68,11 @@ return {
 			{ "🭼", "FloatBorder" },
 			{ "▏", "FloatBorder" },
 		}
+		local function hover_handler(err, result, ctx, config)
+			vim.lsp.handlers.hover(err, result, ctx, config)
+		end
 		local handlers = {
-			["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, { border = handlers_border }),
+			["textDocument/hover"] = vim.lsp.with(hover_handler, { border = handlers_border }),
 			["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
 				{ border = handlers_border }),
 		}

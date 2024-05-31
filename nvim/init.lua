@@ -25,6 +25,7 @@ vim.opt.number = true
 vim.opt.numberwidth = 4
 vim.opt.scrollback = 10000
 vim.opt.scrolloff = 35
+vim.opt.startofline = false
 vim.opt.shiftwidth = 4
 vim.opt.sidescrolloff = 20
 vim.opt.signcolumn = 'number'
@@ -38,6 +39,7 @@ vim.opt.termguicolors = true
 vim.opt.timeoutlen = 500
 vim.opt.tw = 80
 vim.opt.updatetime = 100
+vim.opt.virtualedit = "block"
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.opt.writebackup = false
