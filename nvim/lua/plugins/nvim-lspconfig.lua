@@ -69,10 +69,22 @@ return {
 			{ "▏", "FloatBorder" },
 		}
 		local function hover_handler(err, result, ctx, config)
+			--if err or not (result and result.contents) then return end
+			--local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+			--markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
+			--if vim.tbl_isempty(markdown_lines) then return end
+			--vim.notify(tostring(markdown_lines))
+			--local bufnr, winnr = vim.lsp.util.open_floating_preview(markdown_lines, 'markdown', config)
+			--vim.api.nvim_win_set_option(winnr, 'conceallevel', 3)
+
 			vim.lsp.handlers.hover(err, result, ctx, config)
 		end
 		local handlers = {
-			["textDocument/hover"] = vim.lsp.with(hover_handler, { border = handlers_border }),
+			["textDocument/hover"] = vim.lsp.with(hover_handler, {
+				border = handlers_border,
+				stylize_markdown = false,
+				virtual_text = false,
+			}),
 			["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
 				{ border = handlers_border }),
 		}

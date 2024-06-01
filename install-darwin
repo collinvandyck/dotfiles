@@ -81,6 +81,7 @@ brew install --quiet --cask \
 	font-hack-nerd-font \
 	google-chrome \
 	imhex \
+	istat-menus \
 	kitty \
 	logi-options-plus \
 	microsoft-remote-desktop \
