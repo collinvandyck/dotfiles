@@ -20,3 +20,12 @@ vim.api.nvim_create_user_command('ProfileStop', function()
 	]])
 	vim.notify("stopped profiling")
 end, {});
+
+vim.api.nvim_create_user_command('Cip', function()
+	local result = vim.fn.system('git cip')
+	if vim.v.shell_error ~= 0 then
+		vim.notify("push failed: " .. result, vim.log.levels.ERROR)
+	else
+		vim.notify("pushed: " .. result, vim.log.levels.INFO)
+	end
+end, {})
