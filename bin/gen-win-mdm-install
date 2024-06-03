@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# generates a set of windows mdm commands to instruct a machine to download and
+# install an MSI
+
+set -euo pipefail
+
+usage() {
+	echo "$(basename $0) [url]"
+	exit 1
+}
+
+xml_pager() {
+	if [ "$(command -v bat 2>/dev/null || true)" ]; then
+		bat -l xml
+	else
+		cat
+	fi
+}
+
+[ $# -ne 1 ] && usage
+
+TMP=$(mktemp -d)
+trap 'rm -rf "$TMP"' EXIT
+cd $TMP
+
+msi_url="$1"
+cmd_id=$(uuidgen)
+product_id=$(uuidgen)
+job_id=$(uuidgen)
+
+curl -sS -o output.bin $msi_url
+hash=$(sha256sum output.bin | awk '{print $1}' | tr '[:lower:]' '[:upper:]')
+
+cat <<eof | xml_pager
+<Add>
+  <CmdID>${cmd_id}</CmdID>
+  <Item>
+    <Target>
+      <LocURI>./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/%7B${product_id}%7D/DownloadInstall</LocURI>
+    </Target>
+  </Item>
+</Add>
+
+<Exec>
+  <CmdID>${cmd_id}</CmdID>
+  <Item>
+    <Target>
+      <LocURI>./Device/Vendor/MSFT/EnterpriseDesktopAppManagement/MSI/%7B${product_id}%7D/DownloadInstall</LocURI>
+    </Target>
+    <Meta>
+      <Format xmlns="syncml:metinf">xml</Format>
+      <Type xmlns="syncml:metinf">text/plain</Type>
+    </Meta>
+    <Data>
+      <MsiInstallJob id="{${job_id}}">
+        <Product Version="1.0.0">
+          <Download>
+            <ContentURLList>
+              <ContentURL>${msi_url}</ContentURL>
+            </ContentURLList>
+          </Download>
+          <Validation>
+            <FileHash>${hash}</FileHash>
+          </Validation>
+          <Enforcement>
+            <CommandLine>/quiet</CommandLine>
+            <TimeOut>5</TimeOut>
+            <RetryCount>3</RetryCount>
+            <RetryInterval>5</RetryInterval>
+          </Enforcement>
+        </Product>
+      </MsiInstallJob>
+    </Data>
+  </Item>
+</Exec>
+eof
