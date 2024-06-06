@@ -53,6 +53,7 @@ brew install --quiet --formula \
 	luajit-openresty \
 	mingw-w64 \
 	neovim \
+	nvr \
 	pam-reattach \
 	pstree \
 	ripgrep \
