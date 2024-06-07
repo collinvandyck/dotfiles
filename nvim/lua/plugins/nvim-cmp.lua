@@ -8,17 +8,11 @@ return {
 		"hrsh7th/cmp-path",
 		"hrsh7th/cmp-nvim-lsp-document-symbol",
 		"hrsh7th/cmp-nvim-lsp-signature-help",
-		{
-			"L3MON4D3/LuaSnip",
-			dependencies = { "rafamadriz/friendly-snippets" },
-		},
+		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"nvim-treesitter/nvim-treesitter",
 	},
 	config = function()
-		require("luasnip.loaders.from_vscode").load {
-			include = { "rust" },
-		}
 		local cmp = require('cmp')
 		local luasnip = require("luasnip")
 		local has_words_before = function()
