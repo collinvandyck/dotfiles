@@ -39,8 +39,7 @@ brew install --quiet --formula \
 	clojure-lsp \
 	direnv \
 	fd \
-	fd \
-	fd \
+	fx \
 	gh \
 	git-extras \
 	git-machete \
