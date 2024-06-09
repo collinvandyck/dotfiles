@@ -2,6 +2,8 @@
 #
 # ~/.dotfiles/bin/gitc
 
+set -euo pipefail
+
 export GIT_PAGER=
 
 get_branches() {

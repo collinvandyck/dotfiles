@@ -45,6 +45,7 @@ brew install --quiet --formula \
 	git-extras \
 	git-machete \
 	glow \
+	gum \
 	htop \
 	jesseduffield/lazygit/lazygit \
 	lazygit \
