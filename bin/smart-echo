@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# echos stdin. if stdout is not attached to a tty it will omit the newline, to
+# support things like piping to pbcopy
+
+if is-tty; then
+	echo "$@"
+else
+	echo -n "$@"
+fi
