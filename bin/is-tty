@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# exits with 0 if stdout is a tty
+
+set -euo pipefail
+
+test -t 1

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# outputs the serial number of the machine
+
+if [[ "$(uname)" =~ "Darwin" ]]; then
+	serial=$(/usr/sbin/system_profiler -json SPHardwareDataType | jq -r '.SPHardwareDataType[0].serial_number')
+	if is-tty; then
+		echo $serial
+	else 
+		echo -n $serial
+	fi
+else
+	echo "not supported on $(uname)" >&2
+	exit 1
+fi
