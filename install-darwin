@@ -57,12 +57,14 @@ brew install --quiet --formula \
 	pam-reattach \
 	pstree \
 	ripgrep \
+	sccache \
 	shellcheck \
 	tailspin \
 	tig \
 	tmux \
 	typescript-language-server \
 	tree \
+	watch \
 	wget \
 	zoxide \
 	;
