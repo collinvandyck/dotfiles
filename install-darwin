@@ -89,7 +89,6 @@ brew install --quiet --cask \
 	istat-menus \
 	kitty \
 	logi-options-plus \
-	mactex \
 	microsoft-remote-desktop \
 	ngrok \
 	obsidian \
