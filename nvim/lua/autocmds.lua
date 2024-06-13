@@ -28,3 +28,17 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 		end
 	end,
 })
+
+-- once lsp progress has finished, clear the fidget notification.
+-- https://github.com/j-hui/fidget.nvim/issues/229
+vim.api.nvim_create_autocmd("LspProgress", {
+	pattern = "end",
+	callback = function(ev)
+		local token = ev.data.params.token
+		local client_id = ev.data.client_id
+		local client = client_id and vim.lsp.get_client_by_id(client_id)
+		if client and token then
+			require("fidget").notification.remove(client.name, token)
+		end
+	end,
+})
