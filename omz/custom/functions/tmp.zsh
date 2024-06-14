@@ -1,4 +1,4 @@
-function tmp() {
+tmp() {
 	cd $(mktemp -d)
 }
 

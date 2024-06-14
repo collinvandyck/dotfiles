@@ -67,3 +67,9 @@ map('c', '<c-a>', '<Home>', { noremap = true })
 map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
+
+-- toggle search highlighting with f3
+map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
+
+-- more granular undos
+map('i', '<Space>', '<Space><C-g>u', { noremap = true })
