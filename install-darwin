@@ -36,6 +36,7 @@ brew install --quiet --formula \
 	broot \
 	btop \
 	bzip2 \
+	caddy \
 	clojure \
 	clojure-lsp \
 	direnv \
