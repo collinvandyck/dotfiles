@@ -13,13 +13,14 @@ dfk() {
 			local args=$(printf "%q " "$@")
 			local in_shell=$(echo $title | grep -E '^s3');
 			tmux rename-window "s3: $args" 2>/dev/null
-			if [ "${in_shell}" ]; then
+			if [ -f .dfks3 ]; then
 				# if we are in the shell then don't bother creating a new one
 				command dfk s3 $args
 				return $?
 			fi
 			zsh -c "$(cat <<-EOF
 				cd "$(mktemp -d)"
+				touch .dfks3
 				if ! command dfk s3 $args; then
 					exit 1
 				fi
