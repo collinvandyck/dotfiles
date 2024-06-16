@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+# copies a docker volume. docker does not support renaming volumes so we must
+# resort to copying the original first.
+
+set -euo pipefail
+
+src=""
+dst=""
+
+usage() {
+	echo "usage: $(basename $0) --from [from] --to [to]"
+	exit 1
+}
+
+bail() {
+	echo "fatal: $@"
+	exit 1
+}
+
+volume_exists() {
+	local volume="$@"
+	docker volume ls | grep -E "\b${volume}\b" 2>&1 >/dev/null
+}
+
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--from)
+			src=$2
+			shift 2
+			;;
+		--to)
+			dst=$2
+			shift 2
+			;;
+		*)
+			usage
+			;;
+	esac
+done
+
+if [[ -z "${src}" || -z "${dst}" ]]; then
+	usage
+fi
+
+if ! volume_exists "${src}"; then 
+	bail "src volume '${src}' does not exist."
+fi
+
+if volume_exists "${dst}"; then 
+	bail "dst volume '${dst}' already exists."
+fi
+
+docker volume create "${dst}" > /dev/null
+echo "Created volume ${dst}"
+
+echo "Transferring data to the new volume"
+sync_log=$(mktemp -d)/sync.log
+docker run --rm -v ${src}:/src -v ${dst}:/dst bash -c "$(cat <<EOF
+	apk add rsync
+	rsync -avHAXShSt /src/ /dst/
+EOF
+)" > $sync_log
+
+echo "Copy complete. log: $sync_log"
+echo "Volumes:"
+
+docker system df -v | grep -E "^${src}|^${dst}"
+
