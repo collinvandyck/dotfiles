@@ -1,10 +1,8 @@
 Host *
-	ServerAliveInterval 200
-	ServerAliveCountMax 2
+	ServerAliveInterval 15
+	ServerAliveCountMax 3
 	ConnectTimeout 5
 	ControlMaster auto
-	ControlPath ~/.ssh/%r@%h:%p
-	ControlPersist 1h
-
-Host 5xx.engineer
+	ControlPath ~/.ssh/control/%r@%h:%p
+	ControlPersist yes
 
