@@ -95,6 +95,7 @@ brew install --quiet --cask \
 	microsoft-remote-desktop \
 	ngrok \
 	obsidian \
+	racket \
 	raycast \
 	signal \
 	slack \
