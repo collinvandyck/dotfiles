@@ -47,10 +47,6 @@ if ! volume_exists "${src}"; then
 	bail "src volume '${src}' does not exist."
 fi
 
-if volume_exists "${dst}"; then 
-	bail "dst volume '${dst}' already exists."
-fi
-
 docker volume create "${dst}" > /dev/null
 echo "Created volume ${dst}"
 
