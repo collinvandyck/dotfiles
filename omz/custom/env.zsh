@@ -20,6 +20,7 @@ export PAGER='less -RX' # -X turns off the screen clearing function
 export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
 export HTOPRC=~/.dotfiles/htop/htop.rc
 export FLOX_DISABLE_METRICS=true
+export HWATCH="--color --no-help-banner --border --with-scrollbar"
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
