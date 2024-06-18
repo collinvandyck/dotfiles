@@ -48,6 +48,7 @@ brew install --quiet --formula \
 	glow \
 	gum \
 	htop \
+	hwatch \
 	jesseduffield/lazygit/lazygit \
 	lazygit \
 	lua \
