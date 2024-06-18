@@ -2,20 +2,4 @@
 
 set -euo pipefail
 
-for arg; do
-	case $arg in
-		--copy)
-			copy=true
-			;;
-	esac
-done
-
-gb() {
-	git rev-parse --abbrev-ref HEAD
-}
-
-if [ "${copy:-false}" != "true" ]; then
-	echo "$(gb)"
-else
-	echo -n "$(gb)" | pbcopy
-fi
+smart-echo $(git rev-parse --abbrev-ref HEAD )
