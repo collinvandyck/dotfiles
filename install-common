@@ -9,7 +9,7 @@ set -u # fail if vars are not defined
 echo "Updating rust"
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
 export PATH="$HOME/.cargo/bin:$PATH"
-rustup default 1.78.0
+rustup default stable
 rustup component add rust-src
 rustup component add rust-analyzer
 rustup target add wasm32-unknown-unknown
