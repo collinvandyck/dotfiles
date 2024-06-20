@@ -128,6 +128,7 @@ return {
             on_attach = custom_attach,
             settings = (function()
                 local ra_settings = {
+                    cargo = {},
                     check = {
                         extraArgs = {
                             "--target-dir",
