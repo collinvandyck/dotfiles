@@ -76,7 +76,6 @@ brew install --quiet --formula \
 
 brew install --quiet --cask \
 	1password \
-	alacritty \
 	caffeine \
 	chatbox \
 	cleanshot \
@@ -106,6 +105,10 @@ brew install --quiet --cask \
 	utm \
 	yubico-yubikey-manager \
 	zoom \
+	;
+
+brew install --cask --no-quarantine \
+	alacritty \
 	;
 
 brew autoremove;
