@@ -1,13 +1,13 @@
 -- q leader key maps
 function ToggleQuickfix()
-	local windows = vim.fn.getwininfo()
-	for _, win in pairs(windows) do
-		if win["quickfix"] == 1 then
-			vim.cmd.cclose()
-			return
-		end
-	end
-	vim.cmd.copen()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win["quickfix"] == 1 then
+            vim.cmd.cclose()
+            return
+        end
+    end
+    vim.cmd.copen()
 end
 
 -- mappings
@@ -20,7 +20,7 @@ map('n', '<C-j>', ':cn<CR>', { noremap = true, silent = true })
 map('n', '<C-k>', ':cp<CR>', { noremap = true, silent = true })
 map('n', '<M-i>', 'zt', { noremap = true })
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', { noremap = true })
-map('n', '<C-g>', ':GFiles<CR>', { noremap = true })
+--map('n', '<C-g>', ':GFiles<CR>', { noremap = true })
 map('n', '<C-h>', ':History<CR>', { noremap = true })
 map('n', '<C-p>', ':Files<CR>', { noremap = true })
 map('n', '<C-s>', ':wa!<CR>', { noremap = true })
@@ -67,6 +67,11 @@ map('c', '<c-a>', '<Home>', { noremap = true })
 map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
+
+map('n', 'ffi', ":lua require('fzf-lua').files()<cr>", { noremap = true, desc = "Files" })
+map('n', '<C-f>i', ":lua require('fzf-lua').files()<cr>", { noremap = true, desc = "Files" })
+map('n', '<C-f>c', ":lua require('fzf-lua').commands()<cr>", { noremap = true, desc = "Files" })
+map('n', '<C-f>lr', ":lua require('fzf-lua').lsp_references()<cr>", { noremap = true, desc = "Files" })
 
 -- toggle search highlighting with f3
 map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
