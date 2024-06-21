@@ -5,11 +5,11 @@ return {
     config = function()
         -- calling `setup` is optional for customization
         require("fzf-lua").setup({
-            winopts = {
-                preview = {
-                    default = "builtin",
-                },
+            fzf_opts = {
+                --['--history'] =  vim.fn.stdpath("data") .. '/fzf-lua-history',
             },
+            -- required to render icons correctly with kitty
+            file_icon_padding = ' ',
         })
     end
 }

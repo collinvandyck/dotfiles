@@ -71,7 +71,7 @@ local fzf = require("fzf-lua")
 map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
-vim.keymap.set('n', '<space>s', fzf.live_grep, { noremap = true })
+vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end, { noremap = true })
 
 -- toggle search highlighting with f3
 map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
