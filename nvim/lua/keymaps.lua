@@ -75,10 +75,14 @@ vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end,
 vim.keymap.set('n', 'tci', function()
 	local res = vim.fn.system("git ci")
 	if vim.v.shell_error ~= 0 then
-		vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
-	else
-		vim.notify("commit")
+		if string.find(res, "nothing to commit") then
+			vim.notify("nothing to commit")
+		else
+			vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
+		end
+		return
 	end
+	vim.notify("commit")
 end, { noremap = true })
 
 -- toggle search highlighting with f3
