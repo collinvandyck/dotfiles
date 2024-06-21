@@ -35,17 +35,25 @@ return {
                 end,
             })
             local fzf = require("fzf-lua")
-            vim.keymap.set('n', 'gD', fzf.lsp_declarations, bufopts)
+            local jump_opts = { jump_to_single_result = true, sync = true }
+            vim.keymap.set('n', 'gD', function() fzf.lsp_declarations(jump_opts) end, bufopts)
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
             vim.keymap.set('n', 'ga', fzf.lsp_code_actions, bufopts)
-            vim.keymap.set('n', 'gt', fzf.lsp_typedefs, bufopts)
-            vim.keymap.set('n', 'gd', fzf.lsp_declarations, bufopts)
-            vim.keymap.set('n', 'gr', fzf.lsp_references, bufopts)
+            vim.keymap.set('n', 'gt', function() fzf.lsp_typedefs(jump_opts) end, bufopts)
+            vim.keymap.set('n', 'gd', function() fzf.lsp_declarations(jump_opts) end, bufopts)
+            vim.keymap.set('n', 'gr', function()
+                fzf.lsp_references({
+                    jump_to_single_result = true,
+                    sync = true,
+                    ignore_current_line = true,
+                    includeDeclaration = false,
+                })
+            end, bufopts)
             vim.keymap.set('n', 'gs', fzf.lsp_document_symbols, bufopts)
             vim.keymap.set('n', 'gw', fzf.lsp_live_workspace_symbols, bufopts)
-            vim.keymap.set('n', 'gi', fzf.lsp_implementations, bufopts)
-            vim.keymap.set('n', 'gI', fzf.lsp_incoming_calls, bufopts)
-            vim.keymap.set('n', 'gO', fzf.lsp_outgoing_calls, bufopts)
+            vim.keymap.set('n', 'gi', function() fzf.lsp_implementations(jump_opts) end, bufopts)
+            vim.keymap.set('n', 'gI', function() fzf.lsp_incoming_calls(jump_opts) end, bufopts)
+            vim.keymap.set('n', 'gO', function() fzf.lsp_outgoing_calls(jump_opts) end, bufopts)
             vim.keymap.set('n', 'gh', show_help, bufopts)
             vim.keymap.set('n', 'gldd', fzf.diagnostics_document, bufopts)
             vim.keymap.set('n', 'gldw', fzf.diagnostics_workspace, bufopts)
