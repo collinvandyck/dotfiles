@@ -75,8 +75,7 @@ vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end,
 vim.keymap.set('n', 'tci', function()
 	local res = vim.fn.system("git ci")
 	if vim.v.shell_error ~= 0 then
-		-- Command failed, send a notification
-		vim.notify("commit failed: " .. result, vim.log.levels.ERROR)
+		vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
 	else
 		vim.notify("commit")
 	end
