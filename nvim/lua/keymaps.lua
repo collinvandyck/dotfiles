@@ -1,13 +1,13 @@
 -- q leader key maps
 function ToggleQuickfix()
-    local windows = vim.fn.getwininfo()
-    for _, win in pairs(windows) do
-        if win["quickfix"] == 1 then
-            vim.cmd.cclose()
-            return
-        end
-    end
-    vim.cmd.copen()
+	local windows = vim.fn.getwininfo()
+	for _, win in pairs(windows) do
+		if win["quickfix"] == 1 then
+			vim.cmd.cclose()
+			return
+		end
+	end
+	vim.cmd.copen()
 end
 
 -- mappings
@@ -72,6 +72,15 @@ map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end, { noremap = true })
+vim.keymap.set('n', 'tci', function()
+	local res = vim.fn.system("git ci")
+	if vim.v.shell_error ~= 0 then
+		-- Command failed, send a notification
+		vim.notify("commit failed: " .. result, vim.log.levels.ERROR)
+	else
+		vim.notify("commit")
+	end
+end, { noremap = true })
 
 -- toggle search highlighting with f3
 map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
