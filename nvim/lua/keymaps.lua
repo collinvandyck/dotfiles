@@ -1,13 +1,13 @@
 -- q leader key maps
 function ToggleQuickfix()
-	local windows = vim.fn.getwininfo()
-	for _, win in pairs(windows) do
-		if win["quickfix"] == 1 then
-			vim.cmd.cclose()
-			return
-		end
-	end
-	vim.cmd.copen()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win["quickfix"] == 1 then
+            vim.cmd.cclose()
+            return
+        end
+    end
+    vim.cmd.copen()
 end
 
 -- mappings
@@ -66,17 +66,14 @@ map('t', '<Esc>', '<C-\\><C-n>', { noremap = true })
 map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
 
-map('n', 'ffi', ":lua require('fzf-lua').files()<cr>", { noremap = true, desc = "Files" })
-map('n', '<C-f>i', ":lua require('fzf-lua').files()<cr>", { noremap = true, desc = "Files" })
-map('n', '<C-f>c', ":lua require('fzf-lua').commands()<cr>", { noremap = true, desc = "Files" })
-map('n', '<C-f>lr', ":lua require('fzf-lua').lsp_references()<cr>", { noremap = true, desc = "Files" })
 
 local fzf = require("fzf-lua")
+map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
-vim.keymap.set('n', '<C-h>', fzf.oldfiles, { noremap = true })
+vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
+vim.keymap.set('n', '<space>s', fzf.live_grep, { noremap = true })
 
 -- toggle search highlighting with f3
 map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
-
 -- more granular undos
 map('i', '<Space>', '<Space><C-g>u', { noremap = true })
