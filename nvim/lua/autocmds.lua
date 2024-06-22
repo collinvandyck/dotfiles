@@ -1,8 +1,8 @@
 -- if while closing a buffer we only have one normal buffer left, close
 -- nvim-tree so that the tab is destroyed.
-vim.api.nvim_create_augroup("QuitHooks", { clear = true })
+local quit_group = vim.api.nvim_create_augroup("QuitHooks", { clear = true })
 vim.api.nvim_create_autocmd({ "QuitPre" }, {
-    group = "QuitHooks",
+    group = quit_group,
     pattern = { "*" },
     callback = function()
         if vim.bo.filetype == 'fugitiveblame' then
@@ -31,7 +31,9 @@ vim.api.nvim_create_autocmd({ "QuitPre" }, {
 
 -- once lsp progress has finished, clear the fidget notification.
 -- https://github.com/j-hui/fidget.nvim/issues/229
+local lsp_group = vim.api.nvim_create_augroup("LspGroup", { clear = true })
 vim.api.nvim_create_autocmd("LspProgress", {
+    group = lsp_group,
     pattern = "end",
     callback = function(ev)
         local token = ev.data.params.token
@@ -42,3 +44,14 @@ vim.api.nvim_create_autocmd("LspProgress", {
         end
     end,
 })
+
+-- highlight on yank
+local highlight_group = vim.api.nvim_create_augroup("HighlightGroup", { clear = true })
+vim.api.nvim_create_autocmd("TextYankPost",
+    {
+        group = highlight_group,
+        pattern = "*",
+        callback = function()
+            vim.highlight.on_yank()
+        end,
+    })

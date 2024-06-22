@@ -1,13 +1,13 @@
 -- q leader key maps
 function ToggleQuickfix()
-	local windows = vim.fn.getwininfo()
-	for _, win in pairs(windows) do
-		if win["quickfix"] == 1 then
-			vim.cmd.cclose()
-			return
-		end
-	end
-	vim.cmd.copen()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win["quickfix"] == 1 then
+            vim.cmd.cclose()
+            return
+        end
+    end
+    vim.cmd.copen()
 end
 
 -- mappings
@@ -67,22 +67,38 @@ map('n', '<ScrollWheelLeft>', '<nop>', { noremap = true })
 map('n', '<ScrollWheelRight>', '<nop>', { noremap = true })
 
 
+-- delete single character without pasting
+-- vim.keymap.set('n', 'x', '"_x', { noremap = true })
+
+-- keep last yanked when pasting
+vim.keymap.set('v', 'p', '"_dP', { noremap = true })
+
+-- automatically indent to the appropriate position.
+vim.keymap.set('n', 'i', function()
+    local cond = #vim.fn.getline(".") == 0
+    if cond then
+        return '"_cc'
+    else
+        return "i"
+    end
+end, { desc = "Automatically indent to the appropriate position", silent = true, expr = true })
+
 local fzf = require("fzf-lua")
 map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end, { noremap = true })
 vim.keymap.set('n', 'tci', function()
-	local res = vim.fn.system("git ci")
-	if vim.v.shell_error ~= 0 then
-		if string.find(res, "nothing to commit") then
-			vim.notify("nothing to commit")
-		else
-			vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
-		end
-		return
-	end
-	vim.notify("commit")
+    local res = vim.fn.system("git ci")
+    if vim.v.shell_error ~= 0 then
+        if string.find(res, "nothing to commit") then
+            vim.notify("nothing to commit")
+        else
+            vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
+        end
+        return
+    end
+    vim.notify("commit")
 end, { noremap = true })
 
 -- toggle search highlighting with f3
