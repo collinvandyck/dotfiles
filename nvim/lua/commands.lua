@@ -58,3 +58,34 @@ vim.api.nvim_create_user_command('CopyCodeBlock', function(opts)
     vim.fn.setreg('+', result)
     vim.notify 'Text copied to clipboard'
 end, { range = true })
+
+-- This is an example of how to use fzf-lua to show some options, and then take
+-- action based on the one selected.
+vim.api.nvim_create_user_command('TestFzf', function(opts)
+    local commands = {
+        { name = "Show Date",   action = function() print(os.date()) end },
+        { name = "Hello World", action = function() print("Hello, world!") end },
+        -- Add more commands and their actions here
+    }
+    -- Convert the list of commands to a format suitable for fzf, which is a list of strings
+    local cmd_list = {}
+    for i, cmd in ipairs(commands) do
+        table.insert(cmd_list, cmd.name)
+    end
+    -- Use fzf_exec to display the commands. When a command is selected, execute its associated action.
+    require 'fzf-lua'.fzf_exec(cmd_list, {
+        -- Customize the prompt (optional)
+        prompt = 'Commands> ',
+        -- Define what happens when an item is selected
+        actions = {
+            ['default'] = function(selected)
+                for _, cmd in ipairs(commands) do
+                    if cmd.name == selected[1] then
+                        cmd.action()
+                        break
+                    end
+                end
+            end
+        }
+    })
+end, {})
