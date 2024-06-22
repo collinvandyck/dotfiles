@@ -5,8 +5,6 @@ return {
     },
     config = function()
         local lsp_util = require "lspconfig/util"
-        local telescope = require 'telescope.builtin'
-        -- local trouble = require 'trouble.providers.telescope'
         local custom_attach = function(client, bufnr)
             local bufopts = { noremap = true, silent = true, buffer = bufnr }
             local show_help = function()
