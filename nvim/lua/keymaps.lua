@@ -70,7 +70,7 @@ vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
 -- vim.keymap.set('n', 'x', '"_x', { noremap = true })
 
 -- keep last yanked when pasting
-vim.keymap.set('v', 'p', '"_dP', { noremap = true })
+vim.keymap.set('v', 'p', '"_dP', map_opts)
 
 -- automatically indent to the appropriate position.
 vim.keymap.set('n', 'i', function()
@@ -83,7 +83,7 @@ vim.keymap.set('n', 'i', function()
 end, { desc = "Automatically indent to the appropriate position", silent = true, expr = true })
 
 local fzf = require("fzf-lua")
-map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, desc = "Files" })
+map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, silent = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end, { noremap = true })
@@ -101,6 +101,6 @@ vim.keymap.set('n', 'tci', function()
 end, { noremap = true })
 
 -- toggle search highlighting with f3
-map('n', '<F3>', ':set hlsearch!<CR>', { noremap = true })
+map('n', '<F3>', ':set hlsearch!<CR>', map_opts)
 -- more granular undos
-map('i', '<Space>', '<Space><C-g>u', { noremap = true })
+map('i', '<Space>', '<Space><C-g>u', map_opts)
