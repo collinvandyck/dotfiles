@@ -65,7 +65,7 @@ alias kcl='kubectl logs'
 alias kclt='kcl -f --tail=10'
 
 # docker stuff
-alias dc='docker-compose'
+alias dc='docker compose'
 alias dcdown='dc down -v -t 0'
 alias dcup='dc up -d'
 alias dcupb='dc up -d --build'
@@ -99,6 +99,7 @@ alias tk=task
 
 # lsd config
 alias ls=lsd
+alias ll='lsd --color=always'
 alias lt='ls --tree --color=always'
 alias llt='ll --tree --color=always'
 for i in $(seq 1 9); do
