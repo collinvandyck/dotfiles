@@ -1,7 +1,7 @@
 Host *
 	ServerAliveInterval 15
 	ServerAliveCountMax 3
-	ConnectTimeout 5
+	ConnectTimeout 15
 	ControlMaster auto
 	ControlPath ~/.ssh/control/%r@%h:%p
 	ControlPersist yes
