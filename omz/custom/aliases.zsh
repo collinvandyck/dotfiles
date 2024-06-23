@@ -51,7 +51,7 @@ alias gdob='gdo | bat'
 unalias gup
 
 # zsh aliases
-alias reload='source ~/.zshrc'
+alias reload='exec zsh'
 alias ll='ls -lF'
 alias lla='ll -a'
 alias llh='ll -h'
@@ -98,12 +98,12 @@ alias batlog='bat --pager=never -l log --color=always'
 alias tk=task
 
 # lsd config
-alias ls=lsd
-alias ll='lsd --color=always'
-alias lt='ls --tree --color=always'
-alias llt='ll --tree --color=always'
+alias ls='lsd --color=always'
+alias lt='ls --tree'
+alias llt='ll --tree'
+alias lld='ll -d'
 for i in $(seq 1 9); do
-	alias "llt${i}"="ll --tree --color=always --depth ${i}"
+	alias "llt${i}"="ll --tree --depth ${i}"
 done
 
 # hyperfine
