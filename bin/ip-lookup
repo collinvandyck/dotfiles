@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+	echo "usage: $(basename $0) [ip]" >&2
+	exit 1
+}
+
+[ $# != 1 ] && usage
+
+curl -Ss "ip-api.com/json/$1" | jq
