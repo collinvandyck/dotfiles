@@ -9,6 +9,11 @@ return {
                 ".git",
             },
 
+            exclude_dirs = {
+                "/tmp/*",
+                "/private/tmp/*",
+            },
+
             -- for debugging
             silent_chdir = true,
         }

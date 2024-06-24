@@ -7,7 +7,13 @@ return {
         vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
         require("auto-session").setup {
             log_level = vim.log.levels.ERROR,
-            auto_session_suppress_dirs = { "~/", "~/Downloads", "/" },
+            auto_session_suppress_dirs = {
+                "/",
+                "/tmp",
+                "/private/tmp",
+                "~/",
+                "~/Downloads",
+            },
             pre_save_cmds = {
                 function()
                     -- delete all nvim-tree buffers before saving the
@@ -26,10 +32,12 @@ return {
                     close_all_nvim_trees()
                 end,
             },
-            post_restore_cmds = { function()
-                --local nt_api = require("nvim-tree.api")
-                --nt_api.tree.reload()
-            end }
+            post_restore_cmds = {
+                function()
+                    --local nt_api = require("nvim-tree.api")
+                    --nt_api.tree.reload()
+                end,
+            }
         }
     end,
 }
