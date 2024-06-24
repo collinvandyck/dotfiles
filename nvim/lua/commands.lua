@@ -89,3 +89,16 @@ vim.api.nvim_create_user_command('TestFzf', function(opts)
         }
     })
 end, {})
+
+-- creates a new temporary doc and persists it into /tmp. ft=md.
+vim.api.nvim_create_user_command('Tmp', function()
+    local fileName = "/tmp/scratch-" .. os.time() .. ".md"
+    local file = io.open(fileName, "w")
+    if file then
+        file:close()
+    end
+    vim.cmd('edit ' .. fileName)
+    vim.bo.textwidth = 0
+    vim.wo.wrap = true
+    vim.wo.linebreak = false
+end, {})
