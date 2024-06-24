@@ -42,9 +42,24 @@ vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.opt.writebackup = false
 
-require("plugs")
-require("commands")
-require("abbreviations")
-require("autocmds")
-require("colors")
-require("keymaps")
+require("plugs") -- not reloadable
+
+local reloadable = {
+	"commands",
+	"abbreviations",
+	"autocmds",
+	"colors",
+	"keymaps",
+}
+for _, mod in ipairs(reloadable) do
+	require(mod)
+end
+
+-- reload everything that is reloadable
+vim.keymap.set('n', '<leader>r', function()
+	for _, mod in ipairs(reloadable) do
+		package.loaded[mod] = nil
+	end
+	vim.cmd('source $MYVIMRC')
+	vim.notify('reloaded!')
+end, { noremap = true, silent = true })
