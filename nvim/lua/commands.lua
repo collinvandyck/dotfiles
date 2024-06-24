@@ -92,7 +92,8 @@ end, {})
 
 -- creates a new temporary doc and persists it into /tmp. ft=md.
 vim.api.nvim_create_user_command('Tmp', function()
-    local fileName = "/tmp/scratch-" .. os.time() .. ".md"
+    vim.fn.system('mkdir -p /tmp/scratch/')
+    local fileName = "/tmp/scratch/scratch-" .. os.time() .. ".md"
     local file = io.open(fileName, "w")
     if file then
         file:close()
@@ -101,4 +102,15 @@ vim.api.nvim_create_user_command('Tmp', function()
     vim.bo.textwidth = 0
     vim.wo.wrap = true
     vim.wo.linebreak = false
+
+    -- on quit from a scratch doc, write the file, and copy it to the clipboard
+    -- before exiting.
+    --
+    -- todo: have this be an autocmd for this particular buffer.
+    vim.keymap.set('n', 'quitcopy', function()
+        vim.cmd('w')
+        local content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+        vim.fn.setreg('+', content)
+        vim.cmd('qa')
+    end, { noremap = true, buffer = true })
 end, {})
