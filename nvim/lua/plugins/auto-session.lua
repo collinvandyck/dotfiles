@@ -11,6 +11,7 @@ return {
                 "/",
                 "/tmp",
                 "/private/tmp",
+                "/private/tmp/scratch",
                 "~/",
                 "~/Downloads",
             },
