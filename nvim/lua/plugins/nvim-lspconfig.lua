@@ -5,7 +5,8 @@ return {
     },
     config = function()
         local lsp_util = require "lspconfig/util"
-        local custom_attach = function(client, bufnr)
+        -- client, buffnr
+        local custom_attach = function(_, bufnr)
             local bufopts = { noremap = true, silent = true, buffer = bufnr }
             local show_help = function()
                 vim.diagnostic.open_float(nil, { focus = false })
@@ -65,8 +66,13 @@ return {
             vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
             vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
         end
-        vim.cmd [[autocmd! ColorScheme * highlight NormalFloat guifg=white guibg=#1f2335]]
-        vim.cmd [[autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335]]
+        vim.cmd([[
+        augroup LspConfigSetColorScheme
+            autocmd!
+            autocmd! ColorScheme * highlight NormalFloat guifg=white guibg=#1f2335
+            autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335
+        augroup END
+        ]])
         local handlers_border = {
             { "🭽", "FloatBorder" },
             { "▔", "FloatBorder" },

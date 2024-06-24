@@ -1,1 +1,6 @@
-vim.cmd([[autocmd BufRead,BufNewFile **/ssh/config set filetype=sshconfig]])
+vim.cmd([[
+    augroup SSHConfigFileType
+        autocmd!
+        autocmd BufRead,BufNewFile **/ssh/config set filetype=sshconfig
+    augroup END
+]])
