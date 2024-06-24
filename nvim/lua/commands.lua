@@ -63,6 +63,7 @@ end, { range = true })
 -- action based on the one selected.
 vim.api.nvim_create_user_command('TestFzf', function(opts)
     local commands = {
+        { name = "Show Date 2", action = function() print(os.date()) end },
         { name = "Show Date",   action = function() print(os.date()) end },
         { name = "Hello World", action = function() print("Hello, world!") end },
         -- Add more commands and their actions here
