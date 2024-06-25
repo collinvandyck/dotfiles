@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
-# clean start. nothing installed for python atm.
-#
+pyenv install 3.11.8 --skip-existing
+
+# this does not work. skipping.
+# pyenv update
+
+pyenv global 3.11.8
+pyenv local 3.11.8
+

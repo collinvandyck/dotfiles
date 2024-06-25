@@ -63,6 +63,7 @@ brew install --quiet --formula \
 	pam-reattach \
 	pandoc \
 	pstree \
+	pyenv \
 	ripgrep \
 	sccache \
 	shellcheck \
