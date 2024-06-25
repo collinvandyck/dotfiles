@@ -69,6 +69,7 @@ cmd_exists() {
 source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
 source-if ~/.fzf.zsh
 source-if ~/.config/broot/launcher/bash/br
+source-if ~/.cde/.venv/lib/python3.11/site-packages/cde_cli/cde_cli_sh_rc.sh
 
 cmd_exists zoxide   && eval "$(zoxide init zsh)"
 cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
