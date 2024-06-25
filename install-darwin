@@ -148,6 +148,8 @@ sudo rm -rf /usr/local/bin/nvim
 
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
+# run rippling installs
+~/.dotfiles/install-rippling
 
 # set darwin defaults
 defaults write com.apple.Dock autohide-delay -float 0
