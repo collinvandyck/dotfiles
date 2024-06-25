@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 pyenv install 3.11.8 --skip-existing
 
 # this does not work. skipping.

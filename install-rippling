@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [ "$(hostname)" != "ripm2.local" ]; then
+	echo "Not installing rippling deps (hostname=$(hostname))."
+	exit
+fi
+
+if ! command -v pants &>/dev/null; then
+	echo "Installing pants"
+	curl --proto '=https' --tlsv1.2 -fsSL https://static.pantsbuild.org/setup/get-pants.sh | bash
+fi
+
+(
+	if cd ~/code/rippling-main &>/dev/null; then
+		cp -R hooks/. .git/hooks
+		chmod ug+x .git/hooks/*
+	fi
+)
