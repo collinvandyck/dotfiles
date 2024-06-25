@@ -39,6 +39,7 @@ brew install --quiet --formula \
 	caddy \
 	clojure \
 	clojure-lsp \
+	colima \
 	direnv \
 	fd \
 	fx \
