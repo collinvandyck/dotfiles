@@ -18,3 +18,5 @@ fi
 		chmod ug+x .git/hooks/*
 	fi
 )
+
+brew install --quiet --cask session-manager-plugin
