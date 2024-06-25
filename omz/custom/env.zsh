@@ -3,24 +3,26 @@
 unset GOROOT
 unset GOPATH
 
+export BAT_STYLE="plain"
 export DOCKER_SCAN_SUGGEST=false
 export EDITOR=nvim
+export FLOX_DISABLE_METRICS=true
 export GO111MODULE=on
 export HOMEBREW_NO_ANALYTICS=1
+export HOMEBREW_NO_ENV_HINTS=1
 export HOMEBREW_NO_GOOGLE_ANALYTICS=1
+export HOSTNAME=$(hostname)
+export HTOPRC=~/.dotfiles/htop/htop.rc
+export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
 export LESS="-XFR"
-export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-export PANTS_LINT=true
-export HOSTNAME=$(hostname)
-export BAT_STYLE="plain"
 export LESS='-R'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 export PAGER='less -RX' # -X turns off the screen clearing function
+export PANTS_LINT=true
+export PYENV_ROOT="$HOME/.pyenv"
 export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
-export HTOPRC=~/.dotfiles/htop/htop.rc
-export FLOX_DISABLE_METRICS=true
-export HWATCH="--color --no-help-banner --border --with-scrollbar"
+export WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
@@ -51,8 +53,8 @@ addPaths=(
 	/usr/local/go/bin
 	/usr/local/bin
 	~/.dotfiles/bin
-	/usr/local/flutter/bin
 	/usr/local/sqlite3/bin
+	$PYENV_ROOT
 )
 
 for p in ${addPaths[@]}; do
