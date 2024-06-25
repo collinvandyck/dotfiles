@@ -118,6 +118,8 @@ brew install --cask --no-quarantine \
 
 brew autoremove;
 
+brew remove -f openssh; # doesn't play well with macos
+
 # install aws cli v2
 if ! aws --version; then
 	cd $(mktemp -d)
