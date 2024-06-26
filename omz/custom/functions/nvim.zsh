@@ -13,5 +13,5 @@ nvim() {
 		fi
 		rename "$title"
 	}
-	command nvim
+	command nvim "$@"
 }
