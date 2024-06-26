@@ -82,7 +82,7 @@ local fzf = require("fzf-lua")
 map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, silent = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
-vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = true }) end, { noremap = true })
+vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = false }) end, { noremap = true })
 vim.keymap.set('n', 'tci', function()
     local res = vim.fn.system("git ci")
     if vim.v.shell_error ~= 0 then
