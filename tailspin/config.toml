@@ -1,0 +1,13 @@
+# https://github.com/bensadeh/tailspin?tab=readme-ov-file#overview-1
+
+[date]
+disabled = false
+style = { fg = "green" }
+
+[[keywords]]
+words = ['INFO', 'tardigrade']
+style = { fg = "green" }
+
+[[regexps]]
+regular_expression = 'event_type: (\w+)'
+style = { fg = "cyan", bold = true, underline = true }
