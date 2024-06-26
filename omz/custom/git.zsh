@@ -15,12 +15,8 @@ function gdom() {
 	git diff $(git merge-base HEAD origin/$(git_main_branch)) 
 }
 
-function gcob() {
-    git checkout "$(git branch --all --sort=committerdate | grep -v remotes | fzf --no-sort --tac | tr -d '[:space:]' | tr -d '^\* ')"
-}
-
 function gcobr() {
-    git checkout "$(git branch --all --sort=committerdate | fzf --no-sort --tac | tr -d '[:space:]' | tr -d '^\* ')"
+    git checkout "$(git branch --all --sort=committerdate | fzf-tmux -p --no-sort --tac | tr -d '[:space:]' | tr -d '^\* ')"
 }
 
 function fzfbranch() {
