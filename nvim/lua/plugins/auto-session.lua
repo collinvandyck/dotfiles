@@ -13,6 +13,7 @@ return {
                 "/private/tmp",
                 "/private/tmp/scratch",
                 "~/",
+                "~/code",
                 "~/Downloads",
             },
             pre_save_cmds = {
