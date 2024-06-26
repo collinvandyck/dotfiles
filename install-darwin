@@ -6,7 +6,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 
 # add git via xcode cli tools
 if ! command -v git &>/dev/null; then
-	xcode-select --install
+    xcode-select --install
 fi
 
 # setup rosetta
@@ -25,96 +25,96 @@ export PATH=/opt/homebrew/bin:$PATH
 
 # install homebrew
 if [ ! $(command -v brew) ]; then
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 # update homebrew packages
 brew update --quiet
 
 brew install --quiet --formula \
-	bat-extras \
-	broot \
-	btop \
-	bzip2 \
-	caddy \
-	clojure \
-	clojure-lsp \
-	colima \
-	direnv \
-	fd \
-	fx \
-	gh \
-	git-extras \
-	git-machete \
-	glow \
-	gum \
-	htop \
-	hwatch \
-	jesseduffield/lazygit/lazygit \
-	lazygit \
-	luarocks \
-	lua \
-	lua-language-server \
-	luajit-openresty \
-	mingw-w64 \
-	mtr \
-	mutagen-io/mutagen/mutagen \
-	neovim \
-	nvr \
-	pam-reattach \
-	pandoc \
-	pstree \
-	pyenv \
-	ripgrep \
-	sccache \
-	shellcheck \
-	tailspin \
-	tig \
-	tmux \
-	typescript-language-server \
-	tree \
-	watch \
-	wget \
-	zlib \
-	zoxide \
-	;
+    bat-extras \
+    broot \
+    btop \
+    bzip2 \
+    caddy \
+    clojure \
+    clojure-lsp \
+    colima \
+    direnv \
+    fd \
+    fx \
+    gh \
+    git-extras \
+    git-machete \
+    glow \
+    gum \
+    htop \
+    hwatch \
+    jesseduffield/lazygit/lazygit \
+    lazygit \
+    luarocks \
+    lua \
+    lua-language-server \
+    luajit-openresty \
+    mingw-w64 \
+    mtr \
+    mutagen-io/mutagen/mutagen \
+    neovim \
+    nvr \
+    pam-reattach \
+    pandoc \
+    pstree \
+    pyenv \
+    ripgrep \
+    sccache \
+    shellcheck \
+    tailspin \
+    tig \
+    tmux \
+    typescript-language-server \
+    tree \
+    watch \
+    wget \
+    zlib \
+    zoxide \
+    ;
 
 brew install --quiet --cask \
-	1password \
-	caffeine \
-	chatbox \
-	cleanshot \
-	discord \
-	discord \
-	docker \
-	firefox \
-	flox \
-	font-fantasque-sans-mono \
-	font-fantasque-sans-mono-nerd-font \
-	font-hack-nerd-font \
-	google-chrome \
-	imhex \
-	istat-menus \
-	kitty \
-	logi-options-plus \
-	microsoft-remote-desktop \
-	ngrok \
-	obsidian \
-	racket \
-	raycast \
-	signal \
-	slack \
-	steam \
-	sublime-text \
-	tailscale \
-	utm \
-	yubico-yubikey-manager \
-	zoom \
-	;
+    1password \
+    caffeine \
+    chatbox \
+    cleanshot \
+    discord \
+    discord \
+    docker \
+    firefox \
+    flox \
+    font-fantasque-sans-mono \
+    font-fantasque-sans-mono-nerd-font \
+    font-hack-nerd-font \
+    google-chrome \
+    imhex \
+    istat-menus \
+    kitty \
+    logi-options-plus \
+    microsoft-remote-desktop \
+    ngrok \
+    obsidian \
+    racket \
+    raycast \
+    signal \
+    slack \
+    steam \
+    sublime-text \
+    tailscale \
+    utm \
+    yubico-yubikey-manager \
+    zoom \
+    ;
 
 brew install --cask --no-quarantine \
-	alacritty \
-	;
+    alacritty \
+    ;
 
 brew autoremove;
 
@@ -122,10 +122,10 @@ brew remove -f openssh; # doesn't play well with macos
 
 # install aws cli v2
 if ! aws --version; then
-	cd $(mktemp -d)
-	curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-	sudo installer -pkg AWSCLIV2.pkg -target /
-	cd ~
+    cd $(mktemp -d)
+    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+    sudo installer -pkg AWSCLIV2.pkg -target /
+    cd ~
 fi
 
 # enable go in path in case we just installed it.
@@ -133,10 +133,10 @@ export PATH=/usr/local/go/bin:$PATH
 
 # install go
 if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
-	echo "Installing $DOTFILES_GO_FULL_VERSION"
-	curl -s -L -o /tmp/golang.pkg https://go.dev/dl/${DOTFILES_GO_FULL_VERSION}.pkg
-	sudo installer -pkg /tmp/golang.pkg -target /
-	/usr/local/go/bin/go install golang.org/x/tools/gopls@latest
+    echo "Installing $DOTFILES_GO_FULL_VERSION"
+    curl -s -L -o /tmp/golang.pkg https://go.dev/dl/${DOTFILES_GO_FULL_VERSION}.pkg
+    sudo installer -pkg /tmp/golang.pkg -target /
+    /usr/local/go/bin/go install golang.org/x/tools/gopls@latest
 fi
 curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
 
@@ -154,16 +154,32 @@ sudo rm -rf /usr/local/bin/nvim
 ~/.dotfiles/install-rippling
 
 # set darwin defaults
-defaults write com.apple.Dock autohide-delay -float 0
-defaults write -g NSWindowShouldDragOnGesture -bool true  
+# https://macos-defaults.com/
+#
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g KeyRepeat -int 2
+defaults write -g NSWindowResizeTime -float 0.001
+defaults write -g NSWindowShouldDragOnGesture -bool true  
+defaults write com.apple.Dock autohide-delay -float 0
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+defaults write com.apple.dock springboard-show-duration -float 0
+defaults write com.apple.dock appswitcher-all-displays -bool true                       # show cmd tab on all displays
 defaults write com.apple.dock autohide-time-modifier -float 0.75
-defaults write com.apple.dock appswitcher-all-displays -bool true # show cmd tab on all displays
+defaults write com.apple.dock expose-animation-duration -float 0.1
+defaults write com.apple.dock mineffect -string scale
+defaults write com.apple.dock mru-spaces -bool false                                    # do not rearrange spaces
+defaults write com.apple.dock show-recents -int 0
+defaults write com.apple.dock springboard-hide-duration -float 0
+defaults write com.apple.dock springboard-page-duration -float 0
+defaults write com.apple.finder DisableAllAnimations -bool true
+defaults write com.apple.mail DisableReplyAnimations -bool true
+defaults write com.apple.accessibility ReduceMotionEnabled -int 1
+
+killall Dock
 
 # finally, install the launchd daemons
 if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
-	~/.dotfiles/install-launchd
+    ~/.dotfiles/install-launchd
 fi
 
 
