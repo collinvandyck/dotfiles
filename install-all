@@ -53,6 +53,7 @@ bin/symlink ~/.dotfiles/idea/.ideavimrc          ~/.ideavimrc
 bin/symlink ~/.dotfiles/direnv                   ~/.config/direnv
 bin/symlink ~/.dotfiles/tmux/tmux.conf           ~/.tmux.conf
 bin/symlink ~/.dotfiles/dlv                      ~/.config/dlv
+bin/symlink ~/.dotfiles/tailspin                 ~/.config/tailspin
 bin/symlink ~/.dotfiles/sqlite/sqliterc          ~/.sqliterc
 bin/symlink ~/.dotfiles/tmux/tmux.conf           ~/.tmux.conf
 bin/symlink ~/.dotfiles/git/tigrc                ~/.tigrc
