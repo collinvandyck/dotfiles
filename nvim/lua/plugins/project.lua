@@ -1,5 +1,5 @@
 return {
-    "ahmedkhalf/project.nvim",
+    "collinvandyck/project.nvim",
     config = function()
         require("project_nvim").setup {
             detection_methods = { "pattern" },
