@@ -182,7 +182,7 @@ defaults write com.apple.dock springboard-show-duration -float 0
 defaults write com.apple.dock tilesize -int 36 
 defaults write com.apple.finder DisableAllAnimations -bool true
 defaults write com.apple.mail DisableReplyAnimations -bool true
-defaults write com.apple.spaces spans-displays -bool true                               # spaces shared across monitors
+defaults write com.apple.spaces spans-displays -bool false                               # spaces shared across monitors
 
 killall Dock
 killall SystemUIServer
