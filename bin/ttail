@@ -4,9 +4,10 @@
 
 set -euo pipefail
 
+# if the first arg is +/-[number] then pass that to tail instead of the default
+# of the last 1k lines.
 amt="-1000"
 if [ $# -gt 0 ]; then
-    echo "hi: $1"
     if [[ "$1" =~ [+-][0-9]+ ]]; then
         amt="$1"
         shift
