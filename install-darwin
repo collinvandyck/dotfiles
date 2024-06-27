@@ -150,7 +150,7 @@ sudo rm -rf /usr/local/bin/nvim
 
 ~/.dotfiles/install-common
 ~/.dotfiles/install-rippling
-~/.dotfiles/bin/update-ff-prefx
+~/.dotfiles/bin/update-ff-prefs
 
 # set darwin defaults
 # https://macos-defaults.com/
