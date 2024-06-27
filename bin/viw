@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# runs neovim with a windows-specific RA_TARGET env var so that rust-analyzer
+# runs the right toolchain
+
+set -euo pipefail
+
+export RA_TARGET=x86_64-pc-windows-gnu 
+exec nvim "$@"
