@@ -148,10 +148,9 @@ sudo rm -rf /usr/local/bin/vim
 sudo rm -rf /usr/local/bin/vi
 sudo rm -rf /usr/local/bin/nvim
 
-# run generic os-agnostic installs
 ~/.dotfiles/install-common
-# run rippling installs
 ~/.dotfiles/install-rippling
+~/.dotfiles/bin/update-ff-prefx
 
 # set darwin defaults
 # https://macos-defaults.com/

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# sets user.js customizations in firefox profiles
+
+set -euo pipefail
+
+prefs() {
+cat <<eos
+user_pref("privacy.exposeContentTitleInWindow", false);
+user_pref("privacy.exposeContentTitleInWindow.pbm", false);
+eos
+}
+
+base=$HOME/Library/Application\ Support/Firefox/Profiles
+for dir in $HOME/Library/Application\ Support/Firefox/Profiles/*; do
+    if [ -f "$dir"/prefs.js ]; then 
+        file="$dir"/user.js
+        echo "$(prefs)" > "$file"
+        echo "Wrote $file"
+    fi
+done
