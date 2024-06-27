@@ -11,10 +11,16 @@ user_pref("privacy.exposeContentTitleInWindow.pbm", false);
 eos
 }
 
+write_prefs() {
 for dir in $HOME/Library/Application\ Support/Firefox/Profiles/*; do
-    if [ -f "$dir"/prefs.js ]; then 
-        file="$dir"/user.js
-        echo "$(prefs)" > "$file"
-        echo "Wrote $file"
-    fi
+    local prefs_js="$dir"/prefs.js
+    ! [ -f "$prefs_js" ] && continue;
+    ! grep 'username.*collin' "$prefs_js" &>/dev/null  && continue;
+
+    local user_js="$dir"/user.js
+    echo "$(prefs)" > "${user_js}:"
+    printf "Wrote ${user_js}\n$(bat --color=always "$user_js")\n"
 done
+}
+
+write_prefs
