@@ -1,2 +1,3 @@
-vim.bo.expandtab = true
-vim.bo.tabstop = 4
+vim.bo.expandtab = false
+vim.bo.tabstop = 2
+vim.api.nvim_buf_set_option(0, 'list', true)

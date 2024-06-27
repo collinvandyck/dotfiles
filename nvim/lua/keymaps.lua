@@ -1,13 +1,13 @@
 -- q leader key maps
 function ToggleQuickfix()
-    local windows = vim.fn.getwininfo()
-    for _, win in pairs(windows) do
-        if win["quickfix"] == 1 then
-            vim.cmd.cclose()
-            return
-        end
-    end
-    vim.cmd.copen()
+	local windows = vim.fn.getwininfo()
+	for _, win in pairs(windows) do
+		if win["quickfix"] == 1 then
+			vim.cmd.cclose()
+			return
+		end
+	end
+	vim.cmd.copen()
 end
 
 -- mappings
@@ -20,7 +20,6 @@ map('n', '<C-j>', ':cn<CR>', map_opts)
 map('n', '<C-k>', ':cp<CR>', map_opts)
 map('n', '<M-i>', 'zt', map_opts)
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', map_opts)
---map('n', '<C-g>', ':GFiles<CR>', map_opts)
 map('n', '<C-w>t', ':tabnew %<CR>', map_opts)
 map('n', '<Leader>gb', ':Git blame<CR>', map_opts)
 map('n', '<Leader>h', ':vertical res -5<CR>', map_opts)
@@ -70,12 +69,12 @@ vim.keymap.set('v', 'p', '"_dP', map_opts)
 
 -- automatically indent to the appropriate position.
 vim.keymap.set('n', 'i', function()
-    local cond = #vim.fn.getline(".") == 0
-    if cond then
-        return '"_cc'
-    else
-        return "i"
-    end
+	local cond = #vim.fn.getline(".") == 0
+	if cond then
+		return '"_cc'
+	else
+		return "i"
+	end
 end, { desc = "Automatically indent to the appropriate position", silent = true, expr = true })
 
 local fzf = require("fzf-lua")
@@ -84,19 +83,34 @@ vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = false }) end, { noremap = true })
 vim.keymap.set('n', 'tci', function()
-    local res = vim.fn.system("git ci")
-    if vim.v.shell_error ~= 0 then
-        if string.find(res, "nothing to commit") then
-            vim.notify("nothing to commit")
-        else
-            vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
-        end
-        return
-    end
-    vim.notify("commit")
+	local res = vim.fn.system("git ci")
+	if vim.v.shell_error ~= 0 then
+		if string.find(res, "nothing to commit") then
+			vim.notify("nothing to commit")
+		else
+			vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
+		end
+		return
+	end
+	vim.notify("commit")
 end, { noremap = true })
 
 -- toggle search highlighting with f3
 map('n', '<F3>', ':set hlsearch!<CR>', map_opts)
 -- more granular undos
 map('i', '<Space>', '<Space><C-g>u', map_opts)
+
+-- Meta-e will be the prefix for setting a lot of options. E: Editor. The meta
+-- will not get in the way.
+
+-- toggle scrolloff functions
+vim.keymap.set('n', '<M-e>so', function()
+	local so = vim.api.nvim_get_option_value("scrolloff", {})
+	if so == 35 then
+		vim.opt.scrolloff = 5
+	else
+		vim.opt.scrolloff = 35
+	end
+	so = vim.api.nvim_get_option_value("scrolloff", {})
+	vim.notify("so set to " .. tostring(so))
+end, { noremap = true })
