@@ -19,7 +19,7 @@ for dir in $HOME/Library/Application\ Support/Firefox/Profiles/*; do
 
     local user_js="$dir"/user.js
     echo "$(prefs)" > "${user_js}:"
-    printf "Wrote ${user_js}\n$(bat --color=always "$user_js")\n"
+    echo "Wrote ${user_js}"
 done
 }
 
