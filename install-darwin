@@ -57,6 +57,7 @@ brew install --quiet --formula \
     lua \
     lua-language-server \
     luajit-openresty \
+    lxc \
     mingw-w64 \
     mtr \
     mutagen-io/mutagen/mutagen \
