@@ -5,18 +5,6 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
-# rust
-echo "Updating rust"
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
-export PATH="$HOME/.cargo/bin:$PATH"
-rustup default stable
-rustup component add rust-src
-rustup component add rust-analyzer
-rustup target add wasm32-unknown-unknown
-rustup target add x86_64-pc-windows-gnu
-rustup target add aarch64-apple-darwin
-rustup toolchain install nightly-2024-03-29
-
 echo "Updating sqlite"
 sqlite=/usr/local/sqlite3/bin/sqlite3
 if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --version | awk '{print $1}') ]]; then
