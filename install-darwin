@@ -47,6 +47,7 @@ brew install --quiet --formula \
     git-extras \
     git-machete \
     glow \
+    gnuplot \
     gum \
     htop \
     hwatch \
