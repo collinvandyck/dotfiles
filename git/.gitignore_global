@@ -6,3 +6,4 @@
 profile*.svg
 .bacon-locations
 .env
+.envrc
