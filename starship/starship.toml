@@ -4,7 +4,6 @@
 add_newline = false
 
 [git_status]
-disabled = true
 style = 'cyan'
 ignore_submodules = true
 
