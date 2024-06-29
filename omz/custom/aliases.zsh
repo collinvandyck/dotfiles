@@ -2,6 +2,7 @@
 
 alias tma=tmuxinator
 alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
+alias sshctl='ll ~/.ssh/control/'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
