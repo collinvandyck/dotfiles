@@ -4,6 +4,7 @@ unset GOROOT
 unset GOPATH
 
 export BAT_STYLE="plain"
+export DOCKER_CLI_HINTS=false
 export DOCKER_SCAN_SUGGEST=false
 export EDITOR=nvim
 export FLOX_DISABLE_METRICS=true
