@@ -8,3 +8,4 @@ profile*.svg
 .env
 .envrc
 .starship.toml
+*.env
