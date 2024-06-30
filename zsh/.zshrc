@@ -75,10 +75,4 @@ cmd_exists pyenv    && {
 	[ "$(hostname)" = "ripm2.local" ] && eval "$(pyenv init -)"
 }
 
-
-# fix for zsh alt left / right not working while in tmux
-bindkey "^[[1;3C" forward-word
-bindkey "^[[1;3D" backward-word
-#bindkey '\e' vi-cmd-mode 
-#KEYTIMEOUT=1 # 100ms
-
+source ~/.dotfiles/zsh/widgets.zsh
