@@ -3,6 +3,8 @@
 alias tma=tmuxinator
 alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
 alias sshctl='ll ~/.ssh/control/'
+alias xx='ssh -t 5xx.engineer tm'
+alias ut='ssh -t ubuntu-test tm'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
