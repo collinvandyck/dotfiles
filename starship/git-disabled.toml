@@ -1,0 +1,20 @@
+# Custom starship config that has disabled git.
+#
+# Use this by setting
+#
+#   export STARSHIP_CONFIG=~/.dotfiles/starship/git-disabled.toml
+#
+# in a project's .envrc.
+
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+add_newline = false
+
+[git_status]
+disabled = true
+style = 'cyan'
+ignore_submodules = true
+
+[character]
+success_symbol = '[➜](bold green)'
