@@ -1,2 +1,2 @@
 [build]
-#target-dir = "/tmp/shared"
+target-dir = "/tmp/cargo/target"
