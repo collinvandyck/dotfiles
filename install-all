@@ -57,8 +57,8 @@ bin/symlink ~/.dotfiles/tailspin                 ~/.config/tailspin
 bin/symlink ~/.dotfiles/sqlite/sqliterc          ~/.sqliterc
 bin/symlink ~/.dotfiles/tmux/tmux.conf           ~/.tmux.conf
 bin/symlink ~/.dotfiles/git/tigrc                ~/.tigrc
-bin/symlink ~/.dotfiles/runcom/zshrc             ~/.zshrc
-bin/symlink ~/.dotfiles/runcom/ripgrep.conf      ~/.ripgrep.conf
+bin/symlink ~/.dotfiles/zsh/.zshrc               ~/.zshrc
+bin/symlink ~/.dotfiles/ripgrep/.ripgrep.conf    ~/.ripgrep.conf
 bin/symlink ~/.dotfiles/runcom/p10k.zsh          ~/.p10k.zsh
 bin/symlink ~/.dotfiles/powerline                ~/.config/powerline
 bin/symlink ~/.dotfiles/tmux-powerline           ~/.config/tmux-powerline

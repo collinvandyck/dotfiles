@@ -79,5 +79,6 @@ cmd_exists pyenv    && {
 # fix for zsh alt left / right not working while in tmux
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
-bindkey '\e' vi-cmd-mode 
-KEYTIMEOUT=1 # 100ms
+#bindkey '\e' vi-cmd-mode 
+#KEYTIMEOUT=1 # 100ms
+
