@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# opens up a new tmux session on the vm.
-# renamed from 5xx -> xx because it's easier to type.
-
-set -euo pipefail
-
-ssh -t 5xx.engineer tm
