@@ -1,6 +1,6 @@
 # Launches nvim, renaming the tmux window to the thing being edited. This only
 # happens when there is exactly one pane in the current window.
-nvim() {
+nvim-wip() {
 	rename() { tmux rename-window "$@" &>/dev/null || true }
 	num-panes() { tmux display-message -p '#{window_panes}' || "0" }
 	local title=$(tmux display-message -p '#W' || true)
