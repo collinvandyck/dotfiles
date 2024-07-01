@@ -1,2 +1,2 @@
 [build]
-target-dir = "/tmp/cargo/target"
+#target-dir = "/tmp/cargo/target"
