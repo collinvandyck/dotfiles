@@ -58,6 +58,7 @@ map('t', '<Esc>', '<C-\\><C-n>', map_opts)
 map('n', '<ScrollWheelLeft>', '<nop>', map_opts)
 map('n', '<ScrollWheelRight>', '<nop>', map_opts)
 
+vim.keymap.set('n', 'Q', ':qa!<CR>', map_opts)
 vim.keymap.set('n', '<C-s>', ':wa!<CR>', map_opts)
 vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
 
