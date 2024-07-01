@@ -143,16 +143,11 @@ return {
 				local ra_settings = {
 					cargo = {},
 					check = {
-						extraArgs = {},
+						extraArgs = {
+							"--target-dir",
+							"target/rust-analzyer",
+						},
 					},
-					--[[
-                    check = {
-                        extraArgs = {
-                            "--target-dir",
-                            "target/rust-analzyer",
-                        },
-                    },
-					--]]
 					diagnostics = {
 						enable = true,
 						experimental = {
