@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- after a fugitiveblame buffer is unloaded, resize. the delay works around the
 -- lack of a precise event to do this.
 vim.api.nvim_create_autocmd("BufUnload", {
+	group = group,
 	pattern = "*",
 	callback = function()
 		if vim.bo.filetype == "fugitiveblame" then
