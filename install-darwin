@@ -50,14 +50,15 @@ brew install --quiet --formula \
     glow \
     gnuplot \
     gum \
+    hexyl \
     htop \
     hwatch \
     jesseduffield/lazygit/lazygit \
     lazygit \
-    luarocks \
     lua \
     lua-language-server \
     luajit-openresty \
+    luarocks \
     lxc \
     mingw-w64 \
     mtr \
@@ -74,8 +75,8 @@ brew install --quiet --formula \
     tailspin \
     tig \
     tmux \
-    typescript-language-server \
     tree \
+    typescript-language-server \
     watch \
     wget \
     zlib \

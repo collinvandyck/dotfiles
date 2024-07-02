@@ -11,7 +11,6 @@ export FLOX_DISABLE_METRICS=true
 export GO111MODULE=on
 export HOMEBREW_NO_ANALYTICS=1
 export HOMEBREW_NO_ENV_HINTS=1
-export HOMEBREW_NO_GOOGLE_ANALYTICS=1
 export HOSTNAME=$(hostname)
 export HTOPRC=~/.dotfiles/htop/htop.rc
 export HWATCH="--color --no-help-banner --border --with-scrollbar"
