@@ -45,10 +45,10 @@ vim.opt.writebackup = false
 require("plugs") -- not reloadable
 
 local reloadable = {
+	"colors",
 	"commands",
 	"abbreviations",
 	"autocmds",
-	"colors",
 	"keymaps",
 }
 for _, mod in ipairs(reloadable) do

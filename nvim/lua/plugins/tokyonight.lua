@@ -1,11 +1,14 @@
 return {
-    "folke/tokyonight.nvim",
-    lazy = false,
-    priority = 1000,
-    opts = {},
-    init = function()
-        require("tokyonight").setup({
-            style = "night",
-        })
-    end,
+	"folke/tokyonight.nvim",
+	lazy = false,
+	priority = 1000,
+	opts = {},
+	init = function()
+		require("tokyonight").setup({
+			style = "night",
+			on_colors = function(colors)
+				colors.bg = "#111111"
+			end,
+		})
+	end,
 }
