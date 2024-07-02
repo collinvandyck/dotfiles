@@ -1,6 +1,6 @@
 vim.lsp.set_log_level("off")
 
-vim.g.mapleader = " "
+vim.g.mapleader = ","
 vim.g.maplocalleader = "-"
 vim.opt.ai = true
 vim.opt.autochdir = false
