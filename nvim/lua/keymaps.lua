@@ -33,7 +33,7 @@ map('n', '<Leader>s', ':RG<CR>', map_opts)
 map('n', '<Leader>t', ':tabnew %<CR>', map_opts)
 map('n', '<Leader>w', ':Windows<CR>', map_opts)
 map('n', '<Leader>W', ':set wrap!<CR>', map_opts)
-map('n', '<Leader>f', ':NvimTreeFindFile<CR>', map_opts)
+map('n', '<Leader>f', ':NvimTreeToggle<CR>zz<C-w>=', map_opts)
 map('n', '<space>n', ':NvimTreeToggle<CR>zz<C-w>=', map_opts)
 map('n', '<Leader>xx', ':TroubleToggle<CR>', map_opts)
 map('n', '<Leader>xw', ':TroubleToggle workspace_diagnostics<CR>', map_opts)
@@ -105,7 +105,7 @@ map('i', '<Space>', '<Space><C-g>u', map_opts)
 -- will not get in the way.
 
 -- toggle scrolloff functions
-vim.keymap.set('n', '<M-e>so', function()
+vim.keymap.set('n', '<leader>so', function()
 	local so = vim.api.nvim_get_option_value("scrolloff", {})
 	if so == 35 then
 		vim.opt.scrolloff = 5
