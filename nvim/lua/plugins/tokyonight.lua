@@ -7,7 +7,7 @@ return {
 		require("tokyonight").setup({
 			style = "night",
 			on_colors = function(colors)
-				colors.bg = "#111111"
+				colors.bg = "#15151e"
 			end,
 		})
 	end,
