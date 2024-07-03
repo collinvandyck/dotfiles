@@ -13,6 +13,7 @@ Host *
 
 
 Host cloud-dev
+  IgnoreUnknown UseKeychain
   ProxyCommand sh -c "/Users/collin/.cde/connect_to_cde.sh"
   StrictHostKeyChecking no
   User admin
