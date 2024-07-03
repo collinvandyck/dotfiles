@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# a helper around kubectl
+
+set -euo pipefail
+
+kc() { 
+    sudo kubectl "$@" 
+}
+
+kc "$@"
+
