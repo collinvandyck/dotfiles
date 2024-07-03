@@ -43,6 +43,7 @@ brew install --quiet --formula \
     cmake \
     colima \
     direnv \
+    dust \
     fd \
     fx \
     gh \
@@ -75,6 +76,7 @@ brew install --quiet --formula \
     shellcheck \
     tailspin \
     tig \
+    tokei \
     tmux \
     tree \
     typescript-language-server \
