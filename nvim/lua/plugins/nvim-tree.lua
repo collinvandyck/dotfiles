@@ -37,7 +37,10 @@ return {
 				severity = { min = vim.diagnostic.severity.ERROR, },
 			},
 			filesystem_watchers = { enable = true, },
-			filters = { dotfiles = false, },
+			filters = {
+				dotfiles = false,
+				git_ignored = false,
+			},
 			git = {
 				ignore = true,
 				enable = true,
