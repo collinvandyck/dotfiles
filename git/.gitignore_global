@@ -9,3 +9,4 @@ profile*.svg
 .envrc
 .starship.toml
 *.env
+.mutagen
