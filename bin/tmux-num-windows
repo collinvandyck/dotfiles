@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+tmux list-windows | wc -l | sed -E 's/^ *([0-9]+) *$/\1/'
