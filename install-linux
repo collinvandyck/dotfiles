@@ -70,6 +70,7 @@ sudo apt install -y \
   openssh-server \
   pipx \
   pkg-config \
+  protobuf-compiler \
   psmisc \
   python3-pip \
   python-is-python3 \
