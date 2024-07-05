@@ -56,6 +56,7 @@ brew install --quiet --formula \
     htop \
     hwatch \
     jesseduffield/lazygit/lazygit \
+    kompose \
     lazygit \
     lua \
     lua-language-server \
