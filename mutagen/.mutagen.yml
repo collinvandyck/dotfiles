@@ -1,0 +1,3 @@
+sync:
+  defaults:
+    mode: one-way-safe

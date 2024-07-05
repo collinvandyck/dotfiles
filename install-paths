@@ -44,6 +44,7 @@ bin/symlink ~/.dotfiles/hammerspoon                ~/.hammerspoon
 bin/symlink ~/.dotfiles/idea/.ideavimrc            ~/.ideavimrc
 bin/symlink ~/.dotfiles/kitty                      ~/.config/kitty
 bin/symlink ~/.dotfiles/lsd                        ~/.config/lsd
+bin/symlink ~/.dotfiles/mutagen/.mutagen.yml       ~/.mutagen.yml
 bin/symlink ~/.dotfiles/nvim                       ~/.config/nvim
 bin/symlink ~/.dotfiles/powerline                  ~/.config/powerline
 bin/symlink ~/.dotfiles/ripgrep/.ripgrep.conf      ~/.ripgrep.conf
