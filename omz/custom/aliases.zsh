@@ -63,9 +63,9 @@ alias llr='ls -lrth'
 alias r=z #disable r builtin
 
 # k8s things
-alias mk='minikube'
 alias kc='kubectl'
-alias kcl='kubectl logs'
+alias mk='minikube'
+alias kcl='kc logs'
 alias kclt='kcl -f --tail=10'
 
 # docker stuff
