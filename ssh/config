@@ -7,6 +7,11 @@ Host *
     ControlPath ~/.ssh/control/%r@%h:%p
     ControlPersist yes
 
+Host vps nas
+    AddKeysToAgent yes
+    ForwardAgent yes
+    UseKeychain yes
+
 Host cloud-dev
     ProxyCommand sh -c "/Users/collin/.cde/connect_to_cde.sh"
     StrictHostKeyChecking no
