@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-if tmux list-windows | wc -l | grep -qv '^ *1 *$'; then
+if [ "$(tmux-num-windows)" != "1" ]; then
     tmux next-window
 fi
 
