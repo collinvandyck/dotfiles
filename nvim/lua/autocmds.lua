@@ -1,5 +1,22 @@
 local group = vim.api.nvim_create_augroup("StandardAutoCommands", { clear = true })
 
+
+-- resize the windows on all tabpages on startup. this addresses an issue where
+-- nvim-tree is not restored from the session plugin, and a split will be
+-- unsized due to the negative space nvim-tree left behind.
+vim.api.nvim_create_autocmd({ "Vimenter" }, {
+	group = group,
+	pattern = { "*" },
+	callback = function()
+		local start = vim.api.nvim_get_current_tabpage()
+		for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+			vim.api.nvim_set_current_tabpage(tab)
+			vim.cmd("wincmd =")
+		end
+		vim.api.nvim_set_current_tabpage(start)
+	end,
+})
+
 -- if while closing a buffer we only have one normal buffer left, close
 -- nvim-tree so that the tab is destroyed.
 vim.api.nvim_create_autocmd({ "QuitPre" }, {
