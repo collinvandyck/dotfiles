@@ -15,6 +15,10 @@ local function on_attach(bufnr)
 	-- vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent, opts('Up'))
 	vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
 	-- vim.keymap.set('n', 'Q', ':qa!<CR>', opts('Quit All'))
+	vim.keymap.set('n', '<leader>f', function()
+		api.tree.toggle()
+		vim.cmd("wincmd =")
+	end, opts('Toggle'))
 end
 
 return {
