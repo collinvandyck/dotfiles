@@ -63,7 +63,6 @@ alias llr='ls -lrth'
 alias r=z #disable r builtin
 
 # k8s things
-alias kc='kubectl'
 alias mk='minikube'
 alias kcl='kc logs'
 alias kclt='kcl -f --tail=10'
