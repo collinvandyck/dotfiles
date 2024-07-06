@@ -35,16 +35,13 @@ return {
 				} },
 				lualine_x = { 'encoding', 'fileformat', 'filetype', function()
 					local vals = {}
-					local tw = vim.api.nvim_buf_get_option(0, 'textwidth');
-					if tw > 0 then
-						table.insert(vals, 'tw=' .. tostring(tw))
+					if vim.bo.textwidth > 0 then
+						table.insert(vals, 'tw=' .. tostring(vim.bo.textwidth))
 					end
-					local et = vim.api.nvim_buf_get_option(0, 'expandtab');
-					if et then
+					if vim.bo.expandtab then
 						table.insert(vals, 'et')
 					end
-					local wrap = vim.api.nvim_win_get_option(0, 'wrap');
-					if wrap then
+					if vim.wo.wrap then
 						table.insert(vals, 'wrap')
 					end
 					local so = vim.wo.scrolloff
