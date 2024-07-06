@@ -43,7 +43,7 @@ return {
 					if et then
 						table.insert(vals, 'et')
 					end
-					local wrap = vim.api.nvim_buf_get_option(0, 'expandtab');
+					local wrap = vim.api.nvim_win_get_option(0, 'wrap');
 					if wrap then
 						table.insert(vals, 'wrap')
 					end
