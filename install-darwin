@@ -52,6 +52,7 @@ brew install --quiet --formula \
     glow \
     gnuplot \
     gum \
+    helm \
     hexyl \
     htop \
     hwatch \
