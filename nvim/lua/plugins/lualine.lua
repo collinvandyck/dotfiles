@@ -47,6 +47,11 @@ return {
 					if wrap then
 						table.insert(vals, 'wrap')
 					end
+					local so = vim.wo.scrolloff
+					if so < 0 then
+						so = vim.o.scrolloff -- get global option
+					end
+					table.insert(vals, 'so=' .. tostring(so))
 					return table.concat(vals, ' ')
 				end },
 				lualine_y = { 'progress' },

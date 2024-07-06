@@ -17,7 +17,6 @@ local toggle_scrolloff = function()
 		vim.opt.scrolloff = 35
 	end
 	so = vim.api.nvim_get_option_value("scrolloff", {})
-	vim.notify("so set to " .. tostring(so))
 end
 
 local git_commit_ci = function()
