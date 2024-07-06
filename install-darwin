@@ -43,6 +43,7 @@ brew install --quiet --formula \
     cmake \
     colima \
     direnv \
+    dog \
     dust \
     fd \
     fx \
