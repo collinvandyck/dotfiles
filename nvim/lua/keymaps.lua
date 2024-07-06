@@ -41,6 +41,10 @@ local indent_to_right_position = function()
 	end
 end
 
+local toggle_wrap = function()
+	vim.wo.wrap = not vim.wo.wrap
+end
+
 -- mappings
 local map = vim.api.nvim_set_keymap
 local map_opts = { noremap = true, silent = true }
@@ -56,12 +60,8 @@ map('n', '<Leader>j', ':res +5<CR>', map_opts)
 map('n', '<Leader>k', ':res -5<CR>', map_opts)
 map('n', '<Leader>l', ':vertical res +5<CR>', map_opts)
 map('n', '<Leader>N', ':noh<CR>', map_opts)
-map('n', '<Leader>q', ':q!<CR>', map_opts)
-map('n', '<Leader>Q', ':qa!<CR>', map_opts)
 map('n', '<Leader>s', ':RG<CR>', map_opts)
 map('n', '<Leader>t', ':tabnew %<CR>', map_opts)
-map('n', '<Leader>w', ':Windows<CR>', map_opts)
-map('n', '<Leader>W', ':set wrap!<CR>', map_opts)
 map('n', '<Leader>f', ':NvimTreeFindFile<CR><C-w>=', map_opts)
 map('n', '<Leader>F', ':NvimTreeToggle<CR>zz<C-w>=<C-w><C-w>', map_opts)
 map('n', '<space>n', ':NvimTreeToggle<CR>zz<C-w>=', map_opts)
@@ -94,14 +94,11 @@ vim.keymap.set('n', 'Q', ':qa!<CR>', map_opts)
 vim.keymap.set('n', '<C-s>', ':wa!<CR>', map_opts)
 vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
 
--- delete single character without pasting
--- vim.keymap.set('n', 'x', '"_x', { noremap = true })
-
--- keep last yanked when pasting
-vim.keymap.set('v', 'p', '"_dP', map_opts)
-
 local fzf = require("fzf-lua")
 map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, silent = true, desc = "Files" })
+
+vim.keymap.set('n', '<Leader>q', ':q!<CR>', map_opts)
+vim.keymap.set('n', '<Leader>Q', ':qa!<CR>', map_opts)
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<C-t>', fzf.tabs, { noremap = true })
@@ -111,3 +108,7 @@ vim.keymap.set('n', '<leader>so', toggle_scrolloff, { noremap = true })         
 vim.keymap.set('n', '<Leader>i', toggle_quickfix, { noremap = true, silent = true })                -- toggle quickfix
 vim.keymap.set('n', 'qi', toggle_quickfix, { noremap = true, silent = true })                       -- toggle quickfix
 vim.keymap.set('n', 'i', indent_to_right_position, { desc = "Indent", silent = true, expr = true }) -- automatically indent to the appropriate position.
+vim.keymap.set('n', 'x', '"_x', { noremap = true })                                                 -- delete single char without copying
+vim.keymap.set('v', 'p', '"_dP', map_opts)                                                          -- keep last yanked when pasting
+vim.keymap.set('n', '<leader>w', toggle_wrap, map_opts)
+vim.keymap.set('n', '<leader>W', ':Windows<CR>', map_opts)
