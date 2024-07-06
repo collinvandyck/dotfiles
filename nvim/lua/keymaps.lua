@@ -71,6 +71,8 @@ local tree_find_file = function()
 		local node = api.tree.get_node_under_cursor()
 		if node then
 			local path = node.absolute_path
+			local bufpath = vim.api.nvim_buf_get_name(0)
+			-- compare and do something differently possibly.
 		end
 	end
 	api.tree.find_file({ open = true, focus = true })
