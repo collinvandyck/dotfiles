@@ -36,8 +36,9 @@ vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
 vim.opt.timeoutlen = 1000
-vim.opt.tw = 80
+vim.opt.textwidth = 0
 vim.opt.updatetime = 100
+vim.opt.wrapmargin = 120
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.opt.writebackup = false

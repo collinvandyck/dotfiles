@@ -33,7 +33,22 @@ return {
 				lualine_c = { {
 					'filename', path = 3,
 				} },
-				lualine_x = { 'encoding', 'fileformat', 'filetype' },
+				lualine_x = { 'encoding', 'fileformat', 'filetype', function()
+					local vals = {}
+					local tw = vim.api.nvim_buf_get_option(0, 'textwidth');
+					if tw > 0 then
+						table.insert(vals, 'tw=' .. tostring(tw))
+					end
+					local et = vim.api.nvim_buf_get_option(0, 'expandtab');
+					if et then
+						table.insert(vals, 'et')
+					end
+					local wrap = vim.api.nvim_buf_get_option(0, 'expandtab');
+					if wrap then
+						table.insert(vals, 'wrap')
+					end
+					return table.concat(vals, ' ')
+				end },
 				lualine_y = { 'progress' },
 				lualine_z = { 'location' }
 			},
