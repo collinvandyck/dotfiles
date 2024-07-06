@@ -1,5 +1,4 @@
--- q leader key maps
-function ToggleQuickfix()
+local toggle_quickfix = function()
 	local windows = vim.fn.getwininfo()
 	for _, win in pairs(windows) do
 		if win["quickfix"] == 1 then
@@ -10,12 +9,43 @@ function ToggleQuickfix()
 	vim.cmd.copen()
 end
 
+local toggle_scrolloff = function()
+	local so = vim.api.nvim_get_option_value("scrolloff", {})
+	if so == 35 then
+		vim.opt.scrolloff = 5
+	else
+		vim.opt.scrolloff = 35
+	end
+	so = vim.api.nvim_get_option_value("scrolloff", {})
+	vim.notify("so set to " .. tostring(so))
+end
+
+local git_commit_ci = function()
+	local res = vim.fn.system("git ci")
+	if vim.v.shell_error ~= 0 then
+		if string.find(res, "nothing to commit") then
+			vim.notify("nothing to commit")
+		else
+			vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
+		end
+		return
+	end
+	vim.notify("commit")
+end
+
+local indent_to_right_position = function()
+	local cond = #vim.fn.getline(".") == 0
+	if cond then
+		return '"_cc'
+	else
+		return "i"
+	end
+end
+
 -- mappings
 local map = vim.api.nvim_set_keymap
 local map_opts = { noremap = true, silent = true }
 
-map('n', '<Leader>i', '<cmd>lua ToggleQuickfix()<CR>', map_opts)
-map('n', 'qi', '<cmd>lua ToggleQuickfix()<CR>', map_opts)
 map('n', '<C-j>', ':cn<CR>', map_opts)
 map('n', '<C-k>', ':cp<CR>', map_opts)
 map('n', '<M-i>', 'zt', map_opts)
@@ -58,6 +88,8 @@ map('c', '<c-a>', '<Home>', map_opts)
 map('t', '<Esc>', '<C-\\><C-n>', map_opts)
 map('n', '<ScrollWheelLeft>', '<nop>', map_opts)
 map('n', '<ScrollWheelRight>', '<nop>', map_opts)
+map('n', '<F3>', ':set hlsearch!<CR>', map_opts) -- toggle search highlighting with f3
+map('i', '<Space>', '<Space><C-g>u', map_opts)   -- more granular undos
 
 vim.keymap.set('n', 'Q', ':qa!<CR>', map_opts)
 vim.keymap.set('n', '<C-s>', ':wa!<CR>', map_opts)
@@ -69,51 +101,14 @@ vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
 -- keep last yanked when pasting
 vim.keymap.set('v', 'p', '"_dP', map_opts)
 
--- automatically indent to the appropriate position.
-vim.keymap.set('n', 'i', function()
-	local cond = #vim.fn.getline(".") == 0
-	if cond then
-		return '"_cc'
-	else
-		return "i"
-	end
-end, { desc = "Automatically indent to the appropriate position", silent = true, expr = true })
-
 local fzf = require("fzf-lua")
 map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, silent = true, desc = "Files" })
 vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
 vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
 vim.keymap.set('n', '<C-t>', fzf.tabs, { noremap = true })
 vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = false }) end, { noremap = true })
-vim.keymap.set('n', 'tci', function()
-	local res = vim.fn.system("git ci")
-	if vim.v.shell_error ~= 0 then
-		if string.find(res, "nothing to commit") then
-			vim.notify("nothing to commit")
-		else
-			vim.notify("commit failed: " .. res, vim.log.levels.ERROR)
-		end
-		return
-	end
-	vim.notify("commit")
-end, { noremap = true })
-
--- toggle search highlighting with f3
-map('n', '<F3>', ':set hlsearch!<CR>', map_opts)
--- more granular undos
-map('i', '<Space>', '<Space><C-g>u', map_opts)
-
--- Meta-e will be the prefix for setting a lot of options. E: Editor. The meta
--- will not get in the way.
-
--- toggle scrolloff functions
-vim.keymap.set('n', '<leader>so', function()
-	local so = vim.api.nvim_get_option_value("scrolloff", {})
-	if so == 35 then
-		vim.opt.scrolloff = 5
-	else
-		vim.opt.scrolloff = 35
-	end
-	so = vim.api.nvim_get_option_value("scrolloff", {})
-	vim.notify("so set to " .. tostring(so))
-end, { noremap = true })
+vim.keymap.set('n', 'tci', git_commit_ci, { noremap = true })                                       -- runs 'git ci'
+vim.keymap.set('n', '<leader>so', toggle_scrolloff, { noremap = true })                             -- toggle scrolloff
+vim.keymap.set('n', '<Leader>i', toggle_quickfix, { noremap = true, silent = true })                -- toggle quickfix
+vim.keymap.set('n', 'qi', toggle_quickfix, { noremap = true, silent = true })                       -- toggle quickfix
+vim.keymap.set('n', 'i', indent_to_right_position, { desc = "Indent", silent = true, expr = true }) -- automatically indent to the appropriate position.
