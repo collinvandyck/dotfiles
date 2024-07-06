@@ -45,6 +45,14 @@ local toggle_wrap = function()
 	vim.wo.wrap = not vim.wo.wrap
 end
 
+local grep_code = function()
+	local fzf = require("fzf-lua")
+	fzf.live_grep({
+		resume = false,
+	})
+end
+
+
 -- mappings
 local map = vim.api.nvim_set_keymap
 local map_opts = { noremap = true, silent = true }
@@ -60,7 +68,6 @@ map('n', '<Leader>j', ':res +5<CR>', map_opts)
 map('n', '<Leader>k', ':res -5<CR>', map_opts)
 map('n', '<Leader>l', ':vertical res +5<CR>', map_opts)
 map('n', '<Leader>N', ':noh<CR>', map_opts)
-map('n', '<Leader>s', ':RG<CR>', map_opts)
 map('n', '<Leader>t', ':tabnew %<CR>', map_opts)
 map('n', '<Leader>f', ':NvimTreeFindFile<CR><C-w>=', map_opts)
 map('n', '<Leader>F', ':NvimTreeToggle<CR>zz<C-w>=<C-w><C-w>', map_opts)
@@ -95,14 +102,17 @@ vim.keymap.set('n', '<C-s>', ':wa!<CR>', map_opts)
 vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
 
 local fzf = require("fzf-lua")
-map('n', '<C-f>', ":FzfLua<cr>", { noremap = true, silent = true, desc = "Files" })
 
-vim.keymap.set('n', '<Leader>q', ':q!<CR>', map_opts)
-vim.keymap.set('n', '<Leader>Q', ':qa!<CR>', map_opts)
-vim.keymap.set('n', '<C-p>', fzf.files, { noremap = true })
-vim.keymap.set('n', '<C-h>', fzf.buffers, { noremap = true })
-vim.keymap.set('n', '<C-t>', fzf.tabs, { noremap = true })
-vim.keymap.set('n', '<space>s', function() fzf.live_grep({ resume = false }) end, { noremap = true })
+vim.keymap.set('n', '<leader>q', ':q!<CR>', map_opts)
+vim.keymap.set('n', '<leader>Q', ':qa!<CR>', map_opts)
+vim.keymap.set('n', '<leader>ff', fzf.builtin, map_opts)
+vim.keymap.set('n', '<leader>fs', grep_code, { noremap = true })
+vim.keymap.set('n', '<leader>fh', fzf.buffers, map_opts)
+vim.keymap.set('n', '<leader>ft', fzf.tabs, map_opts)
+vim.keymap.set('n', '<space>s', grep_code, { noremap = true })
+vim.keymap.set('n', '<c-p>', fzf.files, { noremap = true })
+vim.keymap.set('n', '<c-h>', fzf.buffers, { noremap = true })
+vim.keymap.set('n', '<c-t>', fzf.tabs, { noremap = true })
 vim.keymap.set('n', 'tci', git_commit_ci, { noremap = true })                                       -- runs 'git ci'
 vim.keymap.set('n', '<leader>so', toggle_scrolloff, { noremap = true })                             -- toggle scrolloff
 vim.keymap.set('n', '<Leader>i', toggle_quickfix, { noremap = true, silent = true })                -- toggle quickfix
@@ -111,4 +121,3 @@ vim.keymap.set('n', 'i', indent_to_right_position, { desc = "Indent", silent = t
 vim.keymap.set('n', 'x', '"_x', { noremap = true })                                                 -- delete single char without copying
 vim.keymap.set('v', 'p', '"_dP', map_opts)                                                          -- keep last yanked when pasting
 vim.keymap.set('n', '<leader>w', toggle_wrap, map_opts)
-vim.keymap.set('n', '<leader>W', ':Windows<CR>', map_opts)
