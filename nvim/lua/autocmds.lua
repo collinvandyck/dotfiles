@@ -89,3 +89,21 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.wo.breakindent = false
 	end,
 })
+
+-- trims trailing spaces before writing text files
+vim.api.nvim_create_autocmd("BufWritePre", {
+	group = group,
+	pattern = "*",
+	callback = function()
+		-- strip trailing spaces from the end of the line
+		local current_view = vim.fn.winsaveview()
+		vim.cmd([[keeppatterns %s/\s\+$//e]])
+		vim.fn.winrestview(current_view)
+
+		-- delete any trailing blank lines
+		local last = vim.fn.prevnonblank(vim.fn.line("$"))
+		if last < vim.fn.line("$") - 1 then
+			vim.api.nvim_buf_set_lines(0, last, -2, false, {})
+		end
+	end,
+})
