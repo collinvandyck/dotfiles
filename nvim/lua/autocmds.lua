@@ -70,19 +70,22 @@ vim.api.nvim_create_autocmd("BufUnload", {
 	end,
 })
 
--- sets the wrap window option based on the current buffer ft
+-- sets the wrapping behavior based on the current buffer ft
 vim.api.nvim_create_autocmd("BufEnter", {
 	group = group,
 	pattern = "*",
 	callback = function()
-		local wrap = false
 		local fts = { "markdown" }
 		for _, ft in ipairs(fts) do
 			if vim.bo.filetype == ft then
-				wrap = true
-				break
+				vim.wo.wrap = true
+				vim.wo.linebreak = true
+				vim.wo.breakindent = true
+				return
 			end
 		end
-		vim.wo.wrap = wrap
+		vim.wo.wrap = false
+		vim.wo.linebreak = false
+		vim.wo.breakindent = false
 	end,
 })
