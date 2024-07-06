@@ -52,6 +52,30 @@ local grep_code = function()
 	})
 end
 
+--vim.keymap.set('n', '<Leader>F', ':NvimTreeToggle<CR>zz<C-w>=<C-w><C-w>', map_opts)
+local tree_toggle = function()
+	vim.notify("toggle")
+	local api = require('nvim-tree.api')
+	vim.cmd("NvimTreeToggle")
+	if bufn then
+		vim.api.nvim_set_current_buf(bufn)
+		vim.cmd("wincmd =")
+	end
+end
+
+local tree_find_file = function()
+	local api = require('nvim-tree.api')
+	local bufn = vim.api.nvim_get_current_buf()
+	local is_open = api.tree.is_visible({ tabpage = vim.api.nvim_get_current_tabpage() })
+	if is_open then
+		local node = api.tree.get_node_under_cursor()
+		if node then
+			local path = node.absolute_path
+		end
+	end
+	api.tree.find_file({ open = true, focus = true })
+end
+
 
 -- mappings
 local map = vim.api.nvim_set_keymap
@@ -69,9 +93,6 @@ map('n', '<Leader>k', ':res -5<CR>', map_opts)
 map('n', '<Leader>l', ':vertical res +5<CR>', map_opts)
 map('n', '<Leader>N', ':noh<CR>', map_opts)
 map('n', '<Leader>t', ':tabnew %<CR>', map_opts)
-map('n', '<Leader>f', ':NvimTreeFindFile<CR><C-w>=', map_opts)
-map('n', '<Leader>F', ':NvimTreeToggle<CR>zz<C-w>=<C-w><C-w>', map_opts)
-map('n', '<space>n', ':NvimTreeToggle<CR>zz<C-w>=', map_opts)
 map('n', '<Leader>xx', ':TroubleToggle<CR>', map_opts)
 map('n', '<Leader>xw', ':TroubleToggle workspace_diagnostics<CR>', map_opts)
 map('n', '<Leader>xd', ':TroubleToggle document_diagnostics<CR>', map_opts)
@@ -105,8 +126,10 @@ local fzf = require("fzf-lua")
 
 vim.keymap.set('n', '<leader>q', ':q!<CR>', map_opts)
 vim.keymap.set('n', '<leader>Q', ':qa!<CR>', map_opts)
-vim.keymap.set('n', '<leader>ff', fzf.builtin, map_opts)
+vim.keymap.set('n', '<leader>zf', fzf.builtin, map_opts)
 vim.keymap.set('n', '<leader>fs', grep_code, { noremap = true })
+vim.keymap.set('n', '<Leader>F', tree_toggle, map_opts)
+vim.keymap.set('n', 'F', tree_find_file, map_opts)
 vim.keymap.set('n', '<leader>fh', fzf.buffers, map_opts)
 vim.keymap.set('n', '<leader>ft', fzf.tabs, map_opts)
 vim.keymap.set('n', '<space>s', grep_code, { noremap = true })
