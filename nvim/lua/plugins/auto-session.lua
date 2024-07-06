@@ -5,7 +5,7 @@ return {
 	},
 	config = function()
 		--vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-		--vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+		vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
 		require("auto-session").setup {
 			log_level = vim.log.levels.ERROR,
 			auto_session_suppress_dirs = {
