@@ -100,7 +100,7 @@ brew install --quiet --cask \
     docker \
     firefox \
     flox \
-    fira-code-nerd-font \
+    font-fira-code-nerd-font \
     font-fantasque-sans-mono \
     font-fantasque-sans-mono-nerd-font \
     font-hack-nerd-font \
