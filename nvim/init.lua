@@ -43,10 +43,10 @@ vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
 vim.opt.writebackup = false
 
-require("plugs") -- not reloadable
+require("plugs")                        -- not reloadable
+vim.cmd("colorscheme tokyonight-night") -- set colorscheme after plugins loaded
 
 local reloadable = {
-	"colors",
 	"commands",
 	"abbreviations",
 	"autocmds",
