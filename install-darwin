@@ -100,6 +100,7 @@ brew install --quiet --cask \
     docker \
     firefox \
     flox \
+    fira-code-nerd-font \
     font-fantasque-sans-mono \
     font-fantasque-sans-mono-nerd-font \
     font-hack-nerd-font \
@@ -169,7 +170,7 @@ sudo rm -rf /usr/local/bin/nvim
 defaults write -g ApplePressAndHoldEnabled -bool false
 defaults write -g KeyRepeat -int 2
 defaults write -g NSWindowResizeTime -float 0.001
-defaults write -g NSWindowShouldDragOnGesture -bool true  
+defaults write -g NSWindowShouldDragOnGesture -bool true
 defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true                    # switch to space with open app
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true                     # use fn keys as F1, F2, etc.
 defaults write com.apple.ActivityMonitor IconType -int 6
@@ -189,7 +190,7 @@ defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock springboard-hide-duration -float 0
 defaults write com.apple.dock springboard-page-duration -float 0
 defaults write com.apple.dock springboard-show-duration -float 0
-defaults write com.apple.dock tilesize -int 36 
+defaults write com.apple.dock tilesize -int 36
 defaults write com.apple.finder DisableAllAnimations -bool true
 defaults write com.apple.mail DisableReplyAnimations -bool true
 defaults write com.apple.spaces spans-displays -bool false                               # spaces shared across monitors
@@ -201,5 +202,4 @@ killall SystemUIServer
 if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
     ~/.dotfiles/install-launchd
 fi
-
 
