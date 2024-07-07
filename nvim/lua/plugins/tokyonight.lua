@@ -7,7 +7,7 @@ return {
 		require("tokyonight").setup({
 			style = "night",
 			on_colors = function(colors)
-				colors.bg = "#13131b"
+				colors.bg = "#0e0e13"
 			end,
 			lualine_bold = true,
 		})
