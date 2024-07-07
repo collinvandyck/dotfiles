@@ -79,12 +79,27 @@ local tree_find_file = function()
 end
 
 
+local qf_nav = function(direction)
+	local idx = vim.fn.getqflist({ idx = 0 }).idx
+	local len = vim.fn.len(vim.fn.getqflist())
+	if len == 0 then
+		return
+	end
+	if direction == 'next' then
+		if idx < len then
+			vim.cmd('cn', { silent = true })
+		end
+	else
+		if idx > 1 then
+			vim.cmd('cp', { silent = true })
+		end
+	end
+end
+
 -- mappings
 local map = vim.api.nvim_set_keymap
 local map_opts = { noremap = true, silent = true }
 
-map('n', '<C-j>', ':cn<CR>', map_opts)
-map('n', '<C-k>', ':cp<CR>', map_opts)
 map('n', '<M-i>', 'zt', map_opts)
 map('n', '<M-b>', ':BaconLoad<CR>:BaconNext<CR>', map_opts)
 map('n', '<C-w>t', ':tabnew %<CR>', map_opts)
@@ -120,6 +135,8 @@ map('n', '<ScrollWheelRight>', '<nop>', map_opts)
 map('n', '<F3>', ':set hlsearch!<CR>', map_opts) -- toggle search highlighting with f3
 map('i', '<Space>', '<Space><C-g>u', map_opts)   -- more granular undos
 
+vim.keymap.set('n', '<C-j>', function() qf_nav('next') end, map_opts)
+vim.keymap.set('n', '<C-k>', function() qf_nav('prev') end, map_opts)
 vim.keymap.set('n', 'Q', ':qa!<CR>', map_opts)
 vim.keymap.set('n', '<C-s>', ':wa!<CR>', map_opts)
 vim.keymap.set('i', '<C-s>', '<C-\\><C-n>:wa!<CR>', map_opts)
