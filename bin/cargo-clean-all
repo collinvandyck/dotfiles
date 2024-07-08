@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+# attempts to find all dirs with a target dir. for each one, it will attempt to cargo
+# clean in that directory.
+
+set -euo pipefail
+
+clean() {
+    local dir="$1"
+    dir="$1"..
+    if [ -f "$dir"/Cargo.toml ]; then
+        echo $dir
+        (cd "$dir" && cargo clean)
+    fi
+}
+
+if [ $# -eq 0 ]; then
+    fd -I -H --glob target --type dir | xargs -I DIR cargo-clean-all "DIR"
+else
+    clean "$1"
+fi
+
