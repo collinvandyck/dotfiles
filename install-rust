@@ -35,6 +35,7 @@ cargo install \
 	lsd \
 	mdbook \
 	miniserve \
+    pastel \
 	pipr \
 	ripgrep \
 	starship \
@@ -45,5 +46,5 @@ cargo install \
 	;
 
 cargo install atuin --version 18.3.0
-cargo install --locked xh 
+cargo install --locked xh
 
