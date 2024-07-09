@@ -15,35 +15,35 @@ export PATH="~/.cargo/bin:$PATH"
 echo "Installing rust utilities"
 
 cargo install \
-	ag \
-	ast-grep \
-	bacon \
-	bat \
-	cargo-asm \
-	cargo-generate \
-	cargo-expand \
-	cargo-lipo \
-	cargo-nextest \
-	cargo-watch \
-	diskonaut \
-	erdtree \
-	eva \
-	fd-find \
-	gitui \
-	hyperfine \
-	just \
-	lsd \
-	mdbook \
-	miniserve \
+    ag \
+    ast-grep \
+    bacon \
+    bat \
+    cargo-asm \
+    cargo-generate \
+    cargo-expand \
+    cargo-lipo \
+    cargo-nextest \
+    cargo-watch \
+    diskonaut \
+    erdtree \
+    eva \
+    fd-find \
+    gitui \
+    hyperfine \
+    just \
+    lsd \
+    mdbook \
+    miniserve \
     pastel \
-	pipr \
-	ripgrep \
-	starship \
-	tealdeer \
-	trunk \
-	wasm-pack \
-	watchexec-cli \
-	;
+    pipr \
+    ripgrep \
+    starship \
+    tealdeer \
+    trunk \
+    wasm-pack \
+    watchexec-cli \
+    ;
 
 cargo install atuin --version 18.3.0
 cargo install --locked xh
