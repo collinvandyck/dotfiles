@@ -19,6 +19,7 @@ alias wer='we -e rs'
 alias wert='we -e rs cargo t'
 alias cnr='cargo nextest run'
 alias j='just'
+alias c='cargo'
 
 # git aliases
 alias gst='git status'
@@ -89,7 +90,7 @@ fi
 # other
 alias nowrap='cut -c -$COLUMNS'
 alias d='cd ~/.dotfiles'
-alias c='cd ~/code'
+
 
 # ls --color makes me sad because it's hard to read.
 unalias ls
