@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# adjusts the mac display brightness using https://github.com/nriley/brightness
+
+set -euo pipefail
+
+if ! command -v brightness &>/dev/null; then
+    ({
+      cd $(mktemp -d)
+      git clone https://github.com/nriley/brightness.git
+      cd brightness
+      make
+      make install
+    })
+fi
+
+if [ $# -gt 0 ]; then
+    brightness "$1"
+else
+    brightness 0.48
+fi
