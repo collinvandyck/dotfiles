@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+cat <<-eos
+shows current terminal colors according to kitty terminal settings.
+by default it will show the colors as configured with the base theme followed by
+
+usage: $(basename $0) [files]
+eos
+exit 1
+}
+
+[[ "$@" = -h ]] && usage
+
+fc() {
+	local file="$1"
+	local base=$(basename "$file")
+	printf "$file\n"
+	cat "$file" | rg '^(\w+) +(\#\w+)' |
+		while read -r line; do
+			local name=$(echo "$line" | awk '{print $1}')
+			local color=$(echo "$line" | awk '{print $2}')
+			echo "$base: $name $color"
+			pastel color "$color"
+		done
+}
+
+if [ $# -gt 0 ]; then
+	for arg; do
+		fc "$arg"
+	done
+else
+	fc ~/.dotfiles/kitty/theme-tokyonight.conf
+	fc ~/.dotfiles/kitty/theme-override.conf
+fi
