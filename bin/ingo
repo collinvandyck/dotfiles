@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-# Runs a command from within the ~/ngrok/go directory
-
-# todo: run direnv if necessary, but how to not repeat this everywhere.
-
-exec indir ~/ngrok/go $@
