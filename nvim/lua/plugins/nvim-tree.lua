@@ -43,7 +43,9 @@ return {
 			filesystem_watchers = { enable = true, },
 			filters = {
 				dotfiles = false,
-				git_ignored = false,
+				-- NB: make sure to set this to true, especially for rust projects.
+				-- otherwise, it will try to watch all the temp files in target.
+				git_ignored = true,
 			},
 			git = {
 				ignore = true,
