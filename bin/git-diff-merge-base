@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+exec git diff $(git merge-base HEAD origin/$(git_main_branch)) "$@"
