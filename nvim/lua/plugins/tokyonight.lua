@@ -1,3 +1,4 @@
+local bg = "#0e0e13"
 return {
 	"folke/tokyonight.nvim",
 	lazy = false,
@@ -12,7 +13,7 @@ return {
 				-- https://mdigi.tools/lighten-color
 				-- https://mdigi.tools/darken-color
 
-				colors.bg = "#0e0e13"
+				colors.bg = bg
 
 				-- brighten the bg in visual mode
 				colors.bg_visual = "#283457"
@@ -34,7 +35,8 @@ return {
 					hl.CmpItemKindCopilot.fg = "#6CC644"
 				end
 
-				hl.NvimTreeNormal.bg = "#0e0e13"
+				hl.NvimTreeNormal.bg = bg
+				hl.NvimTreeNormalNC.bg = bg
 			end,
 			lualine_bold = true,
 		})
