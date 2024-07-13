@@ -33,6 +33,8 @@ return {
 				if hl.CmpItemKindCopilot then
 					hl.CmpItemKindCopilot.fg = "#6CC644"
 				end
+
+				hl.NvimTreeNormal.bg = "#0e0e13"
 			end,
 			lualine_bold = true,
 		})
