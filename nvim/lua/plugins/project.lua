@@ -1,21 +1,22 @@
 return {
-    "collinvandyck/project.nvim",
-    config = function()
-        require("project_nvim").setup {
-            detection_methods = { "pattern" },
+	"collinvandyck/project.nvim",
+	config = function()
+		require("project_nvim").setup {
+			detection_methods = { "pattern" },
 
-            -- rules applied in order
-            patterns = {
-                ".git",
-            },
+			-- rules applied in order
+			patterns = {
+				".git",
+			},
 
-            exclude_dirs = {
-                "/tmp/*",
-                "/private/tmp/*",
-            },
+			exclude_dirs = {
+				"/tmp/*",
+				"/private/tmp/*",
+				"~/.dotfiles/*",
+			},
 
-            -- for debugging
-            silent_chdir = true,
-        }
-    end
+			-- for debugging
+			silent_chdir = true,
+		}
+	end
 }
