@@ -14,6 +14,9 @@ rustup toolchain install nightly-2024-03-29
 export PATH="~/.cargo/bin:$PATH"
 echo "Installing rust utilities"
 
+# install local utilities
+~/.dotfiles/install-rust-dotfiles
+
 cargo install \
     ag \
     ast-grep \

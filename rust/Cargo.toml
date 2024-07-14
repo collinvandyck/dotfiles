@@ -1,0 +1,26 @@
+[workspace]
+resolver = "2"
+members = [
+  "branches",
+  "ghurl",
+]
+
+[workspace.dependencies]
+anyhow =             { version = "1.0.86"  }
+clap =               { version = "4.5.9",    features = ["derive"] }
+color-eyre =         { version = "0.6.3"   }
+futures =            { version = "0.3.30"  }
+git-url-parse =      { version = "0.4.4"   }
+git2 =               { version = "0.19.0"  }
+quote =              { version = "1.0.36"  }
+ratatui =            { version = "0.27.0"  }
+serde =              { version = "1.0.204",  features = ["derive"] }
+serde_json =         { version = "1.0.120" }
+syn =                { version = "2.0.71"  }
+thiserror =          { version = "1.0.62"  }
+tokio =              { version = "1.38.0",   features = ["full"] }
+tracing =            { version = "0.1.40"  }
+tracing-subscriber = { version = "0.3.18",   features = ["env-filter"] }
+
+[profile.dev.package.backtrace]
+opt-level = 3

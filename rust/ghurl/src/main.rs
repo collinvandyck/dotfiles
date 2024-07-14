@@ -1,9 +1,16 @@
 use std::{process::Command, str::from_utf8};
 
 use anyhow::{anyhow, bail, Result};
+use clap::Parser;
 use git_url_parse::GitUrl;
 
+/// Parses the HEAD commit of the current git repo and outputs a link to the remote web host to
+/// stdout. Only supports GitHub currently.
+#[derive(clap::Parser)]
+struct Opts {}
+
 fn main() -> Result<()> {
+    let _opts = Opts::parse();
     let output = Command::new("git")
         .args(["remote", "get-url", "origin"])
         .output()?;

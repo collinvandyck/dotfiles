@@ -1,5 +1,6 @@
 return {
 	"collinvandyck/project.nvim",
+	enabled = false,
 	config = function()
 		require("project_nvim").setup {
 			detection_methods = { "pattern" },

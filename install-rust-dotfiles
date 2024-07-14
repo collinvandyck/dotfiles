@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Installs rust utilities from source in this repo
+
+for dir in ~/.dotfiles/rust/*; do
+    if [ -f $dir/Cargo.toml ]; then
+        echo "Installing dotfiles rust: $(basename "$dir")"
+        cargo -q install --path "$dir"
+    fi
+done
+
