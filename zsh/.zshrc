@@ -1,5 +1,5 @@
 # disable scroll lock so that i can use Ctrl-S in neovim
-stty -ixon 
+stty -ixon
 
 export TERM=xterm-256color
 
@@ -66,6 +66,7 @@ source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.z
 source-if ~/.fzf.zsh
 source-if ~/.config/broot/launcher/bash/br
 source-if ~/.cde/.venv/lib/python3.11/site-packages/cde_cli/cde_cli_sh_rc.sh
+source-if ~/.config/broot/launcher/bash/br
 
 cmd_exists zoxide   && eval "$(zoxide init zsh)"
 cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
