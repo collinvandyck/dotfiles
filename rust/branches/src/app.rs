@@ -99,6 +99,12 @@ impl Default for BranchTypeFilter {
     }
 }
 
+impl BranchTypeFilter {
+    fn typ(&self) -> Option<BranchType> {
+        self.0.clone()
+    }
+}
+
 impl Widget for &mut App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         self.render(area, buf)
@@ -116,7 +122,7 @@ impl App {
         let repo = git::Repository::current().wrap_err("read repo")?;
         let bf = BranchTypeFilter::default();
         let branches: Vec<git::Branch> = repo
-            .branches(bf.0.clone())
+            .branches(bf.typ())
             .wrap_err("get branches")?
             .into_iter()
             .collect();
