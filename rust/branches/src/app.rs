@@ -141,7 +141,6 @@ impl App {
             .border_style(HEADER_STYLE)
             .bg(NORMAL_ROW_BG);
         let commits = branch
-            .summary
             .commits
             .iter()
             .map(|c| c.summary.as_str())

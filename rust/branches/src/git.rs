@@ -39,7 +39,7 @@ impl Repository {
                     let (branch, typ) = br_res.wrap_err("branch")?;
                     let name = branch.name().wrap_err("branch name")?;
                     if let (Some(name), BranchType::Local) = (name, typ) {
-                        let branch = Branch::from(self, name, typ)?;
+                        let branch = Branch::load(self, name, typ)?;
                         Ok(Some(branch))
                     } else {
                         Ok(None)
@@ -58,7 +58,12 @@ pub struct Branch {
     inner: Arc<RepoInner>,
     pub name: String,
     pub typ: BranchType,
-    pub summary: BranchSummary,
+    pub commits: Vec<Commit>,
+}
+
+struct BranchId {
+    name: String,
+    typ: BranchType,
 }
 
 impl Display for Branch {
@@ -68,7 +73,8 @@ impl Display for Branch {
 }
 
 impl Branch {
-    fn from(repo: &Repository, name: &str, typ: BranchType) -> EResult<Self> {
+    /// loads a branch into memory. uses the name/typ as the id and then reads the last N commits.
+    fn load(repo: &Repository, name: &str, typ: BranchType) -> EResult<Self> {
         let branch = repo
             .inner
             .repo
@@ -89,12 +95,11 @@ impl Branch {
             })
             .collect::<Result<Vec<_>, _>>()
             .wrap_err("get commits")?;
-        let summary = BranchSummary { commits };
         Ok(Self {
             inner: repo.inner.clone(),
             name: name.to_string(),
             typ,
-            summary,
+            commits,
         })
     }
     pub fn local(&self) -> bool {
@@ -105,17 +110,47 @@ impl Branch {
 #[derive(Clone)]
 pub struct Commit {
     pub summary: String,
+    pub message: String,
+    pub author: Author,
+    pub timestamp: Timestamp,
 }
 
 impl TryFrom<git2::Commit<'_>> for Commit {
     type Error = color_eyre::Report;
-    fn try_from(value: git2::Commit<'_>) -> Result<Self, Self::Error> {
-        let summary = value.summary().unwrap_or_default().to_string();
-        Ok(Self { summary })
+    fn try_from(commit: git2::Commit<'_>) -> Result<Self, Self::Error> {
+        let summary = commit.summary().map(ToOwned::to_owned).unwrap_or_default();
+        let message = commit.message().map(ToOwned::to_owned).unwrap_or_default();
+        let author = commit.author().into();
+        let timestamp = commit.time().into();
+        Ok(Self {
+            summary,
+            message,
+            author,
+            timestamp,
+        })
     }
 }
 
 #[derive(Clone)]
-pub struct BranchSummary {
-    pub commits: Vec<Commit>,
+pub struct Timestamp {}
+
+impl From<git2::Time> for Timestamp {
+    fn from(value: git2::Time) -> Self {
+        Self {}
+    }
+}
+
+#[derive(Clone)]
+pub struct Author {
+    pub name: Option<String>,
+    pub email: Option<String>,
+}
+
+impl From<git2::Signature<'_>> for Author {
+    fn from(sig: git2::Signature<'_>) -> Self {
+        Self {
+            name: sig.name().map(ToOwned::to_owned),
+            email: sig.email().map(ToOwned::to_owned),
+        }
+    }
 }
