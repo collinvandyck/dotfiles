@@ -49,22 +49,28 @@ struct BranchList {
     items: Vec<BranchItem>,
     state: ListState,
     sort: BranchSort,
+    filter: BranchTypeFilter,
 }
 
 impl BranchList {
-    fn from_iter<I, B>(iter: I) -> Self
+    fn build<I, B>(iter: I, filter: BranchTypeFilter) -> Self
     where
         I: IntoIterator<Item = B>,
         B: Into<git::Branch>,
     {
+        let sort = BranchSort::default();
         let mut items = iter
             .into_iter()
             .map(Into::into)
             .map(BranchItem::new)
             .collect();
         let mut state = ListState::default();
-        let sort = BranchSort::default();
-        let mut list = BranchList { items, state, sort };
+        let mut list = BranchList {
+            items,
+            state,
+            sort,
+            filter,
+        };
         list.sort();
         list.state.select_first();
         list
@@ -84,6 +90,11 @@ enum BranchSort {
     Date,
 }
 
+#[derive(Clone, Default, PartialEq, Eq)]
+struct BranchTypeFilter {
+    typ: Option<BranchType>,
+}
+
 impl Widget for &mut App {
     fn render(self, area: Rect, buf: &mut Buffer) {
         self.render(area, buf)
@@ -99,15 +110,17 @@ const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier:
 impl App {
     pub fn new() -> EResult<Self> {
         let repo = git::Repository::current().wrap_err("read repo")?;
-        let branch_list: BranchList = repo
-            .branches()
+        let bf = BranchTypeFilter::default();
+        let branches: Vec<git::Branch> = repo
+            .branches(bf.typ.clone())
             .wrap_err("get branches")?
             .into_iter()
             .collect();
+        let branches = BranchList::build(branches, bf);
         let exit = false;
         Ok(Self {
             repo,
-            branches: branch_list,
+            branches,
             exit,
         })
     }
@@ -291,15 +304,6 @@ impl From<&BranchItem> for ListItem<'_> {
             }
         };
         ListItem::new(line)
-    }
-}
-
-impl<I> FromIterator<I> for BranchList
-where
-    I: Into<git::Branch>,
-{
-    fn from_iter<T: IntoIterator<Item = I>>(iter: T) -> Self {
-        BranchList::from_iter(iter)
     }
 }
 

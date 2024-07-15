@@ -28,17 +28,17 @@ impl Repository {
         Ok(Self { inner })
     }
 
-    pub fn branches(&self) -> EResult<Vec<Branch>> {
+    pub fn branches(&self, typ: Option<BranchType>) -> EResult<Vec<Branch>> {
         Ok(self
             .inner
             .repo
-            .branches(None)
+            .branches(typ)
             .wrap_err("repo branches")
             .and_then(|iter| {
                 iter.map(|br_res| {
                     let (branch, typ) = br_res.wrap_err("branch")?;
                     let name = branch.name().wrap_err("branch name")?;
-                    if let (Some(name), BranchType::Local) = (name, typ) {
+                    if let Some(name) = name {
                         let branch = Branch::load(self, name, typ)?;
                         Ok(Some(branch))
                     } else {
