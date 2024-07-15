@@ -90,9 +90,13 @@ enum BranchSort {
     Date,
 }
 
-#[derive(Clone, Default, PartialEq, Eq)]
-struct BranchTypeFilter {
-    typ: Option<BranchType>,
+#[derive(Clone, PartialEq, Eq)]
+struct BranchTypeFilter(Option<BranchType>);
+
+impl Default for BranchTypeFilter {
+    fn default() -> Self {
+        Self(None)
+    }
 }
 
 impl Widget for &mut App {
@@ -112,7 +116,7 @@ impl App {
         let repo = git::Repository::current().wrap_err("read repo")?;
         let bf = BranchTypeFilter::default();
         let branches: Vec<git::Branch> = repo
-            .branches(bf.typ.clone())
+            .branches(bf.0.clone())
             .wrap_err("get branches")?
             .into_iter()
             .collect();
