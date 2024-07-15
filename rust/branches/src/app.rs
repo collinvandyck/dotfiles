@@ -51,6 +51,28 @@ struct BranchList {
     sort: BranchSort,
 }
 
+impl BranchList {
+    fn from_iter<I, B>(iter: I) -> Self
+    where
+        I: IntoIterator<Item = B>,
+        B: Into<git::Branch>,
+    {
+        let mut items = iter
+            .into_iter()
+            .map(|i| i.into())
+            .map(BranchItem::new)
+            .collect();
+        let mut state = ListState::default();
+        let sort = BranchSort::default();
+        let mut list = BranchList { items, state, sort };
+        list.sort();
+        list.state.select_first();
+        list
+    }
+
+    fn sort(&mut self) {}
+}
+
 struct BranchItem {
     branch: git::Branch,
 }
@@ -277,16 +299,7 @@ where
     I: Into<git::Branch>,
 {
     fn from_iter<T: IntoIterator<Item = I>>(iter: T) -> Self {
-        let sort = BranchSort::default();
-        let mut items: Vec<BranchItem> = iter
-            .into_iter()
-            .map(|i| i.into())
-            .map(BranchItem::new)
-            .collect();
-        let mut state = ListState::default();
-        state.select_first();
-        let mut list = Self { items, state, sort };
-        list
+        BranchList::from_iter(iter)
     }
 }
 
