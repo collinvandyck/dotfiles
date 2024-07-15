@@ -59,7 +59,7 @@ impl BranchList {
     {
         let mut items = iter
             .into_iter()
-            .map(|i| i.into())
+            .map(Into::into)
             .map(BranchItem::new)
             .collect();
         let mut state = ListState::default();

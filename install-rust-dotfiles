@@ -3,8 +3,8 @@
 set -euo pipefail
 
 # Installs rust utilities from source in this repo
-
-for dir in ~/.dotfiles/rust/*; do
+parent="$(dirname $0)"
+for dir in "$parent"/rust/*; do
     if [ -f $dir/Cargo.toml ]; then
         echo "Installing dotfiles rust: $(basename "$dir")"
         cargo -q install --path "$dir"
