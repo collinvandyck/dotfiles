@@ -33,7 +33,13 @@ else
 	bin/symlink ~/.dotfiles/urlwatch ~/.cofnig/urlwatch
 fi
 
+if [ -d ~/.config/broot ]; then
+    # we will replace it with our symlinked dir
+    rm -rf ~/.config/broot
+fi
+
 bin/symlink ~/.dotfiles/atuin                      ~/.config/atuin
+bin/symlink ~/.dotfiles/broot                      ~/.config/broot
 bin/symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
 bin/symlink ~/.dotfiles/direnv                     ~/.config/direnv
 bin/symlink ~/.dotfiles/dlv                        ~/.config/dlv
