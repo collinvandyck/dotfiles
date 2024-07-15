@@ -236,11 +236,21 @@ impl App {
             KeyCode::Char('k') | KeyCode::Up => self.select_previous()?,
             KeyCode::Char('g') | KeyCode::Home => self.select_first()?,
             KeyCode::Char('G') | KeyCode::End => self.select_last()?,
+            KeyCode::Char('s') => self.cycle_sort()?,
+            KeyCode::Char('f') => self.cycle_filter()?,
             KeyCode::Char('l') | KeyCode::Right | KeyCode::Enter => {
                 self.toggle_branch()?;
             }
             _ => {}
         }
+        Ok(())
+    }
+
+    fn cycle_sort(&mut self) -> EResult<()> {
+        Ok(())
+    }
+
+    fn cycle_filter(&mut self) -> EResult<()> {
         Ok(())
     }
 
