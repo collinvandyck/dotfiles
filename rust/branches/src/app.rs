@@ -1,5 +1,5 @@
 use core::panic;
-use std::{fmt::Result, result};
+use std::{default, fmt::Result, result};
 
 use crate::{
     git::{self},
@@ -41,17 +41,25 @@ pub enum Error {
 
 pub struct App {
     repo: git::Repository,
-    branch_list: BranchList,
+    branches: BranchList,
     exit: bool,
 }
 
 struct BranchList {
     items: Vec<BranchItem>,
     state: ListState,
+    sort: BranchSort,
 }
 
 struct BranchItem {
     branch: git::Branch,
+}
+
+#[derive(Clone, Copy, Default, PartialEq, Eq)]
+enum BranchSort {
+    #[default]
+    Name,
+    Date,
 }
 
 impl Widget for &mut App {
@@ -77,7 +85,7 @@ impl App {
         let exit = false;
         Ok(Self {
             repo,
-            branch_list,
+            branches: branch_list,
             exit,
         })
     }
@@ -115,7 +123,7 @@ impl App {
             .border_style(HEADER_STYLE)
             .bg(NORMAL_ROW_BG);
         let items: Vec<ListItem> = self
-            .branch_list
+            .branches
             .items
             .iter()
             .map(|item| ListItem::from(item))
@@ -126,11 +134,11 @@ impl App {
             .highlight_symbol(">")
             .highlight_spacing(ratatui::widgets::HighlightSpacing::Always);
 
-        StatefulWidget::render(list, area, buf, &mut self.branch_list.state)
+        StatefulWidget::render(list, area, buf, &mut self.branches.state)
     }
 
     fn render_selected(&mut self, area: Rect, buf: &mut Buffer) {
-        let Some(item) = self.branch_list.current() else {
+        let Some(item) = self.branches.current() else {
             return;
         };
         let branch = &item.branch;
@@ -192,38 +200,38 @@ impl App {
     }
 
     fn select_none(&mut self) -> EResult<()> {
-        self.branch_list.state.select(None);
+        self.branches.state.select(None);
         self.load_selected()?;
         Ok(())
     }
 
     fn select_next(&mut self) -> EResult<()> {
-        self.branch_list.state.select_next();
+        self.branches.state.select_next();
         self.load_selected()?;
         Ok(())
     }
 
     fn select_previous(&mut self) -> EResult<()> {
-        self.branch_list.state.select_previous();
+        self.branches.state.select_previous();
         self.load_selected()?;
         Ok(())
     }
 
     fn select_first(&mut self) -> EResult<()> {
-        self.branch_list.state.select_first();
+        self.branches.state.select_first();
         self.load_selected()?;
         Ok(())
     }
 
     fn select_last(&mut self) -> EResult<()> {
-        self.branch_list.state.select_last();
+        self.branches.state.select_last();
         self.load_selected()?;
         Ok(())
     }
 
     fn toggle_branch(&mut self) -> EResult<()> {
-        if let Some(i) = self.branch_list.state.selected() {
-            let branch = &self.branch_list.items[i];
+        if let Some(i) = self.branches.state.selected() {
+            let branch = &self.branches.items[i];
         }
         Ok(())
     }
@@ -269,14 +277,16 @@ where
     I: Into<git::Branch>,
 {
     fn from_iter<T: IntoIterator<Item = I>>(iter: T) -> Self {
-        let items: Vec<BranchItem> = iter
+        let sort = BranchSort::default();
+        let mut items: Vec<BranchItem> = iter
             .into_iter()
             .map(|i| i.into())
             .map(BranchItem::new)
             .collect();
         let mut state = ListState::default();
         state.select_first();
-        Self { items, state }
+        let mut list = Self { items, state, sort };
+        list
     }
 }
 
