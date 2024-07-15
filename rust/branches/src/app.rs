@@ -45,6 +45,7 @@ pub struct App {
     exit: bool,
 }
 
+#[derive(Default)]
 struct BranchList {
     items: Vec<BranchItem>,
     state: ListState,
@@ -95,13 +96,21 @@ struct BranchTypeFilter(Option<BranchType>);
 
 impl Default for BranchTypeFilter {
     fn default() -> Self {
-        Self(None)
+        Self(Some(BranchType::Local))
     }
 }
 
 impl BranchTypeFilter {
     fn typ(&self) -> Option<BranchType> {
         self.0.clone()
+    }
+
+    fn cycle(&mut self) {
+        self.0 = match self.0 {
+            None => Some(BranchType::Local),
+            Some(BranchType::Local) => Some(BranchType::Remote),
+            Some(BranchType::Remote) => None,
+        };
     }
 }
 
@@ -121,18 +130,27 @@ impl App {
     pub fn new() -> EResult<Self> {
         let repo = git::Repository::current().wrap_err("read repo")?;
         let bf = BranchTypeFilter::default();
-        let branches: Vec<git::Branch> = repo
-            .branches(bf.typ())
-            .wrap_err("get branches")?
-            .into_iter()
-            .collect();
-        let branches = BranchList::build(branches, bf);
+        let branches = BranchList::default();
         let exit = false;
-        Ok(Self {
+        let mut app = Self {
             repo,
             branches,
             exit,
-        })
+        };
+        app.load_branches()?;
+        Ok(app)
+    }
+
+    pub fn load_branches(&mut self) -> EResult<()> {
+        let filter = self.branches.filter.clone();
+        let branches: Vec<git::Branch> = self
+            .repo
+            .branches(filter.typ())
+            .wrap_err("get branches")?
+            .into_iter()
+            .collect();
+        self.branches = BranchList::build(branches, filter);
+        Ok(())
     }
 
     fn render(&mut self, area: Rect, buf: &mut Buffer) {
@@ -237,7 +255,9 @@ impl App {
             KeyCode::Char('g') | KeyCode::Home => self.select_first()?,
             KeyCode::Char('G') | KeyCode::End => self.select_last()?,
             KeyCode::Char('s') => self.cycle_sort()?,
-            KeyCode::Char('f') => self.cycle_filter()?,
+            KeyCode::Char('f') => {
+                //self.cycle_filter()?
+            }
             KeyCode::Char('l') | KeyCode::Right | KeyCode::Enter => {
                 self.toggle_branch()?;
             }
@@ -251,7 +271,7 @@ impl App {
     }
 
     fn cycle_filter(&mut self) -> EResult<()> {
-        Ok(())
+        bail!("filtering not supported until lazy load is figured out");
     }
 
     fn select_none(&mut self) -> EResult<()> {
