@@ -46,6 +46,7 @@ return {
 				-- NB: make sure to set this to true, especially for rust projects.
 				-- otherwise, it will try to watch all the temp files in target.
 				git_ignored = true,
+				custom = { "target" },
 			},
 			git = {
 				ignore = true,
