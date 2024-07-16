@@ -45,9 +45,11 @@ struct BranchItem {
 
 #[derive(Clone, Copy, Default, PartialEq, Eq)]
 enum BranchSort {
+    NameAscending,
+    NameDescending,
+    DateAscending,
     #[default]
-    Name,
-    Date,
+    DateDescending,
 }
 
 #[derive(Clone, PartialEq, Eq)]
@@ -102,14 +104,21 @@ impl App {
         ])
         .areas(area);
         let [list, item] = Layout::vertical([Constraint::Fill(1), Constraint::Fill(1)]).areas(main);
-        App::render_header(header, buf);
+        self.render_header(header, buf);
         self.render_branch_list(list, buf);
         self.render_selected(item, buf);
         App::render_footer(footer, buf);
     }
 
-    fn render_header(area: Rect, buf: &mut Buffer) {
-        Paragraph::new("j/k/g/G: move [,]: sort (name)")
+    fn render_header(&self, area: Rect, buf: &mut Buffer) {
+        let sort = match self.branch_list.sort {
+            BranchSort::NameAscending => "name asc",
+            BranchSort::NameDescending => "name desc",
+            BranchSort::DateAscending => "date asc",
+            BranchSort::DateDescending => "date desc",
+        };
+        let header = format!("j/k/g/G: move [,]: sort ({sort})");
+        Paragraph::new(header)
             .bold()
             .left_aligned()
             .render(area, buf);
@@ -202,6 +211,14 @@ impl App {
     }
 
     fn cycle_sort(&mut self) -> EResult<()> {
+        self.branch_list.sort = match self.branch_list.sort {
+            BranchSort::NameAscending => BranchSort::NameDescending,
+            BranchSort::NameDescending => BranchSort::DateAscending,
+            BranchSort::DateAscending => BranchSort::DateDescending,
+            BranchSort::DateDescending => BranchSort::NameAscending,
+        };
+        self.branch_list.sort();
+        self.branch_list.state.select_first();
         Ok(())
     }
 
@@ -261,7 +278,46 @@ impl BranchList {
         list
     }
 
-    fn sort(&mut self) {}
+    fn sort(&mut self) {
+        match self.sort {
+            BranchSort::NameAscending => self
+                .items
+                .sort_by(|i1, i2| i1.branch.name.cmp(&i2.branch.name)),
+            BranchSort::NameDescending => self
+                .items
+                .sort_by(|i1, i2| i2.branch.name.cmp(&i1.branch.name)),
+            BranchSort::DateAscending => self.items.sort_by(|i1, i2| {
+                let i1 = i1
+                    .branch
+                    .commits
+                    .first()
+                    .as_ref()
+                    .map(|c| c.timestamp.epoch());
+                let i2 = i2
+                    .branch
+                    .commits
+                    .first()
+                    .as_ref()
+                    .map(|c| c.timestamp.epoch());
+                i1.cmp(&i2)
+            }),
+            BranchSort::DateDescending => self.items.sort_by(|i1, i2| {
+                let i1 = i1
+                    .branch
+                    .commits
+                    .first()
+                    .as_ref()
+                    .map(|c| c.timestamp.epoch());
+                let i2 = i2
+                    .branch
+                    .commits
+                    .first()
+                    .as_ref()
+                    .map(|c| c.timestamp.epoch());
+                i2.cmp(&i1)
+            }),
+        };
+    }
 }
 
 impl BranchItem {

@@ -139,8 +139,11 @@ pub struct Timestamp {
 }
 
 impl Timestamp {
+    pub fn epoch(&self) -> i64 {
+        self.epoch
+    }
     fn format(&self) -> impl Display {
-        self.dt.format("%d/%m/%Y %H:%M:%S")
+        self.dt.format("%m/%d/%Y %H:%M:%S")
     }
 }
 
