@@ -158,7 +158,8 @@ impl App {
             .map(|c| {
                 let summary = c.summary.as_str();
                 let author = c.author.name.as_deref().unwrap_or("<none>");
-                format!("{author}: {summary}")
+                let timestamp = &c.timestamp;
+                format!("{timestamp}: {author}: {summary}")
             })
             .collect::<Vec<_>>()
             .join("\n");

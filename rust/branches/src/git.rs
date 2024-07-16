@@ -138,6 +138,18 @@ pub struct Timestamp {
     dt: DateTime<Utc>,
 }
 
+impl Timestamp {
+    fn format(&self) -> impl Display {
+        self.dt.format("%d/%m/%Y %H:%M:%S")
+    }
+}
+
+impl Display for Timestamp {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        self.format().fmt(f)
+    }
+}
+
 impl TryFrom<git2::Time> for Timestamp {
     type Error = color_eyre::Report;
     fn try_from(value: git2::Time) -> Result<Self, Self::Error> {
