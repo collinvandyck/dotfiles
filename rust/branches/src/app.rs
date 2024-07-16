@@ -155,7 +155,11 @@ impl App {
         let commits = branch
             .commits
             .iter()
-            .map(|c| c.summary.as_str())
+            .map(|c| {
+                let summary = c.summary.as_str();
+                let author = &c.author.name.as_deref().unwrap_or("<none>");
+                format!("{author}: {summary}")
+            })
             .collect::<Vec<_>>()
             .join("\n");
         Paragraph::new(commits).render(area, buf);
