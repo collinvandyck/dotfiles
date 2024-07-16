@@ -132,11 +132,14 @@ impl TryFrom<git2::Commit<'_>> for Commit {
 }
 
 #[derive(Clone)]
-pub struct Timestamp {}
+pub struct Timestamp {
+    epoch: i64,
+}
 
 impl From<git2::Time> for Timestamp {
     fn from(value: git2::Time) -> Self {
-        Self {}
+        let epoch = value.seconds();
+        Self { epoch }
     }
 }
 

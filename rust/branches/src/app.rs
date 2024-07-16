@@ -157,7 +157,7 @@ impl App {
             .iter()
             .map(|c| {
                 let summary = c.summary.as_str();
-                let author = &c.author.name.as_deref().unwrap_or("<none>");
+                let author = c.author.name.as_deref().unwrap_or("<none>");
                 format!("{author}: {summary}")
             })
             .collect::<Vec<_>>()
