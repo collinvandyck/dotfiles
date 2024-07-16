@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use chrono::{DateTime, Utc};
 use color_eyre::eyre::{bail, Context, ContextCompat, Error};
 use git2::BranchType;
 use std::{fmt::Display, sync::Arc};
@@ -121,7 +122,7 @@ impl TryFrom<git2::Commit<'_>> for Commit {
         let summary = commit.summary().map(ToOwned::to_owned).unwrap_or_default();
         let message = commit.message().map(ToOwned::to_owned).unwrap_or_default();
         let author = commit.author().into();
-        let timestamp = commit.time().into();
+        let timestamp = commit.time().try_into()?;
         Ok(Self {
             summary,
             message,
@@ -134,12 +135,17 @@ impl TryFrom<git2::Commit<'_>> for Commit {
 #[derive(Clone)]
 pub struct Timestamp {
     epoch: i64,
+    dt: DateTime<Utc>,
 }
 
-impl From<git2::Time> for Timestamp {
-    fn from(value: git2::Time) -> Self {
+impl TryFrom<git2::Time> for Timestamp {
+    type Error = color_eyre::Report;
+    fn try_from(value: git2::Time) -> Result<Self, Self::Error> {
         let epoch = value.seconds();
-        Self { epoch }
+        let dt = DateTime::from_timestamp(epoch, 0)
+            .wrap_err_with(|| format!("no timestamp available for epoch {epoch}"))?;
+        let ts = Self { epoch, dt };
+        Ok(ts)
     }
 }
 

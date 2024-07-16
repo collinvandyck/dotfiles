@@ -16,6 +16,7 @@ thiserror.workspace = true
 tokio.workspace = true
 tracing.workspace = true
 tracing-subscriber.workspace = true
+chrono = "0.4.38"
 
 [[bin]]
 name = "branches"
