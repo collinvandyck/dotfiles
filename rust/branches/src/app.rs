@@ -7,6 +7,12 @@ use core::panic;
 use git2::BranchType;
 use std::{default, fmt::Result, result};
 
+const HEADER_STYLE: Style = Style::new().fg(SLATE.c100).bg(BLUE.c800);
+const NORMAL_ROW_BG: Color = SLATE.c950;
+const LOCAL_BRANCH_COLOR: Color = SLATE.c200;
+const REMOTE_BRANCH_COLOR: Color = RED.c200;
+const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier::BOLD);
+
 #[derive(thiserror::Error, Debug)]
 pub enum Error {
     #[error(transparent)]
@@ -47,11 +53,11 @@ enum BranchSort {
 #[derive(Clone, PartialEq, Eq)]
 struct BranchTypeFilter(Option<BranchType>);
 
-const HEADER_STYLE: Style = Style::new().fg(SLATE.c100).bg(BLUE.c800);
-const NORMAL_ROW_BG: Color = SLATE.c950;
-const LOCAL_BRANCH_COLOR: Color = SLATE.c200;
-const REMOTE_BRANCH_COLOR: Color = RED.c200;
-const SELECTED_STYLE: Style = Style::new().bg(SLATE.c800).add_modifier(Modifier::BOLD);
+impl Widget for &mut App {
+    fn render(self, area: Rect, buf: &mut Buffer) {
+        self.render(area, buf)
+    }
+}
 
 impl App {
     pub fn new() -> EResult<Self> {
@@ -248,6 +254,9 @@ impl App {
 }
 
 impl BranchList {
+    fn current(&self) -> Option<&BranchItem> {
+        self.state.selected().and_then(|i| self.items.get(i))
+    }
     fn build(branches: Vec<git::Branch>, filter: BranchTypeFilter) -> Self {
         let sort = BranchSort::default();
         let mut items = branches.into_iter().map(BranchItem::new).collect();
@@ -264,38 +273,6 @@ impl BranchList {
     }
 
     fn sort(&mut self) {}
-}
-
-impl Default for BranchTypeFilter {
-    fn default() -> Self {
-        Self(Some(BranchType::Local))
-    }
-}
-
-impl BranchTypeFilter {
-    fn typ(&self) -> Option<BranchType> {
-        self.0.clone()
-    }
-
-    fn cycle(&mut self) {
-        self.0 = match self.0 {
-            None => Some(BranchType::Local),
-            Some(BranchType::Local) => Some(BranchType::Remote),
-            Some(BranchType::Remote) => None,
-        };
-    }
-}
-
-impl Widget for &mut App {
-    fn render(self, area: Rect, buf: &mut Buffer) {
-        self.render(area, buf)
-    }
-}
-
-impl BranchList {
-    fn current(&self) -> Option<&BranchItem> {
-        self.state.selected().and_then(|i| self.items.get(i))
-    }
 }
 
 impl BranchItem {
@@ -316,6 +293,26 @@ impl From<&BranchItem> for ListItem<'_> {
             }
         };
         ListItem::new(line)
+    }
+}
+
+impl Default for BranchTypeFilter {
+    fn default() -> Self {
+        Self(Some(BranchType::Local))
+    }
+}
+
+impl BranchTypeFilter {
+    fn typ(&self) -> Option<BranchType> {
+        self.0.clone()
+    }
+
+    fn cycle(&mut self) {
+        self.0 = match self.0 {
+            None => Some(BranchType::Local),
+            Some(BranchType::Local) => Some(BranchType::Remote),
+            Some(BranchType::Remote) => None,
+        };
     }
 }
 
