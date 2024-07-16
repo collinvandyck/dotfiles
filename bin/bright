@@ -17,5 +17,5 @@ fi
 if [ $# -gt 0 ]; then
     brightness "$1"
 else
-    brightness 0.48
+    brightness 0.49
 fi

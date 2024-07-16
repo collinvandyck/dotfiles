@@ -135,6 +135,11 @@ return {
 			handlers = handlers,
 			on_attach = custom_attach,
 		})
+		require("lspconfig").bashls.setup({
+			capabilities = capabilities,
+			handlers = handlers,
+			on_attach = custom_attach,
+		})
 		require("lspconfig").rust_analyzer.setup({
 			capabilities = capabilities,
 			handlers = handlers,
