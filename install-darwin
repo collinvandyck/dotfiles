@@ -33,6 +33,7 @@ brew update --quiet
 
 brew install --quiet --formula \
     asdf \
+    bash-language-server \
     bat-extras \
     broot \
     btop \
