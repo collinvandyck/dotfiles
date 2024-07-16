@@ -74,6 +74,14 @@ impl App {
         Ok(app)
     }
 
+    pub fn run(&mut self, terminal: &mut tui::Tui) -> EResult<()> {
+        while !self.exit {
+            terminal.draw(|frame| self.render_frame(frame))?;
+            self.handle_events().wrap_err("handle events failed")?;
+        }
+        Ok(())
+    }
+
     pub fn load_branches(&mut self) -> EResult<()> {
         let filter = self.branch_list.filter.clone();
         let branches: Vec<git::Branch> = self
@@ -153,14 +161,6 @@ impl App {
         Paragraph::new(commits).render(area, buf);
     }
 
-    pub fn run(&mut self, terminal: &mut tui::Tui) -> EResult<()> {
-        while !self.exit {
-            terminal.draw(|frame| self.render_frame(frame))?;
-            self.handle_events().wrap_err("handle events failed")?;
-        }
-        Ok(())
-    }
-
     fn render_frame(&mut self, frame: &mut Frame) {
         frame.render_widget(self, frame.size());
     }
@@ -188,9 +188,6 @@ impl App {
             KeyCode::Char('g') | KeyCode::Home => self.select_first()?,
             KeyCode::Char('G') | KeyCode::End => self.select_last()?,
             KeyCode::Char('s') => self.cycle_sort()?,
-            KeyCode::Char('f') => {
-                //self.cycle_filter()?
-            }
             KeyCode::Char('l') | KeyCode::Right | KeyCode::Enter => {
                 self.toggle_branch()?;
             }
@@ -203,37 +200,28 @@ impl App {
         Ok(())
     }
 
-    fn cycle_filter(&mut self) -> EResult<()> {
-        bail!("filtering not supported until lazy load is figured out");
-    }
-
     fn select_none(&mut self) -> EResult<()> {
         self.branch_list.state.select(None);
-        self.load_selected()?;
         Ok(())
     }
 
     fn select_next(&mut self) -> EResult<()> {
         self.branch_list.state.select_next();
-        self.load_selected()?;
         Ok(())
     }
 
     fn select_previous(&mut self) -> EResult<()> {
         self.branch_list.state.select_previous();
-        self.load_selected()?;
         Ok(())
     }
 
     fn select_first(&mut self) -> EResult<()> {
         self.branch_list.state.select_first();
-        self.load_selected()?;
         Ok(())
     }
 
     fn select_last(&mut self) -> EResult<()> {
         self.branch_list.state.select_last();
-        self.load_selected()?;
         Ok(())
     }
 
@@ -241,10 +229,6 @@ impl App {
         if let Some(i) = self.branch_list.state.selected() {
             let branch = &self.branch_list.items[i];
         }
-        Ok(())
-    }
-
-    fn load_selected(&mut self) -> EResult<()> {
         Ok(())
     }
 
