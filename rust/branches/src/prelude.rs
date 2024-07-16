@@ -1,6 +1,4 @@
 pub use color_eyre::eyre::Result as EResult;
-pub use ratatui::prelude::Stylize;
-pub use ratatui::style::Modifier;
 pub use ratatui::{
     backend::CrosstermBackend,
     buffer::Buffer,
@@ -25,5 +23,6 @@ pub use ratatui::{
     },
     Frame, Terminal,
 };
+pub use ratatui::{prelude::Stylize, style::Modifier};
 pub use std::io::{self, stdout, Stdout};
 pub use std::time::Duration;
