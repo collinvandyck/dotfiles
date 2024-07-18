@@ -12,3 +12,5 @@ pyenv local 3.11.8
 
 # causes issues on linux
 # pip install visidata
+
+pipx install posting
