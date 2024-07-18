@@ -72,6 +72,7 @@ cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
 cmd_exists direnv   && eval "$(direnv hook zsh)"
 cmd_exists starship && eval "$(starship init zsh)"
 cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
+cmd_exists op       && eval "$(op completion zsh)"
 cmd_exists pyenv    && {
 	[ "$(hostname)" = "ripm2.local" ] && eval "$(pyenv init -)"
 }
