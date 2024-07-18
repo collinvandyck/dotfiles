@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# a helper script to find things in 1pas
+
+choose-item() {
+    op item list --format 'json' | jq -r '.[].title' | sort | fzf-tmux -p || true
+}
+
+choose-field() {
+    op item get "$1" --format json | jq -r '.fields[]'
+    op item get "$1" --format json | jq -r '.fields[].id'
+}
+
+choice=$(choose-item)
+[ -z "$choice" ] && exit
+
+field=$(choose-field "$choice")
+echo "field: ${field}"
