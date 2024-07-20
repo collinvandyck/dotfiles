@@ -32,7 +32,6 @@ fi
 brew update --quiet
 
 brew install --quiet --formula \
-    1password-cli \
     asdf \
     bash-language-server \
     bat-extras \
@@ -95,6 +94,7 @@ brew install --quiet --formula \
 
 brew install --quiet --cask \
     1password \
+    1password-cli \
     caffeine \
     chatbox \
     cleanshot \
