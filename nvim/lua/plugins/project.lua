@@ -13,6 +13,7 @@ return {
 				"/tmp/*",
 				"/private/tmp/*",
 				"~/.dotfiles/*",
+				"~/code/rust-learning/*",
 			},
 
 			-- for debugging
