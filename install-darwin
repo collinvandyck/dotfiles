@@ -70,6 +70,7 @@ brew install --quiet --formula \
     mtr \
     mutagen-io/mutagen/mutagen \
     neovim \
+    nmap \
     nvr \
     pam-reattach \
     pandoc \
