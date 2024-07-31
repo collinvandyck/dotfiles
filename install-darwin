@@ -10,7 +10,7 @@ if ! command -v git &>/dev/null; then
 fi
 
 # setup rosetta
-if [[ `uname -m` != "arm64" ]] ; then
+if [[ "$(uname -m)" != "arm64" ]] ; then
     echo "not arm64"
 else
     if ! (arch -arch x86_64 uname -m > /dev/null) ; then
@@ -24,7 +24,7 @@ fi
 export PATH=/opt/homebrew/bin:$PATH
 
 # install homebrew
-if [ ! $(command -v brew) ]; then
+if [ ! "$(command -v brew)" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
@@ -39,6 +39,7 @@ brew install --quiet --formula \
     btop \
     bzip2 \
     caddy \
+    chruby \
     clojure \
     clojure-lsp \
     cmake \
@@ -79,6 +80,7 @@ brew install --quiet --formula \
     pstree \
     pyenv \
     ripgrep \
+    ruby-install \
     sccache \
     shellcheck \
     tailspin \
@@ -89,6 +91,7 @@ brew install --quiet --formula \
     typescript-language-server \
     watch \
     wget \
+    xz \
     zlib \
     zoxide \
     ;
