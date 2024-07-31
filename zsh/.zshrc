@@ -76,5 +76,10 @@ cmd_exists op       && eval "$(op completion zsh)"
 cmd_exists pyenv    && {
 	[ "$(hostname)" = "ripm2.local" ] && eval "$(pyenv init -)"
 }
+if cmd_exists brew; then
+    source-if "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
+    source-if "$(brew --prefix)/opt/chruby/share/chruby/auto.sh"
+fi
+cmd_exists chruby   && chruby ruby-3.1.3
 
 source ~/.dotfiles/zsh/widgets.zsh
