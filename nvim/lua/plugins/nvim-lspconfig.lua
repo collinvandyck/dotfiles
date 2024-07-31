@@ -19,18 +19,18 @@ return {
 					--lspb.code_action({ context = { only = { 'source.organizeImports' } }, apply = true})
 				end,
 			})
-			vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-				buffer = bufnr,
-				callback = function()
-					vim.api.nvim_command("silent! lua require('vim.lsp.buf').document_highlight()")
-				end,
-			})
-			vim.api.nvim_create_autocmd({ "CursorMoved" }, {
-				buffer = bufnr,
-				callback = function()
-					vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
-				end,
-			})
+			--vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+			--buffer = bufnr,
+			--callback = function()
+			--vim.api.nvim_command("silent! lua require('vim.lsp.buf').document_highlight()")
+			--end,
+			--})
+			--vim.api.nvim_create_autocmd({ "CursorMoved" }, {
+			--buffer = bufnr,
+			--callback = function()
+			--vim.api.nvim_command("silent! lua require('vim.lsp.buf').clear_references()")
+			--end,
+			--})
 			local fzf = require("fzf-lua")
 			local jump_opts = { jump_to_single_result = true, sync = false }
 			vim.keymap.set('n', 'gD', function() fzf.lsp_declarations(jump_opts) end, bufopts)
