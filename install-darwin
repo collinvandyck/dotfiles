@@ -139,6 +139,8 @@ brew autoremove;
 
 brew remove -f openssh; # doesn't play well with macos
 
+ruby-install --no-reinstall ruby 3.1.3
+
 # install aws cli v2
 if ! aws --version; then
     cd $(mktemp -d)
