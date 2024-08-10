@@ -6,9 +6,10 @@ export ZSH_CUSTOM=~/.dotfiles/omz/custom
 export ZSH="$HOME/.oh-my-zsh"
 
 plugins=(
-	git
-	macos
-	rust
+    git
+    macos
+    rust
+    fzf-tab
 )
 
 # sources the file if it exists
