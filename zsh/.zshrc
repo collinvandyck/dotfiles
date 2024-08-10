@@ -2,14 +2,30 @@
 stty -ixon
 
 export TERM=xterm-256color
-
 export ZSH_CUSTOM=~/.dotfiles/omz/custom
 export ZSH="$HOME/.oh-my-zsh"
+
 plugins=(
 	git
 	macos
 	rust
 )
+
+# sources the file if it exists
+source-if() {
+	local p="$1"
+	[ -f "${p}" ] && source "${p}"
+}
+
+# tests if the command exists
+cmd_exists() {
+	local p="$1"
+	command -v "${p}" &>/dev/null
+}
+
+# setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
+# https://docs.brew.sh/Shell-Completion
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 source $ZSH/oh-my-zsh.sh
 
 HISTFILE="$HOME/.zsh_history"
@@ -49,18 +65,6 @@ if [[ -n "$USE_NVM" ]]; then
 	[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
-
-# sources the file if it exists
-source-if() {
-	local p="$1"
-	[ -f "${p}" ] && source "${p}"
-}
-
-# tests if the command exists
-cmd_exists() {
-	local p="$1"
-	command -v "${p}" &>/dev/null
-}
 
 source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
 source-if ~/.fzf.zsh
