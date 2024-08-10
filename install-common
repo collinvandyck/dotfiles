@@ -23,21 +23,10 @@ echo "installing fzf"
 if [ ! -d ~/.fzf ]; then
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 	~/.fzf/install --all
-else 
+else
 	(cd ~/.fzf && git pull)
 	~/.fzf/install --all
 fi
-
-# install powerline
-#echo "installing powerline"
-#if [ ! -e ~/.powerline ]; then
-	#git clone https://github.com/powerline/powerline.git ~/.powerline
-#fi
-
-# ensure powerline-status
-#echo "installing powerline-status"
-#pipx install powerline-status
-#pip3 install powerline-status
 
 # oh my zsh
 echo "installing oh-my-zsh"
@@ -48,9 +37,16 @@ if [ ! -e ~/.oh-my-zsh ]; then
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+# fzf-tab completions for oh my zsh
+if [ ! -e ~/.dotfiles/omz/custom/plugins/fzf-tab ]; then
+    git submodule add https://github.com/Aloxaf/fzf-tab omz/custom/plugins/fzf-tab
+else
+    (cd ~/.dotfiles/omz/custom/plugins/fzf-tab && git pull)
+fi
+
 # tmux plugin manager
 echo "installing tpm"
-if [ ! -d ~/.tmux/plugins/tpm ]; then 
+if [ ! -d ~/.tmux/plugins/tpm ]; then
 	mkdir -p ~/.tmux/plugins
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 fi
@@ -62,7 +58,7 @@ fi
 # install python stuff
 ~/.dotfiles/install-python
 
-# install any rust programs 
+# install any rust programs
 ~/.dotfiles/install-rust
 
 # install nodejs and npm things
