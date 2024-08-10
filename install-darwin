@@ -47,6 +47,7 @@ brew install --quiet --formula \
     direnv \
     dog \
     dust \
+    eza \
     fd \
     fx \
     gh \
@@ -62,6 +63,7 @@ brew install --quiet --formula \
     jesseduffield/lazygit/lazygit \
     kompose \
     lazygit \
+    lsd \
     lua \
     lua-language-server \
     luajit-openresty \
