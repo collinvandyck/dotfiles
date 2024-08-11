@@ -26,7 +26,7 @@ cmd_exists() {
 
 # setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
 # https://docs.brew.sh/Shell-Completion
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+FPATH="$(/opt/homebrew/bin/brew --prefix)/share/zsh/site-functions:${FPATH}"
 source $ZSH/oh-my-zsh.sh
 
 HISTFILE="$HOME/.zsh_history"
