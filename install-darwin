@@ -59,6 +59,7 @@ brew install --quiet --formula \
     helm \
     hexyl \
     htop \
+    httpie \
     hwatch \
     jesseduffield/lazygit/lazygit \
     kompose \
