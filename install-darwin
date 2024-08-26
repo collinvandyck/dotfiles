@@ -109,7 +109,6 @@ brew install --quiet --cask \
     discord \
     docker \
     firefox \
-    flox \
     font-fira-code-nerd-font \
     font-fantasque-sans-mono \
     font-fantasque-sans-mono-nerd-font \
@@ -131,6 +130,7 @@ brew install --quiet --cask \
     tailscale \
     utm \
     yubico-yubikey-manager \
+    zed \
     zoom \
     ;
 
