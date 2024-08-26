@@ -5,6 +5,7 @@ alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
 alias sshctl='ll ~/.ssh/control/'
 alias xx='ssh -t 5xx.engineer tm'
 alias ut='ssh -t ubuntu-test tm'
+alias appsup='cd ~/Library/Application\ Support'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
