@@ -39,6 +39,7 @@ if [ -d ~/.config/broot ]; then
 fi
 
 bin/symlink ~/.dotfiles/atuin                      ~/.config/atuin
+bin/symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
 bin/symlink ~/.dotfiles/broot                      ~/.config/broot
 bin/symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
 bin/symlink ~/.dotfiles/direnv                     ~/.config/direnv
