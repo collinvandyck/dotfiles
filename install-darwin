@@ -62,8 +62,8 @@ brew install --quiet --formula \
     htop \
     httpie \
     hwatch \
-    jesseduffield/lazygit/lazygit \
     kompose \
+    lazydocker \
     lazygit \
     lsd \
     lua \
