@@ -114,7 +114,7 @@ return {
 				},
 			},
 		})
-		require 'lspconfig'.tsserver.setup {
+		require 'lspconfig'.ts_ls.setup {
 			capabilities = capabilities,
 			handlers = handlers,
 			on_attach = custom_attach,
