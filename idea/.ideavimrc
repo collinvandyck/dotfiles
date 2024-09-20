@@ -24,7 +24,7 @@ nnoremap gD :action GotoTypeDeclaration<CR>
 nnoremap g[ :action Back<CR>
 nnoremap g] :action Forward<CR>
 
-noremap jk <Esc>
+inoremap jk <Esc>
 inoremap <c-e> <Esc>A
 
 "" -- Suggested options --
