@@ -61,3 +61,8 @@ for p in ${addPaths[@]}; do
 	addPath $(echo $p)
 done
 
+if [ -e ~/.rd/bin ]; then
+    echo ok
+    export PATH="~/.rd/bin:$PATH"
+fi
+
