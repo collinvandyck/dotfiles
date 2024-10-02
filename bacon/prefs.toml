@@ -63,4 +63,3 @@ line_format = "{kind} {path}:{line}:{column} {message}"
 # d = "job:doc-open"
 # t = "job:test"
 # r = "job:run"
-

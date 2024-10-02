@@ -108,7 +108,6 @@ brew install --quiet --cask \
     cleanshot \
     discord \
     discord \
-    docker \
     firefox \
     font-fira-code-nerd-font \
     font-fantasque-sans-mono \
