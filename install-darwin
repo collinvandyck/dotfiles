@@ -93,6 +93,7 @@ brew install --quiet --formula \
     tmux \
     tree \
     typescript-language-server \
+    viddy \
     watch \
     wget \
     xz \
