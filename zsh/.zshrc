@@ -9,7 +9,6 @@ plugins=(
     git
     macos
     rust
-    fzf-tab
 )
 
 # sources the file if it exists
