@@ -37,12 +37,15 @@ if [ ! -e ~/.oh-my-zsh ]; then
 	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+# do not use fzf-tab anymore
 # fzf-tab completions for oh my zsh
-if [ ! -e ~/.dotfiles/omz/custom/plugins/fzf-tab ]; then
-    git submodule add https://github.com/Aloxaf/fzf-tab omz/custom/plugins/fzf-tab
-else
-    (cd ~/.dotfiles/omz/custom/plugins/fzf-tab && git pull)
-fi
+#if [ ! -e ~/.dotfiles/omz/custom/plugins/fzf-tab ]; then
+    #echo "adding fzf-tab submodule"
+    #git submodule add https://github.com/Aloxaf/fzf-tab omz/custom/plugins/fzf-tab
+#else
+    #echo "updating fzf-tab submodule"
+    #(cd ~/.dotfiles/omz/custom/plugins/fzf-tab && git pull)
+#fi
 
 # tmux plugin manager
 echo "installing tpm"
