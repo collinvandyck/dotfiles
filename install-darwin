@@ -77,6 +77,7 @@ brew install --quiet --formula \
     neovim \
     nmap \
     nvr \
+    opam \
     pam-reattach \
     pandoc \
     pipx \
