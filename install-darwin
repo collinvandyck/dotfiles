@@ -120,7 +120,6 @@ brew install --quiet --cask \
     istat-menus \
     kitty \
     logi-options-plus \
-    microsoft-remote-desktop \
     ngrok \
     obsidian \
     racket \
@@ -142,7 +141,8 @@ brew install --cask --no-quarantine \
 
 brew autoremove;
 
-brew remove -f openssh; # doesn't play well with macos
+brew remove -f openssh;                  # doesn't play well with macos
+brew remove -f microsoft-remote-desktop; # deprecate
 
 ruby-install --no-reinstall ruby 3.1.3
 
