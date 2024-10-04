@@ -46,7 +46,6 @@ brew install --quiet --formula \
     cmake \
     colima \
     direnv \
-    dog \
     dust \
     eza \
     fd \
@@ -143,6 +142,7 @@ brew autoremove;
 
 brew remove -f openssh;                  # doesn't play well with macos
 brew remove -f microsoft-remote-desktop; # deprecate
+brew remove -f dog;                      # no longer maintained
 
 ruby-install --no-reinstall ruby 3.1.3
 
