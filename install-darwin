@@ -119,6 +119,7 @@ brew install --quiet --cask \
     istat-menus \
     kitty \
     logi-options-plus \
+    mitmproxy \
     ngrok \
     obsidian \
     racket \
