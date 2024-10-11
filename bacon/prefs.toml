@@ -9,7 +9,7 @@
 # Uncomment and change the value (true/false) to
 # specify whether bacon should start with lines wrapped
 #
-# wrap = false
+wrap = false
 
 # In "reverse" mode, the focus is at the bottom, item
 # order is reversed, and the status bar is on top
