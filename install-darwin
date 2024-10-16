@@ -65,6 +65,7 @@ brew install --quiet --formula \
     kompose \
     lazydocker \
     lazygit \
+    less \
     lsd \
     lua \
     lua-language-server \
