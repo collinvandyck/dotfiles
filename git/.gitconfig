@@ -15,7 +15,8 @@
 	diff = auto
 
 [alias]
-    grepp = !git grep --function-context -w
+    grepp = !git grep --break --heading --show-function -w -C 5
+    greppp = grepp --function-context
 
 	b = branch
 	cat = "!git show \"$1:$2\" #"
