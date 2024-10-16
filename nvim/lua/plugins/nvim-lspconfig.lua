@@ -149,14 +149,36 @@ return {
 			capabilities = capabilities,
 			handlers = handlers,
 			on_attach = custom_attach,
+			cmd = {
+				"rust-analyzer",
+			},
 			settings = (function()
 				local ra_settings = {
+					inlayHints = {
+						chainingHints = {
+							enable = false,
+						},
+						closingBraceHints = {
+							enable = false
+						},
+						genericParameterHints = {
+							const = {
+								enable = false,
+							},
+						},
+						parameterHints = {
+							enable = false,
+						},
+						typeHints = {
+							enable = false,
+						},
+					},
 					cargo = {},
 					check = {
-						extraArgs = {
-							"--target-dir",
-							"target/rust-analzyer",
-						},
+						--extraArgs = {
+						--"--target-dir",
+						--"target/rust-analzyer",
+						--},
 					},
 					diagnostics = {
 						enable = true,
@@ -167,6 +189,10 @@ return {
 					rustfmt = {
 						extraArgs = {
 							"+nightly-2024-08-02",
+						},
+					},
+					server = {
+						extraEnv = {
 						},
 					},
 				}
