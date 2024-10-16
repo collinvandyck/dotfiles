@@ -1,4 +1,4 @@
-vim.lsp.set_log_level("error")
+vim.lsp.set_log_level("info")
 
 vim.g.mapleader = ","
 vim.g.maplocalleader = "-"
