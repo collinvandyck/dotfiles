@@ -14,9 +14,13 @@ return {
 			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 				buffer = bufnr,
 				callback = function()
-					local lspb = require('vim.lsp.buf')
-					lspb.format({ nil })
-					--lspb.code_action({ context = { only = { 'source.organizeImports' } }, apply = true})
+					local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+					for _, client in ipairs(clients) do
+						if client.supports_method("textDocument/formatting") then
+							vim.lsp.buf.format({ nil })
+							return
+						end
+					end
 				end,
 			})
 			--vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
