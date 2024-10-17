@@ -15,6 +15,7 @@
 	diff = auto
 
 [alias]
+    bl = !git blame --color-lines --color-by-age
     grepp = !git grep --break --heading --show-function -w -C 5
     greppp = grepp --function-context
 
