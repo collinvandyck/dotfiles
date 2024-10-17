@@ -156,12 +156,7 @@ return {
 			settings = (function()
 				local ra_settings = {
 					cargo = {},
-					check = {
-						extraArgs = {
-							"--target-dir",
-							"target/rust-analzyer",
-						},
-					},
+					check = {},
 					diagnostics = {
 						enable = true,
 						experimental = {
