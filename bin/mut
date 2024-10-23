@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# mutagen helper
+
+# the label we use is just the directory name
+label() {
+    local val
+    val=$(basename "$(git rev-parse --show-toplevel)")
+    echo "name=${val}"
+}
+
+start() {
+    if [[ $# != 2 ]]; then
+        echo "usage: start [host] [dir]"
+        exit 1
+    fi
+    local host
+    local dir
+    host="$1"
+    dir="$2"
+    mutagen sync terminate --all
+    mutagen sync create \
+        --configuration-file .mutagen.yml \
+        --ignore-vcs \
+        --label "$(label)" \
+        --name mut-sync \
+        "$(git rev-parse --show-toplevel)" \
+        "${USER}@${host}:${dir}"
+    mutagen sync monitor mut-sync --long
+}
+
+stop() {
+    mutagen sync terminate --label-selector "$(label)"
+}
+
+monitor() {
+    mutagen sync monitor --label-selector "$(label)"
+}
+
+list() {
+    mutagen sync list --label-selector "$(label)" --long
+}
+
+
+[[ $# = 0 ]] && {
+    echo "usage: $(basename "$0") start|stop|monitor"
+    exit 1
+}
+
+case "$1" in
+    start)
+        shift
+        start "$@"
+        ;;
+    stop)
+        stop
+        ;;
+    monitor)
+        monitor
+        ;;
+    list)
+        list
+        ;;
+    *)
+        echo "unknown command: {$1}"
+        exit 1
+esac

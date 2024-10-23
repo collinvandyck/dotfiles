@@ -10,3 +10,4 @@ profile*.svg
 .starship.toml
 *.env
 .mutagen
+.mutagen.yml
