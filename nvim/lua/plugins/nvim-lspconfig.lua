@@ -175,8 +175,12 @@ return {
 				if ra_target then
 					require("notify")(ra_target)
 					ra_settings.cargo.target = ra_target
-					table.insert(ra_settings.check.extraArgs, "--target")
-					table.insert(ra_settings.check.extraArgs, ra_target)
+					table.insert(ra_settings.check, {
+						extraArgs = {
+							"--target",
+							ra_target,
+						},
+					})
 				end
 
 				local settings = {
