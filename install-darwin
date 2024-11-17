@@ -132,7 +132,6 @@ brew install --quiet --cask \
     sublime-text \
     tailscale \
     utm \
-    windows-app \
     yubico-yubikey-manager \
     zed \
     zoom \
