@@ -68,7 +68,6 @@ fi
 
 source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
 source-if ~/.fzf.zsh
-source-if ~/.cde/.venv/lib/python3.11/site-packages/cde_cli/cde_cli_sh_rc.sh
 source-if ~/.config/broot/launcher/bash/br
 
 cmd_exists zoxide   && eval "$(zoxide init zsh)"
@@ -78,7 +77,8 @@ cmd_exists starship && eval "$(starship init zsh)"
 cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
 cmd_exists op       && eval "$(op completion zsh)"
 cmd_exists pyenv    && {
-	[ "$(hostname)" = "ripm2.local" ] && eval "$(pyenv init -)"
+    # delete?
+    eval "$(pyenv init -)"
 }
 if cmd_exists brew; then
     source-if "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
