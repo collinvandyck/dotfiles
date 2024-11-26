@@ -80,11 +80,8 @@ cmd_exists pyenv    && {
     # delete?
     eval "$(pyenv init -)"
 }
-if cmd_exists brew; then
-    source-if "$(brew --prefix)/opt/chruby/share/chruby/chruby.sh"
-    source-if "$(brew --prefix)/opt/chruby/share/chruby/auto.sh"
-fi
-cmd_exists chruby   && chruby ruby-3.1.3
+
+# nb: chruby init moved to blog direnv .envrc.
 
 source ~/.dotfiles/zsh/widgets.zsh
 
