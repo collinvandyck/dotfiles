@@ -10,6 +10,10 @@ mkdir -p ~/.config/bottom
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
 
+ln -sf ~/.dotfiles/zsh/.zshrc ~/.zshrc
+ln -sf ~/.dotfiles/zsh/.zshenv ~/.zshenv
+ln -sf ~/.dotfiles/zsh/.zprofile ~/.zprofile
+
 # os specific symlinking
 if [[ "$(uname)" =~ "Darwin" ]]; then
 	# lazygit
@@ -68,7 +72,6 @@ bin/symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
 bin/symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
 bin/symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
 bin/symlink ~/.dotfiles/zellij                     ~/.config/zellij
-bin/symlink ~/.dotfiles/zsh/.zshrc                 ~/.zshrc
 bin/symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
 
 sudo mkdir -p /usr/local/bin
