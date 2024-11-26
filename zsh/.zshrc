@@ -1,4 +1,4 @@
-zmodload zsh/zprof
+# zmodload zsh/zprof
 
 # disable scroll lock so that i can use Ctrl-S in neovim
 stty -ixon
