@@ -1,5 +1,4 @@
-# uncomment this to profile zsh init. also uncomment the zprof at the end
-# zmodload zsh/zprof
+zmodload zsh/zprof
 
 # disable scroll lock so that i can use Ctrl-S in neovim
 stty -ixon
@@ -72,11 +71,21 @@ use() {
     use_$module
 }
 
-source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
-source-if ~/.fzf.zsh
-source-if ~/.config/broot/launcher/bash/br
-source-if ~/.opam/opam-init/init.zsh
-
+init-git-extras() {
+    source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
+}
+init-fzf() {
+    source-if ~/.fzf.zsh
+}
+init-broot() {
+    source-if ~/.config/broot/launcher/bash/br
+}
+init-opam() {
+    # This was moved to a source-if invocation.
+    # BEGIN opam configuration
+    source-if ~/.opam/opam-init/init.zsh
+    # END opam configuration
+}
 init-zoxide() {
     cmd_exists zoxide   && eval "$(zoxide init zsh)"
 }
@@ -93,6 +102,10 @@ init-broot() {
     cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
 }
 
+init-git-extras
+init-fzf
+init-broot
+init-opam
 init-zoxide
 init-atuin
 init-direnv
@@ -101,9 +114,4 @@ init-broot
 
 source ~/.dotfiles/zsh/widgets.zsh
 
-# This was moved to a source-if invocation.
-# BEGIN opam configuration
-# END opam configuration
-
-# uncomment this to profile zsh init. also uncomment the zprof at the top
-# zprof |  head -50
+# zprof | head -100
