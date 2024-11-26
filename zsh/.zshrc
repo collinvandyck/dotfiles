@@ -1,3 +1,6 @@
+# uncomment this to profile zsh init. also uncomment the zprof at the end
+# zmodload zsh/zprof
+
 # disable scroll lock so that i can use Ctrl-S in neovim
 stty -ixon
 
@@ -79,7 +82,9 @@ cmd_exists pyenv    && {
 
 source ~/.dotfiles/zsh/widgets.zsh
 
-
 # This was moved to a source-if invocation.
 # BEGIN opam configuration
 # END opam configuration
+
+# uncomment this to profile zsh init. also uncomment the zprof at the top
+# zprof | hd
