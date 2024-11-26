@@ -16,8 +16,10 @@ plugins=(
 
 # setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
 # https://docs.brew.sh/Shell-Completion
-FPATH="$(/opt/homebrew/bin/brew --prefix)/share/zsh/site-functions:${FPATH}"
+FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
+#zmodload zsh/zprof
 source $ZSH/oh-my-zsh.sh
+#zprof | hd
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
@@ -104,4 +106,4 @@ source ~/.dotfiles/zsh/widgets.zsh
 # END opam configuration
 
 # uncomment this to profile zsh init. also uncomment the zprof at the top
-# zprof | hd
+# zprof |  head -50
