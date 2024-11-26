@@ -20,6 +20,9 @@ FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
 source $ZSH/oh-my-zsh.sh
 #zprof | hd
 
+# for some reason, evaluating this expression here shaves off ~50ms of my zsh startup time
+local wtf=$(($EPOCHREALTIME * 1))
+
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=100000
@@ -102,15 +105,28 @@ init-broot() {
     cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
 }
 
-init-git-extras
-init-fzf
-init-broot
-init-opam
-init-zoxide
-init-atuin
-init-direnv
-init-starship
-init-broot
+run-init-fn() {
+    if [[ ! -z "$PROFILE_INIT_FNS" ]]; then
+        # this branch does not run as PROFILE_INIT_FNS is not set.
+        local start=$(($EPOCHREALTIME * 1000))
+        $1
+        local end=$(($EPOCHREALTIME * 1000))
+        local duration=$((end - start))
+        echo "$1 took ${duration}ms"
+    else
+        $1
+    fi
+}
+
+run-init-fn init-git-extras
+run-init-fn init-fzf
+run-init-fn init-broot
+run-init-fn init-opam
+run-init-fn init-zoxide
+run-init-fn init-atuin
+run-init-fn init-direnv
+run-init-fn init-starship
+run-init-fn init-broot
 
 source ~/.dotfiles/zsh/widgets.zsh
 
