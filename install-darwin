@@ -178,7 +178,6 @@ sudo rm -rf /usr/local/bin/vi
 sudo rm -rf /usr/local/bin/nvim
 
 ~/.dotfiles/install-common
-~/.dotfiles/install-rippling
 ~/.dotfiles/bin/update-ff-prefs
 
 # set darwin defaults
