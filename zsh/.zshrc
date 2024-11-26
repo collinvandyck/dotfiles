@@ -62,6 +62,14 @@ cmd_exists() {
 	command -v "${p}" &>/dev/null
 }
 
+# a helper to use one of the direnv modules
+use() {
+    local module=$1
+    shift
+    source ~/.dotfiles/direnv/lib/$module.sh
+    use_$module
+}
+
 source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
 source-if ~/.fzf.zsh
 source-if ~/.config/broot/launcher/bash/br
@@ -82,16 +90,12 @@ init-starship() {
 init-broot() {
     cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
 }
-init-op() {
-    cmd_exists op       && eval "$(op completion zsh)"
-}
 
 init-zoxide
 init-atuin
 init-direnv
 init-starship
 init-broot
-init-op
 
 source ~/.dotfiles/zsh/widgets.zsh
 
