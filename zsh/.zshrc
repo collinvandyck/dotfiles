@@ -21,7 +21,7 @@ source $ZSH/oh-my-zsh.sh
 #zprof | hd
 
 # for some reason, evaluating this expression here shaves off ~50ms of my zsh startup time
-local wtf=$(($EPOCHREALTIME * 1))
+local _=$(($EPOCHREALTIME * 1))
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
