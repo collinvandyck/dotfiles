@@ -67,18 +67,31 @@ source-if ~/.fzf.zsh
 source-if ~/.config/broot/launcher/bash/br
 source-if ~/.opam/opam-init/init.zsh
 
-cmd_exists zoxide   && eval "$(zoxide init zsh)"
-cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
-cmd_exists direnv   && eval "$(direnv hook zsh)"
-cmd_exists starship && eval "$(starship init zsh)"
-cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
-cmd_exists op       && eval "$(op completion zsh)"
-cmd_exists pyenv    && {
-    # delete?
-    eval "$(pyenv init -)"
+init-zoxide() {
+    cmd_exists zoxide   && eval "$(zoxide init zsh)"
+}
+init-atuin() {
+    cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
+}
+init-direnv() {
+    cmd_exists direnv   && eval "$(direnv hook zsh)"
+}
+init-starship() {
+    cmd_exists starship && eval "$(starship init zsh)"
+}
+init-broot() {
+    cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
+}
+init-op() {
+    cmd_exists op       && eval "$(op completion zsh)"
 }
 
-# nb: chruby init moved to blog direnv .envrc.
+init-zoxide
+init-atuin
+init-direnv
+init-starship
+init-broot
+init-op
 
 source ~/.dotfiles/zsh/widgets.zsh
 
