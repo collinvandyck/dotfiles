@@ -11,18 +11,6 @@ plugins=(
     rust
 )
 
-# sources the file if it exists
-source-if() {
-	local p="$1"
-	[ -f "${p}" ] && source "${p}"
-}
-
-# tests if the command exists
-cmd_exists() {
-	local p="$1"
-	command -v "${p}" &>/dev/null
-}
-
 # setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
 # https://docs.brew.sh/Shell-Completion
 FPATH="$(/opt/homebrew/bin/brew --prefix)/share/zsh/site-functions:${FPATH}"
@@ -66,9 +54,22 @@ if [[ -n "$USE_NVM" ]]; then
 	[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
+# sources the file if it exists
+source-if() {
+	local p="$1"
+	[ -f "${p}" ] && source "${p}"
+}
+
+# tests if the command exists
+cmd_exists() {
+	local p="$1"
+	command -v "${p}" &>/dev/null
+}
+
 source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
 source-if ~/.fzf.zsh
 source-if ~/.config/broot/launcher/bash/br
+source-if ~/.opam/opam-init/init.zsh
 
 cmd_exists zoxide   && eval "$(zoxide init zsh)"
 cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
@@ -86,10 +87,6 @@ cmd_exists pyenv    && {
 source ~/.dotfiles/zsh/widgets.zsh
 
 
+# This was moved to a source-if invocation.
 # BEGIN opam configuration
-# This is useful if you're using opam as it adds:
-#   - the correct directories to the PATH
-#   - auto-completion for the opam binary
-# This section can be safely removed at any time if needed.
-[[ ! -r "$HOME/.opam/opam-init/init.zsh" ]] || source "$HOME/.opam/opam-init/init.zsh" > /dev/null 2> /dev/null
 # END opam configuration
