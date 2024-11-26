@@ -1,3 +1,5 @@
+# todo: this adds about 10-15ms of startup time
+
 #export GOROOT=/usr/local/go
 #export GOPATH=~/code/go
 unset GOROOT
