@@ -163,3 +163,4 @@ vim.keymap.set('n', 'i', indent_to_right_position, { desc = "Indent", silent = t
 vim.keymap.set('n', 'x', '"_x', { noremap = true })                                                 -- delete single char without copying
 vim.keymap.set('v', 'p', '"_dP', map_opts)                                                          -- keep last yanked when pasting
 vim.keymap.set('n', '<leader>w', toggle_wrap, map_opts)
+vim.keymap.set('n', '<leader>gs', ':Autosession search<cr>', map_opts)
