@@ -49,7 +49,7 @@ local reloadable = {
 	"commands",
 	"abbreviations",
 	"autocmds",
-	"keymaps",
+	"keybinds",
 }
 for _, mod in ipairs(reloadable) do
 	require(mod)
