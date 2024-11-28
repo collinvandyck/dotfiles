@@ -98,6 +98,7 @@ brew install --quiet --formula \
     typescript-language-server \
     viddy \
     watch \
+    web-ext \
     wget \
     xz \
     zlib \
