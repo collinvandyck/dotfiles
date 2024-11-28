@@ -87,6 +87,7 @@ brew install --quiet --formula \
     pyenv \
     ripgrep \
     ruby-install \
+    ruff \
     sccache \
     shellcheck \
     tailspin \
