@@ -181,7 +181,6 @@ sudo rm -rf /usr/local/bin/vi
 sudo rm -rf /usr/local/bin/nvim
 
 ~/.dotfiles/install-common
-~/.dotfiles/bin/update-ff-prefs
 
 # set darwin defaults
 # https://macos-defaults.com/

@@ -17,6 +17,10 @@ ln -sf ~/.dotfiles/zsh/.zprofile ~/.zprofile
 mkdir -p ~/.config/rustfmt/
 ln -sf ~/.dotfiles/rust/rustfmt.toml ~/.config/rustfmt/
 
+if [[ -d "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default" ]]; then
+    ln -sf ~/.dotfiles/firefox/profile/user.js "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default/user.js"
+fi
+
 # os specific symlinking
 if [[ "$(uname)" =~ "Darwin" ]]; then
 	# lazygit
