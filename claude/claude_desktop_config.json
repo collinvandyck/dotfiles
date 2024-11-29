@@ -1,0 +1,10 @@
+{
+    "globalShortcut": "Alt+Cmd+Space",
+    "mcpServers": {
+        "fetch": {
+            "command": "uvx",
+            "args": ["mcp-server-fetch"]
+        }
+    }
+}
+
