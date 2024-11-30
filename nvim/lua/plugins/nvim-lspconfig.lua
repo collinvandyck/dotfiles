@@ -134,7 +134,24 @@ return {
 				usePlaceholders = false,
 			},
 		})
-		require("lspconfig").pyright.setup({
+		require('lspconfig').pyright.setup {
+			capabilities = capabilities,
+			handlers = handlers,
+			on_attach = custom_attach,
+			settings = {
+				pyright = {
+					-- Using Ruff's import organizer
+					disableOrganizeImports = true,
+				},
+				python = {
+					analysis = {
+						-- Ignore all files for analysis to exclusively use Ruff for linting
+						ignore = { '*' },
+					},
+				},
+			},
+		}
+		require("lspconfig").ruff.setup({
 			capabilities = capabilities,
 			handlers = handlers,
 			on_attach = custom_attach,
