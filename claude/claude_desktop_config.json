@@ -4,6 +4,12 @@
         "fetch": {
             "command": "uvx",
             "args": ["mcp-server-fetch"]
+        },
+        "memory": {
+            "command": "tsx",
+            "args": [
+                "/Users/collin/.claude/servers/mcp-servers/src/memory/index.ts"
+            ]
         }
     }
 }
