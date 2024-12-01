@@ -10,6 +10,14 @@
             "args": [
                 "/Users/collin/.claude/servers/mcp-servers/src/memory/index.ts"
             ]
+        },
+        "filesystem": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "/Users/collin/code/notes"
+            ]
         }
     }
 }
