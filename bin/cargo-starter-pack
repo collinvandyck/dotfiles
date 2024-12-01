@@ -3,15 +3,18 @@
 set -euo pipefail
 
 cargo add tokio \
-    thiserror \
     anyhow \
+    clap \
+    futures-util \
     rand \
     serde \
     serde_json \
+    thiserror \
     tracing \
     tracing-subscriber \
-    futures-util \
-    --features tokio/full \
+    --features clap/derive \
     --features serde/derive \
-    --features tracing-subscriber/env-filter
+    --features tokio/full \
+    --features tracing-subscriber/env-filter \
+    ;
 
