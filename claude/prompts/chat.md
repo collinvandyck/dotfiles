@@ -23,11 +23,16 @@ This section describes the configured filesystem server.
 
 The following describes the nature of each each high level directory that is configured:
 
-    <notes path="~/code/notes">
+    <dir path="~/code/notes">
     - These are my personal notes for work and personal life.
     - My notes are an Obsidian collection of markdown documents.
     - I use the Obsidian daily notes plugin, sometimes.
-    </notes>
+    </dir>
+
+
+    <dir path="~/code/aoc-2024">
+    - Repo containing my advent of code 2024 submissions
+    </dir>
 
 </filesystem_server>
 
