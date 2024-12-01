@@ -10,6 +10,7 @@ cargo add tokio \
     serde_json \
     tracing \
     tracing-subscriber \
+    futures-util \
     --features tokio/full \
     --features serde/derive \
     --features tracing-subscriber/env-filter
