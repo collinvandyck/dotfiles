@@ -15,6 +15,7 @@ blocks:
   - group
   - size
   - date
+  - git
   - name
 
 # == Color ==
