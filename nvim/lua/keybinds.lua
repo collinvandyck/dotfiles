@@ -164,3 +164,4 @@ vim.keymap.set('n', 'x', '"_x', { noremap = true })                             
 vim.keymap.set('v', 'p', '"_dP', map_opts)                                                          -- keep last yanked when pasting
 vim.keymap.set('n', '<leader>w', toggle_wrap, map_opts)
 vim.keymap.set('n', '<leader>gs', ':Autosession search<cr>', map_opts)
+vim.keymap.set('n', 'ya', ':%y<cr>', map_opts)
