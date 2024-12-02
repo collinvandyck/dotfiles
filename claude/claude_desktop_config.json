@@ -19,6 +19,14 @@
                 "/Users/collin/code/notes",
                 "/Users/collin/code/aoc-2024"
             ]
+        },
+        "exa": {
+            "command": "/Users/collin/.cargo/bin/dotenv",
+            "args": [
+                "-f",
+                "/Users/collin/.claude/servers/exa-mcp-server/.env",
+                "/Users/collin/.claude/servers/exa-mcp-server/build/index.js"
+            ]
         }
     }
 }
