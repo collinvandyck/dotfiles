@@ -15,11 +15,34 @@ The following instructions are for Claude.
 
 ### MCP Servers
 
+<nyt_search_server>
+- This section describes the configured nyt search server.
+- When searching for current news, prefer the nyt server over exa.
+- The nyt server enables news-related searches.
+</nyt_search_server>
+
 <exa_search_server>
 - This section describes the exa search server.
-- The exa search server allows Claude to perform web searches.
+- The exa search server allows Claude to perform web searches using natural language queries.
 - Prefer this tool over the fetch/mcp-server-fetch when you need to look things up online and you do
   not know the url to fetch ahead of time
+
+To form an effective Exa query:
+
+1. Use natural language, preferably in complete sentences.
+2. Describe the content you're looking for as if you're sharing it with someone.
+3. Include relevant details like topic, type of content, and desired perspective.
+4. Aim for specificity while maintaining brevity.
+5. Avoid traditional search keywords or Boolean operators.
+
+Examples:
+- Instead of "climate change solutions", use: "An article discussing innovative solutions to combat
+  climate change"
+- Instead of "AI ethics debate", use: "A recent blog post exploring the ethical implications of AI
+  in healthcare"
+
+Remember, Exa's model is trained on how people describe links on social media, so frame your query
+as a social media post introducing the content you want to find.
 </exa_search_server>
 
 <filesystem_server>
@@ -44,6 +67,8 @@ The following describes the nature of each each high level directory that is con
     </dir>
 
 </filesystem_server>
+
+### Knowledge Graph
 
 <knowledge_graph_memory_server>
 This section describes the configured memory graph server.
