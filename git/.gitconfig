@@ -14,32 +14,34 @@
 	ui = auto
 	diff = auto
 
+# key commands to remember not in aliases
+#
+# - standup: works in parent directories of projects
+#   use -m to control recursive depth
 [alias]
     bl = !git blame --color-lines --color-by-age
-    grepp = !git grep --break --heading --show-function -w -C 5
-    greppp = grepp --function-context
 
-	b = branch
 	cat = "!git show \"$1:$2\" #"
-	co = checkout
 	current-branch = !git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'
 	g = grep --break --heading --line-number
+
+    grepp = !git grep --break --heading --show-function -w -C 5
+    greppp = grepp --function-context
 	l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
 	l2 = log --name-status --graph
-	last = checkout -
 	ll = "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'"
 	lla = !git ll --all
+
+	b = branch
+	co = checkout
+	last = checkout -
 	put = push origin HEAD
-	rebsae = rebase
 	shove = push --force-with-lease
-	st = status
 	staged = diff --cached
-	standup = shortlog --since=yesterday
-	uncommit = reset --soft HEAD^
-	unstage = reset HEAD
-	unstaged = diff
 	w = whatchanged
-	x = !gitx --all
+
+    # typos
+	rebsae = rebase
 
 [apply]
     whitespace = warn
