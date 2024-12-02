@@ -27,6 +27,14 @@
                 "/Users/collin/.claude/servers/exa-mcp-server/.env",
                 "/Users/collin/.claude/servers/exa-mcp-server/build/index.js"
             ]
+        },
+        "nyt": {
+            "command": "/Users/collin/.cargo/bin/dotenv",
+            "args": [
+                "-f",
+                "/Users/collin/.claude/servers/nyt/.env",
+                "/Users/collin/.claude/servers/nyt/build/index.js"
+            ]
         }
     }
 }
