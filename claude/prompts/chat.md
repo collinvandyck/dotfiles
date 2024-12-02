@@ -13,6 +13,34 @@ The following are details about me, in <me> tags:
 
 The following instructions are for Claude.
 
+### Rust Preferences
+<rust>
+
+- Prefer conciseness but not at the expense of readability.
+- Before suggesting an improvement, think to consider whether or not it is valid Rust code.
+- Prefer functional style over mutation unless it is less readable and concise.
+
+<section>
+    Instead of code like this:
+    ```rust
+    (deltas.iter().all(|&v| v > 0) || deltas.iter().all(|&v| v < 0))
+        && deltas.iter().all(|&v| (1..=3).contains(&v.abs()))
+    ```
+    Prefer more readable code like this:
+
+    ```rust
+    let pos = deltas.iter().all(|v| *v > 0);
+    let neg = deltas.iter().all(|v| *v < 0);
+    let dst = deltas
+        .iter()
+        .map(|v| v.abs())
+        .all(|v| (1..=3).contains(&v));
+    (pos || neg) && dst
+    ```
+</section>
+
+</rust>
+
 ### MCP Servers
 
 <nyt_search_server>
