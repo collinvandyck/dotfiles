@@ -7,6 +7,7 @@ cargo add tokio \
     clap \
     futures-util \
     rand \
+    regex \
     serde \
     serde_json \
     thiserror \
