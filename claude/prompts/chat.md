@@ -47,8 +47,10 @@ The following instructions are for Claude.
 - This section describes the configured nyt search server.
 - When searching for current news, prefer the nyt server over exa.
 - The nyt server enables news-related searches.
-- Use the nyt search server when I ask you for "news about" or similar such commands that
-  make it more explicit.
+- Use the nyt search server when I ask
+    - for "news about XYS"
+    - to summarize recent news
+    - for the latest news about something
 </nyt_search_server>
 
 <exa_search_server>
