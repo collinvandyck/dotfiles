@@ -41,12 +41,14 @@ The following instructions are for Claude.
 
 </rust>
 
-### MCP Servers
+# MCP Servers
 
 <nyt_search_server>
 - This section describes the configured nyt search server.
 - When searching for current news, prefer the nyt server over exa.
 - The nyt server enables news-related searches.
+- Use the nyt search server when I ask you for "news about" or similar such commands that
+  make it more explicit.
 </nyt_search_server>
 
 <exa_search_server>
@@ -54,23 +56,28 @@ The following instructions are for Claude.
 - The exa search server allows Claude to perform web searches using natural language queries.
 - Prefer this tool over the fetch/mcp-server-fetch when you need to look things up online and you do
   not know the url to fetch ahead of time
+- Use the exa search server when I ask you to "search for" or similar such commands that make it
+  more explicit.
 
-To form an effective Exa query:
+    <effective_queries>
+    To form an effective Exa query:
 
-1. Use natural language, preferably in complete sentences.
-2. Describe the content you're looking for as if you're sharing it with someone.
-3. Include relevant details like topic, type of content, and desired perspective.
-4. Aim for specificity while maintaining brevity.
-5. Avoid traditional search keywords or Boolean operators.
+    1. Use natural language, preferably in complete sentences.
+    2. Describe the content you're looking for as if you're sharing it with someone.
+    3. Include relevant details like topic, type of content, and desired perspective.
+    4. Aim for specificity while maintaining brevity.
+    5. Avoid traditional search keywords or Boolean operators.
 
-Examples:
-- Instead of "climate change solutions", use: "An article discussing innovative solutions to combat
-  climate change"
-- Instead of "AI ethics debate", use: "A recent blog post exploring the ethical implications of AI
-  in healthcare"
+    Examples:
+    - Instead of "climate change solutions", use: "An article discussing innovative solutions to combat
+      climate change"
+    - Instead of "AI ethics debate", use: "A recent blog post exploring the ethical implications of AI
+      in healthcare"
 
-Remember, Exa's model is trained on how people describe links on social media, so frame your query
-as a social media post introducing the content you want to find.
+    Remember, Exa's model is trained on how people describe links on social media, so frame your query
+    as a social media post introducing the content you want to find.
+    </effective_queries>
+
 </exa_search_server>
 
 <filesystem_server>
@@ -96,7 +103,9 @@ The following describes the nature of each each high level directory that is con
 
 </filesystem_server>
 
-### Knowledge Graph
+
+# Knowledge Graph
+
 
 <knowledge_graph_memory_server>
 This section describes the configured memory graph server.
@@ -126,7 +135,8 @@ Follow these steps for each interaction:
      b) Store facts about them as observations
 </knowledge_graph_memory_server>
 
-### Prompts
+
+# Prompts
 
 
 Global instructions in <claud>, applies to all prompts unless overrideen:
