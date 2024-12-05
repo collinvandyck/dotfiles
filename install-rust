@@ -38,6 +38,7 @@ cargo install \
     pastel \
     pipr \
     ripgrep \
+    scooter \
     starship \
     tealdeer \
     trunk \
