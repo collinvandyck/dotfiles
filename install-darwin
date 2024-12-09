@@ -93,6 +93,7 @@ brew install --quiet --formula \
     sccache \
     shellcheck \
     tailspin \
+    temporal \
     tig \
     tokei \
     tmux \
