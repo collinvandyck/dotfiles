@@ -39,19 +39,12 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 setopt SHARE_HISTORY             # Share history between all sessions.
 
 function zshaddhistory() {
-	# defang naughty commands; the entire history entry is in $1
-	if [[ $1 =~ "commentedoutcommandshere" ]]; then
-		1="# $1"
-	fi
-	if [[ $1 =~ "^builtin cd -- " ]]; then
-		1=$(echo $1 | sed 's/builtin cd --/cd/')
-	fi
-	# write to usual history location
-	print -sr -- ${1%%$'\n'}
-	# do not save the history line. if you have a chain of zshaddhistory
-	# hook functions, this may be more complicated to manage, depending
-	# on what those other hooks do (man zshall | less -p zshaddhistory)
-	return 1
+    local line=${1%%$'\n'}
+    if [[ "$line" = "builtin cd -- "* ]]; then
+        print -s "cd ${line#"builtin cd -- "}"
+        return 1
+    fi
+    return 0
 }
 
 # sources the file if it exists
