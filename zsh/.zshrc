@@ -96,7 +96,7 @@ init-opam() {
     # END opam configuration
 }
 init-zoxide() {
-    cmd_exists zoxide   && eval "$(zoxide init zsh)"
+    cmd_exists zoxide   && eval "$(zoxide init zsh --cmd cd)"
 }
 init-atuin() {
     cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
