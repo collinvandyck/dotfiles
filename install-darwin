@@ -56,6 +56,7 @@ brew install --quiet --formula \
     git-machete \
     glow \
     gnuplot \
+    golang \
     grpcurl \
     gum \
     helm \
@@ -166,14 +167,8 @@ fi
 # enable go in path in case we just installed it.
 export PATH=/usr/local/go/bin:$PATH
 
-# install go
-if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
-    echo "Installing $DOTFILES_GO_FULL_VERSION"
-    curl -s -L -o /tmp/golang.pkg https://go.dev/dl/${DOTFILES_GO_FULL_VERSION}.pkg
-    sudo installer -pkg /tmp/golang.pkg -target /
-    /usr/local/go/bin/go install golang.org/x/tools/gopls@latest
-fi
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
+# we use homebrew go from now on
+sudo rm -rf /usr/local/go
 
 # neovim
 #
