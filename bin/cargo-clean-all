@@ -9,13 +9,13 @@ clean() {
     local dir="$1"
     dir="$1"..
     if [ -f "$dir"/Cargo.toml ]; then
-        echo $dir
+        realpath "$dir"
         (cd "$dir" && cargo clean)
     fi
 }
 
 if [ $# -eq 0 ]; then
-    fd -I -H --glob target --type dir | xargs -I DIR cargo-clean-all "DIR"
+    fd -I --glob target --type dir | xargs -I DIR cargo-clean-all "DIR"
 else
     clean "$1"
 fi
