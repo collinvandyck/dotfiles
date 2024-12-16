@@ -10,6 +10,7 @@ cargo add tokio \
     regex \
     serde \
     serde_json \
+    strum \
     thiserror \
     tracing \
     tracing-subscriber \
@@ -17,5 +18,7 @@ cargo add tokio \
     --features serde/derive \
     --features tokio/full \
     --features tracing-subscriber/env-filter \
+    --features strum/derive \
+    --features strum/strum_macros \
     ;
 
