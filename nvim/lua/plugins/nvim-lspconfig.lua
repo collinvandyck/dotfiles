@@ -97,6 +97,9 @@ return {
 			vim.lsp.handlers.hover(err, result, ctx, config)
 		end
 		local handlers = {
+			["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+				underline = false
+			}),
 			["textDocument/hover"] = vim.lsp.with(hover_handler, {
 				border = handlers_border,
 				stylize_markdown = false,
