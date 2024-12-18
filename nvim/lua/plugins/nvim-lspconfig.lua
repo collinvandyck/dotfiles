@@ -68,45 +68,26 @@ return {
 			vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
 			vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
 		end
-		vim.cmd([[
-        augroup LspConfigSetColorScheme
-            autocmd!
-            autocmd! ColorScheme * highlight NormalFloat guifg=white guibg=#1f2335
-            autocmd! ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335
-        augroup END
-        ]])
-		local handlers_border = {
-			{ "🭽", "FloatBorder" },
-			{ "▔", "FloatBorder" },
-			{ "🭾", "FloatBorder" },
-			{ "▕", "FloatBorder" },
-			{ "🭿", "FloatBorder" },
-			{ "▁", "FloatBorder" },
-			{ "🭼", "FloatBorder" },
-			{ "▏", "FloatBorder" },
+		local enabled_diag_sevs = {
+			vim.diagnostic.severity.ERROR,
+			vim.diagnostic.severity.WARN,
 		}
-		local function hover_handler(err, result, ctx, config)
-			--if err or not (result and result.contents) then return end
-			--local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
-			--markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-			--if vim.tbl_isempty(markdown_lines) then return end
-			--vim.notify(tostring(markdown_lines))
-			--local bufnr, winnr = vim.lsp.util.open_floating_preview(markdown_lines, 'markdown', config)
-			--vim.api.nvim_win_set_option(winnr, 'conceallevel', 3)
-
-			vim.lsp.handlers.hover(err, result, ctx, config)
-		end
 		local handlers = {
-			["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-				underline = false
-			}),
-			["textDocument/hover"] = vim.lsp.with(hover_handler, {
-				border = handlers_border,
-				stylize_markdown = false,
-				virtual_text = false,
-			}),
-			["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help,
-				{ border = handlers_border }),
+			["textDocument/publishDiagnostics"] = vim.lsp.with(
+				vim.lsp.diagnostic.on_publish_diagnostics, {
+					underline = {
+						severity = enabled_diag_sevs,
+					},
+					virtual_text = {
+						spacing = 4,
+						severity = enabled_diag_sevs,
+					},
+					signs = {
+						severity = enabled_diag_sevs,
+					},
+					-- Disable a feature
+					update_in_insert = false,
+				}),
 		}
 		local capabilities = require('cmp_nvim_lsp').default_capabilities()
 		require("lspconfig").lua_ls.setup({
