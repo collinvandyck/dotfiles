@@ -12,8 +12,10 @@ Host *
     ControlPath ~/.ssh/control/%r@%h:%p
     ControlPersist yes
 
-Host vps nas
+Host vps nas ryzen
     AddKeysToAgent yes
     ForwardAgent yes
     UseKeychain yes
 
+Host ryzen
+    User colli
