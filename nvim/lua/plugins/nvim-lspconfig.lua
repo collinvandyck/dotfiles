@@ -75,9 +75,10 @@ return {
 		local handlers = {
 			["textDocument/publishDiagnostics"] = vim.lsp.with(
 				vim.lsp.diagnostic.on_publish_diagnostics, {
-					underline = {
-						severity = enabled_diag_sevs,
-					},
+					underline = false,
+					--underline = {
+					--severity = enabled_diag_sevs,
+					--},
 					virtual_text = {
 						spacing = 4,
 						severity = enabled_diag_sevs,
