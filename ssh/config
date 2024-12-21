@@ -17,13 +17,3 @@ Host vps nas
     ForwardAgent yes
     UseKeychain yes
 
-Host cloud-dev
-    ProxyCommand sh -c "/Users/collin/.cde/connect_to_cde.sh"
-    StrictHostKeyChecking no
-    User admin
-    # need to alleviate aws scm rate limit
-    Compression yes
-    # allow the github keys on the remote CDE
-    AddKeysToAgent yes
-    UseKeychain yes
-    ForwardAgent yes
