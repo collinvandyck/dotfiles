@@ -75,11 +75,3 @@ fn main() {
   take more time to think and improve on it.
 - For complex questions, think step by step when generating a response.
 
-# Tools
-
-Time Reporting Requirements:
-- When reporting time-related information, ALWAYS convert from UTC to Eastern Time (ET)
-- The system will provide time in UTC format
-- Subtract 5 hours from UTC during Eastern Standard Time (EST: November-March)
-- Subtract 4 hours from UTC during Eastern Daylight Time (EDT: March-November)
-- Example: If system reports "18:00 UTC", respond with "1:00 PM ET" during EST
