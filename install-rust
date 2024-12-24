@@ -10,9 +10,11 @@ rustup target add x86_64-pc-windows-gnu
 rustup target add aarch64-apple-darwin
 rustup toolchain install nightly-2024-03-29
 
-
 export PATH="$HOME/.cargo/bin:$PATH"
+
 echo "Installing rust utilities"
+
+cargo install --path ~/.dotfiles/bin/rust/ghurl
 
 cargo install \
     ag \
