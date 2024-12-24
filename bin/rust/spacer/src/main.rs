@@ -1,12 +1,10 @@
-#![allow(unused)]
-
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result};
 use clap::Parser;
 use std::{
     io::{self, BufRead, BufReader},
     process::{Command, Stdio},
     sync::mpsc::RecvTimeoutError,
-    time::{Duration, Instant},
+    time::Duration,
 };
 
 #[derive(clap::Parser, Debug)]
@@ -86,7 +84,7 @@ fn run() -> Result<()> {
         }
     });
     let mut wait_space = true;
-    let mut timeout: Duration = args.after.into();
+    let timeout: Duration = args.after.into();
     loop {
         if wait_space {
             match rx.recv_timeout(timeout) {
