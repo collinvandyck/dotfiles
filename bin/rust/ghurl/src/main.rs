@@ -16,7 +16,7 @@ fn main() -> Result<()> {
         bail!("Get SHA failed");
     }
     let sha = from_utf8(&sha.stdout)?.trim();
-    let url = match GitUrl::parse(&url) {
+    let url = match GitUrl::parse(url) {
         Ok(url) => url,
         Err(err) => bail!("parse git url failed: {err}"),
     };

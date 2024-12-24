@@ -8,4 +8,5 @@ edition = "2021"
 [dependencies]
 anyhow = "1.0.75"
 clap = { version = "4.4.2", features = ["derive"] }
-git-url-parse = "0.4.4"
+git-url-parse = "0.4.5"
+url = "2.5.4"
