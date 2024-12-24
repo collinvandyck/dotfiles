@@ -14,7 +14,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 echo "Installing rust utilities"
 
-cargo install --path ~/.dotfiles/bin/rust/ghurl
+for proj in ~/.dotfiles/bin/rust/*; do
+    cargo install --path $proj
+done
+
 
 cargo install \
     ag \
