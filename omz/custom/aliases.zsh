@@ -7,6 +7,7 @@ alias xx='ssh -t 5xx.engineer tm'
 alias ut='ssh -t ubuntu-test tm'
 alias appsup='cd ~/Library/Application\ Support'
 alias z=cd
+alias da='direnv allow'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
