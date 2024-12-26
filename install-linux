@@ -3,31 +3,8 @@
 # Common linux setup. Requires arch-specific installers to
 # set env variables and then call this script.
 
-set -e # exit on failure
-set -u # fail if vars are not defined
+set -eu
 
-# charm
-if [[ ! -f /etc/apt/sources.list.d/charm.list ]]; then
-	sudo apt update
-	sudo apt install -y curl gnupg
-	sudo mkdir -p /etc/apt/keyrings
-	curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-	echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-fi
-
-# gh
-if [[ ! -f /etc/apt/sources.list.d/github-cli.list ]]; then
-	type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-	curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-	&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-	&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-	&& sudo apt update \
-	&& sudo apt install gh -y
-fi
-
-sudo apt update
-sudo apt-get install -y software-properties-common
-sudo add-apt-repository -y ppa:jgmath2000/et
 sudo apt update
 sudo apt install -y \
   apt-transport-https \
@@ -47,8 +24,6 @@ sudo apt install -y \
   g++ \
   gettext \
   gh \
-  glow \
-  gum \
   gnome-tweaks \
   gnupg \
   htop \
@@ -57,6 +32,7 @@ sudo apt install -y \
   iputils-ping \
   jq \
   kitty-terminfo \
+  libfuse2 \
   libluajit-5.1-dev \
   libtool \
   libtool-bin \
@@ -77,6 +53,8 @@ sudo apt install -y \
   python-is-python3 \
   ripgrep \
   shellcheck \
+  shfmt \
+  software-properties-common \
   sqlite3 \
   tcl \
   tig \
@@ -89,14 +67,58 @@ sudo apt install -y \
   zoxide \
   zsh \
   ;
+
 sudo apt autoremove -y
-
-pipx install neovim-remote
-
 sudo chsh -s $(which zsh) $USER
+
+# for testing binaries on a fresh install
+export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
+
+# golang
+(
+	echo "checking golang"
+	if ! [[ "$(go version || true)" =~ "go version go1.23.4" ]]; then
+		cd "$(mktemp -d)"
+		curl -LO https://go.dev/dl/go1.23.4.linux-amd64.tar.gz
+		sudo rm -rf /usr/local/go
+		sudo tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz
+	fi
+)
+
+# neovim
+(
+	echo "checking neovim"
+	if ! [[ "$(nvim --version || true)" =~ "NVIM v0.10.3" ]]; then
+		echo "need to install neovim"
+		cd "$(mktemp -d)"
+		echo "downloading neovim"
+		curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+		echo "installing neovim"
+		chmod u+x nvim.appimage
+		sudo mv nvim.appimage /usr/local/bin
+		sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
+		sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
+		echo "done installing neovim"
+	else
+		echo "nvim check ok"
+	fi
+)
+
+# lazygit
+(
+    if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
+        cd "$(mktemp -d)"
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+        echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
+        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+        tar xf lazygit.tar.gz lazygit
+        sudo install lazygit -D -t /usr/local/bin/
+    fi
+)
 
 # add tailscale
 (
+	echo "checking tailscale"
 	# Exit node stuff
 	ts_conf=/etc/sysctl.d/99-tailscale.conf
 	if ! [ -f $ts_conf ]; then
@@ -113,122 +135,19 @@ sudo chsh -s $(which zsh) $USER
 	# Install Tailscale
 	sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth
 	# Start Tailscale!
-	sudo tailscale up --advertise-exit-node || true
+	# sudo tailscale up --advertise-exit-node || true
+	sudo tailscale up || true
 	# enable tailscale nginx auth
 	sudo systemctl enable --now tailscale.nginx-auth.socket
 )
 
-# docker installation
+# bash-language-server
 (
-	# Install the keyring
-	if ! [ -f /etc/apt/keyrings/docker.asc ]; then
-		sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-		sudo chmod a+r /etc/apt/keyrings/docker.asc
+	echo "checking bash-language-server"
+	if ! [[ "$(bash-language-server --version || true)" =~ "4.7.0" ]]; then
+        sudo snap install bash-language-server --classic
 	fi
-	# Add the repository to Apt sources:
-	if ! [ -f /etc/apt/sources.list.d/docker.list ]; then
-		echo \
-		  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-		  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-		  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-		sudo apt-get update
-	fi
-	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
 )
-
-# lazygit
-(
-	cd $(mktemp -d)
-	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-	tar xf lazygit.tar.gz lazygit
-	sudo install lazygit /usr/local/bin
-)
-
-# go
-if [[ $(go version 2>/dev/null | awk '{print $3}') != $DOTFILES_GO_VERSION ]]; then
-	curl -s -L -o /tmp/$DOTFILES_GO_FULL_VERSION https://go.dev/dl/$DOTFILES_GO_FULL_VERSION
-	sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf /tmp/$DOTFILES_GO_FULL_VERSION
-	rm /tmp/$DOTFILES_GO_FULL_VERSION
-fi
-export PATH=/usr/local/go/bin:$PATH
-export GOHOME=~/go
-curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin ${DOTFILES_GOLINT_VERSION}
-
-# install aws cli v2
-if ! aws --version; then
-	cd $(mktemp -d)
-	curl "https://awscli.amazonaws.com/${DOTFILES_AWS_CLI_VERSION}" -o "awscliv2.zip"
-	unzip awscliv2.zip
-	sudo ./aws/install
-	cd ~
-fi
-
-# neovim installs to /usr/local/bin/nvim
-if [[ $(nvim -v 2>/dev/null | head -1 | awk '{print $2}') != ${DOTFILES_NVIM_VERSION} ]]; then
-	echo "installing nvim ${DOTFILES_NVIM_VERSION}"
-	sudo rm -rf /usr/local/share/nvim
-	cd $(mktemp -d)
-	git clone --depth 1 --branch ${DOTFILES_NVIM_VERSION} https://github.com/neovim/neovim.git
-	cd neovim
-	make CMAKE_BUILD_TYPE=Release
-	if [[ -d /usr/local/share/nvim ]]; then
-		echo "removing old nvim state"
-		rm -rf /usr/local/share/nvim
-	fi
-	echo "sudo make install"
-	sudo make install
-	echo "done"
-	cd ~
-fi
-echo "creating links for vim and vi"
-sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
-sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
-
-
-# bat
-sudo apt remove -y bat 2>/dev/null
-curl -s -L -o /tmp/bat.deb https://github.com/sharkdp/bat/releases/download/$DOTFILES_BAT_VERSION
-sudo dpkg -i /tmp/bat.deb
-rm /tmp/bat.deb
-
-# hyperfine
-if [[ "$(hyperfine --version 2>/dev/null | awk '{print $2}')" != "$(
-	basename $DOTFILES_HYPERFINE_VERSION | sed 's/.*_\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\)_.*/\1/')" ]]; then
-	echo "installing hyperfine ${DOTFILES_HYPERFINE_VERSION}"
-	dir=$(mktemp -d)
-	url="https://github.com/sharkdp/hyperfine/releases/download/${DOTFILES_HYPERFINE_VERSION}"
-	curl -s -L -o $dir/hyperfine.deb $url
-	sudo dpkg -i $dir/hyperfine.deb
-fi
-
-# hexyl
-if [[ "$(hexyl --version 2>/dev/null | awk '{print $2}')" != "$(
-	basename $DOTFILES_HEXYL_VERSION | sed 's/.*_\([[:digit:]]\+\.[[:digit:]]\+\.[[:digit:]]\+\)_.*/\1/')" ]]; then
-	echo "installing hexyl ${DOTFILES_HEXYL_VERSION}"
-	dir=$(mktemp -d)
-	url="https://github.com/sharkdp/hexyl/releases/download/${DOTFILES_HEXYL_VERSION}"
-	curl -s -L -o $dir/hexyl.deb $url
-	sudo dpkg -i $dir/hexyl.deb
-fi
-
-# bottom
-if [[ $(btm --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_BOTTOM_VERSION} ]]; then
-	echo "installing bottom ${DOTFILES_BOTTOM_VERSION}"
-	cd $(mktemp -d)
-	curl -LO https://github.com/ClementTsang/bottom/releases/download/${DOTFILES_BOTTOM_VERSION}/${DOTFILES_BOTTOM_FULL_VERSION}.deb
-	sudo dpkg -i ${DOTFILES_BOTTOM_FULL_VERSION}.deb
-	cd ~
-fi
-
-# tokei
-if [[ $(tokei --version 2>/dev/null | awk '{print $2}') != ${DOTFILES_TOKEI_VERSION} ]]; then
-	echo "installing tokei ${DOTFILES_TOKEI_VERSION}"
-	cd $(mktemp -d)
-	curl -LO https://github.com/XAMPPRocky/tokei/releases/download/v12.1.2/${DOTFILES_TOKEI_VERSION}
-	sudo tar xf ${DOTFILES_TOKEI_VERSION} -C /usr/local/bin
-	cd ~
-fi
 
 # pyenv
 export PATH=~/.pyenv/bin:$PATH

@@ -42,21 +42,22 @@ addPath() {
 }
 
 addPaths=(
-	/opt/homebrew/bin
-	/opt/homebrew/sbin
-	~/Library/Python/3.9/bin
-	~/go/bin
-	~/bin
-	~/.fzf/bin
-	~/.local/bin
-	~/.cargo/bin
-	~/.tfenv/bin
-	~/.powerline/scripts
-	/usr/local/go/bin
-	/usr/local/bin
-	~/.dotfiles/bin
-	/usr/local/sqlite3/bin
-	$PYENV_ROOT
+    /snap/bin
+    /opt/homebrew/bin
+    /opt/homebrew/sbin
+    ~/Library/Python/3.9/bin
+    ~/go/bin
+    ~/bin
+    ~/.fzf/bin
+    ~/.local/bin
+    ~/.cargo/bin
+    ~/.tfenv/bin
+    ~/.powerline/scripts
+    /usr/local/go/bin
+    /usr/local/bin
+    ~/.dotfiles/bin
+    /usr/local/sqlite3/bin
+    $PYENV_ROOT
 )
 
 for p in ${addPaths[@]}; do
