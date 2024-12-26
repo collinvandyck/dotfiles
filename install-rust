@@ -34,7 +34,6 @@ cargo install \
     erdtree \
     eva \
     fd-find \
-    gitui \
     hyperfine \
     just \
     lsd \
@@ -46,6 +45,7 @@ cargo install \
     scooter \
     starship \
     tealdeer \
+    tokei \
     trunk \
     wasm-pack \
     watchexec-cli \
