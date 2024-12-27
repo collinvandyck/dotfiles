@@ -59,11 +59,13 @@ sudo apt install -y \
   tcl \
   tig \
   tmux \
+  traceroute \
   tree \
   libtree-sitter-dev \
   unzip \
   valgrind \
   wget \
+  xsel \
   zoxide \
   zsh \
   ;
