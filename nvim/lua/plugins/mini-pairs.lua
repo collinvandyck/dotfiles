@@ -4,7 +4,6 @@ return {
 	config = function()
 		require("mini.pairs").setup({
 			mappings = {
-				["'"] = false,
 			},
 		})
 	end,
