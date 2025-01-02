@@ -136,6 +136,11 @@ return {
 				},
 			},
 		}
+		require("lspconfig").ocamllsp.setup({
+			capabilities = capabilities,
+			handlers = handlers,
+			on_attach = custom_attach,
+		})
 		require("lspconfig").ruff.setup({
 			capabilities = capabilities,
 			handlers = handlers,
