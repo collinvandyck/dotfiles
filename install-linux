@@ -84,7 +84,7 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 # golang
 (
 echo "checking golang"
-if ! [[ "$(go version || true)" =~ "go version go1.23.4" ]]; then
+if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
     cd "$(mktemp -d)"
     if [[ "$(uname -i)" == "aarch64" ]]; then
         artifact="go1.23.4.linux-arm64.tar.gz"
@@ -101,7 +101,7 @@ fi
 (
 echo "checking neovim"
 nvim_version="v0.10.3"
-if ! [[ "$(nvim --version || true)" =~ "NVIM ${nvim_version}" ]]; then
+if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
     cd "$(mktemp -d)"
     git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
     cd neovim
@@ -155,7 +155,7 @@ fi
 # bash-language-server
 (
 echo "checking bash-language-server"
-if ! [[ "$(bash-language-server --version || true)" =~ "4.7.0" ]]; then
+if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
     sudo snap install bash-language-server --classic
 fi
 )
