@@ -54,6 +54,7 @@ sudo apt install -y \
     ripgrep \
     shellcheck \
     shfmt \
+    snapd \
     software-properties-common \
     sqlite3 \
     tcl \
