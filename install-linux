@@ -100,14 +100,13 @@ fi
 # neovim
 (
 echo "checking neovim"
-if ! [[ "$(nvim --version || true)" =~ "NVIM v0.10.3" ]]; then
-    echo "need to install neovim"
+nvim_version="v0.10.3"
+if ! [[ "$(nvim --version || true)" =~ "NVIM ${nvim_version}" ]]; then
     cd "$(mktemp -d)"
-    echo "downloading neovim"
-    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-    echo "installing neovim"
-    chmod u+x nvim.appimage
-    sudo mv nvim.appimage /usr/local/bin/nvim
+    git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
+    cd neovim
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
     sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
     sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
     echo "done installing neovim"
