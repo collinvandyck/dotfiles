@@ -95,6 +95,12 @@ init-opam() {
     source-if ~/.opam/opam-init/init.zsh
     # END opam configuration
 }
+init-wasmer() {
+    if [ -f ~/.wasmer/wasmer.sh ]; then
+        export WASMER_DIR="${HOME}/.wasmer"
+        [ -s "$WASMER_DIR/wasmer.sh" ] && source "$WASMER_DIR/wasmer.sh"
+    fi
+}
 init-zoxide() {
     cmd_exists zoxide   && eval "$(zoxide init zsh --cmd cd)"
 }
@@ -137,7 +143,9 @@ run-init-fn init-direnv
 run-init-fn init-starship
 run-init-fn init-broot
 run-init-fn init-completions
+run-init-fn init-wasmer
 
 source ~/.dotfiles/zsh/widgets.zsh
 
 # zprof | head -100
+
