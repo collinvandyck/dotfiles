@@ -10,7 +10,7 @@ usage() {
 	exit 1
 }
 
-if [[ (($# > 1)) ]]; then
+if [[ $# -gt 1 ]]; then
 	usage
 fi
 
