@@ -60,7 +60,7 @@ style = "compact"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-inline_height = 0
+inline_height = 40
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 invert = true
@@ -152,3 +152,5 @@ common_subcommands = [
 
 [theme]
 name = "marine"
+#name = "tokyo-night"
+
