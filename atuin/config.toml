@@ -150,3 +150,5 @@ common_subcommands = [
 # Set commands that should be totally stripped and ignored from stats
 #common_prefix = ["sudo"]
 
+[theme]
+name = "marine"
