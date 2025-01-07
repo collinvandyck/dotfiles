@@ -106,6 +106,7 @@ brew install --quiet --formula \
     web-ext \
     wget \
     xz \
+    zig \
     zlib \
     zsh-autosuggestions \
     zoxide \
