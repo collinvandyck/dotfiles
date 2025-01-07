@@ -61,7 +61,7 @@ return {
 				},
 			},
 			view = {
-				width = 40,
+				width = 30,
 			},
 			-- these settings are to make nvim-tree play nice with project.nvim.
 			sync_root_with_cwd = true,
