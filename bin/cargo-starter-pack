@@ -6,6 +6,7 @@ cargo add tokio \
     anyhow \
     clap \
     futures-util \
+    itertools \
     rand \
     regex \
     serde \
