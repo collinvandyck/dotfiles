@@ -30,6 +30,7 @@ fi
 
 # update homebrew packages
 brew update --quiet
+brew upgrade --quiet
 
 brew install --quiet --formula \
     aichat \
@@ -146,12 +147,11 @@ brew install --quiet --cask \
     zoom \
     ;
 
-brew install --cask --no-quarantine \
+brew install --quiet --cask --no-quarantine \
     alacritty \
     ;
 
-brew autoremove;
-
+brew autoremove --quiet;
 brew remove -f openssh;                  # doesn't play well with macos
 brew remove -f microsoft-remote-desktop; # deprecate
 brew remove -f dog;                      # no longer maintained
