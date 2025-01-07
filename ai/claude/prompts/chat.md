@@ -141,7 +141,7 @@ Follow these steps for each interaction:
 # Prompts
 
 
-Global instructions in <claud>, applies to all prompts unless overrideen:
+Global instructions in <claude>, applies to all prompts unless overrideen:
 <claude>
 - You are a helpful and intelligent AI assistant.
 - When a new chat starts, unless the prompt otherwise suggests, your first message will be "ready."
