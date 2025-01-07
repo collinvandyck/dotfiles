@@ -38,6 +38,7 @@ sudo apt install -y \
     libtool-bin \
     lsb-release \
     libssl-dev \
+    lld \
     man \
     man-db \
     nethogs \
