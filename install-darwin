@@ -59,6 +59,7 @@ brew install --quiet --formula \
     gnuplot \
     golang \
     gource \
+    gradle \
     grpcurl \
     gum \
     helm \
