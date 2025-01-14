@@ -22,9 +22,10 @@ nnoremap gn :action GotoNextError<CR>
 nnoremap gp :action GotoPreviousError<CR>
 
 innoremap gd :action GotoDeclaration<CR>
+nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gD :action GotoTypeDeclaration<CR>
-nnoremap g[ :action Back<CR>
-nnoremap g] :action Forward<CR>
+"nnoremap g[ :action Back<CR>
+"nnoremap g] :action Forward<CR>
 
 inoremap jk <Esc>
 inoremap <c-e> <Esc>A
