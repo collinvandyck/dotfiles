@@ -10,8 +10,10 @@ set ideajoin
 set scrolloff=10
 set incsearch
 
-let mapleader=" "
+let mapleader=","
 
+nnoremap <leader>r :action Run<CR>
+nnoremap <leader>q :action CloseContent<CR>
 map <leader>ar <Action>(RenameElement)
 nmap gh <Action>(ShowErrorDescription)
 nmap K <Action>(QuickJavaDoc)
