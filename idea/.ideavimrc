@@ -1,33 +1,64 @@
-" .ideavimrc is a configuration file for IdeaVim plugin. It uses
-"   the same commands as the original .vimrc configuration.
-" You can find a list of commands here: https://jb.gg/h38q75
-" Find more examples here: https://jb.gg/share-ideavimrc
+" Doco
+"
+" https://github.com/JetBrains/ideavim/wiki/set-commands
+" https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
+" https://github.com/TheBlob42/idea-which-key
+"
+" Examples:
+" https://github.com/JetBrains/ideavim/discussions/303
+" https://github.com/citizenmatt/dotfiles/blob/master/ideavimrc -- GOOD
+"
+" Try using nmap instead of nnoremap if a command is buggy.
+
+
 
 set visualbell
 set noerrorbell
-set timeoutlen=200
+"set timeoutlen=2000
+set notimeout
 set ideajoin
 set scrolloff=10
 set incsearch
+"set hlsearch
+set smartcase
+
+set which-key
+let g:WhichKey_FontSize = 20
 
 let mapleader=","
 
+" nnoremap <C-s> I want to map C-s to save.
+
+" TODO:
+" Use <Action> instead of :action: https://github.com/JetBrains/ideavim
+
+nmap [[ :action MethodUp<CR>
+nmap ]] :action MethodDown<CR>
+
+nnoremap tn :action NextTab<CR>
+nnoremap tp :action PreviousTab<CR>
+nnoremap <leader>h :action HideActiveWindow<CR> " buggy
 nnoremap <leader>r :action Run<CR>
 nnoremap <leader>q :action CloseContent<CR>
-map <leader>ar <Action>(RenameElement)
-nmap gh <Action>(ShowErrorDescription)
-nmap K <Action>(QuickJavaDoc)
+nnoremap <leader>ar <Action>(RenameElement)
 
+nmap <leader>gf <Action>(GotoFile)
+nmap <leader>ga <Action>(GotoAction)
+
+nmap gh <Action>(ShowErrorDescription)
+"nmap K <Action>(QuickJavaDoc)
+nnoremap K :action ShowHoverInfo<CR>
+
+nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gn :action GotoNextError<CR>
 nnoremap gp :action GotoPreviousError<CR>
+nnoremap gi :action CallHierarchy<CR>
+nnoremap gr :action ShowUsages<CR>
+nnoremap gR :action FindUsages<CR>
 
-innoremap gd :action GotoDeclaration<CR>
-nnoremap gt :action GotoTypeDeclaration<CR>
-nnoremap gD :action GotoTypeDeclaration<CR>
-"nnoremap g[ :action Back<CR>
-"nnoremap g] :action Forward<CR>
-
-inoremap jk <Esc>
+" inoremap jk <Esc>
 inoremap <c-e> <Esc>A
 
 "" -- Suggested options --
@@ -40,12 +71,11 @@ map Q gq
 
 " --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
 
-" Highlight copied text
 Plug 'machakann/vim-highlightedyank'
-" Commentary plugin
+Plug 'justinmk/vim-sneak' " [sS] + two chars. ; and , to navigate
 Plug 'tpope/vim-commentary'
-" NERDTREE
-Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
+
 
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
 "" Map \r to the Reformat Code action
