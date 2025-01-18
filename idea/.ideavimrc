@@ -38,16 +38,17 @@ nmap ]] :action MethodDown<CR>
 nnoremap tn :action NextTab<CR>
 nnoremap tp :action PreviousTab<CR>
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
-nnoremap <leader>r :action Run<CR>
 nnoremap <leader>q :action CloseContent<CR>
-nnoremap <leader>ar <Action>(RenameElement)
 
+nmap <leader>r <Action>(Run)
+nmap <leader>ar <Action>(RenameElement)
 nmap <leader>gf <Action>(GotoFile)
 nmap <leader>ga <Action>(GotoAction)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
-nnoremap K :action ShowHoverInfo<CR>
+nmap K <Action>(ShowHoverInfo)
+nmap <C-8> <Action>(HideAllWindows)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
 nnoremap gd :action GotoDeclaration<CR>
