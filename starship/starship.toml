@@ -2,8 +2,22 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 add_newline = false
-format = '$all'
 right_format = ''
+# Which is equivalent to
+format = """
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$docker_context\
+$package\
+$direnv\
+$custom\
+$cmd_duration\
+$line_break\
+$character\
+"""
 
 [directory]
 truncate_to_repo = false
