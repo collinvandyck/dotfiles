@@ -1,6 +1,6 @@
 [user]
 	name = "Collin Van Dyck"
-	email = "collinvandyck@gmail.com"
+	email = "collin@5xx.engineer"
 
 [core]
 	excludesfile = ~/.gitignore_global
