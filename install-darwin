@@ -138,7 +138,6 @@ brew install --quiet --cask \
     racket \
     raycast \
     signal \
-    slack \
     sublime-text \
     tailscale \
     utm \
