@@ -178,8 +178,6 @@ sudo rm -rf /usr/local/bin/vim
 sudo rm -rf /usr/local/bin/vi
 sudo rm -rf /usr/local/bin/nvim
 
-~/.dotfiles/install-common
-
 # set darwin defaults
 # https://macos-defaults.com/
 #
@@ -214,8 +212,9 @@ defaults write com.apple.spaces spans-displays -bool false                      
 killall Dock
 killall SystemUIServer
 
-# finally, install the launchd daemons
 if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
     ~/.dotfiles/install-launchd
 fi
+
+~/.dotfiles/install-common
 
