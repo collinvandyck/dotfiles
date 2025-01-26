@@ -127,7 +127,6 @@ brew install --quiet --cask \
     font-fantasque-sans-mono \
     font-fantasque-sans-mono-nerd-font \
     font-hack-nerd-font \
-    google-chrome \
     imhex \
     istat-menus \
     kitty \
