@@ -143,7 +143,6 @@ brew install --quiet --cask \
     utm \
     yubico-yubikey-manager \
     zed \
-    zoom \
     ;
 
 brew install --quiet --cask --no-quarantine \
