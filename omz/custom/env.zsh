@@ -16,7 +16,9 @@ export HOMEBREW_NO_ENV_HINTS=1
 export HOSTNAME=$(hostname)
 export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
-export LC_ALL=en_US.UTF-8
+if [[ "$(hostname)" != "ryzen-ubuntu" ]]; then
+    export LC_ALL=en_US.UTF-8
+fi
 export LESS="-XFR"
 export LESS='-R'
 export MANPAGER="sh -c 'col -bx | bat -l man -p'"
