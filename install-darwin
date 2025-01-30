@@ -95,6 +95,7 @@ brew install --quiet --formula \
     ruby-install \
     ruff \
     sccache \
+    semgrep \
     shellcheck \
     tailspin \
     temporal \
