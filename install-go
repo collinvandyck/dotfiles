@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+
+export DOTFILES_CODESEARCH_VERSION=v1.2.0
+export DOTFILES_TASK_VERSION=3.27.1
 
 echo "Installing Go programs"
 go version
@@ -36,7 +39,7 @@ echo "Installing gpterm"
 go install github.com/collinvandyck/gpterm/cmd/gpterm@latest
 
 # we have to install task manually since it's not in apt
-if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then 
+if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then
 	echo "Installing task ${DOTFILES_TASK_VERSION}"
 	go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
 fi

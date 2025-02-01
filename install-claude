@@ -10,19 +10,6 @@ usage() {
 
 echo "Installing Claude requirements..."
 
-npm_install=1
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        --no-npm-install)
-            npm_install=0
-            shift
-            ;;
-        *)
-            usage
-            ;;
-    esac
-done
-
 mkdir -p ~/.claude/servers/
 mkdir -p ~/.claude/storage/memory
 
@@ -41,32 +28,33 @@ if ! [[ -f ~/.claude/storage/memory/memory.json ]]; then
 EOF
 fi
 
-if ! [[ -d ~/.claude/servers/mcp-servers ]]; then
-    echo "Installing mcp-servers repo"
-    git clone git@github.com:collinvandyck/mcp-servers.git ~/.claude/servers/mcp-servers
-fi
-
-if ! [[ -d ~/.claude/servers/exa-mcp-server ]]; then
-    echo "Installing exa mcp server"
-    git clone git@github.com:exa-labs/exa-mcp-server.git ~/.claude/servers/exa-mcp-server
-fi
-
-if ! [[ -d ~/.claude/servers/nyt ]]; then
-    echo "Installing nyt mcp server"
-    git clone git@github.com:angheljf/nyt.git ~/.claude/servers/nyt
-fi
-
 if ! command -v tsx &>/dev/null; then
     echo "Installing tsx"
     npm install --global tsx
 fi
 
-for i in mcp-servers exa-mcp-server nyt; do
-    (cd ~/.claude/servers/$i && {
-        git pull
-        if [[ $npm_install -eq 1 ]]; then
-            npm install --no-package-lock
-        fi
-    })
-done
+ensure_mcp() {
+    local repo dir
+    repo=$1
+    dir=~/.claude/servers/$(basename $repo .git)
+    echo "Configuring $repo"
+    if ! [[ -d $dir ]]; then
+        echo "Cloning $repo"
+        git clone $repo $dir
+        (cd $dir && npm install --no-package-lock)
+    else
+        (cd $dir && {
+            local before=""
+            before=$(git rev-parse HEAD)
+            git pull >/dev/null
+            if [[ $before != $(git rev-parse HEAD) ]]; then
+                npm install --no-package-lock
+            fi
+        })
+    fi
+}
+
+ensure_mcp git@github.com:collinvandyck/mcp-servers.git
+ensure_mcp git@github.com:exa-labs/exa-mcp-server.git
+ensure_mcp git@github.com:angheljf/nyt.git
 
