@@ -104,6 +104,7 @@ brew install --quiet --formula \
     tmux \
     tree \
     typescript-language-server \
+    uv \
     viddy \
     watch \
     web-ext \
@@ -218,4 +219,4 @@ if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
 fi
 
 ~/.dotfiles/install-common
-
+~/.dotfiles/install-claude
