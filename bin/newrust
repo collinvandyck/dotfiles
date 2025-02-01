@@ -2,13 +2,32 @@
 
 set -e
 
-name=${1}
+full=0
+name=""
 dir=~/code
 
 usage() {
-	echo "usage: $(basename "$0") [name]"
+	echo "usage: $(basename "$0") [--full] [name]"
 	exit 1
 }
+
+bail() {
+    echo "fatal: $1"
+    exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --full)
+            full=1
+            shift
+            ;;
+        *)
+            name="$1"
+            shift
+            ;;
+    esac
+done
 
 if [ "$name" = "" ]; then
 	name=wip
@@ -18,14 +37,23 @@ fi
 cd "$dir"
 
 if [ -d "$name" ]; then
-	echo "error: $name already exists"
-	exit 1
+    bail "$name already exists"
 fi
 
 cargo new "$name"
 cd "$name"
 
-rust-starter-pack
+
+if [[ $full -eq 1 ]]; then
+    cargo-starter-pack
+fi
+
+rustfmt-starter-pack
+
+cat > rust-toolchain.toml <<EOF
+[toolchain]
+channel = "1.83.0"
+EOF
 
 cat <<eos > Makefile
 run:
