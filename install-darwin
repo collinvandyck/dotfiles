@@ -64,7 +64,6 @@ defaults write com.apple.TextEdit SmartQuotes -bool false
 defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
 defaults write com.apple.accessibility ReduceMotionEnabled -int 1
 defaults write com.apple.dock appswitcher-all-displays -bool true                       # show cmd tab on all displays
-defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-time-modifier -float 0.75
 defaults write com.apple.dock expose-animation-duration -float 0.1
 defaults write com.apple.dock mineffect -string scale
