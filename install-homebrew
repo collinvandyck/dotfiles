@@ -115,6 +115,7 @@ brew install --quiet --cask --force \
     font-hack-nerd-font \
     imhex \
     istat-menus \
+    jetbrains-toolbox \
     kitty \
     logi-options-plus \
     mitmproxy \
