@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 mkdir -p ~/.config
 mkdir -p ~/.ssh
@@ -58,6 +58,12 @@ if [ -d ~/.config/broot ]; then
     rm -rf ~/.config/broot
 fi
 
+if ! [[ -d /usr/local/bin ]]; then
+    sudo mkdir -p /usr/local/bin
+    sudo chown $USER /usr/local/bin
+fi
+
+
 bin/symlink ~/.dotfiles/atuin                      ~/.config/atuin
 bin/symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
 bin/symlink ~/.dotfiles/broot                      ~/.config/broot
@@ -89,10 +95,7 @@ bin/symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
 bin/symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
 bin/symlink ~/.dotfiles/zellij                     ~/.config/zellij
 bin/symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
-
-sudo mkdir -p /usr/local/bin
-sudo chown $USER /usr/local/bin
-sudo bin/symlink ~/.dotfiles/bin/tm            /usr/local/bin
+bin/symlink ~/.dotfiles/bin/tm                     /usr/local/bin
 
 touch ~/.tmux.custom.conf
 
