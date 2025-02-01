@@ -17,6 +17,7 @@
                 "-y",
                 "@modelcontextprotocol/server-filesystem",
                 "/Users/collin/code/notes",
+                "/Users/collin/.dotfiles",
                 "/Users/collin/code/aoc-2024"
             ]
         },
