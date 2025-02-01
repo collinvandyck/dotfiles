@@ -11,12 +11,11 @@ return {
 		"L3MON4D3/LuaSnip",
 		"saadparwaiz1/cmp_luasnip",
 		"nvim-treesitter/nvim-treesitter",
-		"zbirenbaum/copilot.lua",
+		"zbirenbaum/copilot-cmp",
 	},
 	config = function()
 		local cmp = require('cmp')
 		local luasnip = require("luasnip")
-		local copilot_suggestion = require("copilot.suggestion")
 		local has_words_before = function()
 			unpack = unpack or table.unpack
 			local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -39,6 +38,7 @@ return {
 				end
 			end,
 			sources = cmp.config.sources({
+				{ name = 'copilot' },
 				{ name = 'nvim_lsp' },
 			}, {
 				{ name = 'luasnip' },
@@ -72,9 +72,7 @@ return {
 				['<C-e>'] = cmp.mapping.abort(),
 				['<CR>'] = cmp.mapping.confirm({ select = true }),
 				['<Tab>'] = cmp.mapping(function(fallback)
-					if copilot_suggestion.is_visible() then
-						copilot_suggestion.accept()
-					elseif cmp.visible() then
+					if cmp.visible() then
 						if #cmp.get_entries() == 1 then
 							cmp.confirm({ select = true })
 						else
