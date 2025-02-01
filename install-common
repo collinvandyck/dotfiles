@@ -7,7 +7,9 @@ set -u # fail if vars are not defined
 
 echo "Updating sqlite"
 sqlite=/usr/local/sqlite3/bin/sqlite3
-if ! [[ -x $(command -v $sqlite) && $DOTFILES_SQLITE_VERSION == $($sqlite --version | awk '{print $1}') ]]; then
+sqlite_version=3.41.0
+
+if ! [[ -x $(command -v $sqlite) && $sqlite_version == $($sqlite --version | awk '{print $1}') ]]; then
 	echo "Installing sqlite3 $DOTFILES_SQLITE_VERSION with readline support"
 	cd $(mktemp -d)
 	git clone -b version-$DOTFILES_SQLITE_VERSION --depth 1 https://github.com/sqlite/sqlite.git

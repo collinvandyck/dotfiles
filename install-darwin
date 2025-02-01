@@ -152,33 +152,44 @@ brew install --quiet --cask --no-quarantine \
     ;
 
 brew autoremove --quiet;
-brew remove -f openssh;                  # doesn't play well with macos
-brew remove -f microsoft-remote-desktop; # deprecate
-brew remove -f dog;                      # no longer maintained
+
+# openssh does not play well with macos
+# microsoft-remote-desktop is deprecated
+# dog is no longer maintained
+for pkg in openssh microsoft-remote-desktop dog; do
+    if brew list -1 | grep -q "^${pkg}\$"; then
+        brew remove -f $pkg
+    fi
+done
 
 ruby-install --no-reinstall ruby 3.1.3
 
 # install aws cli v2
-if ! aws --version; then
-    cd $(mktemp -d)
-    curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-    sudo installer -pkg AWSCLIV2.pkg -target /
-    cd ~
+if ! aws --version &> /dev/null; then
+    (cd "$(mktemp -d)" && {
+        echo "Installing aws cli"
+        curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+        sudo installer -pkg AWSCLIV2.pkg -target /
+    })
 fi
 
 # enable go in path in case we just installed it.
 export PATH=/usr/local/go/bin:$PATH
 
 # we use homebrew go from now on
-sudo rm -rf /usr/local/go
+if [ -d /usr/local/go ]; then
+    sudo rm -rf /usr/local/go
+fi
 
 # neovim
 #
 # we're using homebrew neovim now. remove the links to previous places we were
 # installing neovim and its aliases
-sudo rm -rf /usr/local/bin/vim
-sudo rm -rf /usr/local/bin/vi
-sudo rm -rf /usr/local/bin/nvim
+for bin in nvim vim vi; do
+    if [ -L /usr/local/bin/$bin ]; then
+        sudo rm -rf /usr/local/bin/$bin
+    fi
+done
 
 # set darwin defaults
 # https://macos-defaults.com/
@@ -214,7 +225,7 @@ defaults write com.apple.spaces spans-displays -bool false                      
 killall Dock
 killall SystemUIServer
 
-if [ "$DOTFILES_INSTALL_LAUNCHD" == "1" ]; then
+if [ "${DOTFILES_INSTALL_LAUNCHD:-0}" == "1" ]; then
     ~/.dotfiles/install-launchd
 fi
 

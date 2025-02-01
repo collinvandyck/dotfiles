@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 export DOTFILES_GOLINT_VERSION=v1.51.2
-export DOTFILES_GO_VERSION=go1.22.0
 export DOTFILES_NVIM_VERSION=v0.10.0
-export DOTFILES_SQLITE_VERSION=3.41.0
 export DOTFILES_BOTTOM_VERSION=0.9.6
-export DOTFILES_CODESEARCH_VERSION=v1.2.0
-export DOTFILES_TASK_VERSION=3.27.1
+
+cd ~/.dotfiles
 
 ~/.dotfiles/install-paths
 
