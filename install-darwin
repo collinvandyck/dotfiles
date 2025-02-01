@@ -3,6 +3,7 @@
 set -euo pipefail
 
 export HOMEBREW_NO_ENV_HINTS=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
 
 # add git via xcode cli tools
 if ! command -v git &>/dev/null; then
@@ -151,7 +152,8 @@ brew install --quiet --cask --no-quarantine \
     alacritty \
     ;
 
-brew autoremove --quiet;
+brew autoremove --quiet
+brew cleanup --prune=all --quiet # we deferred cleanup above with HOMEBREW_NO_INSTALL_CLEANUP so we must do it here
 
 # openssh does not play well with macos
 # microsoft-remote-desktop is deprecated
