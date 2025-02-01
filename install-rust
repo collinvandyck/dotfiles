@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
+set -euo pipefail
+
+if ! command -v rustc &> /dev/null; then
+    echo "Installing Rust.."
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
+fi
+
 export PATH="$HOME/.cargo/bin:$PATH"
+
 rustup default stable
-rustup component add rust-src
-rustup component add rust-analyzer
-rustup target add wasm32-unknown-unknown
-rustup target add x86_64-pc-windows-gnu
-rustup target add aarch64-apple-darwin
+rustup component add rust-src rust-analyzer
+rustup target add wasm32-unknown-unknown x86_64-pc-windows-gnu aarch64-apple-darwin
 rustup toolchain install nightly-2024-03-29
 
-export PATH="$HOME/.cargo/bin:$PATH"
+echo "Installing Rust programs"
 
-echo "Installing rust utilities"
+cargo_install() {
+    cargo install --quiet "$@"
+}
 
 for proj in ~/.dotfiles/bin/rust/*; do
-    cargo install --path $proj
+    cargo_install --path $proj
 done
 
 
-cargo install \
+cargo_install \
     ag \
     ast-grep \
     bacon \
@@ -51,7 +57,7 @@ cargo install \
     watchexec-cli \
     ;
 
-cargo install atuin --version 18.4.0
-cargo install --locked xh
-cargo install --features cli dotenv
+cargo_install atuin --version 18.4.0
+cargo_install --locked xh
+cargo_install --features cli dotenv
 
