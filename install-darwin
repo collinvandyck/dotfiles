@@ -116,7 +116,7 @@ brew install --quiet --formula \
     zoxide \
     ;
 
-brew install --quiet --cask \
+brew install --quiet --cask --force \
     1password \
     1password-cli \
     caffeine \
