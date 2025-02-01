@@ -1,3 +1,6 @@
+-- enable the native lua module loader
+vim.loader.enable()
+
 vim.lsp.set_log_level("info")
 
 vim.g.mapleader = ","
