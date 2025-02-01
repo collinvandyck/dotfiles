@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    echo "usage: $(basename "$0") [--no-npm-install]"
+    exit 1
+}
+
+
+echo "Installing Claude requirements..."
+
+npm_install=1
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --no-npm-install)
+            npm_install=0
+            shift
+            ;;
+        *)
+            usage
+            ;;
+    esac
+done
+
+mkdir -p ~/.claude/servers/
+mkdir -p ~/.claude/storage/memory
+
+if ! [[ -f ~/.claude/servers/.env ]]; then
+echo "Creating .env file"
+cat > ~/.claude/servers/.env <<EOF
+EXA_API_KEY=
+NYTIMES_API_KEY=
+EOF
+fi
+
+if ! [[ -f ~/.claude/storage/memory/memory.json ]]; then
+    echo "Creating memory.json file"
+    cat > ~/.claude/storage/memory/memory.json <<EOF
+{}
+EOF
+fi
+
+if ! [[ -d ~/.claude/servers/mcp-servers ]]; then
+    echo "Installing mcp-servers repo"
+    git clone git@github.com:collinvandyck/mcp-servers.git ~/.claude/servers/mcp-servers
+fi
+
+if ! [[ -d ~/.claude/servers/exa-mcp-server ]]; then
+    echo "Installing exa mcp server"
+    git clone git@github.com:exa-labs/exa-mcp-server.git ~/.claude/servers/exa-mcp-server
+fi
+
+if ! [[ -d ~/.claude/servers/nyt ]]; then
+    echo "Installing nyt mcp server"
+    git clone git@github.com:angheljf/nyt.git ~/.claude/servers/nyt
+fi
+
+if ! command -v tsx &>/dev/null; then
+    echo "Installing tsx"
+    npm install --global tsx
+fi
+
+for i in mcp-servers exa-mcp-server nyt; do
+    (cd ~/.claude/servers/$i && {
+        git pull
+        if [[ $npm_install -eq 1 ]]; then
+            npm install --no-package-lock
+        fi
+    })
+done
+
