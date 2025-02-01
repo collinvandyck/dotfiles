@@ -1,0 +1,148 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+export HOMEBREW_NO_ENV_HINTS=1
+
+# enable homebrew in path in case we just installed it.
+export PATH=/opt/homebrew/bin:$PATH
+
+# install homebrew
+if [ ! "$(command -v brew)" ]; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# update homebrew packages
+brew update --quiet
+brew upgrade --quiet
+
+brew install --quiet --formula \
+    aichat \
+    asdf \
+    bash-language-server \
+    bat-extras \
+    broot \
+    btop \
+    bzip2 \
+    caddy \
+    chruby \
+    clojure \
+    clojure-lsp \
+    cmake \
+    colima \
+    devcontainer \
+    direnv \
+    dust \
+    eza \
+    fd \
+    fx \
+    gh \
+    git-extras \
+    git-machete \
+    glow \
+    gnuplot \
+    golang \
+    gource \
+    gradle \
+    grpcurl \
+    gum \
+    helm \
+    hexyl \
+    htop \
+    httpie \
+    hwatch \
+    kompose \
+    lazydocker \
+    lazygit \
+    less \
+    lsd \
+    lua \
+    lua-language-server \
+    luajit-openresty \
+    luarocks \
+    lxc \
+    mingw-w64 \
+    mtr \
+    mutagen-io/mutagen/mutagen \
+    neovim \
+    nmap \
+    nvr \
+    ollama \
+    opam \
+    pam-reattach \
+    pandoc \
+    pipx \
+    protobuf \
+    pstree \
+    pyenv \
+    ripgrep \
+    ruby-install \
+    ruff \
+    sccache \
+    semgrep \
+    shellcheck \
+    tailspin \
+    temporal \
+    tig \
+    tokei \
+    tmux \
+    tree \
+    typescript-language-server \
+    uv \
+    viddy \
+    watch \
+    web-ext \
+    wget \
+    xz \
+    zig \
+    zlib \
+    zsh-autosuggestions \
+    zoxide \
+    ;
+
+brew install --quiet --cask --force \
+    1password \
+    1password-cli \
+    caffeine \
+    chatbox \
+    cleanshot \
+    discord \
+    discord \
+    firefox \
+    font-fira-code-nerd-font \
+    font-fantasque-sans-mono \
+    font-fantasque-sans-mono-nerd-font \
+    font-hack-nerd-font \
+    imhex \
+    istat-menus \
+    kitty \
+    logi-options-plus \
+    mitmproxy \
+    ngrok \
+    obs \
+    obsidian \
+    racket \
+    raycast \
+    signal \
+    sublime-text \
+    tailscale \
+    utm \
+    yubico-yubikey-manager \
+    zed \
+    ;
+
+brew install --quiet --cask --no-quarantine \
+    alacritty \
+    ;
+
+brew autoremove --quiet
+
+# openssh does not play well with macos
+# microsoft-remote-desktop is deprecated
+# dog is no longer maintained
+for pkg in openssh microsoft-remote-desktop dog; do
+    if brew list -1 | grep -q "^${pkg}\$"; then
+        brew remove -f $pkg
+    fi
+done
+
