@@ -1,10 +1,9 @@
-#![allow(unused)]
-
-use anyhow::{Context, bail};
+use anyhow::{bail, Context, Result};
 use clap::Parser;
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
+    process::Command,
 };
 
 #[derive(clap::Parser, Debug)]
@@ -15,24 +14,49 @@ struct Args {
     rest: Vec<String>,
 }
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<()> {
     let args = Args::parse();
-    let env: HashMap<String, String> = load_files(&args.files)?;
-    let [cmd, xs @ ..] = args.rest.as_slice() else {
-        bail!("no command");
-    };
-    std::process::Command::new(cmd)
-        .args(xs)
-        .envs(env)
+    let code = build_cmd(args.rest.as_slice())
+        .context("could not build command")?
+        .envs(build_env(&args.files)?)
         .status()
-        .context("failed to run command")?;
-    Ok(())
+        .context("command failed to run")?
+        .code()
+        .context("no exit code")?;
+    std::process::exit(code);
 }
 
-fn load_files(p: &[PathBuf]) -> anyhow::Result<HashMap<String, String>> {
-    Ok(p.iter()
+fn build_cmd(args: &[String]) -> Result<Command> {
+    if cfg!(windows) {
+        let mut cmd = Command::new("powershell.exe");
+        cmd.arg("-NoProfile")
+            .arg("-NonInteractive")
+            .arg("-NoLogo")
+            .arg("-ExecutionPolicy")
+            .arg("Bypass")
+            .arg("-Command");
+        if args.is_empty() {
+            bail!("no command");
+        }
+        for arg in args {
+            cmd.arg(arg);
+        }
+        Ok(cmd)
+    } else {
+        let [cmd, xs @ ..] = args else {
+            bail!("no command");
+        };
+        let mut cmd = Command::new(cmd);
+        cmd.args(xs);
+        Ok(cmd)
+    }
+}
+
+fn build_env(paths: &[PathBuf]) -> Result<HashMap<String, String>> {
+    Ok(paths
+        .iter()
         .map(|p| load_file(p))
-        .collect::<anyhow::Result<Vec<_>>>()?
+        .collect::<Result<Vec<_>>>()?
         .into_iter()
         .fold(HashMap::<String, String>::new(), |mut acc, hm| {
             for (k, v) in hm {
@@ -42,7 +66,7 @@ fn load_files(p: &[PathBuf]) -> anyhow::Result<HashMap<String, String>> {
         }))
 }
 
-fn load_file(p: &Path) -> anyhow::Result<HashMap<String, String>> {
+fn load_file(p: &Path) -> Result<HashMap<String, String>> {
     std::fs::read(p)
         .context(format!("could not read {p:?}"))
         .and_then(|bs| String::from_utf8(bs).context("read utf8"))
