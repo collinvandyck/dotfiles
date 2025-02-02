@@ -35,6 +35,7 @@ brew install --quiet --formula \
     dust \
     eza \
     fd \
+    fileicon \
     fx \
     gh \
     git-extras \
