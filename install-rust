@@ -17,7 +17,7 @@ rustup toolchain install nightly-2024-03-29
 echo "Installing Rust programs"
 
 cargo_install() {
-    cargo install "$@"
+    cargo install --locked "$@"
 }
 
 for proj in ~/.dotfiles/bin/rust/*; do
@@ -49,15 +49,16 @@ cargo_install \
     pipr \
     ripgrep \
     scooter \
+    sniffnet \
     starship \
     tealdeer \
     tokei \
     trunk \
     wasm-pack \
     watchexec-cli \
+    xh \
     ;
 
 cargo_install atuin --version 18.4.0
-cargo_install --locked xh
 cargo_install --features cli dotenv
 
