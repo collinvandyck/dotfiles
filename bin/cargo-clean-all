@@ -15,7 +15,8 @@ clean() {
 }
 
 if [ $# -eq 0 ]; then
-    fd -I --glob target --type dir | xargs -I DIR cargo-clean-all "DIR"
+    fd -I --case-sensitive --max-depth=5 --type dir -E $HOME/go/pkg --full-path --glob '**/target' -E "**/go/pkg" ~ ~/.dotfiles \
+        | xargs -I DIR "$0" "DIR"
 else
     clean "$1"
 fi
