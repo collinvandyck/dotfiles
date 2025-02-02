@@ -62,3 +62,10 @@ cargo_install \
 cargo_install atuin --version 18.4.0
 cargo_install --features cli dotenv
 
+set_icon() {
+    if command -v fileicon %>/dev/null; then
+        fileicon set "$1" "$2" >/dev/null
+    fi
+}
+
+set_icon ~/.cargo/bin/sniffnet ~/.dotfiles/icons/sniffnet.icns
