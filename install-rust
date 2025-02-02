@@ -17,7 +17,7 @@ rustup toolchain install nightly-2024-03-29
 echo "Installing Rust programs"
 
 cargo_install() {
-    cargo install --quiet "$@"
+    cargo install "$@"
 }
 
 for proj in ~/.dotfiles/bin/rust/*; do
