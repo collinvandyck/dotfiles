@@ -27,29 +27,12 @@ fn main() -> Result<()> {
 }
 
 fn build_cmd(args: &[String]) -> Result<Command> {
-    if cfg!(windows) {
-        let mut cmd = Command::new("powershell.exe");
-        cmd.arg("-NoProfile")
-            .arg("-NonInteractive")
-            .arg("-NoLogo")
-            .arg("-ExecutionPolicy")
-            .arg("Bypass")
-            .arg("-Command");
-        if args.is_empty() {
-            bail!("no command");
-        }
-        for arg in args {
-            cmd.arg(arg);
-        }
-        Ok(cmd)
-    } else {
-        let [cmd, xs @ ..] = args else {
-            bail!("no command");
-        };
-        let mut cmd = Command::new(cmd);
-        cmd.args(xs);
-        Ok(cmd)
-    }
+    let [cmd, xs @ ..] = args else {
+        bail!("no command");
+    };
+    let mut cmd = Command::new(cmd);
+    cmd.args(xs);
+    Ok(cmd)
 }
 
 fn build_env(paths: &[PathBuf]) -> Result<HashMap<String, String>> {
