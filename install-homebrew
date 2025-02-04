@@ -128,7 +128,6 @@ brew install --quiet --cask --force \
     raycast \
     signal \
     sublime-text \
-    tailscale \
     utm \
     yubico-yubikey-manager \
     zed \
