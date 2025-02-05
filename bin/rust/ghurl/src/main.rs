@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow, bail};
 use clap::Parser;
 use git_url_parse::GitUrl;
-use std::{process::Command, str::from_utf8};
+use std::{ffi::OsStr, process::Command, str::from_utf8};
 
 // Generates the GitHub URL for the current repo. If --open is used, it will attempt to open that
 // URL in the system browser. Otherwise, it prints the URL to stdout.
@@ -53,11 +53,11 @@ fn main() -> Result<()> {
 
 fn new_cmd<I>(cmd: &str, args: I) -> Command
 where
-    I: IntoIterator<Item: ToString>,
+    I: IntoIterator<Item: AsRef<OsStr>>,
 {
     let mut cmd = Command::new(cmd);
     for arg in args {
-        cmd.arg(arg.to_string());
+        cmd.arg(arg.as_ref());
     }
     cmd
 }
