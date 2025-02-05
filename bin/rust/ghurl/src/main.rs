@@ -9,7 +9,7 @@ trait With {
         F: FnOnce(&mut Self);
 }
 
-impl With for Command {
+impl<T> With for T {
     fn with<F>(mut self, f: F) -> Self
     where
         F: FnOnce(&mut Self),
