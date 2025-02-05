@@ -3,22 +3,6 @@ use clap::Parser;
 use git_url_parse::GitUrl;
 use std::{process::Command, str::from_utf8};
 
-trait With {
-    fn with<F>(self, f: F) -> Self
-    where
-        F: FnOnce(&mut Self);
-}
-
-impl<T> With for T {
-    fn with<F>(mut self, f: F) -> Self
-    where
-        F: FnOnce(&mut Self),
-    {
-        f(&mut self);
-        self
-    }
-}
-
 // Generates the GitHub URL for the current repo. If --open is used, it will attempt to open that
 // URL in the system browser. Otherwise, it prints the URL to stdout.
 fn main() -> Result<()> {
@@ -54,21 +38,26 @@ fn main() -> Result<()> {
     let url = format!("https://{host}/{}/commit/{sha}", url.fullname);
     if args.open {
         let mut cmd = if cfg!(target_os = "macos") {
-            Command::new("open").with(|cmd| {
-                cmd.args([url]);
-            })
+            new_cmd("open", [url])
         } else if cfg!(target_os = "windows") {
-            Command::new("cmd.exe").with(|cmd| {
-                cmd.args(["/C", "start", &url]);
-            })
+            new_cmd("cmd.exe", ["/C", "start", &url])
         } else {
-            Command::new("xdg-open").with(|cmd| {
-                cmd.args([url]);
-            })
+            new_cmd("xdg-open", [url])
         };
         cmd.spawn()?.wait()?;
     } else {
         println!("{url}");
     }
     Ok(())
+}
+
+fn new_cmd<I>(cmd: &str, args: I) -> Command
+where
+    I: IntoIterator<Item: ToString>,
+{
+    let mut cmd = Command::new(cmd);
+    for arg in args {
+        cmd.arg(arg.to_string());
+    }
+    cmd
 }
