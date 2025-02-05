@@ -24,6 +24,9 @@ for proj in ~/.dotfiles/bin/rust/*; do
     cargo_install --path $proj
 done
 
+if [[ $# == 1 && $1 == "--local" ]]; then
+    exit 0
+fi
 
 cargo_install \
     ag \
