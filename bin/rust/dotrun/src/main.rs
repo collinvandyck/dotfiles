@@ -1,4 +1,4 @@
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use clap::Parser;
 use std::{
     collections::HashMap,
@@ -6,11 +6,15 @@ use std::{
     process::Command,
 };
 
+/// Reads the specified env files to build a new environment. That environment is then used to
+/// launch the delegate process.
 #[derive(clap::Parser, Debug)]
 struct Args {
+    /// The env files
     #[clap(long, short)]
     files: Vec<PathBuf>,
 
+    /// The delegate program and args
     rest: Vec<String>,
 }
 
