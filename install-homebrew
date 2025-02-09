@@ -56,6 +56,7 @@ brew install --quiet --formula \
     lazydocker \
     lazygit \
     less \
+    llm \
     lsd \
     lua \
     lua-language-server \
