@@ -24,6 +24,8 @@ if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; t
     echo "Installing xcode"
     xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
     mas install "$xcode_id"
+    echo "Accepting license agreement"
+    sudo xcodebuild -license accept
 fi
 
 brew upgrade --quiet
