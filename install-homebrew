@@ -43,6 +43,7 @@ brew install --quiet --formula \
     clojure-lsp \
     cmake \
     colima \
+    coreutils \
     devcontainer \
     direnv \
     dust \
