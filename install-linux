@@ -73,7 +73,7 @@ sudo apt install -y \
     ;
 
 if [[ "$(uname -a)" =~ WSL2 ]]; then
-    sudo apt install linux-tools-generic
+    sudo apt install -y linux-tools-generic
 fi
 
 sudo apt autoremove -y
