@@ -8,6 +8,7 @@ alias ut='ssh -t ubuntu-test tm'
 alias appsup='cd ~/Library/Application\ Support'
 alias z=cd
 alias da='direnv allow'
+alias cat=bat
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
