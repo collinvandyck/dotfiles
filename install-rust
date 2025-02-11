@@ -74,7 +74,9 @@ set_icon() {
         return 0
     fi
     if command -v fileicon %>/dev/null; then
-        fileicon set "$1" "$2" >/dev/null
+        if [[ -f "$1" ]]; then
+            fileicon set "$1" "$2" >/dev/null
+        fi
     fi
 }
 
