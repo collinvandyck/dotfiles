@@ -14,8 +14,19 @@ fi
 
 # update homebrew packages
 brew update --quiet
-brew upgrade --quiet
 
+# ensure that xcode is installed. We'll do this using the `mas` cli.
+if ! command -v mas &>/dev/null ; then
+    echo "Installing mas"
+    brew install --quiet --formula mas
+fi
+if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; then
+    echo "Installing xcode"
+    xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
+    mas install "$xcode_id"
+fi
+
+brew upgrade --quiet
 brew install --quiet --formula \
     aichat \
     asdf \
