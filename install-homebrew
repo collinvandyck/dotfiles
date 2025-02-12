@@ -28,6 +28,18 @@ if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; t
     sudo xcodebuild -license accept
 fi
 
+# openssh does not play well with macos
+# microsoft-remote-desktop is deprecated
+# dog is no longer maintained
+# logi-options-plus is terrible when updating via homebrew
+# dotnet-sdk no longer used
+for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ dotnet-sdk; do
+    if brew list -1 | grep -q "^${pkg}\$"; then
+        echo "Removing $pkg"
+        brew remove -f $pkg
+    fi
+done
+
 brew upgrade --quiet
 brew install --quiet --formula \
     aichat \
@@ -150,17 +162,6 @@ brew install --quiet --cask --force \
 brew install --quiet --cask --no-quarantine \
     alacritty \
     ;
-
-# openssh does not play well with macos
-# microsoft-remote-desktop is deprecated
-# dog is no longer maintained
-# logi-options-plus is terrible when updating via homebrew
-for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+; do
-    if brew list -1 | grep -q "^${pkg}\$"; then
-        echo "Removing $pkg"
-        brew remove -f $pkg
-    fi
-done
 
 brew autoremove --quiet
 
