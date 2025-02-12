@@ -104,6 +104,9 @@ init-wasmer() {
 init-zoxide() {
     cmd_exists zoxide   && eval "$(zoxide init zsh --cmd cd)"
 }
+init-just() {
+    cmd_exists just     && eval "$(just --completions zsh)"
+}
 init-atuin() {
     cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
 }
@@ -138,6 +141,7 @@ run-init-fn init-fzf
 run-init-fn init-broot
 run-init-fn init-opam
 run-init-fn init-zoxide
+run-init-fn init-just
 run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
