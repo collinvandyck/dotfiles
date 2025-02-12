@@ -9,6 +9,7 @@ alias appsup='cd ~/Library/Application\ Support'
 alias z=cd
 alias da='direnv allow'
 alias cat=bat
+alias be='bundle exec'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
