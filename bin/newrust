@@ -55,6 +55,17 @@ cat > rust-toolchain.toml <<EOF
 channel = "1.83.0"
 EOF
 
+cat <<eos >justfile
+run:
+    cargo run
+
+build:
+    cargo build
+
+test:
+    cargo test
+eos
+
 cat <<eos > Makefile
 run:
 	cargo run
