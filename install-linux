@@ -34,24 +34,28 @@ sudo apt install -y \
     kitty-terminfo \
     libfuse2 \
     libluajit-5.1-dev \
+    libpcap-dev \
+    librust-alsa-sys-dev \
+    libssl-dev \
     libtool \
     libtool-bin \
-    lsb-release \
-    libssl-dev \
+    libtree-sitter-dev \
     lld \
+    lsb-release \
     man \
     man-db \
-    nethogs \
     net-tools \
-    nmap \
+    nethogs \
     ninja-build \
+    nmap \
+    nodejs \
     openssh-server \
     pipx \
     pkg-config \
     protobuf-compiler \
     psmisc \
-    python3-pip \
     python-is-python3 \
+    python3-pip \
     ripgrep \
     shellcheck \
     shfmt \
@@ -63,7 +67,6 @@ sudo apt install -y \
     tmux \
     traceroute \
     tree \
-    libtree-sitter-dev \
     unzip \
     valgrind \
     wget \
