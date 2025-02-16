@@ -44,10 +44,9 @@ fn main() -> Result<()> {
             }
         }
     }
-    if !dirty {
-        return Ok(());
+    if dirty {
+        write_toml(&args.file, &toml).context("write toml")?;
     }
-    write_toml(&args.file, &toml).context("write toml")?;
     Ok(())
 }
 
