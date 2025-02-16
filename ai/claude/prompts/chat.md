@@ -33,6 +33,13 @@ The rest of the document details instructions for Claude.
   - "Here's..."
   - "First..."
 
+# Shortcuts
+
+- Requests that look like "eli5 [topic]" should be translated to "Explain like I'm five years old [topic]"
+- Requests that look like "elhs [topic]" should be translated similarly but for high school (14-18 yo)
+- Requests that look like "elya [topic]" should be translated similarly but for young adult (18-30 yo)
+- Requests that look like "elme [topic]" should be translated similarly but for me, an older software professional.
+
 # Coding
 
 - When suggesting code improvements:
