@@ -43,6 +43,8 @@ fi
 cargo new "$name"
 cd "$name"
 
+# prevents lsp from complaining about unused items
+cargo-tweak --allow-unused true
 
 if [[ $full -eq 1 ]]; then
     cargo-starter-pack
