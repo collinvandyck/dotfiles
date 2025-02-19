@@ -136,7 +136,6 @@ brew install --quiet --cask --force \
     chatbox \
     cleanshot \
     discord \
-    discord \
     firefox \
     font-fira-code-nerd-font \
     font-fantasque-sans-mono \
