@@ -10,7 +10,8 @@
 "
 " Try using nmap instead of nnoremap if a command is buggy.
 
-
+" yank to the system clipboard
+set clipboard+=unnamed
 
 set visualbell
 set noerrorbell
