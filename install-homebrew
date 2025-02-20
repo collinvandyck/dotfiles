@@ -152,6 +152,7 @@ brew install --quiet --cask --force \
     racket \
     raycast \
     signal \
+    tableplus \
     sublime-text \
     utm \
     yubico-yubikey-manager \
