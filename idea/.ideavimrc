@@ -12,6 +12,8 @@
 
 " yank to the system clipboard
 set clipboard+=unnamed
+" allow pasting from the IDEA clipboard
+set clipboard+=ideaput
 
 set visualbell
 set noerrorbell
