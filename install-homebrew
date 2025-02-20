@@ -89,6 +89,7 @@ brew install --quiet --formula \
     luajit-openresty \
     luarocks \
     lxc \
+    minikube \
     mingw-w64 \
     mtr \
     mutagen-io/mutagen/mutagen \
@@ -112,6 +113,7 @@ brew install --quiet --formula \
     tailspin \
     temporal \
     tig \
+    tilt \
     tokei \
     tmux \
     tree \
