@@ -65,8 +65,3 @@ addPaths=(
 for p in ${addPaths[@]}; do
 	addPath $(echo $p)
 done
-
-if [[ -d "/Library/Java/JavaVirtualMachines/temurin-17.jdk" ]]; then
-    export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-17.jdk/Contents/Home"
-    export PATH="$JAVA_HOME/bin:$PATH"
-fi
