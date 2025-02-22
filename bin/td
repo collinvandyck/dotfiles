@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-if [[ $# > 0 ]]; then
+if [[ $# -gt 0 ]]; then
 	tmux rename-window "$@" 2>/dev/null
 else
-	tmux rename-window "$(basename $(pwd))" 2>/dev/null
+	tmux rename-window "$(basename "$(pwd)")" 2>/dev/null
 fi
 
