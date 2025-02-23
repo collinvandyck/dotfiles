@@ -170,6 +170,17 @@ if [[ "$(command -v pyenv)" == "" ]]; then
     curl https://pyenv.run | bash
 fi
 
+# chruby
+(
+    if [[ "$(command -v chruby)" == "" ]]; then
+        cd "$(mktmp -d)"
+        wget https://github.com/postmodern/chruby/releases/download/v0.3.9/chruby-0.3.9.tar.gz
+        tar -xzvf chruby-0.3.9.tar.gz
+        cd chruby-0.3.9/
+        sudo make install
+    fi
+)
+
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
 
