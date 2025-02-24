@@ -10,6 +10,7 @@ alias z=cd
 alias da='direnv allow'
 alias cat=bat
 alias be='bundle exec'
+alias gw='gradlew'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
