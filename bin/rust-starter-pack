@@ -7,5 +7,5 @@ rustfmt-starter-pack
 
 cat > rust-toolchain.toml <<EOF
 [toolchain]
-channel = "1.83.0"
+channel = "1.85.0"
 EOF
