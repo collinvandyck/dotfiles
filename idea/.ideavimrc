@@ -52,6 +52,7 @@ nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
 nmap K <Action>(ShowHoverInfo)
 nmap <C-8> <Action>(HideAllWindows)
+nmap <C-h> <Action>(RecentFiles)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
 nnoremap gd :action GotoDeclaration<CR>
