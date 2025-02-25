@@ -1,3 +1,5 @@
+# https://blog.gitbutler.com/how-git-core-devs-configure-git/
+
 [user]
 	name = "Collin Van Dyck"
 	email = "collin@5xx.engineer"
@@ -43,8 +45,25 @@
     # typos
 	rebsae = rebase
 
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+    mnemonicPrefix = true
+    renames = true
+
+[branch]
+    sort = -committerdate
+
+[tag]
+    sort = version:refname
+
 [apply]
     whitespace = warn
+
+[fetch]
+    prune = true
+    pruneTags = true
+    all = true
 
 [push]
     default = tracking
@@ -69,6 +88,10 @@
 [commit]
 	verbose = true
 
+[rerere]
+    enabled = true
+    autoupdate = true
+
 [pull]
 	rebase = true
 
@@ -83,6 +106,10 @@
 
 [http]
 	postBuffer = 1048576000
+
+[help]
+    autocorrect = prompt
+
 [gitbutler]
 	aiModelProvider = anthropic
 	aiAnthropicKeyOption = bringYourOwn
