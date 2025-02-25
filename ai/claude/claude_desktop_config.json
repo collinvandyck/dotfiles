@@ -3,7 +3,9 @@
     "mcpServers": {
         "fetch": {
             "command": "uvx",
-            "args": ["mcp-server-fetch"]
+            "args": [
+                "mcp-server-fetch"
+            ]
         },
         "memory": {
             "command": "tsx",
@@ -36,6 +38,13 @@
                 "-f",
                 "/Users/collin/.claude/servers/.env",
                 "/Users/collin/.claude/servers/nyt/build/index.js"
+            ]
+        },
+        "jetbrains": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@jetbrains/mcp-proxy"
             ]
         }
     }
