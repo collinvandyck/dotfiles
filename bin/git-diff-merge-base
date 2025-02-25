@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-exec git diff $(git merge-base HEAD origin/$(git_main_branch)) "$@"
+exec git diff "$(git merge-base HEAD origin/"$(git_main_branch)")" "$@"
