@@ -12,7 +12,7 @@ function deltag()
 }
 
 function gdom() {
-	git diff $(git merge-base HEAD origin/$(git_main_branch)) 
+	git diff $(git merge-base HEAD origin/$(git_main_branch)) "$@"
 }
 
 function gcobr() {
