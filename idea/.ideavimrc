@@ -70,6 +70,7 @@ nmap gT <Action>(GotoTest)
 nmap gy <Action>(GotoTest)
 nmap gs <Action>(FileStructurePopup)
 nmap ga <Action>(ShowIntentionActions)
+nmap gu <Action>(GotoSuperMethod)
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gn :action GotoNextError<CR>
