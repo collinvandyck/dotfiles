@@ -37,6 +37,7 @@ let mapleader=","
 
 nmap [[ :action MethodUp<CR>
 nmap ]] :action MethodDown<CR>
+nnoremap ya :%y<CR>
 
 nnoremap tn :action NextTab<CR>
 nnoremap tp :action PreviousTab<CR>
