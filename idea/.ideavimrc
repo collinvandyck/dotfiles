@@ -39,6 +39,11 @@ nmap [[ :action MethodUp<CR>
 nmap ]] :action MethodDown<CR>
 nnoremap ya :%y<CR>
 
+" By setting <C-]> as an IDEA shortcut as a synonym for ESC, I'm able to use this binding
+" to dismiss dialogs, and adding this mapping in .ideavimrc allows me to also use it in the
+" editor as well.
+inoremap <C-]> <Esc>
+
 nnoremap tn :action NextTab<CR>
 nnoremap tp :action PreviousTab<CR>
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
