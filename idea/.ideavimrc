@@ -61,6 +61,8 @@ nmap <C-8> <Action>(HideAllWindows)
 nmap <C-h> <Action>(RecentFiles)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
+nmap gT <Action>(GotoTest)
+nmap gy <Action>(GotoTest)
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gn :action GotoNextError<CR>
