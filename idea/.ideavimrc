@@ -49,12 +49,15 @@ nnoremap tp :action PreviousTab<CR>
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
 nnoremap <leader>q :action CloseContent<CR>
 
+imap <C-s> <Esc><Action>(SaveAll)
+nmap <C-s> <Action>(SaveAll)
+
 nmap <leader>r <Action>(Run)
 nmap <leader>ar <Action>(RenameElement)
 nmap <leader>gf <Action>(GotoFile)
-nmap <leader>ga <Action>(GotoAction)
 nmap <leader>s <Action>(SearchEverywhere)
 nmap <leader>fs <Action>(FindInPath)
+nmap <leader>gb <Action>(Annotate)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
@@ -65,6 +68,8 @@ nmap <C-h> <Action>(RecentFiles)
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
 nmap gT <Action>(GotoTest)
 nmap gy <Action>(GotoTest)
+nmap gs <Action>(FileStructurePopup)
+nmap ga <Action>(ShowIntentionActions)
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gn :action GotoNextError<CR>
