@@ -5,15 +5,26 @@ use std::{
     path::{Path, PathBuf},
 };
 
-pub fn find<'a>(dir: &'a Path, fts: &'a [String]) -> IntoIter<'a> {
-    let walk = ignore::Walk::new(dir);
-    let iter = IntoIter { walk, fts };
+pub struct FindOpts<'a> {
+    pub dir: &'a Path,
+    pub file_types: &'a [String],
+    pub globs: &'a [String],
+}
+
+pub fn find(opts: FindOpts) -> impl Iterator<Item = Result<PathBuf>> {
+    let walk = ignore::Walk::new(&opts.dir);
+    let iter = IntoIter {
+        walk,
+        fts: &opts.file_types,
+        globs: &opts.globs,
+    };
     iter
 }
 
 pub struct IntoIter<'a> {
     walk: ignore::Walk,
     fts: &'a [String],
+    globs: &'a [String],
 }
 
 impl<'a> Iterator for IntoIter<'a> {
