@@ -126,6 +126,7 @@ init-completions() {
     source-if "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 }
 
+PROFILE_INIT_FNS=1
 run-init-fn() {
     if [[ ! -z "$PROFILE_INIT_FNS" ]]; then
         # this branch does not run as PROFILE_INIT_FNS is not set.
@@ -133,7 +134,7 @@ run-init-fn() {
         $1
         local end=$(($EPOCHREALTIME * 1000))
         local duration=$((end - start))
-        echo "$1 took ${duration}ms"
+        [[ duration -gt 50 ]] && echo >&2 "$1 took ${duration}ms"
     else
         $1
     fi
@@ -145,12 +146,12 @@ run-init-fn init-just
 run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
+run-init-fn init-completions
 
 #run-init-fn init-broot
 #run-init-fn init-opam
 #run-init-fn init-broot
 #run-init-fn init-wasmer
-#run-init-fn init-completions
 
 source ~/.dotfiles/zsh/widgets.zsh
 
