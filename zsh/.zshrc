@@ -1,4 +1,4 @@
-# zmodload zsh/zprof
+#zmodload zsh/zprof
 
 # disable scroll lock so that i can use Ctrl-S in neovim
 stty -ixon
@@ -10,19 +10,24 @@ export ZSH="$HOME/.oh-my-zsh"
 plugins=(
     git
     macos
-    rust
+    #rust
 )
 
 # setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
 # https://docs.brew.sh/Shell-Completion
 FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
 #zmodload zsh/zprof
+
+# disables the update check which can cause shell startup lag.
+export UPDATE_ZSH_DAYS=30
+
 source $ZSH/oh-my-zsh.sh
 #zprof | hd
 
+
 HISTFILE="$HOME/.zsh_history"
-HISTSIZE=100000
-SAVEHIST=100000
+HISTSIZE=1000
+SAVEHIST=1000
 setopt BANG_HIST                 # Treat the '!' character specially during expansion.
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
@@ -135,16 +140,17 @@ run-init-fn() {
 }
 
 run-init-fn init-fzf
-run-init-fn init-broot
-run-init-fn init-opam
 run-init-fn init-zoxide
 run-init-fn init-just
 run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
-run-init-fn init-broot
-run-init-fn init-completions
-run-init-fn init-wasmer
+
+#run-init-fn init-broot
+#run-init-fn init-opam
+#run-init-fn init-broot
+#run-init-fn init-wasmer
+#run-init-fn init-completions
 
 source ~/.dotfiles/zsh/widgets.zsh
 
