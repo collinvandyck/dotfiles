@@ -126,7 +126,7 @@ init-completions() {
     source-if "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 }
 
-PROFILE_INIT_FNS=0
+#PROFILE_INIT_FNS=1
 run-init-fn() {
     if [[ ! -z "$PROFILE_INIT_FNS" ]]; then
         # this branch does not run as PROFILE_INIT_FNS is not set.
