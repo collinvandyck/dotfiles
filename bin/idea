@@ -2,18 +2,24 @@
 
 # launches idea if it is available.
 
-set -e # exit on failure
-set -u # fail if vars are not defined
+set -euo pipefail
 
 mac="/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea"
+user="$HOME/Applications/IntelliJ IDEA Community Edition.app/Contents/MacOS/idea"
 
 if [[ $# == 0 ]]; then
-	# push . onto args
-	args=(".")
-else 
-	args=$@
+	args="."
+else
+	args="$*"
 fi
 
-if [[ -e $mac ]]; then
-	exec "$mac" $args >/dev/null 2>&1
-fi
+launch() {
+    if [[ -e "$1" ]]; then
+        exec "$1" $args # &>/dev/null
+    fi
+}
+
+for p in "$mac" "$user"; do
+    launch "$p"
+done
+
