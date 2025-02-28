@@ -1,6 +1,10 @@
-use anyhow::Context;
+use anyhow::{Context, bail};
 use files::FindOpts;
 use futures_util::StreamExt;
+use genai::{
+    Client,
+    chat::{ChatMessage, ChatRequest, ChatResponse, ContentPart, MessageContent},
+};
 use rand::seq::IndexedRandom;
 use std::path::PathBuf;
 
@@ -55,6 +59,26 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
         buf.push_str(&format!("\n## Path:{}\n\n{}\n", path, contents));
     }
     let prompt = PROMPT.replace("FILES_CONTENT", &buf);
-    println!("{prompt}");
+
+    let reqs = ChatRequest::new(vec![ChatMessage::system(prompt)]);
+    let model = "gpt-4o-mini";
+    let client = Client::default();
+    let resp: ChatResponse = client
+        .exec_chat(model, reqs, None)
+        .await
+        .context("failed to call model")?;
+    let ChatResponse {
+        content,
+        reasoning_content,
+        model_iden,
+        usage,
+    } = resp;
+    let Some(content) = content else {
+        bail!("no content received")
+    };
+    let MessageContent::Text(content) = content else {
+        bail!("unexpected response: {content:?}");
+    };
+    println!("{content}");
     Ok(())
 }
