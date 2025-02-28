@@ -1,6 +1,7 @@
 use anyhow::Context;
 use files::FindOpts;
 use futures_util::StreamExt;
+use rand::seq::IndexedRandom;
 use std::path::PathBuf;
 
 mod files;
@@ -24,6 +25,8 @@ pub struct Args {
     model: ModelKind,
 }
 
+static PROMPT: &str = include_str!("../prompt.md");
+
 #[derive(clap::ValueEnum)]
 #[derive(Default, Debug, Clone)]
 pub enum ModelKind {
@@ -37,12 +40,21 @@ pub async fn run(args: Args) -> anyhow::Result<()> {
         Some(dir) => dir,
         None => std::env::current_dir().context("could not get current dir")?,
     };
-    let stream = files::stream(FindOpts {
+    let mut stream = files::stream(FindOpts {
         dir: dir.clone(),
         file_types: args.file_types.clone(),
         globs: args.globs.clone(),
     });
-    let count = stream.count().await;
-    println!("Found {count} matching files");
+    let mut buf = String::new();
+    let mut header = format!("## START FILE {}", "#".repeat(60));
+    while let Some(res) = stream.next().await {
+        let info = res?;
+        let path = info.path.to_string_lossy();
+        let contents = String::from_utf8_lossy(&info.bs).to_string();
+        buf.push_str(&header);
+        buf.push_str(&format!("\n## Path:{}\n\n{}\n", path, contents));
+    }
+    let prompt = PROMPT.replace("FILES_CONTENT", &buf);
+    println!("{prompt}");
     Ok(())
 }
