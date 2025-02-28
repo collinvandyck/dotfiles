@@ -14,7 +14,7 @@ pub struct FindOpts {
     pub globs: Vec<String>,
 }
 
-pub fn stream(opts: FindOpts) -> impl Stream<Item = Result<PathBuf>> {
+pub fn stream(opts: FindOpts) -> impl Stream<Item = Result<FileInfo>> {
     let (tx, rx) = tokio::sync::mpsc::channel(100);
     spawn_blocking(move || {
         let iter = find(opts);
@@ -27,7 +27,7 @@ pub fn stream(opts: FindOpts) -> impl Stream<Item = Result<PathBuf>> {
     ReceiverStream::new(rx)
 }
 
-pub fn find(opts: FindOpts) -> impl Iterator<Item = Result<PathBuf>> {
+pub fn find(opts: FindOpts) -> impl Iterator<Item = Result<FileInfo>> {
     let walk = ignore::Walk::new(&opts.dir);
     let iter = IntoIter {
         walk,
@@ -37,6 +37,11 @@ pub fn find(opts: FindOpts) -> impl Iterator<Item = Result<PathBuf>> {
     iter
 }
 
+pub struct FileInfo {
+    pub path: PathBuf,
+    pub bs: Vec<u8>,
+}
+
 pub struct IntoIter {
     walk: ignore::Walk,
     fts: Vec<String>,
@@ -44,7 +49,7 @@ pub struct IntoIter {
 }
 
 impl Iterator for IntoIter {
-    type Item = Result<PathBuf>;
+    type Item = Result<FileInfo>;
 
     fn next(&mut self) -> Option<Self::Item> {
         loop {
@@ -70,7 +75,16 @@ impl Iterator for IntoIter {
                     continue;
                 }
             }
-            return Some(Ok(path.to_path_buf()));
+            return Some(
+                std::fs::read(path)
+                    .context("could not read file")
+                    .map(|bs| {
+                        FileInfo {
+                            path: path.to_path_buf(),
+                            bs,
+                        }
+                    }),
+            );
         }
     }
 }
