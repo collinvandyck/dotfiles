@@ -59,6 +59,9 @@ nmap <leader>s <Action>(SearchEverywhere)
 nmap <leader>fs <Action>(FindInPath)
 nmap <leader>gb <Action>(Annotate)
 
+nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
+nmap <leader>ti <Action>(VimFindActionIdAction)
+
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
 nmap K <Action>(ShowHoverInfo)
