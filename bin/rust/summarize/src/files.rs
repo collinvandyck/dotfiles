@@ -1,33 +1,49 @@
 use anyhow::{Context, Result, anyhow};
+use futures_util::Stream;
 use rand::seq::IndexedRandom;
 use std::{
     fs::{DirEntry, ReadDir},
     path::{Path, PathBuf},
 };
+use tokio::task::spawn_blocking;
+use tokio_stream::wrappers::ReceiverStream;
 
-pub struct FindOpts<'a> {
-    pub dir: &'a Path,
-    pub file_types: &'a [String],
-    pub globs: &'a [String],
+pub struct FindOpts {
+    pub dir: PathBuf,
+    pub file_types: Vec<String>,
+    pub globs: Vec<String>,
+}
+
+pub fn stream(opts: FindOpts) -> impl Stream<Item = Result<PathBuf>> {
+    let (tx, rx) = tokio::sync::mpsc::channel(100);
+    spawn_blocking(move || {
+        let iter = find(opts);
+        for file in iter {
+            if tx.blocking_send(file).is_err() {
+                return;
+            }
+        }
+    });
+    ReceiverStream::new(rx)
 }
 
 pub fn find(opts: FindOpts) -> impl Iterator<Item = Result<PathBuf>> {
     let walk = ignore::Walk::new(&opts.dir);
     let iter = IntoIter {
         walk,
-        fts: &opts.file_types,
-        globs: &opts.globs,
+        fts: opts.file_types,
+        globs: opts.globs,
     };
     iter
 }
 
-pub struct IntoIter<'a> {
+pub struct IntoIter {
     walk: ignore::Walk,
-    fts: &'a [String],
-    globs: &'a [String],
+    fts: Vec<String>,
+    globs: Vec<String>,
 }
 
-impl<'a> Iterator for IntoIter<'a> {
+impl Iterator for IntoIter {
     type Item = Result<PathBuf>;
 
     fn next(&mut self) -> Option<Self::Item> {

@@ -1,8 +1,10 @@
 use anyhow::Context;
 use files::FindOpts;
+use futures_util::StreamExt;
 use std::path::PathBuf;
 
 mod files;
+mod llm;
 
 #[derive(clap::Parser, Debug)]
 pub struct Args {
@@ -30,17 +32,17 @@ pub enum ModelKind {
     Gpt4oMini,
 }
 
-pub fn run(args: Args) -> anyhow::Result<()> {
+pub async fn run(args: Args) -> anyhow::Result<()> {
     let dir = match args.dir.clone() {
         Some(dir) => dir,
         None => std::env::current_dir().context("could not get current dir")?,
     };
-    let iter = files::find(FindOpts {
-        dir: &dir,
-        file_types: &args.file_types,
-        globs: &args.globs,
+    let stream = files::stream(FindOpts {
+        dir: dir.clone(),
+        file_types: args.file_types.clone(),
+        globs: args.globs.clone(),
     });
-    let count = iter.count();
+    let count = stream.count().await;
     println!("Found {count} matching files");
     Ok(())
 }
