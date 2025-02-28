@@ -14,6 +14,7 @@ return {
 				"/private/tmp/*",
 				"~/.dotfiles/*",
 				"~/code/rust-learning/*",
+				"~/.dotfiles/bin/rust/*",
 			},
 
 			-- for debugging
