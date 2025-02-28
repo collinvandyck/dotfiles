@@ -9,7 +9,6 @@ use rand::seq::IndexedRandom;
 use std::path::PathBuf;
 
 mod files;
-mod llm;
 
 #[derive(clap::Parser, Debug)]
 pub struct Args {
