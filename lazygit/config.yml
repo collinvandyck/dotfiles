@@ -20,3 +20,12 @@ git:
   #branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --pretty=format:"%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar" {{branchName}} --
   branchLogCmd: git ll --first-parent {{branchName}} --
   allBranchesLogCmd: git log --graph --color=always --all --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' --
+
+customCommands:
+  - context: 'commits'
+    key: '<c-e>'
+    title: 'hello'
+    command: git reword {{ .SelectedCommit.Hash }}
+    subprocess: true
+    showOutput: true
+
