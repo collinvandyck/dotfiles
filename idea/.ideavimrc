@@ -17,7 +17,7 @@ set clipboard+=ideaput
 
 set visualbell
 set noerrorbell
-"set timeoutlen=2000
+set timeoutlen=3000
 set notimeout
 set ideajoin
 set scrolloff=10
@@ -52,7 +52,9 @@ nnoremap <leader>q :action CloseContent<CR>
 imap <C-s> <Esc><Action>(SaveAll)
 nmap <C-s> <Action>(SaveAll)
 
-nmap <leader>r <Action>(Run)
+nmap <leader>R <Action>(IdeaVim.ReloadVimRc.reload)
+nmap <leader>rr <Action>(Run)
+nmap <leader>rc <Action>(RunClass)
 nmap <leader>ar <Action>(RenameElement)
 nmap <leader>gf <Action>(GotoFile)
 nmap <leader>se <Action>(SearchEverywhere)
