@@ -84,6 +84,7 @@ alias dcuppl='dcupp && dclogs'
 alias dclogs='dc logs -f'
 alias dclogst='dc logs -f --tail 15'
 alias dps="docker ps --no-trunc --format '{{.Names}}\t{{.Image}}\t{{.Command}}'"
+alias de='docker exec'
 
 # clipboard
 if [ ! -f "/usr/bin/pbcopy" ]; then
