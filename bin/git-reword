@@ -12,14 +12,19 @@ cat > $editor << EOF
 #!/usr/bin/env bash
 set -e
 cat $tmp >> \$1
+orig=\$(cat \$1)
 nvim \$1
+if [[ "\$(cat \$1)" == "\$orig" ]]; then
+    exit 1
+fi
 EOF
 chmod 755 $editor
 
 export GIT_EDITOR="$editor"
 
-git commit --fixup=reword:${commit} -v
-git -c sequence.editor=: rebase -i --autosquash ${commit}^
+if git commit --fixup=reword:${commit} -v 2>/dev/null; then
+    git -c sequence.editor=: rebase -i --autosquash ${commit}^
+fi
 
 rm $tmp || true
 rm $editor || true
