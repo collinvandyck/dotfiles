@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+commit="$1"
+
+tmp=$(mktemp)
+git show --patch "${commit}" > $tmp
+
+editor=$(mktemp)
+cat > $editor << EOF
+#!/usr/bin/env bash
+set -e
+cat $tmp >> \$1
+nvim \$1
+EOF
+chmod 755 $editor
+
+export GIT_EDITOR="$editor"
+
+git commit --fixup=reword:${commit} -v
+git -c sequence.editor=: rebase -i --autosquash ${commit}^
+
+rm $tmp || true
+rm $editor || true
