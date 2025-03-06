@@ -158,6 +158,7 @@ brew install --quiet --cask --force \
     tableplus \
     sublime-text \
     utm \
+    yaak \
     yubico-yubikey-manager \
     zed \
     ;
