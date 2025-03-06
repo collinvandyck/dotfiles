@@ -2,9 +2,18 @@
 
 set -euo pipefail
 
+window_name() {
+    local name; name=$(basename "$(pwd)")
+    case "$name" in
+        brain-backend) echo be ;;
+        brain-app) echo fe ;;
+        *) echo "$name" ;;
+    esac
+}
+
 if [[ $# -gt 0 ]]; then
 	tmux rename-window "$@" 2>/dev/null
 else
-	tmux rename-window "$(basename "$(pwd)")" 2>/dev/null
+	tmux rename-window "$(window_name)" 2>/dev/null
 fi
 
