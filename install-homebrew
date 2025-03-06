@@ -82,6 +82,7 @@ brew install --quiet --formula \
     lazydocker \
     lazygit \
     less \
+    libomp \
     llm \
     lsd \
     lua \
