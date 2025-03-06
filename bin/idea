@@ -4,8 +4,9 @@
 
 set -euo pipefail
 
-mac="/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea"
-user="$HOME/Applications/IntelliJ IDEA Community Edition.app/Contents/MacOS/idea"
+app="/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea"
+usr1="$HOME/Applications/IntelliJ IDEA.app/Contents/MacOs/idea"
+usr2="$HOME/Applications/IntelliJ IDEA Community Edition.app/Contents/MacOS/idea"
 
 if [[ $# == 0 ]]; then
 	args="."
@@ -19,7 +20,7 @@ launch() {
     fi
 }
 
-for p in "$mac" "$user"; do
+for p in "$app" "$usr1" "$usr2"; do
     launch "$p"
 done
 
