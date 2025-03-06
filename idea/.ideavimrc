@@ -51,6 +51,8 @@ nnoremap <leader>q :action CloseContent<CR>
 
 imap <C-s> <Esc><Action>(SaveAll)
 nmap <C-s> <Action>(SaveAll)
+nmap <C-o> <Action>(Back)
+nmap <C-i> <Action>(Forward)
 
 nmap <leader>R <Action>(IdeaVim.ReloadVimRc.reload)
 nmap <leader>rr <Action>(Run)
