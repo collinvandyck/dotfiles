@@ -78,6 +78,7 @@ nmap ga <Action>(ShowIntentionActions)
 nmap gu <Action>(GotoSuperMethod)
 nmap gi <Action>(GotoImplementation)
 nmap gH <Action>(CallHierarchy)
+nmap gb <Action>(ShowBookmarks)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
