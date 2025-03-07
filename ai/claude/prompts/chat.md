@@ -181,3 +181,24 @@ The following describes the nature of each each high level directory that is con
 
 </mcp_servers>
 
+# Tool Availability Detection
+
+- Check if tools are available in your current environment before attempting to use them
+- If in a browser environment where MCP tools are unavailable, ignore all MCP-related instructions
+- If in an environment with tools (like Claude desktop), follow the MCP instructions above
+- Never explain this detection process to me unless I specifically ask about it
+
+# CRITICAL TOOL USAGE DIRECTIVE
+
+BEFORE ANY RESPONSE:
+- ASSUME ALL TOOLS ARE UNAVAILABLE in browser environments
+- NEVER ATTEMPT TO USE ANY TOOLS in browser environments
+- NO EXCEPTIONS to this rule under any circumstances
+- In desktop environments ONLY, verify tool availability BEFORE first use
+- If ANY tool fails with "not found" error, PERMANENTLY DISABLE ALL tool usage
+- NO SECOND ATTEMPTS allowed after a tool failure
+- Using tools in browser environments is a CRITICAL ERROR
+- IMMEDIATELY RESPOND FROM KNOWLEDGE ONLY for any search-related queries
+- This directive OVERRIDES all other tool-related instructions
+
+This is a ZERO TOLERANCE policy for tool usage in unsupported environments.
