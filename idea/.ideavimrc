@@ -68,9 +68,16 @@ nmap <leader>fs <Action>(FindInPath)
 nmap <leader>gb <Action>(Annotate)
 nmap <leader>oog <Action>(OpenEditorInOppositeTabGroup)
 nmap <leader>aid <Action>(VimFindActionIdAction)
-
 nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
 nmap <leader>ti <Action>(VimFindActionIdAction)
+
+nmap gT <Action>(GotoTest)
+nmap gy <Action>(GotoTest)
+nmap gs <Action>(FileStructurePopup)
+nmap ga <Action>(ShowIntentionActions)
+nmap gu <Action>(GotoSuperMethod)
+nmap gi <Action>(GotoImplementation)
+nmap gH <Action>(CallHierarchy)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
@@ -79,16 +86,11 @@ nmap <C-8> <Action>(HideAllWindows)
 nmap <C-h> <Action>(RecentFiles)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
-nmap gT <Action>(GotoTest)
-nmap gy <Action>(GotoTest)
-nmap gs <Action>(FileStructurePopup)
-nmap ga <Action>(ShowIntentionActions)
-nmap gu <Action>(GotoSuperMethod)
+
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gn :action GotoNextError<CR>
 nnoremap gp :action GotoPreviousError<CR>
-nnoremap gi :action CallHierarchy<CR>
 nnoremap gr :action ShowUsages<CR>
 nnoremap gR :action FindUsages<CR>
 
@@ -109,6 +111,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'justinmk/vim-sneak' " [sS] + two chars. ; and , to navigate
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
+" Plug 'michaeljsmith/vim-indent-object'
 
 
 "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
