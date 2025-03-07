@@ -24,6 +24,7 @@ set scrolloff=10
 set incsearch
 "set hlsearch
 set smartcase
+set ignorecase
 
 set which-key
 let g:WhichKey_FontSize = 20
@@ -67,6 +68,8 @@ nmap <leader>sa <Action>(GotoAction)
 nmap <leader>fs <Action>(FindInPath)
 nmap <leader>gb <Action>(Annotate)
 nmap <leader>oog <Action>(OpenEditorInOppositeTabGroup)
+nmap <leader>ch <Action>(CallHierarchy)
+nmap <leader>th <Action>(TypeHierarchy)
 
 " toggles
 nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
@@ -79,7 +82,6 @@ nmap gs <Action>(FileStructurePopup)
 nmap ga <Action>(ShowIntentionActions)
 nmap gu <Action>(GotoSuperMethod)
 nmap gi <Action>(GotoImplementation)
-nmap gH <Action>(CallHierarchy)
 nmap gb <Action>(ShowBookmarks)
 
 nmap gh <Action>(ShowErrorDescription)
