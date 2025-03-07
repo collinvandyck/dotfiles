@@ -67,9 +67,11 @@ nmap <leader>sa <Action>(GotoAction)
 nmap <leader>fs <Action>(FindInPath)
 nmap <leader>gb <Action>(Annotate)
 nmap <leader>oog <Action>(OpenEditorInOppositeTabGroup)
-nmap <leader>aid <Action>(VimFindActionIdAction)
+
+" toggles
 nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
-nmap <leader>ti <Action>(VimFindActionIdAction)
+nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
+nmap <leader>taid <Action>(VimFindActionIdAction)
 
 nmap gT <Action>(GotoTest)
 nmap gy <Action>(GotoTest)
