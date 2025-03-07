@@ -155,6 +155,7 @@ return {
 			capabilities = capabilities,
 			handlers = handlers,
 			on_attach = custom_attach,
+			filetypes = { 'sh', 'bash', 'zsh' },
 		})
 		require("lspconfig").rust_analyzer.setup({
 			capabilities = capabilities,
