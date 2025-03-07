@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 NVM_VERSION="v0.39.3"
 node_versions=("v19.9.0")
 
 get-nvm-version() {
 	if [ -d ~/.nvm ]; then
-		cd ~/.nvm
-		echo "$(git describe --tags)"
-		cd 
+        (cd ~/.nvm && git describe --tags)
 	fi
 }
 
@@ -19,13 +17,14 @@ else
 	echo "nvm ${NVM_VERSION} already installed"
 fi
 
+# shellcheck source=/dev/null.
 source ~/.nvm/nvm.sh
 
-for nv in ${node_versions[@]}; do
-	nvm install $nv
+for nv in "${node_versions[@]}"; do
+	nvm install "$nv"
 done
 
-npm install --global yarn 
+npm install --global yarn
 
 # https://rustwasm.github.io/docs/book/game-of-life/setup.html
 # npm install npm@latest -g
