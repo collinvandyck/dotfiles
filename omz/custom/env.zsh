@@ -21,7 +21,12 @@ if [[ "$(hostname)" != "ryzen-ubuntu" ]]; then
 fi
 export LESS="-XFR"
 export LESS='-R'
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+# use nvim as the manpage pager.
+# gO while in nvim takes you to the outline.
+export MANPAGER='nvim +Man!'
+#export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
 export PAGER='less -RX' # -X turns off the screen clearing function
 export PANTS_LINT=true
 export PYENV_ROOT="$HOME/.pyenv"
