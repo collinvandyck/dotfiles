@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# dumps the specified PG db container to csv and opens it in nvim.
+# note: do not set ft=sql -- for large dbs that causes nvim to become unresponsive.
+
+set -euo pipefail
+
+container=${1}
+db=${2}
+
+tmp=$(mktemp)
+docker exec -i "$container" pg_dump -U postgres -d "$db" --data-only --column-inserts | grep "^INSERT" >$tmp
+nvim $tmp
