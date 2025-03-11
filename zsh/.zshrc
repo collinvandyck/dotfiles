@@ -20,7 +20,6 @@ export ZSH="$HOME/.oh-my-zsh"
 plugins=(
     git
     macos
-    #rust
 )
 
 # setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
