@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# manages the ramdisk for zsh
+
+volume="/Volumes/zsh-ramdisk"
+size_mb=8
+device=""
+
+cleanup-on-failure() {
+    echo "$0 failed"
+    if [[ -e "$device" ]]; then
+        diskutil eject "$device"
+    fi
+}
+
+trap "cleanup-on-failure" ERR
+
+if ! [[ -d "${volume}" ]]; then
+    size=$(( $size_mb * 1024 * 2 ))
+    device="$(hdiutil attach -nomount ram://$size)"
+    device=$(echo "$device" | xargs)
+    diskutil erasevolume HFS+ "zsh-ramdisk" "$device"
+fi
+
