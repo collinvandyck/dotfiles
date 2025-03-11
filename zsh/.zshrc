@@ -40,22 +40,6 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 setopt SHARE_HISTORY             # Share history between all sessions.
 
-function preexec() {
-    # $1 is the command as typed
-    # $2 is the command after alias expansion
-    if [[ "$1" = "builtin cd -- "* ]]; then
-        #
-        # NB: this does not work, b/c atuin binds earlier. this executes after the fzf M-c keybind
-        # sends the builtin cd to the command line, and after atuin intercepts it for its own purposes.
-        #
-        # Modify the command for atuin
-        # We have to modify both parameters since atuin might use either
-        #1="cd ${1#"builtin cd -- "}"
-        #2="cd ${2#"builtin cd -- "}"
-        #echo "substituted.. 1=${1} 2=${2}"
-    fi
-}
-
 function zshaddhistory() {
     local line=${1%%$'\n'}
     if [[ "$line" = "builtin cd -- "* ]]; then
