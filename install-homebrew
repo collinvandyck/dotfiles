@@ -145,6 +145,7 @@ brew install --quiet --cask --force \
     font-fantasque-sans-mono \
     font-fantasque-sans-mono-nerd-font \
     font-hack-nerd-font \
+    google-cloud-sdk \
     imhex \
     istat-menus \
     jetbrains-toolbox \
