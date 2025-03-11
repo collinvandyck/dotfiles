@@ -7,7 +7,7 @@ man() {
 	[[ "$(num-panes)" == "1" ]] && rename "man $*"
     case $1 in
         we) man-help watchexec ;;
-        watchexec|bat) man-help $1 ;;
+        watchexec|bat|xh) man-help $1 ;;
         *) command man "$@";;
     esac
 }
