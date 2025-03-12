@@ -54,7 +54,7 @@ rustfmt-starter-pack
 
 cat > rust-toolchain.toml <<EOF
 [toolchain]
-channel = "1.84.1"
+channel = "1.85.0"
 EOF
 
 cat <<eos >justfile

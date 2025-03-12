@@ -163,7 +163,9 @@ return {
 			on_attach = custom_attach,
 			settings = (function()
 				local ra_settings = {
-					cargo = {},
+					cargo = {
+						allFeatures = true,
+					},
 					check = {},
 					diagnostics = {
 						enable = true,
