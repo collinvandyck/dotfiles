@@ -63,6 +63,10 @@ if ! [[ -d /usr/local/bin ]]; then
     sudo chown $USER /usr/local/bin
 fi
 
+if [[ -d ~/code/notes ]]; then
+    ln -sf ~/.dotfiles/obsidian/.obsidian.vimrc ~/code/notes/.obsidian.vimrc
+fi
+
 
 bin/symlink ~/.dotfiles/atuin                      ~/.config/atuin
 bin/symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
