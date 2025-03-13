@@ -149,6 +149,7 @@ brew install --quiet --cask --force \
     imhex \
     istat-menus \
     jetbrains-toolbox \
+    jprofiler \
     kitty \
     mitmproxy \
     ngrok \
