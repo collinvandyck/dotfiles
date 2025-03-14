@@ -11,3 +11,5 @@ profile*.svg
 *.env
 .mutagen
 .mutagen.yml
+slammo.sql
+
