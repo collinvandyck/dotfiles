@@ -99,7 +99,8 @@ bin/symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
 bin/symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
 bin/symlink ~/.dotfiles/zellij                     ~/.config/zellij
 bin/symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
-bin/symlink ~/.dotfiles/bin/tm                     /usr/local/bin
 
+# old tm path
+rm -f /usr/local/bin/tm
 touch ~/.tmux.custom.conf
 
