@@ -53,6 +53,7 @@ cargo_install \
     ripgrep \
     scooter \
     starship \
+    tailspin \
     tealdeer \
     tokei \
     trunk \

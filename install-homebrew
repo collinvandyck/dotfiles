@@ -112,7 +112,6 @@ brew install --quiet --formula \
     sccache \
     semgrep \
     shellcheck \
-    tailspin \
     temporal \
     tig \
     tilt \
