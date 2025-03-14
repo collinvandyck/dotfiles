@@ -88,7 +88,7 @@ init-wasmer() {
     fi
 }
 init-zoxide() {
-    cmd_exists zoxide   && eval "$(zoxide init zsh --cmd cd)"
+    cmd_exists zoxide   && eval "$(zoxide init zsh --cmd z)"
 }
 init-just() {
     cmd_exists just     && eval "$(just --completions zsh)"
