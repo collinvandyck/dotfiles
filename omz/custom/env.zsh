@@ -16,6 +16,11 @@ export HOMEBREW_NO_ENV_HINTS=1
 export HOSTNAME=$(hostname)
 export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
+
+# this is to prevent apt/systemd from asking to restart services.
+# with this setting the services will automatically be restarted.
+export NEEDRESTART_MODE=a
+
 if [[ "$(hostname)" != "ryzen-ubuntu" ]]; then
     export LC_ALL=en_US.UTF-8
 fi
