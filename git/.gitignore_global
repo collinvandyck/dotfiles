@@ -12,4 +12,4 @@ profile*.svg
 .mutagen
 .mutagen.yml
 slammo.sql
-
+kotlin-compiler*.salive
