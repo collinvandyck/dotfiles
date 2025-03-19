@@ -85,6 +85,9 @@ nmap gu <Action>(GotoSuperMethod)
 nmap gi <Action>(GotoImplementation)
 nmap gb <Action>(ShowBookmarks)
 
+nmap g[ <Action>(PreviousOccurence)
+nmap g] <Action>(NextOccurence)
+
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
 nmap K <Action>(ShowHoverInfo)
