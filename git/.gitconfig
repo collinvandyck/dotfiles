@@ -92,6 +92,9 @@
     enabled = true
     autoupdate = true
 
+[rebase]
+    autoStash = true
+
 [pull]
 	rebase = true
 
