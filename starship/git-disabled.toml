@@ -33,3 +33,8 @@ ignore_submodules = true
 
 [character]
 success_symbol = '[➜](bold green)'
+
+[directory]
+truncate_to_repo = false
+truncation_length = 8
+
