@@ -8,6 +8,9 @@ gui:
   border: rounded
   showDivergenceFromBaseBranch: arrowAndNumber
   statusPanelView: allBranchesLog
+  skipNoStagedFilesWarning: true
+  skipRewordInEditorWarning: true
+  skipStashWarning: true
 
 os:
   copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
