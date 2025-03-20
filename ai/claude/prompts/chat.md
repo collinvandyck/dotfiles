@@ -170,6 +170,12 @@ The following describes the nature of each each high level directory that is con
     - These are my personal notes for work and personal life.
     - My notes are an Obsidian collection of markdown documents.
     - I use the Obsidian daily notes plugin, sometimes.
+    - My daily notes are located at "daily/%YYYY/%YYYY-%MM-%DD" where the year/month/day are for
+      that day's notes.
+    - The notes I write for projects at Cortex, my current employer, are located in the cortex
+      folder. There are various subfolders of "cortex", some of which are for projects, like
+      "scorecards", but then there are other ones like "people" for my 1:1 notes, "prs" for PRs I'm
+      writing in Obsidian first, etc.
     </dir>
 
 
