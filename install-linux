@@ -87,60 +87,60 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 # golang
 (
-echo "checking golang"
-if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
-    cd "$(mktemp -d)"
-    if [[ "$(uname -i)" == "aarch64" ]]; then
-        artifact="go1.23.4.linux-arm64.tar.gz"
-    else
-        artifact="go1.23.4.linux-amd64.tar.gz"
+    echo "checking golang"
+    if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
+        cd "$(mktemp -d)"
+        if [[ "$(uname -i)" == "aarch64" ]]; then
+            artifact="go1.23.4.linux-arm64.tar.gz"
+        else
+            artifact="go1.23.4.linux-amd64.tar.gz"
+        fi
+        curl -LO "https://go.dev/dl/${artifact}"
+        sudo rm -rf /usr/local/go
+        sudo tar -C /usr/local -xzf "$artifact"
     fi
-    curl -LO "https://go.dev/dl/${artifact}"
-    sudo rm -rf /usr/local/go
-    sudo tar -C /usr/local -xzf "$artifact"
-fi
 )
 
 # neovim
 (
-echo "checking neovim"
-nvim_version="v0.10.3"
-if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
-    cd "$(mktemp -d)"
-    git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
-    cd neovim
-    make CMAKE_BUILD_TYPE=RelWithDebInfo
-    sudo make install
-    sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
-    sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
-    echo "done installing neovim"
-else
-    echo "nvim check ok"
-fi
+    echo "checking neovim"
+    nvim_version="v0.10.3"
+    if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
+        cd "$(mktemp -d)"
+        git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
+        cd neovim
+        make CMAKE_BUILD_TYPE=RelWithDebInfo
+        sudo make install
+        sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
+        sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
+        echo "done installing neovim"
+    else
+        echo "nvim check ok"
+    fi
 )
 
 # lazygit
 (
-if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
-    cd "$(mktemp -d)"
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-    echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
-    curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-    tar xf lazygit.tar.gz lazygit
-    sudo install lazygit -D -t /usr/local/bin/
-fi
+    if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
+        cd "$(mktemp -d)"
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+        echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
+        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+        tar xf lazygit.tar.gz lazygit
+        sudo install lazygit -D -t /usr/local/bin/
+    fi
 )
 
 # add tailscale
 (
-echo "checking tailscale"
-# Exit node stuff
-ts_conf=/etc/sysctl.d/99-tailscale.conf
-if ! [ -f $ts_conf ]; then
-    echo 'net.ipv4.ip_forward = 1' | sudo tee -a $ts_conf
-    echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
-    sudo sysctl -p $ts_conf
-fi
+    echo "checking tailscale"
+    # Exit node stuff
+    ts_conf=/etc/sysctl.d/99-tailscale.conf
+    if ! [ -f $ts_conf ]; then
+        echo 'net.ipv4.ip_forward = 1' | sudo tee -a $ts_conf
+        echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
+        sudo sysctl -p $ts_conf
+    fi
 
     # Add Tailscale's GPG key
     sudo mkdir -p --mode=0755 /usr/share/keyrings
@@ -158,10 +158,10 @@ fi
 
 # bash-language-server
 (
-echo "checking bash-language-server"
-if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
-    sudo snap install bash-language-server --classic
-fi
+    echo "checking bash-language-server"
+    if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
+        sudo snap install bash-language-server --classic
+    fi
 )
 
 # pyenv
@@ -173,7 +173,7 @@ fi
 # chruby
 (
     if [[ "$(command -v chruby)" == "" ]]; then
-        cd "$(mktmp -d)"
+        cd "$(mktemp -d)"
         wget https://github.com/postmodern/chruby/releases/download/v0.3.9/chruby-0.3.9.tar.gz
         tar -xzvf chruby-0.3.9.tar.gz
         cd chruby-0.3.9/
@@ -183,4 +183,3 @@ fi
 
 # run generic os-agnostic installs
 ~/.dotfiles/install-common
-
