@@ -4,21 +4,34 @@
 #
 # Any additional args will be globbed as well. If there are not args, the
 # current user will be globbed.
+#
+# TODO: exclude the branch decorations to anything that does not match
+# git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --decorate-refs-exclude='refs/remotes/origin/*'"
+# git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --exclude='refs/remotes/origin/*' --decorate-refs-exclude='refs/remotes/origin/*'"
 
 set -e # exit on failure
 set -u # fail if vars are not defined
 
-globs=""
-globs+=" --glob="refs/*/main""
-globs+=" --glob="refs/*/master""
+# Initialize array with default globs
+globs=(
+    '--glob=refs/*/main'
+    '--glob=refs/*/master'
+)
 
-if [[ $# > 0 ]]; then
-	for arg in $@; do
-		globs+=" --glob="refs/*/*${arg}*/*""
-	done
+add_glob() {
+    local glob; glob=$1
+    globs+=("--glob=$glob")
+}
+
+# Process arguments
+if [[ $# -gt 0 ]]; then
+    for arg in "$@"; do
+        add_glob "refs/*/*${arg}*/*"
+    done
 else
-	globs+=" --glob="refs/*/${USER}/*""
+    add_glob "refs/*/${USER}/*"
 fi
 
-git ll $globs
+# Execute git command with all globs
+git ll "${globs[@]}"
 
