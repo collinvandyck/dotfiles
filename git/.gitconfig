@@ -61,7 +61,7 @@
     whitespace = warn
 
 [fetch]
-    prune = false
+    prune = true
     pruneTags = false
     all = true
 
