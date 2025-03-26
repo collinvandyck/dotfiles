@@ -93,6 +93,7 @@ brew install --quiet --formula \
     lxc \
     minikube \
     mingw-w64 \
+    moreutils \
     mtr \
     mutagen-io/mutagen/mutagen \
     neovim \
