@@ -8,13 +8,19 @@ gradle() {
     ./gradlew "$@"
 }
 
+log-file() {
+    local file; file=$(mktemp /tmp/gradle-XXXXXXX)
+    mv $file $file.log
+    echo $file.log
+}
+
 gradle-logged() {
-    local file; file=$(mktemp)
+    local file; file=$(log-file)
     {
         echo gradle "$@"
         echo "----"
         gradle "$@" 2>&1
-    } | tee $file
+    } | tee $file || true
     nvim $file
 }
 
