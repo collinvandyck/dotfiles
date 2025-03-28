@@ -9,7 +9,6 @@ alias appsup='cd ~/Library/Application\ Support'
 alias da='direnv allow'
 alias cat=bat
 alias be='bundle exec'
-alias gw='gradlew'
 alias back='cd "$(zoxide query back)" && td '
 alias nman='nvim "+Man!"'
 

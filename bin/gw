@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+TEST_OPTS="--info --console=plain"
+
+gradle() {
+    ./gradlew "$@"
+}
+
+gradle-logged() {
+    local file; file=$(mktemp)
+    {
+        echo gradle "$@"
+        echo "----"
+        gradle "$@" 2>&1
+    } | tee $file
+    nvim $file
+}
+
+case ${1:-} in
+    wt)
+        shift
+        gradle-logged web:test $TEST_OPTS --tests "$@"
+        ;;
+    wit)
+        shift
+        gradle-logged web:integrationTest $TEST_OPTS --tests "$@"
+        ;;
+    *)
+        gradle "$@"
+        ;;
+esac
+
