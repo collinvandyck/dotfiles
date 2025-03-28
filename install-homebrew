@@ -174,4 +174,5 @@ brew install --quiet --cask --no-quarantine \
     ;
 
 brew autoremove --quiet
+brew cleanup
 
