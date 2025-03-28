@@ -12,6 +12,9 @@ if [ ! "$(command -v brew)" ]; then
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+# required for springboot
+brew tap spring-io/tap
+
 # update homebrew packages
 brew update --quiet
 
@@ -113,6 +116,7 @@ brew install --quiet --formula \
     sccache \
     semgrep \
     shellcheck \
+    spring-io/tap/spring-boot \
     temporal \
     tig \
     tilt \
