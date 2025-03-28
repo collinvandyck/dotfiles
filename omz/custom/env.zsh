@@ -60,6 +60,7 @@ addPaths=(
     ~/Library/Python/3.9/bin
     ~/go/bin
     ~/bin
+    ~/.asdf/shims
     ~/.fzf/bin
     ~/.local/bin
     ~/.cargo/bin

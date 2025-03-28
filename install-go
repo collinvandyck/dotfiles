@@ -13,10 +13,10 @@ go version
 dir=$(dirname $0)
 cd $dir
 for dir in $dir/go/*/; do
-	echo "Installing $dir"
-	cd $dir
-	go install .
-	cd ..
+    echo "Installing $dir"
+    cd $dir
+    go install .
+    cd ..
 done
 
 # Install commonly used go utilities that live elsewhere
@@ -38,9 +38,10 @@ go install github.com/boyter/cs@${DOTFILES_CODESEARCH_VERSION}
 echo "Installing gpterm"
 go install github.com/collinvandyck/gpterm/cmd/gpterm@latest
 
+~/.dotfiles/bin/install-asdf
+
 # we have to install task manually since it's not in apt
 if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then
-	echo "Installing task ${DOTFILES_TASK_VERSION}"
-	go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
+    echo "Installing task ${DOTFILES_TASK_VERSION}"
+    go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
 fi
-
