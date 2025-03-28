@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+	echo "usage: $(basename "$0") [name]"
+	exit 1
+}
+
+fatal() {
+    echo "fatal: $*" >&2
+    exit 1
+}
+
+word-segment() {
+    local word
+    while :; do
+        word=$(sed -n "$((RANDOM % $(wc -l < /usr/share/dict/words) + 1))p" /usr/share/dict/words)
+        if [[ "$word" =~ ^[a-z]+$ ]] && [[ ${#word} -gt 2 ]] && [[ ${#word} -lt 10 ]]; then
+            echo "$word"
+            return
+        fi
+    done
+}
+
+[[ $# -gt 1 ]] && usage
+
+dir=""
+name=""
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        *)
+            name=$1
+            shift
+            ;;
+    esac
+done
+
+[[ -z $name ]] && {
+    name="$(word-segment)-$(word-segment)"
+    dir=$(mktemp -d)
+}
+[[ -z $dir ]] && dir=~/code
+proj=$dir/$name
+
+[[ -d $proj ]] && fatal "$proj already exists"
+mkdir -p "$proj"
+cd "$proj"
+
+spring init \
+    --language=kotlin \
+    --java-version=17 \
+    --build=gradle \
+    --type=gradle-project-kotlin \
+    --dependencies=web,data-jpa,h2,devtools \
+    --package=collin \
+    "$name.zip"
+
+unzip "$name".zip
+rm "$name".zip
+
+idea . src/main/kotlin/collin/DemoApplication.kt &>/dev/null
+exec zsh
+
