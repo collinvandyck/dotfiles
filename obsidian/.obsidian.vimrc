@@ -2,18 +2,18 @@
 " nmap j gj
 " nmap k gk
 
-imap jk <Esc>
-
-" Quickly remove search highlights
-nmap <F9> :nohl
-
 " Yank to system clipboard
 set clipboard=unnamed
 
-" Go back and forward with Ctrl+O and Ctrl+I
-" (make sure to remove default Obsidian shortcuts for these to work)
-" exmap back obcommand app:go-back
-" nmap <C-o> :back
-" exmap forward obcommand app:go-forward
-" nmap <C-i> :forward
+exmap logcursor jscommand { console.log(editor.getCursor()); }
+exmap yankall jscommand {navigator.clipboard.writeText(editor.getValue());}
+exmap back obcommand app:go-back
+exmap forward obcommand app:go-forward
+
+imap jk <Esc>
+
+nmap <C-i> :forward<CR>
+nmap <C-o> :back<CR>
+nmap <F9> :nohl
+nmap <F8> :yankall<CR>
 
