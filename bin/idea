@@ -7,6 +7,7 @@ set -euo pipefail
 app="/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea"
 usr1="$HOME/Applications/IntelliJ IDEA.app/Contents/MacOs/idea"
 usr2="$HOME/Applications/IntelliJ IDEA Community Edition.app/Contents/MacOS/idea"
+usr3="/Users/collin/Applications/IntelliJ IDEA Ultimate.app/Contents/MacOs/idea"
 
 if [[ $# == 0 ]]; then
 	args="."
@@ -16,11 +17,11 @@ fi
 
 launch() {
     if [[ -e "$1" ]]; then
-        exec "$1" $args # &>/dev/null
+        "$1" $args &>"$(mktemp /tmp/idealaunchXXXX)" &
     fi
 }
 
-for p in "$app" "$usr1" "$usr2"; do
+for p in "$app" "$usr1" "$usr2" "$usr3"; do
     launch "$p"
 done
 
