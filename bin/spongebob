@@ -1,8 +1,22 @@
 #!/usr/bin/env bash
 
+# Required parameters:
+# @raycast.schemaVersion 1
+# @raycast.title sPonGeBob
+# @raycast.mode fullOutput
+# @raycast.argument1 { "type": "text", "placeholder": "preset", "optional": false }
+
+# Optional parameters:
+# @raycast.icon 🤖
+
+# Documentation:
+# @raycast.author collinvandyck
+# @raycast.authorURL https://raycast.com/collinvandyck
+
 set -euo pipefail
 
-while IFS= read -r line || [[ -n "$line" ]]; do
+spongebob-line() {
+    line="$*"
     chars="${#line}"
     result=""
     for (( i=0; i<chars; i++ )); do
@@ -18,4 +32,14 @@ while IFS= read -r line || [[ -n "$line" ]]; do
         result+=$char
     done
     echo "$result"
+}
+
+if [[ $# -gt 0 ]]; then
+    spongebob-line "$@" | pbcopy
+    exit
+fi
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+    spongebob-line "$line"
 done
+
