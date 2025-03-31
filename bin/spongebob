@@ -2,14 +2,20 @@
 
 set -euo pipefail
 
-input=$(cat)
-chars="${#input}"
-for (( i=0; i<chars; i++ )); do
-    flip=$(( RANDOM < (32767/2) ))
-    char="${input:$i:1}"
-    if [[ $flip == 1 ]]; then
-        char="$(echo "$char" | tr '[:lower:]' '[:upper:]')"
-    fi
-    printf "%s" "$char"
+while IFS= read -r line || [[ -n "$line" ]]; do
+    chars="${#line}"
+    result=""
+    for (( i=0; i<chars; i++ )); do
+        flip=$(( RANDOM < (32767/2) ))
+        char="${line:$i:1}"
+        if [[ $flip == 1 ]]; then
+            if [[ "$char" =~ [a-z] ]]; then
+                char="${char^^}"
+            elif [[ "$char" =~ [A-Z] ]]; then
+                char="${char,,}"
+            fi
+        fi
+        result+=$char
+    done
+    echo "$result"
 done
-printf "\n"
