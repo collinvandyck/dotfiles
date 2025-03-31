@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+input=$(cat)
+chars="${#input}"
+for (( i=0; i<chars; i++ )); do
+    flip=$(( RANDOM < (32767/2) ))
+    char="${input:$i:1}"
+    if [[ $flip == 1 ]]; then
+        char="$(echo "$char" | tr '[:lower:]' '[:upper:]')"
+    fi
+    printf "%s" "$char"
+done
+printf "\n"
