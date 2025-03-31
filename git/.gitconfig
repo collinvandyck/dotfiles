@@ -31,7 +31,8 @@
     greppp = grepp --function-context
 	l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
 	l2 = log --name-status --graph
-	ll = log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
+	ll = log --color=always --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
+    #ll = log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
 	lla = !git ll --all
 
 	b = branch
