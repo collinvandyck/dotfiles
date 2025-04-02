@@ -90,6 +90,8 @@ nmap gb <Action>(ShowBookmarks)
 
 nmap g[ <Action>(PreviousOccurence)
 nmap g] <Action>(NextOccurence)
+nmap <M-j> <Action>(NextOccurence)
+nmap <M-k> <Action>(PreviousOccurence)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
