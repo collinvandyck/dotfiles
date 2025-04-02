@@ -10,8 +10,8 @@ gradle() {
 
 log-file() {
     local file; file=$(mktemp /tmp/gradle-XXXXXXX)
-    mv $file $file.log
-    echo $file.log
+    mv "$file" "$file".log
+    echo "$file".log
 }
 
 gradle-logged() {
@@ -20,18 +20,21 @@ gradle-logged() {
         echo gradle "$@"
         echo "----"
         gradle "$@" 2>&1
-    } | tee $file || true
-    nvim $file
+    } | tee "$file" || true
+    nvim "$file"
 }
 
 case ${1:-} in
     wt)
         shift
-        gradle-logged web:test $TEST_OPTS --tests "$@"
+        gradle-logged web:test "$TEST_OPTS" --tests "$@"
         ;;
     wit)
         shift
-        gradle-logged web:integrationTest $TEST_OPTS --tests "$@"
+        gradle-logged web:integrationTest "$TEST_OPTS" --tests "$@"
+        ;;
+    wr)
+        gradle web:bootRun --info --console=plain | tspin
         ;;
     *)
         gradle "$@"
