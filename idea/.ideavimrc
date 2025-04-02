@@ -77,6 +77,7 @@ nmap <leader>th <Action>(TypeHierarchy)
 " toggles
 nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
 nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
+nmap <leader>tb <Action>(ToggleBookmark)
 nmap <leader>taid <Action>(VimFindActionIdAction)
 
 nmap gT <Action>(GotoTest)
