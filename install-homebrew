@@ -156,7 +156,6 @@ brew install --quiet --cask --force \
     kitty \
     mitmproxy \
     ngrok \
-    obs \
     obsidian \
     racket \
     raycast \
