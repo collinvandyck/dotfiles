@@ -6,5 +6,5 @@ pyenv install 3.11.8 --skip-existing
 pyenv global 3.11.8
 
 eval "$(pyenv init -)"
-pip install uv
+pip install uv awscli-local
 
