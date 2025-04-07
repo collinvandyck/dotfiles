@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-TEST_OPTS="--info --console=plain"
+TEST_OPTS=(--info --console=plain)
 
 gradle() {
     ./gradlew "$@"
@@ -27,11 +27,19 @@ gradle-logged() {
 case ${1:-} in
     wt)
         shift
-        gradle-logged web:test "$TEST_OPTS" --tests "$@"
+        if [[ $# -gt 0 ]]; then
+            gradle-logged web:test "${TEST_OPTS[@]}" --tests "$@"
+        else
+            gradle-logged web:test "${TEST_OPTS[@]}"
+        fi
         ;;
     wit)
         shift
-        gradle-logged web:integrationTest "$TEST_OPTS" --tests "$@"
+        if [[ $# -gt 0 ]]; then
+            gradle-logged web:integrationTest "${TEST_OPTS[@]}" --tests "$@"
+        else
+            gradle-logged web:integrationTest "${TEST_OPTS[@]}"
+        fi
         ;;
     wr)
         gradle web:bootRun --info --console=plain | tspin
