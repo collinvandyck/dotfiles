@@ -24,30 +24,28 @@ gradle-logged() {
     nvim "$file"
 }
 
+run-tests() {
+    local test_name; test_name=$1
+    shift
+    if [[ $# -gt 0 ]]; then
+        gradle-logged "${test_name}" "${TEST_OPTS[@]}" --tests "$@"
+    else
+        gradle-logged "${test_name}" "${TEST_OPTS[@]}"
+    fi
+}
+
 case ${1:-} in
     wt)
         shift
-        if [[ $# -gt 0 ]]; then
-            gradle-logged web:test "${TEST_OPTS[@]}" --tests "$@"
-        else
-            gradle-logged web:test "${TEST_OPTS[@]}"
-        fi
+        run-tests web:test "$@"
         ;;
     wit)
         shift
-        if [[ $# -gt 0 ]]; then
-            gradle-logged web:integrationTest "${TEST_OPTS[@]}" --tests "$@"
-        else
-            gradle-logged web:integrationTest "${TEST_OPTS[@]}"
-        fi
+        run-tests web:integrationTest "$@"
         ;;
     qeit)
         shift
-        if [[ $# -gt 0 ]]; then
-            gradle-logged query-engine:integrationTest "${TEST_OPTS[@]}" --tests "$@"
-        else
-            gradle-logged query-engine:integrationTest "${TEST_OPTS[@]}"
-        fi
+        run-tests query-engine:integrationTest "$@"
         ;;
     wr)
         gradle web:bootRun --info --console=plain | tspin
