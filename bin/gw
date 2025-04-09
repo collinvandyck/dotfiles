@@ -41,6 +41,14 @@ case ${1:-} in
             gradle-logged web:integrationTest "${TEST_OPTS[@]}"
         fi
         ;;
+    qeit)
+        shift
+        if [[ $# -gt 0 ]]; then
+            gradle-logged query-engine:integrationTest "${TEST_OPTS[@]}" --tests "$@"
+        else
+            gradle-logged query-engine:integrationTest "${TEST_OPTS[@]}"
+        fi
+        ;;
     wr)
         gradle web:bootRun --info --console=plain | tspin
         ;;
