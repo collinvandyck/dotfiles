@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Makes authenticated calls using CORTEX_PAT to a cortex endpoint
+
+set -euo pipefail
+
+endpoint=$1
+query="${2:-.}"
+
+xh -A bearer -a "$CORTEX_PAT" -b "$endpoint" | jq "$query" | bat -ljson
