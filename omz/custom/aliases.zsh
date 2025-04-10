@@ -11,6 +11,7 @@ alias cat=bat
 alias be='bundle exec'
 alias back='cd "$(zoxide query back)" && td '
 alias nman='nvim "+Man!"'
+alias al='awslocal'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
