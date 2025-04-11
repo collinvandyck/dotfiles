@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# renders an os-specific notification
+
+set -euo pipefail
+
+body="✅ ${*}"
+arch=$(uname -s)
+case $arch in
+    Darwin)
+        osascript -e "display notification \"${body}\"" #with title \"Title\""
+        echo ">> ${body}" >&2
+        ;;
+    *)
+        printf "\a>> %s\n" "$body" >&2
+        ;;
+esac
