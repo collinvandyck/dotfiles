@@ -5,7 +5,7 @@
 # Usage:
 #
 # # create or open the script named foo
-# newgo foo 
+# newgo foo
 
 set -euo pipefail
 
@@ -13,35 +13,35 @@ name=${1:-""}
 dir=~/.dotfiles/bin
 
 usage() {
-	echo "usage: $(basename $0) [name]"
+	echo "usage: $(basename "$0") [name]"
 	exit 1
 }
 
 addmake=""
 if [ "$name" = "" ]; then
-	name=test
+	name="test"
 	dir=$(mktemp -d)
 	addmake=true
 fi
 
 file=$dir/$name
 
-if [ ! -f $file ]; then
-cat <<eos > $file
-#!/usr/bin/env bash
+if [ ! -f "$file" ]; then
+	cat <<-eos > "$file"
+	#!/usr/bin/env bash
+	set -euo pipefail
 
-set -euo pipefail
 
-eos
+	eos
 fi
 
 if [ "$addmake" = "true" ]; then
-cat <<eos > $dir/Makefile
-run:
+	cat <<-eos > "$dir"/Makefile
+	run:
 	./test
-eos
+	eos
 fi
 
-cd $dir
-chmod 755 $file
-exec nvim $file
+cd "$dir"
+chmod 755 "$file"
+exec nvim +5 "$file"
