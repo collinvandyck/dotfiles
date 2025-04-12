@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# waits for a port to become available
+
+port=$1
+
+while ! nc -z localhost "$port" &>/dev/null; do :; done
+
