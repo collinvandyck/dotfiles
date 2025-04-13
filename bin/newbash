@@ -36,10 +36,10 @@ if [ ! -f "$file" ]; then
 fi
 
 if [ "$addmake" = "true" ]; then
-	cat <<-eos > "$dir"/Makefile
-	run:
+	cat <<eos > "$dir"/Makefile
+run:
 	./test
-	eos
+eos
 fi
 
 cd "$dir"
