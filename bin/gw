@@ -37,6 +37,64 @@ run-tests() {
 	fi
 }
 
+kill-bootrun() {
+	pkill -f bootRun || true
+}
+
+web-bootrun() {
+	gradle web:bootRun --info --console=plain | tspin
+}
+
+seed() {
+	docker exec -i brain-backend-db-1 psql -v ON_ERROR_STOP=1 -U postgres -d slammo <scripts/seed/seed.sql;
+}
+
+reset-db() {
+	make reset-db db
+}
+
+upsert-flags() {
+	for flag in ${CORTEX_DEFAULT_FLAGS:-}; do
+		sh ~/code/cortex-utils/enable-flag.sh "$flag"
+	done
+}
+
+create-api-key() {
+	sh ~/code/cortex-utils/create-api-key.sh
+}
+
+spinner() {
+	local title; title=$1; shift
+	gum spin --spinner dot --title "$title" "$@"
+}
+
+gradle-tasks() {
+	gradle tasks
+}
+
+new() {
+	spinner "Killing existing processes..." -- sh -c kill-bootrun
+	spinner "Resetting the db..." -- sh -c reset-db
+
+	./gradlew --no-daemon web:bootRun --info --console=plain &>/dev/null &
+	trap kill-bootrun EXIT INT TERM
+
+	spinner "Waiting for API..." -- wait-port 8080
+	spinner "Seeding DB..." -- sh -c seed
+	spinner "Upserting flags..." -- sh -c upsert-flags
+	spinner "Creating API key" -- sh -c create-api-key
+
+	# kill bootrun and start the new one in this term
+	trap - EXIT INT TERM
+	kill-bootrun
+	exec sh -c web-bootrun
+}
+
+# shellcheck disable=2163
+for func in $(declare -F | awk '{print $3}'); do
+	export -f "$func"
+done
+
 case ${1:-} in
 	wt)
 		shift
@@ -52,12 +110,18 @@ case ${1:-} in
 		;;
 	wr)
 		sh -c "
-			while ! nc -z localhost 8080; do
-				sleep 0.5
-			done &> /tmp/gw-wait.log
-			notify BE is ready 👍
+		while ! nc -z localhost 8080; do
+			sleep 0.5
+		done &> /tmp/gw-wait.log
+		notify BE is ready 👍
 		" &
 		gradle web:bootRun --info --console=plain | tspin
+		;;
+	new)
+		new
+		;;
+	api-key)
+		create-api-key
 		;;
 	*)
 		gradle "$@"
