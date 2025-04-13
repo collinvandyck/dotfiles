@@ -72,7 +72,7 @@ gradle-tasks() {
 	gradle tasks
 }
 
-new() {
+bootstrap() {
 	spinner "Killing existing processes..." -- sh -c kill-bootrun
 	spinner "Resetting the db..." -- sh -c reset-db
 
@@ -95,7 +95,8 @@ for func in $(declare -F | awk '{print $3}'); do
 	export -f "$func"
 done
 
-case ${1:-} in
+cmd=${1:-}
+case $cmd in
 	wt)
 		shift
 		run-tests web:test "$@"
@@ -117,14 +118,12 @@ case ${1:-} in
 		" &
 		gradle web:bootRun --info --console=plain | tspin
 		;;
-	new)
-		new
-		;;
-	api-key)
-		create-api-key
-		;;
 	*)
-		gradle "$@"
+		if declare -F "$cmd" &>/dev/null; then
+			$cmd "$@"
+		else
+			gradle "$@"
+		fi
 		;;
 esac
 
