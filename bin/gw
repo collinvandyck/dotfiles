@@ -1,63 +1,66 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
+
+# shellcheck disable=SC1090
+source ~/.dotfiles/bin/_utils
+trap_kill_children
 
 TEST_OPTS=(--info --console=plain)
 
 gradle() {
-    ./gradlew "$@"
+	./gradlew "$@"
 }
 
 log-file() {
-    local file; file=$(mktemp /tmp/gradle-XXXXXXX)
-    mv "$file" "$file".log
-    echo "$file".log
+	local file; file=$(mktemp /tmp/gradle-XXXXXXX)
+	mv "$file" "$file".log
+	echo "$file".log
 }
 
 gradle-logged() {
-    local file; file=$(log-file)
-    {
-        echo gradle "$@"
-        echo "----"
-        gradle "$@" 2>&1
-    } | tee "$file" || true
-    nvim "$file"
+	local file; file=$(log-file)
+	{
+		echo gradle "$@"
+		echo "----"
+		gradle "$@" 2>&1
+	} | tee "$file" || true
+nvim "$file"
 }
 
 run-tests() {
-    local test_name; test_name=$1
-    shift
-    if [[ $# -gt 0 ]]; then
-        gradle-logged "${test_name}" "${TEST_OPTS[@]}" --tests "$@"
-    else
-        gradle-logged "${test_name}" "${TEST_OPTS[@]}"
-    fi
+	local test_name; test_name=$1
+	shift
+	if [[ $# -gt 0 ]]; then
+		gradle-logged "${test_name}" "${TEST_OPTS[@]}" --tests "$@"
+	else
+		gradle-logged "${test_name}" "${TEST_OPTS[@]}"
+	fi
 }
 
 case ${1:-} in
-    wt)
-        shift
-        run-tests web:test "$@"
-        ;;
-    wit)
-        shift
-        run-tests web:integrationTest "$@"
-        ;;
-    qeit)
-        shift
-        run-tests query-engine:integrationTest "$@"
-        ;;
-    wr)
-        sh -c 'while ! curl --fail-with-body localhost:8080; do sleep 0.5; done; notify BE is ready 👍' &
-        pid=$!
-        cleanup() {
-            kill "$pid" 2>/dev/null || true
-        }
-        trap cleanup EXIT
-        gradle web:bootRun --info --console=plain | tspin
-        ;;
-    *)
-        gradle "$@"
-        ;;
+	wt)
+		shift
+		run-tests web:test "$@"
+		;;
+	wit)
+		shift
+		run-tests web:integrationTest "$@"
+		;;
+	qeit)
+		shift
+		run-tests query-engine:integrationTest "$@"
+		;;
+	wr)
+		sh -c "
+			while ! nc -z localhost 8080; do
+				sleep 0.5
+			done &> /tmp/gw-wait.log
+			notify BE is ready 👍
+		" &
+		gradle web:bootRun --info --console=plain | tspin
+		;;
+	*)
+		gradle "$@"
+		;;
 esac
 
