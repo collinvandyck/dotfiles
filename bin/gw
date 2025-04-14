@@ -24,7 +24,7 @@ gradle-logged() {
 		echo "----"
 		gradle "$@" 2>&1
 	} | tee "$file" || true
-nvim "$file"
+nvim +$ "$file"
 }
 
 run-tests() {
@@ -39,6 +39,7 @@ run-tests() {
 
 kill-bootrun() {
 	pkill -f bootRun || true
+	while nc -z localhost 8080 &>/dev/null; do sleep 0.25; done
 }
 
 web-bootrun() {
@@ -57,6 +58,11 @@ upsert-flags() {
 	for flag in ${CORTEX_DEFAULT_FLAGS:-}; do
 		sh ~/code/cortex-utils/enable-flag.sh "$flag"
 	done
+}
+
+insert-fixtures() {
+	for x in $(seq 1 25); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
+	for x in $(seq 1 25); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
 }
 
 create-api-key() {
@@ -82,12 +88,14 @@ bootstrap() {
 	spinner "Waiting for API..." -- wait-port 8080
 	spinner "Seeding DB..." -- sh -c seed
 	spinner "Upserting flags..." -- sh -c upsert-flags
-	spinner "Creating API key" -- sh -c create-api-key
+	spinner "Creating API key..." -- sh -c create-api-key
+	spinner "Inserting fixtures..." -- sh -c insert-fixtures
 
 	# kill bootrun and start the new one in this term
 	trap - EXIT INT TERM
-	kill-bootrun
-	exec sh -c web-bootrun
+	spinner "Terminating app server..." -- sh -c kill-bootrun
+
+	exec gw wr
 }
 
 # shellcheck disable=2163
@@ -110,6 +118,7 @@ case $cmd in
 		run-tests query-engine:integrationTest "$@"
 		;;
 	wr)
+		spinner "Killing bootrun..." -- sh -c kill-bootrun
 		sh -c "
 		while ! nc -z localhost 8080; do
 			sleep 0.5
