@@ -91,10 +91,8 @@ bootstrap() {
 	spinner "Creating API key..." -- sh -c create-api-key
 	spinner "Inserting fixtures..." -- sh -c insert-fixtures
 
-	# kill bootrun and start the new one in this term
-	trap - EXIT INT TERM
 	spinner "Terminating app server..." -- sh -c kill-bootrun
-
+	trap - EXIT INT TERM
 	exec gw wr
 }
 
