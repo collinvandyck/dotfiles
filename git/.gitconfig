@@ -24,7 +24,9 @@
     navigate = true # use n and N to move between diff sections.
     syntax-theme = Monokai Extended
     line-numbers = true
+    #side-by-side=true
     hyperlinks = true
+    #diff-so-fancy = true
 
 
 # key commands to remember not in aliases
