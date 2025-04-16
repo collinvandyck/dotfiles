@@ -59,6 +59,7 @@ brew install --quiet --formula \
 	cmake \
 	colima \
 	coreutils \
+	delta \
 	detect-secrets \
 	devcontainer \
 	direnv \
