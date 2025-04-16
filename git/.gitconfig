@@ -1,20 +1,31 @@
 # https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
 [user]
-	name = "Collin Van Dyck"
-	email = "collin@5xx.engineer"
+    name = "Collin Van Dyck"
+    email = "collin@5xx.engineer"
 
 [core]
-	excludesfile = ~/.gitignore_global
+    excludesfile = ~/.gitignore_global
     quotepath = false
-	editor = nvim
-	autocrlf = input
-	#pager = "bat --pager='less -R'"
+    editor = nvim
+    autocrlf = input
+    #pager = "bat --pager='less -R'"
+    pager = delta
 
 [color]
-	pager = true
-	ui = auto
-	diff = auto
+    pager = true
+    ui = auto
+    diff = auto
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true # use n and N to move between diff sections.
+    syntax-theme = Monokai Extended
+    line-numbers = true
+    hyperlinks = true
+
 
 # key commands to remember not in aliases
 #
@@ -23,28 +34,28 @@
 [alias]
     bl = !git blame --color-lines --color-by-age
 
-	cat = "!git show \"$1:$2\" #"
-	current-branch = !git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'
-	g = grep --break --heading --line-number
+    cat = "!git show \"$1:$2\" #"
+    current-branch = !git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||'
+    g = grep --break --heading --line-number
 
     grepp = !git grep --break --heading --show-function -w -C 5
     greppp = grepp --function-context
-	l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
-	l2 = log --name-status --graph
-	ll = log --color=always --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
+    l = log --graph --pretty=format':%C(yellow)%h%Cblue%d%Creset %s %C(white) %an, %ar%Creset'
+    l2 = log --name-status --graph
+    ll = log --color=always --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
     #ll = log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar'
-	lla = !git ll --all
+    lla = !git ll --all
 
-	b = branch
-	co = checkout
-	last = checkout -
-	put = push origin HEAD
-	shove = push --force-with-lease
-	staged = diff --cached
-	w = whatchanged
+    b = branch
+    co = checkout
+    last = checkout -
+    put = push origin HEAD
+    shove = push --force-with-lease
+    staged = diff --cached
+    w = whatchanged
 
     # typos
-	rebsae = rebase
+    rebsae = rebase
 
 [diff]
     algorithm = histogram
@@ -69,25 +80,26 @@
 [push]
     default = tracking
     default = current
-	autoSetupRemote = true
+    autoSetupRemote = true
 
 [grep]
-	lineNumber = true
+    lineNumber = true
     extendedRegexp = true
 
 [remote "origin"]
-	prune = true
+    prune = true
 
 [merge]
-	conflictStyle = diff3
-	tool = vimdiff
+    # conflictStyle = diff3
+    conflictstyle = zdiff3
+    # tool = vimdiff
 
 [mergetool]
-	prompt = false
-	keepBackup = false
+    prompt = false
+    keepBackup = false
 
 [commit]
-	verbose = true
+    verbose = true
 
 [rerere]
     enabled = true
@@ -97,24 +109,24 @@
     autoStash = true
 
 [pull]
-	rebase = true
+    rebase = true
 
 [init]
-	defaultBranch = main
+    defaultBranch = main
 
 [protocol "keybase"]
-	allow = always
+    allow = always
 
 [https]
-	postBuffer = 1048576000
+    postBuffer = 1048576000
 
 [http]
-	postBuffer = 1048576000
+    postBuffer = 1048576000
 
 [help]
     autocorrect = prompt
 
 [gitbutler]
-	aiModelProvider = anthropic
-	aiAnthropicKeyOption = bringYourOwn
-	aiAnthropicModelName = claude-3-5-sonnet-20240620
+    aiModelProvider = anthropic
+    aiAnthropicKeyOption = bringYourOwn
+    aiAnthropicModelName = claude-3-5-sonnet-20240620
