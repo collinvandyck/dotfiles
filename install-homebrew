@@ -45,6 +45,7 @@ done
 
 brew upgrade --quiet
 brew install --quiet --formula \
+	act \
 	aichat \
 	asdf \
 	bash-language-server \
