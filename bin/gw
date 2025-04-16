@@ -78,6 +78,22 @@ gradle-tasks() {
 	gradle tasks
 }
 
+gen-flags() {
+	make generate-feature-flags
+}
+
+flags-dirty() {
+	git status --porcelain -- feature-management
+}
+
+gen() {
+	spinner "Generating flags..." -- sh -c gen-flags
+	if [ -n "$(flags-dirty)" ]; then
+		echo "Unstaged flag state:"
+		git diff -- feature-management
+	fi
+}
+
 bootstrap() {
 	spinner "Killing existing processes..." -- sh -c kill-bootrun
 	spinner "Resetting the db..." -- sh -c reset-db
