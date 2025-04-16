@@ -1,7 +1,7 @@
 promptToReturnFromSubprocess: false
 
 gui:
-  scrollHeight: 4 # how many lines you scroll by
+  scrollHeight: 6 # how many lines you scroll by
   nerdFontsVersion: "3"
   expandFocusedSidePanel: true
   mainPanelSplitMode: "flexible"
