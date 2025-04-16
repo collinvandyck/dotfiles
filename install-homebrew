@@ -74,6 +74,7 @@ brew install --quiet --formula \
 	glow \
 	gnuplot \
 	golang \
+	gomplate \
 	gource \
 	gradle \
 	grpcurl \
