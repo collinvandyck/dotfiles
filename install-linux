@@ -7,76 +7,76 @@ set -eu
 
 sudo apt update
 sudo apt install -y \
-    apt-transport-https \
-    asciinema \
-    autoconf \
-    automake \
-    btop \
-    build-essential \
-    ca-certificates \
-    cmake \
-    curl \
-    direnv \
-    doxygen \
-    fatrace \
-    fd-find \
-    fswatch \
-    g++ \
-    gettext \
-    gh \
-    gnome-tweaks \
-    gnupg \
-    htop \
-    httpie \
-    iproute2 \
-    iputils-ping \
-    jq \
-    kitty-terminfo \
-    libfuse2 \
-    libluajit-5.1-dev \
-    libpcap-dev \
-    librust-alsa-sys-dev \
-    libssl-dev \
-    libtool \
-    libtool-bin \
-    libtree-sitter-dev \
-    lld \
-    lsb-release \
-    man \
-    man-db \
-    net-tools \
-    nethogs \
-    ninja-build \
-    nmap \
-    nodejs \
-    openssh-server \
-    pipx \
-    pkg-config \
-    protobuf-compiler \
-    psmisc \
-    python-is-python3 \
-    python3-pip \
-    ripgrep \
-    shellcheck \
-    shfmt \
-    snapd \
-    software-properties-common \
-    sqlite3 \
-    tcl \
-    tig \
-    tmux \
-    traceroute \
-    tree \
-    unzip \
-    valgrind \
-    wget \
-    xsel \
-    zoxide \
-    zsh \
-    ;
+	apt-transport-https \
+	asciinema \
+	autoconf \
+	automake \
+	btop \
+	build-essential \
+	ca-certificates \
+	cmake \
+	curl \
+	direnv \
+	doxygen \
+	fatrace \
+	fd-find \
+	fswatch \
+	g++ \
+	gettext \
+	gh \
+	gnome-tweaks \
+	gnupg \
+	htop \
+	httpie \
+	iproute2 \
+	iputils-ping \
+	jq \
+	kitty-terminfo \
+	libfuse2 \
+	libluajit-5.1-dev \
+	libpcap-dev \
+	librust-alsa-sys-dev \
+	libssl-dev \
+	libtool \
+	libtool-bin \
+	libtree-sitter-dev \
+	lld \
+	lsb-release \
+	man \
+	man-db \
+	net-tools \
+	nethogs \
+	ninja-build \
+	nmap \
+	nodejs \
+	openssh-server \
+	pipx \
+	pkg-config \
+	protobuf-compiler \
+	psmisc \
+	python-is-python3 \
+	python3-pip \
+	ripgrep \
+	shellcheck \
+	shfmt \
+	snapd \
+	software-properties-common \
+	sqlite3 \
+	tcl \
+	tig \
+	tmux \
+	traceroute \
+	tree \
+	unzip \
+	valgrind \
+	wget \
+	xsel \
+	zoxide \
+	zsh \
+	;
 
 if [[ "$(uname -a)" =~ WSL2 ]]; then
-    sudo apt install -y linux-tools-generic
+	sudo apt install -y linux-tools-generic
 fi
 
 sudo apt autoremove -y
@@ -87,98 +87,113 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 # golang
 (
-    echo "checking golang"
-    if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
-        cd "$(mktemp -d)"
-        if [[ "$(uname -i)" == "aarch64" ]]; then
-            artifact="go1.23.4.linux-arm64.tar.gz"
-        else
-            artifact="go1.23.4.linux-amd64.tar.gz"
-        fi
-        curl -LO "https://go.dev/dl/${artifact}"
-        sudo rm -rf /usr/local/go
-        sudo tar -C /usr/local -xzf "$artifact"
-    fi
+	echo "checking golang"
+	if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
+		cd "$(mktemp -d)"
+		if [[ "$(uname -i)" == "aarch64" ]]; then
+			artifact="go1.23.4.linux-arm64.tar.gz"
+		else
+			artifact="go1.23.4.linux-amd64.tar.gz"
+		fi
+		curl -LO "https://go.dev/dl/${artifact}"
+		sudo rm -rf /usr/local/go
+		sudo tar -C /usr/local -xzf "$artifact"
+	fi
 )
 
 # neovim
 (
-    echo "checking neovim"
-    nvim_version="v0.10.3"
-    if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
-        cd "$(mktemp -d)"
-        git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
-        cd neovim
-        make CMAKE_BUILD_TYPE=RelWithDebInfo
-        sudo make install
-        sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
-        sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
-        echo "done installing neovim"
-    else
-        echo "nvim check ok"
-    fi
+	echo "checking neovim"
+	nvim_version="v0.10.3"
+	if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
+		cd "$(mktemp -d)"
+		git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
+		cd neovim
+		make CMAKE_BUILD_TYPE=RelWithDebInfo
+		sudo make install
+		sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vim
+		sudo cp ~/.dotfiles/bin/exec-nvim /usr/local/bin/vi
+		echo "done installing neovim"
+	else
+		echo "nvim check ok"
+	fi
 )
 
 # lazygit
 (
-    if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
-        cd "$(mktemp -d)"
-        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-        echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
-        curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-        tar xf lazygit.tar.gz lazygit
-        sudo install lazygit -D -t /usr/local/bin/
-    fi
+	if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
+		cd "$(mktemp -d)"
+		LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
+		echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
+		curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+		tar xf lazygit.tar.gz lazygit
+		sudo install lazygit -D -t /usr/local/bin/
+	fi
 )
 
 # add tailscale
 (
-    echo "checking tailscale"
-    # Exit node stuff
-    ts_conf=/etc/sysctl.d/99-tailscale.conf
-    if ! [ -f $ts_conf ]; then
-        echo 'net.ipv4.ip_forward = 1' | sudo tee -a $ts_conf
-        echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
-        sudo sysctl -p $ts_conf
-    fi
+	echo "checking tailscale"
+	# Exit node stuff
+	ts_conf=/etc/sysctl.d/99-tailscale.conf
+	if ! [ -f $ts_conf ]; then
+		echo 'net.ipv4.ip_forward = 1' | sudo tee -a $ts_conf
+		echo 'net.ipv6.conf.all.forwarding = 1' | sudo tee -a $ts_conf
+		sudo sysctl -p $ts_conf
+	fi
 
-    # Add Tailscale's GPG key
-    sudo mkdir -p --mode=0755 /usr/share/keyrings
-    curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
-    # Add the tailscale repository
-    curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
-    # Install Tailscale
-    sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth
-    # Start Tailscale!
-    # sudo tailscale up --advertise-exit-node || true
-    sudo tailscale up || true
-    # enable tailscale nginx auth
-    sudo systemctl enable --now tailscale.nginx-auth.socket
+	# Add Tailscale's GPG key
+	sudo mkdir -p --mode=0755 /usr/share/keyrings
+	curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+	# Add the tailscale repository
+	curl -fsSL https://pkgs.tailscale.com/stable/ubuntu/noble.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+	# Install Tailscale
+	sudo apt-get update && sudo apt-get install -y tailscale tailscale-nginx-auth
+	# Start Tailscale!
+	# sudo tailscale up --advertise-exit-node || true
+	sudo tailscale up || true
+	# enable tailscale nginx auth
+	sudo systemctl enable --now tailscale.nginx-auth.socket
 )
 
 # bash-language-server
 (
-    echo "checking bash-language-server"
-    if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
-        sudo snap install bash-language-server --classic
-    fi
+	echo "checking bash-language-server"
+	if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
+		sudo snap install bash-language-server --classic
+	fi
+)
+
+# delta pager
+(
+	delta_version="0.18.2"
+	if ! [[ "$(delta --version)" = "delta ${delta_version}" ]]; then
+		echo "installing delta pager ${delta_version}"
+		cd "$(mktemp -d)"
+
+		filename=git-delta_${delta_version}_amd64.deb
+		url="https://github.com/dandavison/delta/releases/download/${delta_version}/${filename}"
+		echo "Downloading from $url"
+		wget "$url"
+		sudo dpkg -i $filename
+	fi
 )
 
 # pyenv
 export PATH=~/.pyenv/bin:$PATH
 if [[ "$(command -v pyenv)" == "" ]]; then
-    curl https://pyenv.run | bash
+	curl https://pyenv.run | bash
 fi
 
 # chruby
 (
-    if [[ "$(command -v chruby)" == "" ]]; then
-        cd "$(mktemp -d)"
-        wget https://github.com/postmodern/chruby/releases/download/v0.3.9/chruby-0.3.9.tar.gz
-        tar -xzvf chruby-0.3.9.tar.gz
-        cd chruby-0.3.9/
-        sudo make install
-    fi
+	if [[ "$(command -v chruby)" == "" ]]; then
+		cd "$(mktemp -d)"
+		wget https://github.com/postmodern/chruby/releases/download/v0.3.9/chruby-0.3.9.tar.gz
+		tar -xzvf chruby-0.3.9.tar.gz
+		cd chruby-0.3.9/
+		sudo make install
+	fi
 )
 
 # run generic os-agnostic installs
