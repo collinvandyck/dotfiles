@@ -71,7 +71,7 @@ create-api-key() {
 
 spinner() {
 	local title; title=$1; shift
-	gum spin --spinner dot --title "$title" "$@"
+	gum spin --show-error --spinner dot --title "$title" "$@"
 }
 
 gradle-tasks() {
