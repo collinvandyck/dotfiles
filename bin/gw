@@ -20,14 +20,18 @@ log-file() {
 gradle-logged() {
 	local file; file=$(log-file)
 	local status; status=$(mktemp)
-	if ! {
+	{
 		trap 'echo "interrupted" > $status' INT
 		echo gradle "$@"
 		echo "----"
 		gradle "$@" 2>&1
-	} > >(tee "$file"); then
+		echo "$?" > "$status"
+	} > >(tee "$file") || true
+	trap - INT
+	local ret; ret=$(cat "$status")
+	if [[ "$ret" != "0" ]]; then
 		# here something has failed. only load logs if not interrupted
-		if [[ "$(cat "$status")" != "interrupted" ]]; then
+		if [[ "$ret" != "interrupted" ]] && [[ "$ret" != "130" ]]; then
 			nvim +$ "$file"
 		fi
 	fi
