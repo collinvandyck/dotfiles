@@ -6,7 +6,7 @@ name=$1
 cortex-post-openapi <<EOF
 openapi: 3.0.1
 info:
-  title: $name
-  x-cortex-tag: $name
+  title: "$name"
+  x-cortex-tag: "$name"
   x-cortex-type: team
 EOF
