@@ -21,7 +21,9 @@ _gf() {
 
 _ga() {
   is_in_git_repo || return
-  git branch -a --color=always --sort=committerdate | grep -v '/HEAD\s' | 
+  git branch -a --color=always --sort=committerdate |
+      grep "${USER}" |
+      grep -v '/HEAD\s' |
   fzf-down --ansi --multi --tac --preview-window right:70% ${FZF_GIT_GA_OPTS} \
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1)' |
   sed 's/^..//' | cut -d' ' -f1 |
@@ -80,5 +82,4 @@ join-lines() {
     eval "bindkey '^g^$c' fzf-g$c-widget"
   done
 } f a t r h s
-
 
