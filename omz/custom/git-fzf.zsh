@@ -24,10 +24,12 @@ _ga() {
   git branch -a --color=always --sort=committerdate |
       grep "${USER}" |
       grep -v '/HEAD\s' |
-  fzf-down --ansi --multi --tac --preview-window right:70% ${FZF_GIT_GA_OPTS} \
-    --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1)' |
-  sed 's/^..//' | cut -d' ' -f1 |
-  sed 's#^remotes/##'
+      fzf-down --ansi --multi --tac \
+        --preview-window right:70% ${FZF_GIT_GA_OPTS} \
+        --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1)' |
+      sed 's/^..//' |
+      cut -d' ' -f1 |
+      sed 's#^remotes/##'
 }
 
 _gt() {
