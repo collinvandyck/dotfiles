@@ -20,12 +20,20 @@ log-file() {
 gradle-logged() {
 	local file; file=$(log-file)
 	local status; status=$(mktemp)
-	{
+	(
+		set +e
 		echo gradle "$@"
 		echo "----"
 		gradle "$@" 2>&1
-		echo "$?" > "$status"
-	} > >(tee "$file") || true
+		local ret=$?
+		echo "$ret" > "$status"
+		if [[ "$ret" != "0" ]]; then
+			printf "\n💥 'gradle %s' exited with code: %s\n" "$*" "$ret"
+		else
+			printf "\n✅ 'gradle %s' completed successfully\n" "$*"
+		fi
+		set -e
+	) > >(tee "$file")
 	local ret; ret=$(cat "$status")
 	if [[ "$ret" != "0" ]]; then
 		# here something has failed. only load logs if not interrupted
