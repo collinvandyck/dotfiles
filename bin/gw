@@ -139,7 +139,7 @@ case $cmd in
 		done &> /tmp/gw-wait.log
 		notify BE is ready 👍
 		" &
-		gradle web:bootRun --info --console=plain | tspin
+		gradle web:bootRun --info --console=plain 2>&1 | tee /tmp/gw-wr.log | tspin
 		;;
 	*)
 		if declare -F "$cmd" &>/dev/null; then
