@@ -21,13 +21,11 @@ gradle-logged() {
 	local file; file=$(log-file)
 	local status; status=$(mktemp)
 	{
-		trap 'echo "interrupted" > $status' INT
 		echo gradle "$@"
 		echo "----"
 		gradle "$@" 2>&1
 		echo "$?" > "$status"
 	} > >(tee "$file") || true
-	trap - INT
 	local ret; ret=$(cat "$status")
 	if [[ "$ret" != "0" ]]; then
 		# here something has failed. only load logs if not interrupted
