@@ -21,8 +21,7 @@ _gf() {
 
 _ga() {
   is_in_git_repo || return
-  git branch -a --color=always --sort=committerdate |
-      grep "${USER}" |
+  git branch -a --color=always --sort=committerdate --list 'collin/*' --list 'origin/collin/*' |
       grep -v '/HEAD\s' |
       fzf-down --ansi --multi --tac \
         --preview-window right:70% ${FZF_GIT_GA_OPTS} \
