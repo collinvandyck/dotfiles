@@ -110,6 +110,10 @@ gen() {
 	fi
 }
 
+format() {
+	spinner "Formatting..." -- sh -c 'gradle :spotlessApply --parallel --info --console=plain | tspin'
+}
+
 bootstrap() {
 	spinner "Killing existing processes..." -- sh -c kill-bootrun
 	spinner "Resetting the db..." -- sh -c reset-db
