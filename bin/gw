@@ -46,11 +46,11 @@ gradle-logged() {
 run-tests() {
 	local test_name; test_name=$1
 	shift
-	if [[ $# -gt 0 ]]; then
-		gradle-logged "${test_name}" "${TEST_OPTS[@]}" --tests "$@"
-	else
-		gradle-logged "${test_name}" "${TEST_OPTS[@]}"
-	fi
+	local args=()
+	for arg in "$@"; do
+		args+=("--tests" "$arg")
+	done
+	gradle-logged "${test_name}" "${TEST_OPTS[@]}" "${args[@]}"
 }
 
 kill-bootrun() {
@@ -99,7 +99,11 @@ gen-flags() {
 }
 
 flags-dirty() {
-	git status --porcelain -- feature-management
+	git-dirty -- feature-management
+}
+
+git-dirty() {
+	git status --porcelain "$@"
 }
 
 gen() {
@@ -110,8 +114,14 @@ gen() {
 	fi
 }
 
-format() {
+fmt() {
+	local s1; s1=$(git-dirty)
 	spinner "Formatting..." -- sh -c 'gradle :spotlessApply --parallel --info --console=plain | tspin'
+	local s2; s2=$(git-dirty)
+	if [[ "$s1" != "$s2" ]]; then
+		echo "🚧 working set changed" >&2
+		return 1
+	fi
 }
 
 bootstrap() {
