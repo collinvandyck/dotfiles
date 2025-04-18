@@ -12,6 +12,7 @@ alias be='bundle exec'
 alias back='cd "$(zoxide query back)" && td '
 alias nman='nvim "+Man!"'
 alias al='awslocal'
+alias d='docker'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
@@ -98,7 +99,6 @@ fi
 
 # other
 alias nowrap='cut -c -$COLUMNS'
-alias d='cd ~/.dotfiles'
 
 
 # ls --color makes me sad because it's hard to read.
