@@ -77,6 +77,7 @@ upsert-flags() {
 }
 
 insert-fixtures() {
+	for x in $(seq 1 5); do cortex-create-service "$(printf 'service-%03d\n' "$x")"; done
 	for x in $(seq 1 5); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
 	for x in $(seq 1 5); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
 	get-catalog-pages &>/dev/null # force default catalog set
