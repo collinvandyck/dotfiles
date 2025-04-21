@@ -1,17 +1,13 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 log=$(mktemp)
 # shellcheck disable=SC2064
 trap "rm '$log'" EXIT
 
-if ! xh POST\
-    -A bearer -a "$CORTEX_PAT" \
+if ! xh POST -A bearer -a "$CORTEX_PAT" -v -b --check-status \
     http://localhost:8080/api/v1/open-api \
-    Content-Type:"application/openapi;charset=UTF-8" \
-    -v \
-    -b > "$log"; then
+    Content-Type:"application/openapi;charset=UTF-8" > "$log"; then
     bat "$log"
 fi
 
