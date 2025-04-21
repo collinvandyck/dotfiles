@@ -80,8 +80,8 @@ insert-fixtures() {
 	for x in $(seq 1 5); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
 	for x in $(seq 1 5); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
 	get-catalog-pages &>/dev/null # force default catalog set
-	create-relationship-type rt-1 --src '["domain","team","service"]' --dst '["service"]'
-	create-relationship-type rt-2 --create-catalog --src '["domain","team","service"]' --dst '["service"]'
+	create-relationship-type rt-norm --src '["domain","team","service"]' --dst '["service"]'
+	create-relationship-type rt-cat --create-catalog --src '["domain","team","service"]' --dst '["service"]'
 }
 
 create-api-key() {
