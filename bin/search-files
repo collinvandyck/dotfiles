@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DIR=
+ARGS=()
+
+bail() {
+	echo "fatal: $*" >&2
+	exit 1
+}
+
+usage() {
+	echo "$(basename "$0") [-d,--dir DIR] [RG ARGS]"
+	exit 1
+}
+
+while [ $# -gt 0 ]; do
+	case $1 in
+		--dir|-d)
+			[ $# -gt 0 ] || usage
+			shift
+			DIR=$1
+			;;
+		*)
+			ARGS+=("$1")
+			;;
+	esac
+	shift
+	:
+done
+
+[ -n "$DIR" ] && ARGS+=("$DIR")
+rg --sort=path --files-with-matches "${ARGS[@]}" | paths-to-tree
