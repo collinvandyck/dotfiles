@@ -77,8 +77,8 @@ upsert-flags() {
 }
 
 insert-fixtures() {
-	for x in $(seq 1 25); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
-	for x in $(seq 1 25); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
+	for x in $(seq 1 5); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
+	for x in $(seq 1 5); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
 }
 
 create-api-key() {
