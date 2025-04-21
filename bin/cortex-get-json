@@ -1,15 +1,46 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+usage() {
+	echo "$(basename "$0") [name] [-j|--jq [JQ_SEARCH]] [XH_OPTS]" >&2
+	exit 1
+}
+
+[ $# = 0 ] && usage
+
 url_path=$1
+shift
+
+JQ="."
+
+while [ $# -gt 0 ]; do
+	case $1 in
+		-j|--jq)
+			shift
+			JQ=$1
+			;;
+		*)
+			;;
+	esac
+	shift
+done
+
 log=$(mktemp)
 # shellcheck disable=SC2064
 trap "rm '$log'" EXIT
 
-if ! xh GET\
+if ! xh GET \
     -A bearer -a "$CORTEX_PAT" \
     "http://localhost:8080${url_path}" \
-    -b | jq . | bat -ljson --pager=never ; then
-    bat "$log"
+    -b \
+	"$@" 2>/dev/null >"$log"; then
+	if [ -n "$(cat "$log")" ]; then
+		<"$log" jq . | bat -ljson
+	else
+		bat "$log"
+	fi
+	exit 1
 fi
+
+cat "$log" | jq "$JQ" | bat -ljson --pager=never
 
