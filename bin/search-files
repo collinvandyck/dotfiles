@@ -30,4 +30,4 @@ while [ $# -gt 0 ]; do
 done
 
 [ -n "$DIR" ] && ARGS+=("$DIR")
-rg --sort=path --files-with-matches "${ARGS[@]}" | paths-to-tree
+rg --sort=path --files-with-matches "${ARGS[@]}" | CLICOLOR_FORCE=1 paths-to-tree | bat
