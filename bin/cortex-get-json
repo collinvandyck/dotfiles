@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+url_path=$1
+log=$(mktemp)
+# shellcheck disable=SC2064
+trap "rm '$log'" EXIT
+
+if ! xh GET\
+    -A bearer -a "$CORTEX_PAT" \
+    "http://localhost:8080${url_path}" \
+    -b | jq . | bat -ljson --pager=never ; then
+    bat "$log"
+fi
+
