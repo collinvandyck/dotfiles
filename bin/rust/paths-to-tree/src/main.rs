@@ -1,6 +1,7 @@
 use anyhow::{Context, Result, bail};
+use colored::{Color, Colorize};
 use itertools::Itertools;
-use std::io::{self, BufRead, BufReader};
+use std::io::{self, BufRead, BufReader, Write};
 
 // Converts a list of paths into a tree structure
 //
@@ -87,8 +88,7 @@ impl<'a> Entry<'a> {
     }
 
     fn print(&self) {
-        let mut cursors = vec![];
-        self.print_tree(&mut cursors);
+        self.print_tree(&mut vec![]);
     }
 
     fn print_tree<'b>(&'a self, cursors: &'b mut Vec<Cursor<'a>>) {
@@ -103,32 +103,29 @@ impl<'a> Entry<'a> {
                 let part = {
                     if is_leaf {
                         if is_first {
-                            if is_only {
-                                //
-                                start
-                            } else {
-                                end
-                            }
+                            if is_only { start } else { end }
                         } else if is_last {
                             start
                         } else {
                             end
                         }
                     } else {
-                        if !is_last {
-                            //
-                            mid
-                        } else {
-                            blank
-                        }
+                        if !is_last { mid } else { blank }
                     }
                 };
                 prefix.push_str(part);
             }
             prefix
         };
-        use std::io::Write;
-        if write!(std::io::stdout(), "{prefix}{}\n", self.name).is_err() {
+
+        let prefix = prefix.color(Color::Magenta);
+        let is_dir = !self.children.is_empty();
+        let name = if is_dir {
+            self.name.color(Color::Blue)
+        } else {
+            self.name.color(Color::BrightCyan)
+        };
+        if write!(std::io::stdout(), "{prefix}{name}\n").is_err() {
             // can't write to stdout, just quit
             return;
         }
@@ -214,7 +211,6 @@ impl Lines for &'static str {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use itertools::Itertools;
 
     #[test]
     fn empty() {
