@@ -29,11 +29,8 @@ log=$(mktemp)
 # shellcheck disable=SC2064
 trap "rm '$log'" EXIT
 
-if ! xh GET \
-    -A bearer -a "$CORTEX_PAT" \
-    "http://localhost:8080${url_path}" \
-    -b \
-	"$@" 2>/dev/null >"$log"; then
+URL="http://localhost:8080${url_path}"
+if ! xh GET -A bearer -a "$CORTEX_PAT" -b --check-status "$URL" "$@" > "$log"; then
 	if [ -n "$(cat "$log")" ]; then
 		<"$log" jq . | bat -ljson
 	else
@@ -42,5 +39,5 @@ if ! xh GET \
 	exit 1
 fi
 
-cat "$log" | jq "$JQ" | bat -ljson --pager=never
+<"$log" jq "$JQ" | bat -ljson --pager=never
 
