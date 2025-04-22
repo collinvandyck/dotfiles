@@ -146,6 +146,12 @@ bootstrap() {
 	exec gw wr
 }
 
+start-testdb() {
+	if ! nc -z localhost 5433 &>/dev/null; then
+		spinner "Starting testdb" -- make testdb
+	fi
+}
+
 # shellcheck disable=2163
 for func in $(declare -F | awk '{print $3}'); do
 	export -f "$func"
@@ -159,6 +165,7 @@ case $cmd in
 		;;
 	wit)
 		shift
+		start-testdb
 		run-tests web:integrationTest "$@"
 		;;
 	qeit)
