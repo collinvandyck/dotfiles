@@ -171,7 +171,7 @@ case $cmd in
 		while ! nc -z localhost 8080; do
 			sleep 0.5
 		done &> /tmp/gw-wait.log
-		notify BE is ready 👍
+		notify ✅ BE is ready
 		" &
 		gradle web:bootRun --info --console=plain 2>&1 | tee /tmp/gw-wr.log | tspin
 		;;

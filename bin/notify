@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-body="✅ ${*}"
+body="${*}"
 arch=$(uname -s)
 case $arch in
     Darwin)
