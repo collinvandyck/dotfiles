@@ -12,6 +12,7 @@ url_path=$1
 shift
 
 JQ="."
+ARGS=()
 
 while [ $# -gt 0 ]; do
 	case $1 in
@@ -20,6 +21,7 @@ while [ $# -gt 0 ]; do
 			JQ=$1
 			;;
 		*)
+			ARGS+=("$1")
 			;;
 	esac
 	shift
@@ -30,7 +32,7 @@ log=$(mktemp)
 trap "rm '$log'" EXIT
 
 URL="http://localhost:8080${url_path}"
-if ! xh GET -A bearer -a "$CORTEX_PAT" -b --check-status "$URL" "$@" > "$log"; then
+if ! xh GET -A bearer -a "$CORTEX_PAT" -b --check-status "$URL" "${ARGS[@]}" > "$log"; then
 	if [ -n "$(cat "$log")" ]; then
 		<"$log" jq . | bat -ljson
 	else
