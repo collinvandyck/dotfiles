@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Runs git log, specifying main and master globs.
 #
@@ -8,9 +9,6 @@
 # TODO: exclude the branch decorations to anything that does not match
 # git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --decorate-refs-exclude='refs/remotes/origin/*'"
 # git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --exclude='refs/remotes/origin/*' --decorate-refs-exclude='refs/remotes/origin/*'"
-
-set -e # exit on failure
-set -u # fail if vars are not defined
 
 # Initialize array with default globs
 globs=(
