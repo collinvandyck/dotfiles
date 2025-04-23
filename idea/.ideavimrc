@@ -26,8 +26,8 @@ set incsearch
 set smartcase
 set ignorecase
 
-set which-key
-let g:WhichKey_FontSize = 20
+"set which-key
+"let g:WhichKey_FontSize = 20
 
 let mapleader=","
 
