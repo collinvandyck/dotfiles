@@ -19,6 +19,7 @@ log-file() {
 
 gradle-logged() {
 	local file; file=$(log-file)
+	GRADLE_LOG="$file"
 	local status; status=$(mktemp)
 	(
 		set +e
@@ -36,25 +37,38 @@ gradle-logged() {
 	) > >(tee "$file")
 	local ret; ret=$(cat "$status")
 	if [[ "$ret" != "0" ]]; then
-		# here something has failed. only load logs if not interrupted
-		if [[ "$ret" != "interrupted" ]] && [[ "$ret" != "130" ]]; then
-			nvim +$ "$file"
-		fi
+		# here something has failed. convert interrupted -> 130
+		case "$ret" in
+			"interrupted"|"130")
+				return 130
+				;;
+			0)
+				return 0
+				;;
+			*)
+				return 1
+				;;
+		esac
 	fi
 }
 
 run-tests() {
 	local target; target=$1
 	shift
+
 	local names="$*"
 	local args=()
 	for arg in "$@"; do
 		args+=("--tests" "$arg")
 	done
+
 	if gradle-logged "${target}" "${TEST_OPTS[@]}" "${args[@]}"; then
 		notify "✅ Tests passed\n${names}"
 	else
-		notify "❌ Tests failed\n${names}"
+		[[ $? -eq 1 ]] && {
+			notify "❌ Tests failed\n${names}"
+			nvim +$ "$GRADLE_LOG"
+		}
 	fi
 }
 
