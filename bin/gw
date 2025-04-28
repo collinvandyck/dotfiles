@@ -142,7 +142,8 @@ gen() {
 }
 
 clean() {
-	gradle clean "$@"
+	shift
+	spinner "Cleaning..." -- sh -c gradle clean "$@"
 }
 
 fmt() {
@@ -198,10 +199,6 @@ case $cmd in
 	qeit)
 		shift
 		run-tests query-engine:integrationTest "$@"
-		;;
-	clean)
-		shift
-		spinner "Cleaning..." -- sh -c clean "$@"
 		;;
 	wr)
 		spinner "Killing bootrun..." -- sh -c kill-bootrun
