@@ -3,7 +3,32 @@ set -euo pipefail
 
 # waits for a port to become available
 
-port=$1
+usage() {
+	echo "wait-port [HOSTNAME] PORT" >&2
+	exit 1
+}
 
-while ! nc -z localhost "$port" &>/dev/null; do sleep 0.5; done
+HOST=localhost
+PORT=
+
+case $# in
+	1)
+		PORT=$1
+		shift
+		;;
+	2)
+		HOST=$1
+		shift
+		PORT=$1
+		shift
+		;;
+	*)
+		usage
+		;;
+esac
+
+[ -z "$HOST" ] && usage
+[ -z "$PORT" ] && usage
+
+while ! nc -z "$HOST" "$PORT" &>/dev/null; do sleep 0.5; done
 
