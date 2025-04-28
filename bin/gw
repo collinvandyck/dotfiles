@@ -59,7 +59,11 @@ run-tests() {
 	local names="$*"
 	local args=()
 	for arg in "$@"; do
-		args+=("--tests" "$arg")
+		if [[ "$arg" == -* ]]; then
+			args+=("$arg")
+		else
+			args+=("--tests" "$arg")
+		fi
 	done
 
 	if gradle-logged "${target}" "${TEST_OPTS[@]}" "${args[@]}"; then
