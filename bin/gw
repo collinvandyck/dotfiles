@@ -180,6 +180,12 @@ start-testdb() {
 	fi
 }
 
+start-db() {
+	if ! nc -z localhost 5432 &>/dev/null; then
+		spinner "Starting db" -- make db
+	fi
+}
+
 # shellcheck disable=2163
 for func in $(declare -F | awk '{print $3}'); do
 	export -f "$func"
