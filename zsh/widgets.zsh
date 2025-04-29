@@ -2,7 +2,9 @@
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
-bindkey '\e' vi-cmd-mode 
+# emacs is the king of line editing
+# bindkey '\e' vi-cmd-mode
+
 #KEYTIMEOUT=1 # 100ms
 
 prepend-sudo() {
