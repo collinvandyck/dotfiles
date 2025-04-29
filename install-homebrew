@@ -136,6 +136,7 @@ brew install --quiet --formula \
 	xz \
 	zig \
 	zlib \
+	zls \
 	zsh-autosuggestions \
 	zoxide \
 	;
