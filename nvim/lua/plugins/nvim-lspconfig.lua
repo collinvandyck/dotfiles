@@ -200,5 +200,10 @@ return {
 				return settings
 			end)(),
 		})
+		require("lspconfig").zls.setup({
+			capabilities = capabilities,
+			handlers = handlers,
+			on_attach = custom_attach,
+		})
 	end
 }
