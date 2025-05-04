@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 usage() {
@@ -36,14 +35,14 @@ fi
 ensure_mcp() {
     local repo dir
     repo=$1
-    dir=~/.claude/servers/$(basename $repo .git)
+    dir=~/.claude/servers/$(basename "$repo" .git)
     echo "Configuring $repo"
     if ! [[ -d $dir ]]; then
         echo "Cloning $repo"
-        git clone $repo $dir
-        (cd $dir && npm install --no-package-lock)
+        git clone "$repo" "$dir"
+        (cd "$dir" && npm install --no-package-lock)
     else
-        (cd $dir && {
+        (cd "$dir" && {
             local before=""
             before=$(git rev-parse HEAD)
             git pull >/dev/null
