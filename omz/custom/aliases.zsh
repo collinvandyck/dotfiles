@@ -14,6 +14,7 @@ alias nman='nvim "+Man!"'
 alias al='awslocal'
 alias d='docker'
 alias sf='search-files'
+alias mann='helpman'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
