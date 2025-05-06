@@ -22,6 +22,8 @@ ln -sf ~/.dotfiles/zed/settings.json ~/.config/zed/
 ln -sf ~/.dotfiles/zed/keymap.json ~/.config/zed/
 ln -sf ~/.dotfiles/zed/tasks.json ~/.config/zed/
 
+symlink() { ~/.dotfiles/bin/symlink "$@"; }
+
 if [[ -d "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default" ]]; then
     ln -sf ~/.dotfiles/firefox/profile/user.js "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default/user.js"
 fi
@@ -34,23 +36,23 @@ if [[ "$(uname)" =~ "Darwin" ]]; then
 
 	# lazygit
 	mkdir -p ~/Library/Application\ Support/lazygit
-	bin/symlink ~/.dotfiles/lazygit/config.yml ~/Library/Application\ Support/lazygit
+	symlink ~/.dotfiles/lazygit/config.yml ~/Library/Application\ Support/lazygit
 
 	# urlwatch
-	bin/symlink ~/.dotfiles/urlwatch ~/Library/Application\ Support/urlwatch
+	symlink ~/.dotfiles/urlwatch ~/Library/Application\ Support/urlwatch
 
 	# nushell
 	mkdir -p ~/Library/Application\ Support/nushell
-	bin/symlink ~/.dotfiles/nushell/config.nu ~/Library/Application\ Support/nushell
-	bin/symlink ~/.dotfiles/nushell/env.nu ~/Library/Application\ Support/nushell
+	symlink ~/.dotfiles/nushell/config.nu ~/Library/Application\ Support/nushell
+	symlink ~/.dotfiles/nushell/env.nu ~/Library/Application\ Support/nushell
 
 	# bacon
 	mkdir -p ~/Library/Application\ Support/org.dystroy.bacon
-	bin/symlink ~/.dotfiles/bacon/prefs.toml ~/Library/Application\ Support/org.dystroy.bacon
+	symlink ~/.dotfiles/bacon/prefs.toml ~/Library/Application\ Support/org.dystroy.bacon
 else
 	mkdir -p ~/.config/lazygit
-	bin/symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit/config.yml
-	bin/symlink ~/.dotfiles/urlwatch ~/.cofnig/urlwatch
+	symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit/config.yml
+	symlink ~/.dotfiles/urlwatch ~/.cofnig/urlwatch
 fi
 
 if [ -d ~/.config/broot ]; then
@@ -60,45 +62,47 @@ fi
 
 if ! [[ -d /usr/local/bin ]]; then
     sudo mkdir -p /usr/local/bin
-    sudo chown $USER /usr/local/bin
+    sudo chown "$USER" /usr/local/bin
 fi
 
-if [[ -d ~/code/notes ]]; then
-    ln -sf ~/.dotfiles/obsidian/.obsidian.vimrc ~/code/notes/.obsidian.vimrc
-fi
+# we do not symlink obsidian into the notes repo anymore b/c it doesn't work
+# when using obsidian on windows
+ovimrc=~/code/notes/.obsidian.vimrc
+[[ -L $ovimrc ]] && rm $ovimrc
+[[ -d ~/code/notes ]] && cp ~/.dotfiles/obsidian/.obsidian.vimrc ~/code/notes
 
 
-bin/symlink ~/.dotfiles/atuin                      ~/.config/atuin
-bin/symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
-bin/symlink ~/.dotfiles/broot                      ~/.config/broot
-bin/symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
-bin/symlink ~/.dotfiles/direnv                     ~/.config/direnv
-bin/symlink ~/.dotfiles/dlv                        ~/.config/dlv
-bin/symlink ~/.dotfiles/git/.gitconfig             ~
-bin/symlink ~/.dotfiles/git/.gitignore_global      ~
-bin/symlink ~/.dotfiles/git/tigrc                  ~/.tigrc
-bin/symlink ~/.dotfiles/hammerspoon                ~/.hammerspoon
-bin/symlink ~/.dotfiles/idea/.ideavimrc            ~/.ideavimrc
-bin/symlink ~/.dotfiles/kitty                      ~/.config/kitty
-bin/symlink ~/.dotfiles/lsd                        ~/.config/lsd
-bin/symlink ~/.dotfiles/mutagen/.mutagen.yml       ~/.mutagen.yml
-bin/symlink ~/.dotfiles/nvim                       ~/.config/nvim
-bin/symlink ~/.dotfiles/powerline                  ~/.config/powerline
-bin/symlink ~/.dotfiles/ripgrep/.ripgrep.conf      ~/.ripgrep.conf
-bin/symlink ~/.dotfiles/runcom/.imwheelrc          ~
-bin/symlink ~/.dotfiles/runcom/p10k.zsh            ~/.p10k.zsh
-bin/symlink ~/.dotfiles/sqlite/sqliterc            ~/.sqliterc
-bin/symlink ~/.dotfiles/ssh/config                 ~/.ssh/config
-bin/symlink ~/.dotfiles/starship/starship.toml     ~/.config/
-bin/symlink ~/.dotfiles/tailspin                   ~/.config/tailspin
-bin/symlink ~/.dotfiles/taskfile/taskfile.yml      ~/.taskfile
-bin/symlink ~/.dotfiles/tmux-powerline             ~/.config/tmux-powerline
-bin/symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
-bin/symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
-bin/symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
-bin/symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
-bin/symlink ~/.dotfiles/zellij                     ~/.config/zellij
-bin/symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
+symlink ~/.dotfiles/atuin                      ~/.config/atuin
+symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
+symlink ~/.dotfiles/broot                      ~/.config/broot
+symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
+symlink ~/.dotfiles/direnv                     ~/.config/direnv
+symlink ~/.dotfiles/dlv                        ~/.config/dlv
+symlink ~/.dotfiles/git/.gitconfig             ~
+symlink ~/.dotfiles/git/.gitignore_global      ~
+symlink ~/.dotfiles/git/tigrc                  ~/.tigrc
+symlink ~/.dotfiles/hammerspoon                ~/.hammerspoon
+symlink ~/.dotfiles/idea/.ideavimrc            ~/.ideavimrc
+symlink ~/.dotfiles/kitty                      ~/.config/kitty
+symlink ~/.dotfiles/lsd                        ~/.config/lsd
+symlink ~/.dotfiles/mutagen/.mutagen.yml       ~/.mutagen.yml
+symlink ~/.dotfiles/nvim                       ~/.config/nvim
+symlink ~/.dotfiles/powerline                  ~/.config/powerline
+symlink ~/.dotfiles/ripgrep/.ripgrep.conf      ~/.ripgrep.conf
+symlink ~/.dotfiles/runcom/.imwheelrc          ~
+symlink ~/.dotfiles/runcom/p10k.zsh            ~/.p10k.zsh
+symlink ~/.dotfiles/sqlite/sqliterc            ~/.sqliterc
+symlink ~/.dotfiles/ssh/config                 ~/.ssh/config
+symlink ~/.dotfiles/starship/starship.toml     ~/.config/
+symlink ~/.dotfiles/tailspin                   ~/.config/tailspin
+symlink ~/.dotfiles/taskfile/taskfile.yml      ~/.taskfile
+symlink ~/.dotfiles/tmux-powerline             ~/.config/tmux-powerline
+symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
+symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
+symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
+symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
+symlink ~/.dotfiles/zellij                     ~/.config/zellij
+symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
 
 # old tm path
 rm -f /usr/local/bin/tm
