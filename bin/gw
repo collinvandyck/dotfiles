@@ -7,6 +7,11 @@ trap_kill_children
 
 TEST_OPTS=(--info --console=plain)
 
+bail() {
+	echo "$@" >&2
+	exit 1
+}
+
 gradle() {
 	./gradlew "$@"
 }
@@ -184,6 +189,19 @@ start-db() {
 	if ! nc -z localhost 5432 &>/dev/null; then
 		spinner "Starting db" -- make db
 	fi
+}
+
+# returns the root dir of the current project
+project-root() {
+	git rev-parse --show-toplevel
+}
+
+# deletes the project gradle caches, build dirs, etc.
+nuke() {
+	cd "$(project-root)"
+	[ -f gradle.properties ] || bail "not in a gradle project"
+	fd -H -I --type d '^.gradle$' | xargs rm -rf
+	rm -rf web/build
 }
 
 # shellcheck disable=2163
