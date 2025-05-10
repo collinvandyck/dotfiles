@@ -80,7 +80,7 @@ if [[ "$(uname -a)" =~ WSL2 ]]; then
 fi
 
 sudo apt autoremove -y
-sudo chsh -s $(which zsh) $USER
+sudo chsh -s "$(which zsh)" "$USER"
 
 # for testing binaries on a fresh install
 export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
@@ -88,7 +88,7 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 # golang
 (
 	echo "checking golang"
-	if ! [[ "$(go version 2>/dev/null || true)" =~ "go version go1.23.4" ]]; then
+	if ! [[ "$(go version 2>/dev/null || true)" == *"go version go1.23.4"* ]]; then
 		cd "$(mktemp -d)"
 		if [[ "$(uname -i)" == "aarch64" ]]; then
 			artifact="go1.23.4.linux-arm64.tar.gz"
@@ -105,7 +105,7 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 (
 	echo "checking neovim"
 	nvim_version="v0.10.3"
-	if ! [[ "$(nvim --version 2>/dev/null || true)" =~ "NVIM ${nvim_version}" ]]; then
+	if ! [[ "$(nvim --version 2>/dev/null || true)" == *"NVIM ${nvim_version}"* ]]; then
 		cd "$(mktemp -d)"
 		git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
 		cd neovim
@@ -121,7 +121,7 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 # lazygit
 (
-	if ! [[ "$(lazygit --version || true)" =~ "version=0.44.1" ]]; then
+	if ! [[ "$(lazygit --version || true)" == *"version=0.44.1"* ]]; then
 		cd "$(mktemp -d)"
 		LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
 		echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
@@ -159,7 +159,7 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 # bash-language-server
 (
 	echo "checking bash-language-server"
-	if ! [[ "$(bash-language-server --version 2>/dev/null || true)" =~ "4.7.0" ]]; then
+	if ! [[ "$(bash-language-server --version 2>/dev/null || true)" == *"4.7.0"* ]]; then
 		sudo snap install bash-language-server --classic
 	fi
 )
