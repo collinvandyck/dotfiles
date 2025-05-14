@@ -80,6 +80,9 @@ nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
 nmap <leader>tb <Action>(ToggleBookmark)
 nmap <leader>taid <Action>(VimFindActionIdAction)
 
+" git
+nmap <leader>gcb <Action>(Git.CompareWithBranch)
+
 nmap gT <Action>(GotoTest)
 nmap gy <Action>(GotoTest)
 nmap gs <Action>(FileStructurePopup)
