@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -euo pipefail
 
 export HOMEBREW_NO_ENV_HINTS=1
@@ -12,8 +11,8 @@ if [ ! "$(command -v brew)" ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# required for springboot
-brew tap spring-io/tap
+brew tap spring-io/tap              # required for springboot
+brew tap launchdarkly/homebrew-tap  # for the LD cli
 
 # update homebrew packages
 brew update --quiet
@@ -88,6 +87,7 @@ brew install --quiet --formula \
 	kompose \
 	lazydocker \
 	lazygit \
+	ldcli \
 	less \
 	libomp \
 	llm \
