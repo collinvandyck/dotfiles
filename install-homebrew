@@ -49,6 +49,7 @@ brew install --quiet --formula \
 	asdf \
 	bash-language-server \
 	bat-extras \
+	borkdude/brew/babashka \
 	broot \
 	btop \
 	bzip2 \
