@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git push:*)",
+      "Bash(cat:*)",
+      "Bash(git add:*)",
+      "Bash(git diff:*)",
+      "Bash(git commit:*)",
+      "Bash(~/.dotfiles/bin/notify:*)",
+      "Bash(go build:*)",
+      "Bash(./gw-go:*)",
+      "Bash(~/.dotfiles/bin/notify:*)"
+    ],
+    "deny": []
+  }
+}
