@@ -1,23 +1,23 @@
 local group = vim.api.nvim_create_augroup("StandardAutoCommands", { clear = true })
 
 
-vim.api.nvim_create_autocmd({ "FileType" }, {
-	group = group,
-	pattern = { "man" },
-	callback = function()
-		local win = vim.api.nvim_get_current_win()
-		local buf = vim.api.nvim_win_get_buf(win)
-		vim.schedule(function()
-			local buf2 = vim.api.nvim_win_get_buf(win)
-			local redraw = buf == buf2
-			require("aerial").open()
-			if redraw then
-				vim.cmd('wincmd p')
-				vim.wo.wrap = false
-			end
-		end)
-	end
-})
+--vim.api.nvim_create_autocmd({ "FileType" }, {
+--group = group,
+--pattern = { "man" },
+--callback = function()
+--local win = vim.api.nvim_get_current_win()
+--local buf = vim.api.nvim_win_get_buf(win)
+--vim.schedule(function()
+--local buf2 = vim.api.nvim_win_get_buf(win)
+--local redraw = buf == buf2
+--require("aerial").open()
+--if redraw then
+--vim.cmd('wincmd p')
+--vim.wo.wrap = false
+--end
+--end)
+--end
+--})
 
 -- resize the windows on all tabpages on startup. this addresses an issue where
 -- nvim-tree is not restored from the session plugin, and a split will be
