@@ -45,6 +45,13 @@ customCommands:
     subprocess: true
     showOutput: true
 
+  - context: 'files'
+    key: 'w'
+    title: 'wip'
+    command: "git add -A && git commit -m wip || true"
+    subprocess: false
+    showOutput: false
+
   - key: '<c-f>'  # Ctrl-f (think "full screen") to show selected commit
     context: 'commits'
     command: "git -c delta.pager='less -R +g' show {{.SelectedLocalCommit.Sha}}"
