@@ -111,6 +111,13 @@ insert-fixtures() {
 	get-catalog-pages &>/dev/null # force default catalog set
 	create-relationship-type rt-norm --src '["domain","team","service"]' --dst '["service"]'
 	create-relationship-type rt-cat --create-catalog --src '["domain","team","service"]' --dst '["service"]'
+
+	# set up parent relationships
+	set-entity-parent service-001 domain-001
+	set-entity-parent service-002 domain-001
+	set-entity-parent service-003 domain-002
+	set-entity-parent domain-002 domain-001
+
 }
 
 create-api-key() {
