@@ -7,6 +7,7 @@ gui:
   mainPanelSplitMode: "flexible"
   border: rounded
   showDivergenceFromBaseBranch: arrowAndNumber
+  showPanelJumps: false
   statusPanelView: allBranchesLog
   skipNoStagedFilesWarning: true
   skipRewordInEditorWarning: true
@@ -44,3 +45,9 @@ customCommands:
     subprocess: true
     showOutput: true
 
+  - key: '<c-f>'  # Ctrl-f (think "full screen") to show selected commit
+    context: 'commits'
+    command: "git -c delta.pager='less -R +g' show {{.SelectedLocalCommit.Sha}}"
+    subprocess: true
+    description: "Show selected commit"
+    stream: true
