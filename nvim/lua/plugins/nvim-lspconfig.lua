@@ -205,5 +205,11 @@ return {
 			handlers = handlers,
 			on_attach = custom_attach,
 		})
+		require("lspconfig").clojure_lsp.setup({
+			capabilities = capabilities,
+			handlers = handlers,
+			on_attach = custom_attach,
+			filetypes = { 'clojure', 'edn', 'clojurescript' },
+		})
 	end
 }
