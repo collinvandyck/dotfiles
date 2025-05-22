@@ -109,6 +109,8 @@ insert-fixtures() {
 	for x in $(seq 1 5); do cortex-create-team "$(printf 'team-%03d\n' "$x")"; done
 	for x in $(seq 1 5); do cortex-create-domain "$(printf 'domain-%03d\n' "$x")"; done
 	get-catalog-pages &>/dev/null # force default catalog set
+
+	create-relationship-type service-domains --create-catalog --src '["service", "domain"]' --dst '["service", "domain"]'
 	create-relationship-type rt-norm --src '["domain","team","service"]' --dst '["service"]'
 	create-relationship-type rt-cat --create-catalog --src '["domain","team","service"]' --dst '["service"]'
 
@@ -118,6 +120,10 @@ insert-fixtures() {
 	set-entity-parent service-003 domain-002
 	set-entity-parent domain-002 domain-001
 
+	# set up service-domains relationships
+	add-to-relationship-type --rel service-domains --src service-001 --dst domain-003
+	add-to-relationship-type --rel service-domains --src service-002 --dst domain-002
+	add-to-relationship-type --rel service-domains --src service-003 --dst service-001
 }
 
 create-api-key() {
