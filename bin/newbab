@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	echo "usage: $(basename "$0") [name] [--local]"
+	exit 1
+}
+
+fatal() {
+	echo "fatal: $*" >&2
+	exit 1
+}
+
+word-segment() {
+	local word
+	while :; do
+		word=$(sed -n "$((RANDOM % $(wc -l < /usr/share/dict/words) + 1))p" /usr/share/dict/words)
+		if [[ "$word" =~ ^[a-z]+$ ]] && [[ ${#word} -gt 2 ]] && [[ ${#word} -lt 10 ]]; then
+			echo "$word"
+			return
+		fi
+	done
+}
+
+dir=""
+name=""
+
+while [[ $# -gt 0 ]]; do
+	case $1 in
+		--local)
+			dir="$(pwd)"
+			shift
+			;;
+		*)
+			[[ "$name" ]] && usage
+			name=$1
+			shift
+			;;
+	esac
+done
+
+[[ $# -gt 0 ]] && usage
+
+[[ -z $name ]] && {
+	name="$(word-segment)-$(word-segment)"
+	if [[ -z $dir ]]; then
+		dir=$(mktemp -d)
+	fi
+}
+[[ -z $dir ]] && dir=~/code
+proj=$dir/$name
+
+[[ -d $proj ]] && fatal "$proj already exists"
+mkdir -p "$proj"
+cd "$proj"
+
+if [ ! -f main.clj ]; then
+cat <<eos > main.clj
+#!/usr/bin/env bb
+
+(println (+ 41 1))
+eos
+fi
+
+if [ ! -f .justfile ]; then
+cat <<eos > .justfile
+run:
+	@bb main.clj
+
+loop:
+	@watchexec -c clear --quiet -- bb main.clj
+eos
+fi
+
+nvim main.clj
+exec zsh
+
