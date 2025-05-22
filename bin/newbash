@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Create a new bash script
 #
@@ -6,8 +7,6 @@
 #
 # # create or open the script named foo
 # newgo foo
-
-set -euo pipefail
 
 name=${1:-""}
 dir=~/.dotfiles/bin

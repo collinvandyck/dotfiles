@@ -68,6 +68,7 @@ addPaths=(
     /usr/local/go/bin
     /usr/local/bin
     ~/.dotfiles/bin
+    ~/.dotfiles/bin/clj
     ~/code/cortex-utils
     /usr/local/sqlite3/bin
     $PYENV_ROOT
