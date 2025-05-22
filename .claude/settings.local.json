@@ -9,7 +9,9 @@
       "Bash(~/.dotfiles/bin/notify:*)",
       "Bash(go build:*)",
       "Bash(./gw-go:*)",
-      "Bash(~/.dotfiles/bin/notify:*)"
+      "Bash(~/.dotfiles/bin/notify:*)",
+      "Bash(chmod:*)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }

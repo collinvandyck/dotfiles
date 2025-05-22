@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	echo "$(basename "$0") [VERB] [PATH] [OPTIONS...]" >&2
+	echo "  VERB: HTTP method (get, post, put, patch)" >&2
+	echo "  PATH: URL path" >&2
+	echo "  For GET requests: [-j|--jq [JQ_SEARCH]] [XH_OPTS]" >&2
+	echo "  For other requests: [XH_OPTS]" >&2
+	exit 1
+}
+
+[ $# -lt 2 ] && usage
+
+verb=$(echo "$1" | tr '[:lower:]' '[:upper:]')
+url_path=$2
+shift 2
+
+case $verb in
+	GET)
+		JQ="."
+		ARGS=()
+		
+		while [ $# -gt 0 ]; do
+			case $1 in
+				-j|--jq)
+					shift
+					JQ=$1
+					;;
+				*)
+					ARGS+=("$1")
+					;;
+			esac
+			shift
+		done
+		
+		log=$(mktemp)
+		# shellcheck disable=SC2064
+		trap "rm '$log'" EXIT
+		
+		URL="http://localhost:8080${url_path}"
+		if ! xh GET -A bearer -a "$CORTEX_PAT" -b --check-status "$URL" "${ARGS[@]}" > "$log"; then
+			if [ -n "$(cat "$log")" ]; then
+				<"$log" jq . | bat -ljson
+			else
+				bat "$log"
+			fi
+			exit 1
+		fi
+		
+		<"$log" jq "$JQ" | bat -ljson --pager=never
+		;;
+	POST|PUT|PATCH)
+		log=$(mktemp)
+		# shellcheck disable=SC2064
+		trap "rm '$log'" EXIT
+		
+		if ! xh "$verb" \
+		    -A bearer -a "$CORTEX_PAT" \
+		    "http://localhost:8080${url_path}" \
+		    Content-Type:"application/json;charset=UTF-8" \
+		    -v \
+		    -b \
+		    "$@" > "$log"; then
+		    bat "$log"
+		fi
+		;;
+	*)
+		echo "Unsupported verb: $verb" >&2
+		echo "Supported verbs: GET, POST, PUT, PATCH" >&2
+		exit 1
+		;;
+esac
