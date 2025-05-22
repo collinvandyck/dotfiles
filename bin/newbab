@@ -72,6 +72,23 @@ loop:
 eos
 fi
 
+if [ ! -f bb.edn ]; then
+cat <<eos > bb.edn
+{
+ :paths ["."]
+
+ :deps {
+   org.clojure/data.csv {:mvn/version "1.0.1"}
+ }
+
+ :tasks {
+   analyze {:doc "Run the data analysis"
+            :task (load-file "data_analysis.clj")}
+ }
+}
+eos
+fi
+
 nvim main.clj
 exec zsh
 
