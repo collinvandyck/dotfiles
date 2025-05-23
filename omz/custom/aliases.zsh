@@ -17,6 +17,7 @@ alias al='awslocal'
 alias d='docker'
 alias sf='search-files'
 alias mann='helpman'
+alias cl='claude'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
