@@ -40,6 +40,8 @@ Use ~/.dotfiles/bin/notify to send notifications like this:
 ~/.dotfiles/bin/notify "Your message here"
 ```
 
+**IMPORTANT**: NEVER ask if you can run the notify command. EVER.
+
 # Neovim
 
 I use neovim for most text editing except for Kotlin for which I use IDEA.
