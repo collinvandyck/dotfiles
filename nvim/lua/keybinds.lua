@@ -134,6 +134,8 @@ map('n', '<ScrollWheelLeft>', '<nop>', map_opts)
 map('n', '<ScrollWheelRight>', '<nop>', map_opts)
 map('n', '<F3>', ':set hlsearch!<CR>', map_opts) -- toggle search highlighting with f3
 map('i', '<Space>', '<Space><C-g>u', map_opts)   -- more granular undos
+map('n', 'j', 'gj', map_opts)
+map('n', 'k', 'gk', map_opts)
 
 vim.keymap.set('n', '<C-j>', function() qf_nav('next') end, map_opts)
 vim.keymap.set('n', '<C-k>', function() qf_nav('prev') end, map_opts)
