@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
-set -e # exit on failure
-set -u # fail if vars are not defined
-
-git ci "$@" || true
+git ci "$@" &>/dev/null || true
 git put
