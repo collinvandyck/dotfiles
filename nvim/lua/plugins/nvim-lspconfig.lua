@@ -55,7 +55,7 @@ return {
 			--end,
 			--})
 			local fzf = require("fzf-lua")
-			local jump_opts = { jump_to_single_result = true, sync = false, silent = true }
+			local jump_opts = { jump1 = true, sync = false, silent = true }
 			vim.keymap.set('n', 'gD', function() fzf.lsp_declarations(jump_opts) end, bufopts)
 			vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
 			vim.keymap.set('n', 'ga', fzf.lsp_code_actions, bufopts)
@@ -63,7 +63,7 @@ return {
 			vim.keymap.set('n', 'gd', function() fzf.lsp_definitions(jump_opts) end, bufopts)
 			vim.keymap.set('n', 'gr', function()
 				fzf.lsp_references({
-					jump_to_single_result = true,
+					jump1 = true,
 					sync = false,
 					ignore_current_line = true,
 					includeDeclaration = false,
