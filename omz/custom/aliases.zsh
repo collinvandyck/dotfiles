@@ -17,6 +17,8 @@ alias al='awslocal'
 alias d='docker'
 alias sf='search-files'
 alias mann='helpman'
+
+[[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
@@ -108,7 +110,6 @@ fi
 # other
 alias nowrap='cut -c -$COLUMNS'
 
-
 # ls --color makes me sad because it's hard to read.
 unalias ls
 
@@ -124,7 +125,7 @@ alias lt='ls --tree'
 alias llt='ll --tree'
 alias lld='ll -d'
 for i in $(seq 1 9); do
-	alias "llt${i}"="ll --tree --depth ${i}"
+    alias "llt${i}"="ll --tree --depth ${i}"
 done
 
 # hyperfine
