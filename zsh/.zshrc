@@ -24,21 +24,20 @@ export UPDATE_ZSH_DAYS=30
 source $ZSH/oh-my-zsh.sh
 #zprof | hd
 
-
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000
 SAVEHIST=1000
-setopt BANG_HIST                 # Treat the '!' character specially during expansion.
-setopt HIST_BEEP                 # Beep when accessing nonexistent history.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
-setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
-setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
-setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
+setopt BANG_HIST              # Treat the '!' character specially during expansion.
+setopt HIST_BEEP              # Beep when accessing nonexistent history.
+setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
+setopt HIST_IGNORE_ALL_DUPS   # Delete old recorded entry if new entry is a duplicate.
+setopt HIST_IGNORE_DUPS       # Don't record an entry that was just recorded again.
+setopt HIST_IGNORE_SPACE      # Don't record an entry starting with a space.
+setopt HIST_REDUCE_BLANKS     # Remove superfluous blanks before recording entry.
+setopt HIST_SAVE_NO_DUPS      # Don't write duplicate entries in the history file.
+setopt HIST_VERIFY            # Don't execute immediately upon history expansion.
+setopt INC_APPEND_HISTORY     # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY          # Share history between all sessions.
 
 function zshaddhistory() {
     local line=${1%%$'\n'}
@@ -51,14 +50,14 @@ function zshaddhistory() {
 
 # sources the file if it exists
 source-if() {
-	local p="$1"
-	[ -f "${p}" ] && source "${p}"
+    local p="$1"
+    [ -f "${p}" ] && source "${p}"
 }
 
 # tests if the command exists
 cmd_exists() {
-	local p="$1"
-	command -v "${p}" &>/dev/null
+    local p="$1"
+    command -v "${p}" &>/dev/null
 }
 
 # a helper to use one of the direnv modules
@@ -88,22 +87,22 @@ init-wasmer() {
     fi
 }
 init-zoxide() {
-    cmd_exists zoxide   && eval "$(zoxide init zsh --cmd z)"
+    cmd_exists zoxide && eval "$(zoxide init zsh --cmd z)"
 }
 init-just() {
-    cmd_exists just     && eval "$(just --completions zsh)"
+    cmd_exists just && eval "$(just --completions zsh)"
 }
 init-atuin() {
-    cmd_exists atuin    && eval "$(atuin init zsh --disable-up-arrow)"
+    cmd_exists atuin && eval "$(atuin init zsh --disable-up-arrow)"
 }
 init-direnv() {
-    cmd_exists direnv   && eval "$(direnv hook zsh)"
+    cmd_exists direnv && eval "$(direnv hook zsh)"
 }
 init-starship() {
     cmd_exists starship && eval "$(starship init zsh)"
 }
 init-broot() {
-    cmd_exists broot    && eval "$(broot --print-shell-function zsh)"
+    cmd_exists broot && eval "$(broot --print-shell-function zsh)"
 }
 init-completions() {
     source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
@@ -140,4 +139,3 @@ run-init-fn init-completions
 source ~/.dotfiles/zsh/widgets.zsh
 
 # zprof | head -100
-
