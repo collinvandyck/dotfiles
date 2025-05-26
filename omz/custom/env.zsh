@@ -65,6 +65,7 @@ addPaths=(
     ~/.cargo/bin
     ~/.tfenv/bin
     ~/.powerline/scripts
+    ~/.npm-global/bin
     /usr/local/go/bin
     /usr/local/bin
     ~/.dotfiles/bin
