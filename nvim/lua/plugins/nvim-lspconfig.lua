@@ -14,6 +14,25 @@ return {
 			vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 				buffer = bufnr,
 				callback = function()
+					-- Organize imports for Go files
+					if vim.bo.filetype == "go" then
+						local clients = vim.lsp.get_active_clients({ bufnr = 0 })
+						local client = clients[1]
+						if client then
+							local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
+							params.context = { only = { "source.organizeImports" } }
+							local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)
+							for cid, res in pairs(result or {}) do
+								for _, r in pairs(res.result or {}) do
+									if r.edit then
+										local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+										vim.lsp.util.apply_workspace_edit(r.edit, enc)
+									end
+								end
+							end
+						end
+					end
+					-- Format the file
 					local clients = vim.lsp.get_active_clients({ bufnr = 0 })
 					for _, client in ipairs(clients) do
 						if client.supports_method("textDocument/formatting") then
