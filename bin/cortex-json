@@ -20,7 +20,7 @@ case $verb in
 	GET)
 		JQ="."
 		ARGS=()
-		
+
 		while [ $# -gt 0 ]; do
 			case $1 in
 				-j|--jq)
@@ -33,13 +33,13 @@ case $verb in
 			esac
 			shift
 		done
-		
+
 		log=$(mktemp)
 		# shellcheck disable=SC2064
 		trap "rm '$log'" EXIT
-		
+
 		URL="http://localhost:8080${url_path}"
-		if ! xh GET -A bearer -a "$CORTEX_PAT" -b --check-status "$URL" "${ARGS[@]}" > "$log"; then
+		if ! xh GET -A bearer -a "$CORTEX_API_KEY" -b --check-status "$URL" "${ARGS[@]}" > "$log"; then
 			if [ -n "$(cat "$log")" ]; then
 				<"$log" jq . | bat -ljson
 			else
@@ -47,16 +47,16 @@ case $verb in
 			fi
 			exit 1
 		fi
-		
+
 		<"$log" jq "$JQ" | bat -ljson --pager=never
 		;;
 	POST|PUT|PATCH)
 		log=$(mktemp)
 		# shellcheck disable=SC2064
 		trap "rm '$log'" EXIT
-		
+
 		if ! xh "$verb" \
-		    -A bearer -a "$CORTEX_PAT" \
+		    -A bearer -a "$CORTEX_API_KEY" \
 		    "http://localhost:8080${url_path}" \
 		    Content-Type:"application/json;charset=UTF-8" \
 		    -v \
