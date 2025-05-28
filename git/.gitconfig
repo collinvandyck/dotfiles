@@ -1,5 +1,8 @@
 # https://blog.gitbutler.com/how-git-core-devs-configure-git/
 
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
 [user]
     name = "Collin Van Dyck"
     email = "collin@5xx.engineer"
