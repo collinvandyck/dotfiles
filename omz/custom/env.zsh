@@ -16,6 +16,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 export HOSTNAME=$(hostname)
 export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
+export BROWSER=firefox
 
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
