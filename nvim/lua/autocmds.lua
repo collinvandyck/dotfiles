@@ -35,6 +35,20 @@ vim.api.nvim_create_autocmd({ "Vimenter" }, {
 	end,
 })
 
+-- ensure nvim-tree tracking works with Go files
+vim.api.nvim_create_autocmd("BufEnter", {
+	group = group,
+	pattern = "*.go",
+	callback = function()
+		-- Force nvim-tree to update focused file if visible
+		if require("nvim-tree.view").is_visible() then
+			vim.schedule(function()
+				require("nvim-tree.api").tree.find_file()
+			end)
+		end
+	end,
+})
+
 -- if while closing a buffer we only have one normal buffer left, close
 -- nvim-tree so that the tab is destroyed.
 vim.api.nvim_create_autocmd({ "QuitPre" }, {
