@@ -13,5 +13,7 @@ return {
 				width = 0.95,
 			}
 		})
+		-- Register FzfLua as vim.ui.select backend to suppress warnings
+		require("fzf-lua").register_ui_select({ silent = true })
 	end
 }
