@@ -44,3 +44,5 @@ if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTF
 	go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
 fi
 
+echo "Installing air"
+go install github.com/air-verse/air@latest
