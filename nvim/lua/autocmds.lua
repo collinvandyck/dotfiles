@@ -122,6 +122,30 @@ vim.api.nvim_create_autocmd("BufEnter", {
 	end,
 })
 
+-- flash nvim background when gaining focus (similar to tmux pane flash)
+vim.api.nvim_create_autocmd("FocusGained", {
+	group = group,
+	pattern = "*",
+	callback = function()
+		-- Store original background
+		local original_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
+		
+		-- Set flash background (black)
+		vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
+		vim.cmd("redraw")
+		
+		-- Restore original background after delay
+		vim.defer_fn(function()
+			if original_bg then
+				vim.api.nvim_set_hl(0, "Normal", { bg = original_bg })
+			else
+				vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+			end
+			vim.cmd("redraw")
+		end, 50)
+	end,
+})
+
 -- trims trailing spaces before writing text files
 vim.api.nvim_create_autocmd("BufWritePre", {
 	group = group,
