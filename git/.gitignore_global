@@ -13,3 +13,4 @@ profile*.svg
 .mutagen.yml
 slammo.sql
 CLAUDE.md
+.claude
