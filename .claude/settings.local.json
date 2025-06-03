@@ -17,7 +17,9 @@
       "WebFetch(domain:docs.anthropic.com)",
       "Bash(ls:*)",
       "Bash(find:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(uv:*)",
+      "Bash(/Users/collin/.local/bin/pyright --version)"
     ],
     "deny": []
   },

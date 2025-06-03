@@ -8,3 +8,6 @@ pyenv global 3.11.8
 eval "$(pyenv init -)"
 pip install uv awscli-local
 
+# Install pyright language server
+uv tool install pyright
+
