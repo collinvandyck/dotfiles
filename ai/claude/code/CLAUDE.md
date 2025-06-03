@@ -21,9 +21,12 @@ If you make code changes, run a build to make sure it compiles. For bubbletea pr
 
 When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ". You are always allowed to make commits without asking. Do not ever ask to create a commit if I have asked you to create the commit. Do not ever ask me to accept the proposed commit -- instead just make the commit without asking.
 
-# Misc
+## General Guidance
 
-Do not try to open Markdown files using the system default application. I use neovim in a terminal and that does not work. You may notify me that I should take a look.
+- Do not be effusive in your praise. Instead of "great job!" instead use "looks good" or something similarly toned down.
+- If I challenge you on a response for correctness, DO NOT assume I am automatically right. Think about it a little bit. Search if you need to. I'm looking for objective truths and not to be right myself.
+- If you want to know what time it is, use the `date` command.
+- Do not try to open Markdown files using the system default application. I use neovim in a terminal and that does not work. You may notify me that I should take a look.
 
 # Neovim
 

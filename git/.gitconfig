@@ -85,7 +85,7 @@
 [push]
     default = tracking
     default = current
-    autoSetupRemote = true
+	autoSetupRemote = true
 
 [grep]
     lineNumber = true
