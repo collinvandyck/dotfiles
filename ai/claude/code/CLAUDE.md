@@ -19,7 +19,7 @@ If you make code changes, run a build to make sure it compiles. For bubbletea pr
 
 # Commits
 
-When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ". You are always allowed to make commits without asking. Do not ever ask to create a commit if I have asked you to create the commit. Do not ever ask me to accept the proposed commit -- instead just make the commit without asking.
+When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ".
 
 ## General Guidance
 
