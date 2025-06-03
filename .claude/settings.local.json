@@ -19,7 +19,8 @@
       "Bash(find:*)",
       "Bash(rg:*)",
       "Bash(uv:*)",
-      "Bash(/Users/collin/.local/bin/pyright --version)"
+      "Bash(/Users/collin/.local/bin/pyright --version)",
+      "Bash(/Users/collin/.local/bin/pyright-langserver --help)"
     ],
     "deny": []
   },
