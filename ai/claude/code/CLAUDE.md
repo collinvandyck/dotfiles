@@ -31,4 +31,8 @@ When you make a commit, keep the title as brief as possible but also meaningful.
 # Neovim
 
 I use neovim for most text editing except for Kotlin for which I use IDEA.
-My neovim config lives in ~/.dotfiles/nvim.
+
+- My neovim config lives in ~/.dotfiles/nvim.
+- The neovim init is in nvim/init.lua.
+- The nvim/lua/plugins/nvim-lspconfig.lua
+
