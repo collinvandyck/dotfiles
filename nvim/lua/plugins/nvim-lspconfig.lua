@@ -58,6 +58,20 @@ return {
 			local jump_opts = { jump1 = true, sync = false, silent = true }
 			vim.keymap.set('n', 'gD', function() fzf.lsp_declarations(jump_opts) end, bufopts)
 			vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+			-- Custom keymap to open hover in split
+			vim.keymap.set('n', '<leader>K', function()
+				local params = vim.lsp.util.make_position_params()
+				vim.lsp.buf_request(0, 'textDocument/hover', params, function(err, result, ctx, config)
+					if result and result.contents then
+						local lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+						local bufnr = vim.api.nvim_create_buf(false, true)
+						vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+						vim.cmd('vsplit')
+						vim.api.nvim_win_set_buf(0, bufnr)
+						vim.bo[bufnr].filetype = 'markdown'
+					end
+				end)
+			end, bufopts)
 			vim.keymap.set('n', 'ga', fzf.lsp_code_actions, bufopts)
 			vim.keymap.set('n', 'gt', function() fzf.lsp_typedefs(jump_opts) end, bufopts)
 			vim.keymap.set('n', 'gd', function() fzf.lsp_definitions(jump_opts) end, bufopts)
