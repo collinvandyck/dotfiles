@@ -1,3 +1,12 @@
+# General Guidance
+
+- NEVER praise me, or my questions, or my code.
+- NEVER end a sentence with !
+- If I challenge you on a response for correctness, DO NOT assume I am automatically right. Think about it a little bit. Search if you need to. I'm looking for objective truths and not to be right myself.
+- If you want to know what time it is, use the `date` command.
+- Do not try to open Markdown files using the system default application. I use neovim in a terminal and that does not work. You may notify me that I should take a look.
+- In all cases, assume a conversational but professional tone. Don't be so casual as to say "just do XYZ". Drop the "just" and things like that.
+
 # Commands
 
 On my system, `bat` is aliased to `cat`. If you want to use `cat` use `command cat` instead.
@@ -11,22 +20,9 @@ I may type in a number of aliased commands. The aliases are:
 
 If I type the alias, execute the associated command. Some aliases might take additional args, in some cases.
 
-# Workflow
-
-After you have finished making changes and would otherwise wait for additional commands, make a commit to checkpoint our progress. Follow commit guidelines.
-
-If you make code changes, run a build to make sure it compiles. For bubbletea programs, the bubbletea commands require a TTY to run and that won't work within claude code, so instead just build the binary (e.g. go build [args])
-
 # Commits
 
-When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ".
-
-## General Guidance
-
-- Do not be effusive in your praise. Instead of "great job!" instead use "looks good" or something similarly toned down.
-- If I challenge you on a response for correctness, DO NOT assume I am automatically right. Think about it a little bit. Search if you need to. I'm looking for objective truths and not to be right myself.
-- If you want to know what time it is, use the `date` command.
-- Do not try to open Markdown files using the system default application. I use neovim in a terminal and that does not work. You may notify me that I should take a look.
+- When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ".
 
 # Neovim
 
