@@ -56,6 +56,7 @@ end
 local tree_toggle = function()
 	vim.notify("toggle")
 	local api = require('nvim-tree.api')
+	local bufn = vim.api.nvim_get_current_buf()
 	vim.cmd("NvimTreeToggle")
 	if bufn then
 		vim.api.nvim_set_current_buf(bufn)
