@@ -20,10 +20,6 @@ I may type in a number of aliased commands. The aliases are:
 
 If I type the alias, execute the associated command. Some aliases might take additional args, in some cases.
 
-# Commits
-
-- When you make a commit, keep the title as brief as possible but also meaningful. Your commit messages should be prefixed with "claude: ".
-
 # Neovim
 
 I use neovim for most text editing except for Kotlin for which I use IDEA.
