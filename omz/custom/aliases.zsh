@@ -20,6 +20,8 @@ alias mann='helpman'
 
 [[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
+alias claude-sonnet='claude --model sonnet'
+alias claude-opus='claude --model opus'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
