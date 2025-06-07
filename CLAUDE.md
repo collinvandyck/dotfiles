@@ -90,15 +90,6 @@ When modifying the dotfiles:
 
 On my system, `bat` is aliased to `cat`. If you want to use `cat` use `command cat` instead.
 
-# Aliases
-
-I may type in a number of aliased commands. The aliases are:
-
-- `ci`, `commit`: Create a commit as directed below. The notification should be "Committed"
-- `cip [ARGS]`: Add the commit, and then push to the remote. The notification should be "Changes pushed"
-
-If I type the alias, execute the associated command. Some aliases might take additional args, in some cases.
-
 # Misc
 
 Do not try to open Markdown files using the system default application. I use neovim in a terminal and that does not work. You may notify me that I should take a look.

@@ -4,6 +4,13 @@ return {
 		"cmp"
 	},
 	config = function()
+		-- Delete default LSP keybindings to prevent conflicts
+		pcall(vim.keymap.del, 'n', 'grr')
+		pcall(vim.keymap.del, 'n', 'grn')
+		pcall(vim.keymap.del, 'n', 'gri')
+		pcall(vim.keymap.del, 'n', 'gra')
+		pcall(vim.keymap.del, 'x', 'gra')
+
 		local lsp_util = require "lspconfig/util"
 		-- client, buffnr
 		local custom_attach = function(_, bufnr)
