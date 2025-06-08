@@ -1,23 +1,31 @@
 {
-  "permissions": {
-    "allow": [
-      "Bash(cat:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(go build:*)",
-      "Bash(./gradlew:*)",
-      "Bash(grep:*)",
-      "Bash(rg:*)",
-      "Bash(find:*)",
-      "mcp__ide__getDiagnostics",
-      "Bash(env)",
-      "Bash(ls:*)",
-      "Bash(make lint)",
-      "Bash(gh pr view:*)",
-      "mcp__exa__web_search_exa",
-      "WebFetch(domain:vladmihalcea.com)",
-      "WebFetch(domain:docs.anthropic.com)"
-    ],
-    "deny": []
-  }
+    "permissions": {
+        "allow": [
+            "Bash(cat:*)",
+            "Bash(git add:*)",
+            "Bash(git commit:*)",
+            "Bash(go build:*)",
+            "Bash(./gradlew:*)",
+            "Bash(grep:*)",
+            "Bash(rg:*)",
+            "Bash(find:*)",
+            "mcp__ide__getDiagnostics",
+            "Bash(env)",
+            "Bash(ls:*)",
+            "Bash(make lint)",
+            "Bash(gh pr view:*)",
+            "mcp__exa__web_search_exa",
+            "WebFetch(domain:vladmihalcea.com)",
+            "WebFetch(domain:docs.anthropic.com)",
+            "Read(~/.zshrc)"
+        ],
+        "deny": [],
+        "allowed_directories": [
+            "/Users/collin/.claude/**"
+        ],
+        "includeCoAuthoredBy": false,
+        "env": {
+            "foo": "foooooooooooo"
+        }
+    }
 }
