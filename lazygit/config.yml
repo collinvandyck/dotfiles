@@ -1,5 +1,4 @@
 promptToReturnFromSubprocess: false
-
 gui:
   scrollHeight: 6 # how many lines you scroll by
   nerdFontsVersion: "3"
@@ -12,49 +11,39 @@ gui:
   skipNoStagedFilesWarning: true
   skipRewordInEditorWarning: true
   skipStashWarning: true
-
   # If not "none", lazygit will automatically forward branches to their upstream after fetching. Applies to branches that are not the currently checked out branch, and only to those that are strictly behind their upstream (as opposed to diverged).
   # Possible values: 'none' | 'onlyMainBranches' | 'allBranches'
   autoForwardBranches: none
-
   # If true, periodically fetch from remote
   autoFetch: false
-
 os:
   copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
   edit: 'nvim {{filename}}'
   editAtLine: 'nvim +{{line}} {{filename}}'
   editAtLineAndWait: 'nvim +{{line}} {{filename}}'
-
 git:
   commit:
     autoWrapCommitMessages: true
     autoWrapWidth: 80
   #branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --pretty=format:"%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar" {{branchName}} --
   branchLogCmd: git ll --first-parent {{branchName}} --
-  allBranchesLogCmd: git log --graph --color=always --all --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' --
   paging:
     colorArg: always
     pager: delta --dark --paging=never
-
+  allBranchesLogCmds:
+    - git log --graph --color=always --all --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' --
 customCommands:
   - context: 'commits'
     key: '<c-e>'
     title: 'hello'
     command: git reword {{ .SelectedCommit.Hash }}
-    subprocess: true
-    showOutput: true
-
+    output: terminal
   - context: 'files'
     key: 'w'
     title: 'wip'
     command: "git add -A && git commit -m wip || true"
-    subprocess: false
-    showOutput: false
-
-  - key: '<c-f>'  # Ctrl-f (think "full screen") to show selected commit
+  - key: '<c-f>' # Ctrl-f (think "full screen") to show selected commit
     context: 'commits'
     command: "git -c delta.pager='less -R +g' show {{.SelectedLocalCommit.Sha}}"
-    subprocess: true
     description: "Show selected commit"
-    stream: true
+    output: terminal
