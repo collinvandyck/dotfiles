@@ -108,6 +108,10 @@ Example of correct responses:
 
 The available MCP servers/tools are listed inside of the <mcp_servers> tag.
 
+<jira>
+- This is the work JIRA we use to track issues.
+</jira>
+
 <mcp_servers>
 
 <nyt_search_server>
