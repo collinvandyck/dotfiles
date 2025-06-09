@@ -59,3 +59,4 @@ PRs should tell a coherent story, guiding reviewers through changes systematical
 ## Co-Author
 
 - **VERY IMPORTANT**: Do not include written by or co-authored by in commit messages.
+- **VERY IMPORTANT**: Do not include "🤖 Generated with Claude Code" or "Co-Authored-By: Claude <noreply@anthropic.com>" in commit messages.
