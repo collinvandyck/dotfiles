@@ -17,6 +17,7 @@ alias al='awslocal'
 alias d='docker'
 alias sf='search-files'
 alias mann='helpman'
+alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
 
 [[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
