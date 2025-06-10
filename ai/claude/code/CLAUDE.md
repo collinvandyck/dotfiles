@@ -28,6 +28,11 @@ I use neovim for most text editing except for Kotlin for which I use IDEA.
 - The neovim init is in nvim/init.lua.
 - The nvim/lua/plugins/nvim-lspconfig.lua
 
+# Git
+
+- Repos by default use `main` as the default branch unless otherwise configured.
+- if you want to view the changes on the current branch for a changeset use the diff against the merge base, e.g.: `git diff $(git merge-base @ origin/{main,master})`
+
 # Reviewer First Pull Requests (RFPRs)
 
 When I ask you to create an RFPR or commits in RFPR style, follow these principles:
@@ -51,6 +56,7 @@ PRs should tell a coherent story, guiding reviewers through changes systematical
 - Use full sentences in commit messages explaining the purpose
 - Build commits that tell a clear, logical story of the changes
 - Avoid rewriting commits after initial review feedback
+- It's better to have a commit contain very related changes across files than to have separate commits for all of the files.
 
 ## Workflow
 - Use `git reset` to reorganize commits when needed
