@@ -1,52 +1,6 @@
 {
     "globalShortcut": "Alt+Cmd+Space",
     "mcpServers": {
-        "fetch": {
-            "command": "uvx",
-            "args": [
-                "mcp-server-fetch"
-            ]
-        },
-        "memory": {
-            "command": "tsx",
-            "args": [
-                "/Users/collin/.claude/servers/mcp-servers/src/memory/index.ts"
-            ]
-        },
-        "filesystem": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@modelcontextprotocol/server-filesystem",
-                "/Users/collin/code/notes",
-                "/Users/collin/.dotfiles",
-                "/Users/collin/code/aoc-2024",
-                "/Users/collin/code/hn-cli"
-            ]
-        },
-        "exa": {
-            "command": "/Users/collin/.cargo/bin/dotenv",
-            "args": [
-                "-f",
-                "/Users/collin/.claude/servers/.env",
-                "/Users/collin/.claude/servers/exa-mcp-server/build/index.js"
-            ]
-        },
-        "nyt": {
-            "command": "/Users/collin/.cargo/bin/dotenv",
-            "args": [
-                "-f",
-                "/Users/collin/.claude/servers/.env",
-                "/Users/collin/.claude/servers/nyt/build/index.js"
-            ]
-        },
-        "jetbrains": {
-            "command": "npx",
-            "args": [
-                "-y",
-                "@jetbrains/mcp-proxy"
-            ]
-        },
         "jira": {
             "command": "/Users/collin/.cargo/bin/dotenv",
             "args": [
