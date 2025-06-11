@@ -32,6 +32,7 @@ I use neovim for most text editing except for Kotlin for which I use IDEA.
 
 - Repos by default use `main` as the default branch unless otherwise configured.
 - if you want to view the changes on the current branch for a changeset use the diff against the merge base, e.g.: `git diff $(git merge-base @ origin/{main,master})`
+- In commit messages avoid superfluous wording like "...improving consistency and encapsulation". That kind of language only makes sense if the strong goal of the files changed was to do exactly that, and even then, it does not add much value at all.
 
 # Reviewer First Pull Requests (RFPRs)
 

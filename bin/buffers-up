@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# periodically loads the files in particular directories to keep them in the fs buffers
+
+# shellcheck disable=SC1090
+source ~/.dotfiles/bin/_utils
+trap_kill_children
+
+dirs=(~/code/brain-backend ~/.dotfiles)
+
+while :; do
+	for dir in "${dirs[@]}"; do
+		echo "Loading $dir $(date)"
+		rg . "$dir" >/dev/null
+		#fd -H -I . "$dir" >/dev/null
+	done
+	sleep 1
+done
+
