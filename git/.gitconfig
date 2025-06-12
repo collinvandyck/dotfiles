@@ -54,7 +54,6 @@
     b = branch
     co = checkout
     last = checkout -
-    put = push origin HEAD
     shove = push --force-with-lease
     staged = diff --cached
     w = whatchanged
