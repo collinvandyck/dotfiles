@@ -8,6 +8,7 @@
             "Bash(./gradlew:*)",
             "Bash(grep:*)",
             "Bash(rg:*)",
+            "Bash(find)",
             "Bash(find:*)",
             "mcp__ide__getDiagnostics",
             "Bash(env)",
