@@ -35,6 +35,7 @@ I use neovim for most text editing except for Kotlin for which I use IDEA.
 - In commit messages avoid superfluous wording like "...improving consistency and encapsulation". That kind of language only makes sense if the strong goal of the files changed was to do exactly that, and even then, it does not add much value at all.
 - If asked to create a worktree, use the "worktrees" folder in the project root. For example, "worktrees/CET-12345" or "worktrees/fix-widgets"
 - If asked to create a worktree for a ticket, use the ticket name as the worktree subfolder, e.g.: "worktrees/CET-12345".
+- Do not create worktrees unless asked.
 
 # Reviewer First Pull Requests (RFPRs)
 
