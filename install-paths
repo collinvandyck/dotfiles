@@ -36,6 +36,7 @@ if [[ "$(uname)" =~ "Darwin" ]]; then
 	mkdir -p ~/.claude
 	ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
 	ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
+	ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
 
 	# lazygit
 	mkdir -p ~/Library/Application\ Support/lazygit
