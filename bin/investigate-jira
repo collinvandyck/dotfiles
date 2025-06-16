@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	echo >&2 "usage: $(basename "$0") [ticket]"
+}
+
+[[ $# != 1 ]] && usage && exit 1
+
+ticket="$1"
+
+tmux rename-window "$ticket"
+claude "/project:investigate-jira $ticket"
