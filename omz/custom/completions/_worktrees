@@ -1,0 +1,50 @@
+#compdef worktrees
+
+_worktrees() {
+    local state line context
+    local root="$(git rev-parse --git-common-dir 2>/dev/null)/.."
+    
+    _arguments -C \
+        '1: :->command' \
+        '*::arg:->args'
+    
+    case $state in
+        command)
+            _values 'worktrees command' \
+                'create[Create a new worktree]' \
+                'remove[Remove an existing worktree]' \
+                'list[List all worktrees]'
+            ;;
+        args)
+            case $line[1] in
+                create)
+                    _arguments \
+                        '1:worktree name:' \
+                        '(-f --force)'{-f,--force}'[Force create branch if it exists]' \
+                        '2:commit:(HEAD master main)'
+                    ;;
+                remove)
+                    if [[ ${#line[@]} -gt 2 ]]; then
+                        # Already have an argument, don't complete more
+                        return
+                    fi
+                    # Complete with existing worktree names
+                    if [[ -d "$root/worktrees" ]]; then
+                        local -a worktrees
+                        worktrees=("$root"/worktrees/*(/N))
+                        if (( ${#worktrees} > 0 )); then
+                            worktrees=("${worktrees[@]##*/}")
+                            compadd -a worktrees
+                        else
+                            _message 'no worktrees found'
+                        fi
+                    else
+                        _message 'no worktrees directory'
+                    fi
+                    ;;
+            esac
+            ;;
+    esac
+}
+
+_worktrees "$@"
