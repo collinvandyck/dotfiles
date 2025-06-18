@@ -21,13 +21,17 @@ worktrees() {
             esac
             shift
         done
+        branch="$USER/$name"
+        if [[ "$br" == "-b" ]] && git rev-parse $branch &>/dev/null; then
+            error "Branch $branch already exists. Use --force to override" && return 1
+        fi
         root=$(root)
         [[ ! -d "$root" ]] && error "not in a git repo!" && return 1
         full_path="$root"/worktrees/"$name"
         if [[ -d "$full_path" ]]; then
             echo "Changing into existing worktree"
         else
-            git worktree add "$full_path" "$br" collin/"$name" "$commit"
+            git worktree add "$full_path" "$br" "$branch" "$commit"
         fi
         cd "$full_path"
     }
