@@ -18,6 +18,7 @@ alias d='docker'
 alias sf='search-files'
 alias mann='helpman'
 alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
+alias zz='exec zsh'
 
 [[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
@@ -73,6 +74,8 @@ alias amend='git commit --amend'
 alias gdo='gd origin/$(git rev-parse --abbrev-ref HEAD)'
 alias gdob='gdo | bat'
 alias gdu='gd @{u}'
+alias wt=worktrees
+alias zp='cd $(git rev-parse --git-common-dir)/..'
 
 # remove things that the git plugin defines
 unalias gup
