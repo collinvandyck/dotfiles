@@ -4,6 +4,8 @@ worktrees() {
     usage="usage: $(basename "$0")"
     error() { echo >&2 "error: $*" }
     root() { echo "$(git rev-parse --git-common-dir)/.." }
+    branch() { echo "$USER/wt-$1" }
+    worktree-dir() { echo "$(root)/worktrees/$*" }
 
     create-worktree() {
         [[ $# -lt 1 ]] && error "$usage: create [name] [--force]" && return 1
@@ -21,7 +23,7 @@ worktrees() {
             esac
             shift
         done
-        branch="$USER/$name"
+        branch="$(branch "$name")"
         if [[ "$br" == "-b" ]] && git rev-parse $branch &>/dev/null; then
             error "Branch $branch already exists. Use --force to override" && return 1
         fi
@@ -36,10 +38,15 @@ worktrees() {
         cd "$full_path"
     }
 
+    switch-worktree() {
+        [[ $# -lt 1 ]] && error "$usage: switch [name] ..." && return 1
+        cd "$(worktree-dir "$1")"
+    }
+
     remove-worktree() {
-        [[ $# != 1 ]] && error "$usage: remove [name]" && return 1
+        [[ $# -lt 1 ]] && error "$usage: remove [name] ..." && return 1
         root=$(root)
-        git worktree remove "$1"
+        git worktree remove "$@" || return $?
         cd $root
     }
 
@@ -55,6 +62,10 @@ worktrees() {
         "remove")
             shift
             remove-worktree "$@"
+            ;;
+        "switch")
+            shift
+            switch-worktree "$@"
             ;;
         "list")
             shift
