@@ -8,6 +8,9 @@ worktrees() {
     worktree-dir() { echo "$(root)/worktrees/$*" }
 
     create-worktree() {
+        # TODO: link the .idea folder into the new worktree
+        # ln -s $(pwd)/.idea worktrees/cet-19921-xero-metrics/.idea
+
         [[ $# -lt 1 ]] && error "$usage: create [name] [--force]" && return 1
         name=$1; shift
         br="-b"
