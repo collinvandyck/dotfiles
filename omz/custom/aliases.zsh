@@ -3,7 +3,7 @@
 alias tma=tmuxinator
 alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
 alias sshctl='ll ~/.ssh/control/'
-alias xx='ssh -t 5xx.engineer tm'
+alias xx='ssh -t 5xx.engineer .dotfiles/bin/tm'
 alias ut='ssh -t ubuntu-test tm'
 alias appsup='cd ~/Library/Application\ Support'
 alias da='direnv allow'
