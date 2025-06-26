@@ -24,9 +24,12 @@ ln -sf ~/.dotfiles/zed/tasks.json ~/.config/zed/
 
 symlink() { ~/.dotfiles/bin/symlink "$@"; }
 
-if [[ -d "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default" ]]; then
-    ln -sf ~/.dotfiles/firefox/profile/user.js "$HOME/Library/Application Support/Firefox/Profiles/zdsf67fe.default/user.js"
-fi
+for dir in "$HOME/Library/Application Support/Firefox/Profiles"/*; do
+	if [[ -d "$dir" ]]; then
+		ln -sf ~/.dotfiles/firefox/profile/chrome "$dir"/
+		ln -sf ~/.dotfiles/firefox/profile/user.js "$dir"/
+	fi
+done
 
 # os specific symlinking
 if [[ "$(uname)" =~ "Darwin" ]]; then
