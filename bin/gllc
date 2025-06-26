@@ -24,12 +24,13 @@ add_glob() {
 # Process arguments
 if [[ $# -gt 0 ]]; then
     for arg in "$@"; do
-        add_glob "refs/*/*${arg}*/*"
+        add_glob "refs/**${arg}**"
     done
 else
     add_glob "refs/*/${USER}/*"
 fi
 
 # Execute git command with all globs
+# echo git ll "${globs[@]}"
 git ll "${globs[@]}"
 
