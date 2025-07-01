@@ -12,4 +12,5 @@
 #  	 }
 #  }
 
-cat >> /tmp/claude-hooks-pre-tool.log
+line=$(cat)
+printf "%s\n" "$line" >> /tmp/claude-hooks-pre-tool.log
