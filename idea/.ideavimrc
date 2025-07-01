@@ -74,6 +74,12 @@ nmap <leader>sf <Action>(GotoFile)
 nmap <leader>ss <Action>(SearchEverywhere)
 nmap <leader>th <Action>(TypeHierarchy)
 
+" debugging
+" show debug actions
+nmap <leader>da <Action>(EditorPopupMenuDebug)
+" show execution point (where we are breakpointed)
+nmap <leader>dep <Action>(ShowExecutionPoint)
+
 " toggles
 nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
 nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
