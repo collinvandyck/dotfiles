@@ -57,6 +57,7 @@
     shove = push --force-with-lease
     staged = diff --cached
     w = whatchanged
+    sw = switch
 
     # typos
     rebsae = rebase
