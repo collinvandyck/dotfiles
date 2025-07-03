@@ -15,6 +15,12 @@
                 "-e", "JIRA_USERNAME",
                 "ghcr.io/sooperset/mcp-atlassian:latest"
             ]
+        },
+        "playwright": {
+            "command": "npx",
+            "args": [
+                "@playwright/mcp@latest"
+            ]
         }
     }
 }
