@@ -128,21 +128,21 @@ vim.api.nvim_create_autocmd("FocusGained", {
 	pattern = "*",
 	callback = function()
 		-- Store original background
-		local original_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
-		
+		--local original_bg = vim.api.nvim_get_hl(0, { name = "Normal" }).bg
+
 		-- Set flash background (black)
-		vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
-		vim.cmd("redraw")
-		
+		--vim.api.nvim_set_hl(0, "Normal", { bg = "#000000" })
+		--vim.cmd("redraw")
+
 		-- Restore original background after delay
-		vim.defer_fn(function()
-			if original_bg then
-				vim.api.nvim_set_hl(0, "Normal", { bg = original_bg })
-			else
-				vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
-			end
-			vim.cmd("redraw")
-		end, 50)
+		--vim.defer_fn(function()
+		--if original_bg then
+		--vim.api.nvim_set_hl(0, "Normal", { bg = original_bg })
+		--else
+		--vim.api.nvim_set_hl(0, "Normal", { bg = "NONE" })
+		--end
+		--vim.cmd("redraw")
+		--end, 50)
 	end,
 })
 
