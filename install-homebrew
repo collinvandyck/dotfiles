@@ -77,7 +77,6 @@ brew install --quiet --formula \
 	golang \
 	gomplate \
 	gource \
-	gradle \
 	grpcurl \
 	gum \
 	helm \
