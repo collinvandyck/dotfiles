@@ -1,4 +1,0 @@
-/* Vertical tabs allow all pinned tabs to show. */
-#vertical-pinned-tabs-container {
-    max-height: none !important;
-}
