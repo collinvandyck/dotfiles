@@ -178,7 +178,7 @@ bootstrap() {
 	spinner "Killing existing processes..." -- sh -c kill-bootrun
 	spinner "Resetting the db..." -- sh -c reset-db
 
-	./gradlew --no-daemon web:bootRun --info --console=plain &>/tmp/gw-bootstrap.log&
+	./gradlew web:bootRun --info --console=plain &>/tmp/gw-bootstrap.log &
 	trap kill-bootrun EXIT INT TERM
 
 	spinner "Waiting for API (logs: /tmp/gw-bootstrap.log)..." -- wait-port localhost 8080
