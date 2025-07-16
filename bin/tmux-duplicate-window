@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+name="$(tmux display-message -p '#W')"
+dir="$(tmux display-message -p '#{pane_current_path}')"
+case "$name" in
+	.dotfiles) tmux new-window -a -c "$dir" ;;
+	**) tmux new-window -n "$name" -a -c "$dir" ;;
+esac
