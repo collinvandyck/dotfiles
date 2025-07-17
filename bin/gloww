@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# runs the glow viewer in paged mode
+
+usage() {
+	echo >&2 "Renders a paged view of a markdown file using the full width of the terminal"
+	echo >&2 ""
+	echo >&2 "usage: $(basename "$0") [file.md]"
+	exit 1
+}
+
+[[ $# != 1 ]] && usage
+[[ "$1" == -* ]] && usage
+glow -p -w "$(tput cols)" "$@"
