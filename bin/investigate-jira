@@ -11,4 +11,9 @@ ticket="$1"
 
 cd ~/code/brain-backend
 tmux rename-window "$ticket"
-claude "/project:investigate-jira $ticket"
+#git worktree add -B "collin/$ticket" "worktrees/$ticket"
+#cp -r .claude "worktrees/$ticket"
+#cp -r .idea "worktrees/$ticket"
+#cd "worktrees/$ticket"
+#claude "/investigate-jira $ticket"
+claude
