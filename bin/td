@@ -6,6 +6,7 @@ window_name() {
     local name; name=$(basename "$(pwd)")
     case "$name" in
         brain-backend) echo be ;;
+        brain-backend-2) echo be-2 ;;
         brain-app) echo fe ;;
         *) echo "$name" ;;
     esac
