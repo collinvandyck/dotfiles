@@ -84,6 +84,7 @@ brew install --quiet --formula \
 	htop \
 	httpie \
 	hwatch \
+	jq \
 	kompose \
 	lazydocker \
 	lazygit \
@@ -105,6 +106,7 @@ brew install --quiet --formula \
 	mutagen-io/mutagen/mutagen \
 	neovim \
 	nmap \
+	noahgorstein/tap/jqp \
 	nvr \
 	ollama \
 	opam \
