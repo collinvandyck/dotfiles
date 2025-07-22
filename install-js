@@ -3,7 +3,7 @@
 set -euo pipefail
 
 NVM_VERSION="v0.39.3"
-node_versions=("v19.9.0")
+node_versions=("v19.9.0" "v22.17.1")
 
 get-nvm-version() {
 	if [ -d ~/.nvm ]; then
@@ -23,6 +23,8 @@ source ~/.nvm/nvm.sh
 for nv in "${node_versions[@]}"; do
 	nvm install "$nv"
 done
+
+nvm alias default 22.17.1
 
 npm install --global yarn
 
