@@ -104,6 +104,9 @@ init-starship() {
 init-broot() {
     cmd_exists broot && eval "$(broot --print-shell-function zsh)"
 }
+init-bun() {
+    source-if "/Users/collin/.bun/_bun"
+}
 init-completions() {
     source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
     source-if "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -130,6 +133,7 @@ run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
 run-init-fn init-completions
+run-init-fn init-bun
 
 #run-init-fn init-broot
 #run-init-fn init-opam
@@ -139,3 +143,4 @@ run-init-fn init-completions
 source ~/.dotfiles/zsh/widgets.zsh
 
 # zprof | head -100
+
