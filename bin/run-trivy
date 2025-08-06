@@ -1,7 +1,30 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+local=
+image=
+for arg in "$@"; do
+	case $arg in
+		--local)
+			local=true
+			;;
+		*)
+			image="$arg"
+			;;
+	esac
+done
+
+if [[ "$local" ]]; then
+    docker save "$image" -o /tmp/scan-image.tar && \
+    docker run --rm \
+		-v /tmp:/tmp \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v "${HOME}"/Library/Caches:/root/.cache/ \
+		aquasec/trivy:0.49.1 image --input /tmp/scan-image.tar
+	exit 0
+fi
+
 docker run \
 	-v /var/run/docker.sock:/var/run/docker.sock \
 	-v "${HOME}"/Library/Caches:/root/.cache/ \
-	aquasec/trivy:0.49.1 "$@"
+	aquasec/trivy:0.49.1 image "$image"
