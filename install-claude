@@ -58,5 +58,6 @@ ensure_mcp git@github.com:exa-labs/exa-mcp-server.git
 ensure_mcp git@github.com:angheljf/nyt.git
 
 # install claude code
-npm install -g @anthropic-ai/claude-code
+# prefer local installs
+# npm install -g @anthropic-ai/claude-code
 
