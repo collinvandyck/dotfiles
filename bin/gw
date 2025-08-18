@@ -39,7 +39,7 @@ gradle-logged() {
 			printf "\n✅ 'gradle %s' completed successfully\n" "$*"
 		fi
 		set -e
-	) > >(tee "$file")
+	) > >(tee "$file" | tspin)
 	local ret; ret=$(cat "$status")
 	if [[ "$ret" != "0" ]]; then
 		# here something has failed. convert interrupted -> 130
