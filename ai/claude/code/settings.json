@@ -1,4 +1,19 @@
 {
+  "env": {},
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "~/.dotfiles/ai/claude/code/hooks/pre-tool-use.sh",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ]
+  },
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(cat:*)",
@@ -20,26 +35,6 @@
       "WebFetch(domain:docs.anthropic.com)",
       "Read(~/.zshrc)"
     ],
-    "deny": [],
-    "allowed_directories": [
-      "/Users/collin/.claude/**"
-    ],
-    "includeCoAuthoredBy": false,
-    "env": {
-      "EDITOR": "nvim"
-    }
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotfiles/ai/claude/code/hooks/pre-tool-use.sh"
-          }
-        ]
-      }
-    ]
+    "deny": []
   }
 }
