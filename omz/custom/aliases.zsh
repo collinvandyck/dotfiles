@@ -9,6 +9,7 @@ alias appsup='cd ~/Library/Application\ Support'
 alias da='direnv allow'
 alias cat=bat
 alias be='bundle exec'
+alias front='cd "$(zoxide query brain-app)" && td'
 alias back='cd "$(zoxide query brain-backend)" && td'
 alias back2='cd "$(zoxide query brain-backend-2)" && td'
 alias b=back
