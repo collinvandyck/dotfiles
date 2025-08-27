@@ -1,21 +1,6 @@
 {
     "globalShortcut": "Alt+Cmd+Space",
     "mcpServers": {
-        "jira": {
-            "command": "/Users/collin/.cargo/bin/dotenv",
-            "args": [
-                "-f",
-                "/Users/collin/.claude/servers/.env",
-                "docker",
-                "run",
-                "--rm",
-                "-i",
-                "-e", "JIRA_URL",
-                "-e", "JIRA_API_TOKEN",
-                "-e", "JIRA_USERNAME",
-                "ghcr.io/sooperset/mcp-atlassian:latest"
-            ]
-        },
         "playwright": {
             "command": "npx",
             "args": [
