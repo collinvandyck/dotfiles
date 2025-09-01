@@ -114,7 +114,7 @@ init-completions() {
 
 #PROFILE_INIT_FNS=1
 run-init-fn() {
-    if [[ ! -z "$PROFILE_INIT_FNS" ]]; then
+    if [[ -n "$PROFILE_INIT_FNS" ]]; then
         # this branch does not run as PROFILE_INIT_FNS is not set.
         local start=$(($EPOCHREALTIME * 1000))
         $1
@@ -141,6 +141,7 @@ run-init-fn init-bun
 #run-init-fn init-wasmer
 
 source ~/.dotfiles/zsh/widgets.zsh
+use pyenv
 
 # zprof | head -100
 
