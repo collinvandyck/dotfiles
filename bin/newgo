@@ -7,23 +7,23 @@
 # newgo # creates a random tmp folder
 # newgo foo # creates a project in ~/code/foo or loads it if it already exists
 
-set -eopipefail
+set -euo pipefail
 
 project=${1:-program}
-dir=$1
+dir=${1:-}
+
 if [ -z "${dir}" ]; then
 	# create a temporary directory
 	dir=$(mktemp -d)
 else
 	dir=~/code/${dir}
 	if [ -d $dir ]; then
-		echo "${dir} already exists" 
+		echo "${dir} already exists"
 	else
 		mkdir -p $dir
 	fi
 fi
 
-echo $dir
 cd $dir
 
 # standard main file
@@ -58,9 +58,9 @@ fi
 
 go mod init $project
 
-# create a Makefile
-if [ ! -f Makefile ]; then
-cat <<eos > Makefile
+# create a .justfile
+if [ ! -f .justfile ]; then
+cat <<eos > .justfile
 run:
 	go run .
 
