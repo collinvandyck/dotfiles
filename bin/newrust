@@ -57,7 +57,7 @@ cat > rust-toolchain.toml <<EOF
 channel = "1.85.0"
 EOF
 
-cat <<eos >justfile
+cat <<eos >.justfile
 run:
     cargo run
 
