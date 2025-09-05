@@ -35,25 +35,7 @@ eos
 
 cat <<eos > .justfile
 run:
-	python main.py
-eos
-
-cat <<eos > Taskfile.yml
-version: '3'
-vars:
-tasks:
-  test:
-    aliases: ['t']
-    dir: '{{.USER_WORKING_DIR}}'
-    cmds:
-      - echo idk
-    silent: true
-  default:
-    aliases: ['r']
-    dir: '{{.USER_WORKING_DIR}}'
-    cmds:
-      - python main.py
-    silent: true
+	@python main.py
 eos
 
 nvim main.py
