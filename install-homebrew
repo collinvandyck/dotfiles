@@ -110,6 +110,8 @@ brew install --quiet --formula \
 	nvr \
 	ollama \
 	opam \
+	opencv \
+	ov \
 	pam-reattach \
 	pandoc \
 	pipx \
