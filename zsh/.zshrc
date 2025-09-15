@@ -141,7 +141,7 @@ run-init-fn init-bun
 #run-init-fn init-wasmer
 
 source ~/.dotfiles/zsh/widgets.zsh
-use pyenv
+# use pyenv
 
 # zprof | head -100
 
