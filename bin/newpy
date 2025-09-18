@@ -29,27 +29,16 @@ cd "$name"
 uv add --dev pytest
 
 cat <<eos > main.py
-def greet(name="World"):
-    return f"Hello, {name}!"
-
 def main():
-    print(greet())
+    print("Hello World!")
 
 if __name__ == "__main__":
     main()
 eos
 
 cat <<eos > test_main.py
-from main import greet
-
-def test_greet_default():
-    assert greet() == "Hello, World!"
-
-def test_greet_with_name():
-    assert greet("Collin") == "Hello, Collin!"
-
-def test_greet_type():
-    assert isinstance(greet(), str)
+def test_hello():
+	pass
 eos
 
 cat <<eos > .justfile
