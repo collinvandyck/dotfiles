@@ -65,7 +65,7 @@ use() {
     local module=$1
     shift
     source ~/.dotfiles/direnv/lib/$module.sh
-    use_$module
+    use "$module"
 }
 
 init-fzf() {
@@ -116,9 +116,9 @@ init-completions() {
 run-init-fn() {
     if [[ -n "$PROFILE_INIT_FNS" ]]; then
         # this branch does not run as PROFILE_INIT_FNS is not set.
-        local start=$(($EPOCHREALTIME * 1000))
+        local start=$((EPOCHREALTIME * 1000))
         $1
-        local end=$(($EPOCHREALTIME * 1000))
+        local end=$((EPOCHREALTIME * 1000))
         local duration=$((end - start))
         [[ duration -gt 50 ]] && echo >&2 "$1 took ${duration}ms"
     else
@@ -133,14 +133,14 @@ run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
 run-init-fn init-completions
-run-init-fn init-bun
 
+#run-init-fn init-bun
 #run-init-fn init-broot
 #run-init-fn init-opam
 #run-init-fn init-broot
 #run-init-fn init-wasmer
 
-source ~/.dotfiles/zsh/widgets.zsh
+# source ~/.dotfiles/zsh/widgets.zsh
 # use pyenv
 
 # zprof | head -100
