@@ -35,7 +35,7 @@ fi
 # dog is no longer maintained
 # logi-options-plus is terrible when updating via homebrew
 # dotnet-sdk no longer used
-for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ dotnet-sdk; do
+for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ dotnet-sdk moreutils; do
 	if brew list -1 | grep -q "^${pkg}\$"; then
 		echo "Removing $pkg"
 		brew remove -f $pkg
@@ -101,7 +101,6 @@ brew install --quiet --formula \
 	lxc \
 	minikube \
 	mingw-w64 \
-	moreutils \
 	mtr \
 	mutagen-io/mutagen/mutagen \
 	neovim \
@@ -114,6 +113,7 @@ brew install --quiet --formula \
 	ov \
 	pam-reattach \
 	pandoc \
+	parallel \
 	pipx \
 	protobuf \
 	pstree \
