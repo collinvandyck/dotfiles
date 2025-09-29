@@ -30,14 +30,7 @@ else
 	~/.fzf/install --all
 fi
 
-# oh my zsh
-echo "installing oh-my-zsh"
-if [ ! -e ~/.oh-my-zsh ]; then
-	KEEP_ZSHRC=yes \
-	CHSH=no \
-	RUNZSH=no \
-	sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
+# oh-my-zsh has been removed - we now use a custom zsh configuration
 
 # tmux plugin manager
 echo "installing tpm"

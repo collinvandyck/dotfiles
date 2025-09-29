@@ -4,26 +4,8 @@
 stty -ixon
 
 export TERM=xterm-256color
-export ZSH_CUSTOM=~/.dotfiles/omz/custom
-export ZSH="$HOME/.oh-my-zsh"
 
-plugins=(
-    git
-    macos
-    #rust
-)
-
-# setting FPATH must happen before sorucing oh-my-zsh.sh do to how OMZ works.
-# https://docs.brew.sh/Shell-Completion
-FPATH="/opt/homebrew/share/zsh/site-functions:${FPATH}"
-#zmodload zsh/zprof
-
-# disables the update check which can cause shell startup lag.
-export UPDATE_ZSH_DAYS=30
-
-source $ZSH/oh-my-zsh.sh
-#zprof | hd
-
+# History configuration
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000
 SAVEHIST=1000
@@ -47,6 +29,13 @@ function zshaddhistory() {
     fi
     return 0
 }
+
+# Setting FPATH must happen before initializing completion
+# https://docs.brew.sh/Shell-Completion
+FPATH="$HOME/.dotfiles/zsh/completions:/opt/homebrew/share/zsh/site-functions:${FPATH}"
+
+# Load completion system
+source ~/.dotfiles/zsh/completion.zsh
 
 # sources the file if it exists
 source-if() {
@@ -140,8 +129,17 @@ run-init-fn init-completions
 #run-init-fn init-broot
 #run-init-fn init-wasmer
 
+# Load custom configuration
+source ~/.dotfiles/zsh/env.zsh
+source ~/.dotfiles/zsh/git-functions.zsh
+source ~/.dotfiles/zsh/macos-functions.zsh
+source ~/.dotfiles/zsh/aliases.zsh
+source ~/.dotfiles/zsh/git.zsh
+source ~/.dotfiles/zsh/fzf.zsh
+source ~/.dotfiles/zsh/git-fzf.zsh
+source ~/.dotfiles/zsh/custom-functions.zsh
+
+# Load widgets if uncommented
 # source ~/.dotfiles/zsh/widgets.zsh
-# use pyenv
 
 # zprof | head -100
-

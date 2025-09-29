@@ -74,14 +74,13 @@ alias shove='git shove'
 alias show='git show'
 alias lg='lazygit'
 alias amend='git commit --amend'
+alias gd='git diff'
 alias gdo='gd origin/$(git rev-parse --abbrev-ref HEAD)'
 alias gdob='gdo | bat'
 alias gdu='gd @{u}'
 alias wt=worktrees
 alias zp='cd $(git rev-parse --git-common-dir)/..'
 
-# remove things that the git plugin defines
-unalias gup
 
 # zsh aliases
 alias reload='exec zsh'
@@ -120,7 +119,7 @@ fi
 alias nowrap='cut -c -$COLUMNS'
 
 # ls --color makes me sad because it's hard to read.
-unalias ls
+# Note: oh-my-zsh used to alias ls, we override that below with lsd
 
 # show the top 10 active files on the system
 alias show_fs_usage_top="sudo fs_usage -w -t 5 -f filesys | tee fs_usage.log | egrep -o '(/.+?) {3}' | sed -e 's/\/dev\/disk[^ ]+  //' | sort | uniq -c | sort -nr | head -10"
