@@ -80,24 +80,6 @@ test:
 
 eos
 
-cat <<eos > Taskfile.yml
-version: '3'
-vars:
-tasks:
-  test:
-    aliases: ['t']
-    dir: '{{.USER_WORKING_DIR}}'
-    cmds:
-      - cargo test
-    silent: true
-  default:
-    aliases: ['r']
-    dir: '{{.USER_WORKING_DIR}}'
-    cmds:
-      - cargo run
-    silent: true
-eos
-
 cat <<eos > src/main.rs
 fn main() {}
 eos
