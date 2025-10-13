@@ -10,6 +10,6 @@ macos-option-as-alt = left
 
 keybind = alt+j=next_tab
 keybind = alt+k=previous_tab
-keybind = global:cmd+backquote=toggle_quick_terminal
+keybind = global:alt+backquote=toggle_quick_terminal
 keybind = alt+,>y=write_scrollback_file:copy
-
+keybind = cmd+;=goto_split:next
