@@ -4,12 +4,12 @@ font-size = 16
 font-thicken
 theme = tokyonight
 macos-option-as-alt = true
-unfocused-split-opacity = 0.80
+unfocused-split-opacity = 0.95
+
+macos-option-as-alt = left
 
 keybind = alt+j=next_tab
 keybind = alt+k=previous_tab
-keybind = cmd+z=toggle_split_zoom
-keybind = alt+shift+j=goto_split:next
-keybind = alt+shift+k=goto_split:previous
-keybind = cmd+;=goto_split:next
+keybind = global:cmd+backquote=toggle_quick_terminal
+keybind = alt+,>y=write_scrollback_file:copy
 
