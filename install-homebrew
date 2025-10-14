@@ -139,6 +139,7 @@ brew install --quiet --formula \
 	web-ext \
 	wget \
 	xz \
+	yazi \
 	zig \
 	zlib \
 	zls \
