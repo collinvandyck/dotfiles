@@ -22,6 +22,9 @@ ln -sf ~/.dotfiles/zed/settings.json ~/.config/zed/
 ln -sf ~/.dotfiles/zed/keymap.json ~/.config/zed/
 ln -sf ~/.dotfiles/zed/tasks.json ~/.config/zed/
 
+rm -rf ~/.config/yazi
+ln -sf ~/.dotfiles/yazi/ ~/.config
+
 symlink() { ~/.dotfiles/bin/symlink "$@"; }
 
 for dir in "$HOME/Library/Application Support/Firefox/Profiles"/*; do

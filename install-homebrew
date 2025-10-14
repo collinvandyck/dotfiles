@@ -65,6 +65,7 @@ brew install --quiet --formula \
 	devcontainer \
 	direnv \
 	dust \
+	exiftool \
 	eza \
 	fd \
 	fileicon \
