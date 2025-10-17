@@ -1,18 +1,5 @@
 {
   "env": {},
-  "hooks": {
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "~/.dotfiles/ai/claude/code/hooks/pre-tool-use.sh",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ]
-  },
   "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
@@ -36,5 +23,19 @@
       "Read(~/.zshrc)"
     ],
     "deny": []
-  }
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/ai/claude/code/hooks/pre-tool-use.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "alwaysThinkingEnabled": true
 }

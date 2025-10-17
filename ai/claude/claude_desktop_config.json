@@ -1,12 +1,14 @@
 {
-    "globalShortcut": "Alt+Cmd+Space",
-    "mcpServers": {
-        "playwright": {
-            "command": "npx",
-            "args": [
-                "@playwright/mcp@latest"
-            ]
-        }
+  "globalShortcut": "Alt+Cmd+Space",
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
     }
+  },
+  "preferences": {
+    "menuBarEnabled": false
+  }
 }
-
