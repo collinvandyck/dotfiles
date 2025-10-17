@@ -80,6 +80,7 @@ brew install --quiet --formula \
 	gource \
 	grpcurl \
 	gum \
+	helix \
 	helm \
 	hexyl \
 	htop \
