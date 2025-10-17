@@ -22,6 +22,7 @@ alias mann='helpman'
 alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
 alias zz='exec zsh'
 alias claude="$HOME/.claude/local/claude"
+alias cld='claude --dangerously-skip-permissions'
 
 [[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
