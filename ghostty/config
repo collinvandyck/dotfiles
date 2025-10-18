@@ -1,3 +1,5 @@
+# vim:filetype=toml
+
 font-family = "FiraCode Nerd Font"
 font-family-bold = "FiraCode Nerd Font Bold"
 font-size = 16
