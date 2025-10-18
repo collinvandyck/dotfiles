@@ -1,23 +1,23 @@
 # vim:filetype=toml
 
 font-family = "FiraCode Nerd Font"
-font-family-bold = "FiraCode Nerd Font Bold"
 font-size = 16
 font-thicken
-theme = tokyonight
+
+theme = "tokyonight"
 macos-option-as-alt = true
 unfocused-split-opacity = 0.80
-split-divider-color = #888888
+split-divider-color = "#888888"
 quick-terminal-animation-duration = 0.05
 
 macos-option-as-alt = left
 
-keybind = alt+j=next_tab
-keybind = alt+k=previous_tab
-keybind = global:alt+backquote=toggle_quick_terminal
-keybind = alt+,>y=write_scrollback_file:copy
-keybind = cmd+;=goto_split:next
-keybind = cmd+z=toggle_split_zoom
+keybind = "alt+j=next_tab"
+keybind = "alt+k=previous_tab"
+keybind = "global:alt+backquote=toggle_quick_terminal"
+keybind = "alt+,>y=write_scrollback_file:copy"
+keybind = "cmd+;=goto_split:next"
+keybind = "cmd+z=toggle_split_zoom"
 
 # for claude
 keybind = shift+enter=text:\x1b\r
