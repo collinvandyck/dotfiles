@@ -6,6 +6,7 @@ theme = tokyonight
 macos-option-as-alt = true
 unfocused-split-opacity = 0.80
 split-divider-color = #888888
+quick-terminal-animation-duration = 0.05
 
 macos-option-as-alt = left
 
