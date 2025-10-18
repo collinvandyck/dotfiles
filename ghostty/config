@@ -9,6 +9,10 @@ macos-option-as-alt = true
 unfocused-split-opacity = 0.80
 split-divider-color = "#888888"
 quick-terminal-animation-duration = 0.05
+shell-integration-features = "no-cursor"
+cursor-style = "block"
+cursor-style-blink = true
+mouse-hide-while-typing = true
 
 macos-option-as-alt = left
 
