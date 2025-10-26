@@ -83,6 +83,7 @@ brew install --quiet --formula \
 	helix \
 	helm \
 	hexyl \
+	hidock \
 	htop \
 	httpie \
 	hwatch \
