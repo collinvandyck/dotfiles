@@ -85,7 +85,6 @@ brew install --quiet --formula \
 	helix \
 	helm \
 	hexyl \
-	hidock \
 	htop \
 	httpie \
 	hwatch \
@@ -165,6 +164,7 @@ brew install --quiet --cask --force \
 	font-fantasque-sans-mono \
 	font-fantasque-sans-mono-nerd-font \
 	font-hack-nerd-font \
+	hidock \
 	imhex \
 	istat-menus \
 	kitty \
