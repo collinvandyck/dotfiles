@@ -177,7 +177,6 @@ brew install --quiet --cask --force \
 	sublime-text \
 	utm \
 	yaak \
-	yubico-yubikey-manager \
 	zed \
 	;
 
