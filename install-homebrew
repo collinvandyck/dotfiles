@@ -22,13 +22,14 @@ if ! command -v mas &>/dev/null ; then
 	echo "Installing mas"
 	brew install --quiet --formula mas
 fi
-if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; then
-	echo "Installing xcode"
-	xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
-	mas install "$xcode_id"
-	echo "Accepting license agreement"
-	sudo xcodebuild -license accept
-fi
+
+#if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; then
+	#echo "Installing xcode"
+	#xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
+	#mas install "$xcode_id"
+	#echo "Accepting license agreement"
+	#sudo xcodebuild -license accept
+#fi
 
 # openssh does not play well with macos
 # microsoft-remote-desktop is deprecated
