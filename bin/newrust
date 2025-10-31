@@ -81,8 +81,10 @@ test:
 eos
 
 cat <<eos > src/main.rs
-fn main() {}
+#[tokio::main]
+async fn main() {}
 eos
 
-nvim src/main.rs
+cargo-starter-pack
+#nvim src/main.rs
 exec zsh
