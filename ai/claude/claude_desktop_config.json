@@ -10,6 +10,9 @@
   },
   "preferences": {
     "menuBarEnabled": false,
-    "quickEntryDictationShortcut": "off"
+    "quickEntryDictationShortcut": "off",
+    "quickEntryShortcut": {
+      "accelerator": "Alt+Space"
+    }
   }
 }
