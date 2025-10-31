@@ -79,5 +79,6 @@ git add -A
 git commit -m "Initial Commit"
 fi
 
+pwd | pbcopy
 nvim main.go
 exec zsh
