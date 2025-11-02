@@ -31,7 +31,7 @@ return {
 				},
 				lualine_b = { 'diagnostics' },
 				lualine_c = { {
-					'filename', path = 3,
+					'filename', path = 1,  -- relative path (faster than absolute)
 				} },
 				lualine_x = { 'encoding', 'fileformat', 'filetype', function()
 					local vals = {}
@@ -60,7 +60,7 @@ return {
 						'tabs',
 						max_length = vim.o.columns,
 						mode = 2,
-						path = 1,
+						path = 0,  -- just filename (faster)
 					},
 				},
 				lualine_b = {},
