@@ -47,6 +47,7 @@ vim.opt.writebackup = false
 
 require("plugs")                        -- not reloadable
 vim.cmd("colorscheme tokyonight-night") -- set colorscheme after plugins loaded
+vim.opt.laststatus = 2                  -- always show statusline
 
 local reloadable = {
 	"commands",
