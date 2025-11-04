@@ -22,10 +22,12 @@ alias mann='helpman'
 alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
 alias zz='exec zsh'
 alias claude="$HOME/.claude/local/claude"
-alias cld='claude --dangerously-skip-permissions'
 
-[[ "$(uname -s)" == "Linux" ]] && alias claude="$HOME/.claude/local/claude"
+[[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
+[[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
+
 alias cl='claude'
+alias cld='claude --dangerously-skip-permissions'
 alias claude-sonnet='claude --model sonnet'
 alias claude-opus='claude --model opus'
 
