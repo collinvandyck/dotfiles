@@ -111,6 +111,9 @@ init-completions() {
     source-if "/opt/homebrew/opt/git-extras/share/git-extras/git-extras-completion.zsh"
     source-if "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 }
+init-mise() {
+    command -v mise &>/dev/null && eval "$(mise activate zsh)"
+}
 
 #PROFILE_INIT_FNS=1
 run-init-fn() {
@@ -133,6 +136,7 @@ run-init-fn init-atuin
 run-init-fn init-direnv
 run-init-fn init-starship
 run-init-fn init-completions
+run-init-fn init-mise
 
 #run-init-fn init-bun
 #run-init-fn init-broot
