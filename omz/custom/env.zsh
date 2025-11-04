@@ -75,6 +75,7 @@ addPaths=(
     ~/.dotfiles/bin/clj
     ~/code/cortex-utils
     /usr/local/sqlite3/bin
+    /opt/homebrew/share/google-cloud-sdk/bin
     $PYENV_ROOT
 )
 
