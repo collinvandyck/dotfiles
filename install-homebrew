@@ -90,6 +90,7 @@ brew install --quiet --formula \
 	hwatch \
 	jj \
 	jq \
+	k9s \
 	kompose \
 	lazydocker \
 	lazygit \
@@ -106,6 +107,7 @@ brew install --quiet --formula \
 	lxc \
 	minikube \
 	mingw-w64 \
+	mise \
 	mtr \
 	mutagen-io/mutagen/mutagen \
 	neovim \
@@ -115,6 +117,7 @@ brew install --quiet --formula \
 	ollama \
 	opam \
 	opencv \
+	openssl \
 	ov \
 	pam-reattach \
 	pandoc \
