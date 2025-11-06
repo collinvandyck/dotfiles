@@ -9,7 +9,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 plugins=(
     git
-    macos
+    #macos
     #rust
 )
 
@@ -26,7 +26,6 @@ source $ZSH/oh-my-zsh.sh
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000
-SAVEHIST=1000
 setopt BANG_HIST              # Treat the '!' character specially during expansion.
 setopt HIST_BEEP              # Beep when accessing nonexistent history.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
