@@ -13,6 +13,7 @@ fi
 
 brew tap spring-io/tap              # required for springboot
 brew tap launchdarkly/homebrew-tap  # for the LD cli
+brew tap steveyegge/beads
 
 # update homebrew packages
 brew update --quiet
@@ -133,6 +134,7 @@ brew install --quiet --formula \
 	semgrep \
 	shellcheck \
 	spring-io/tap/spring-boot \
+	steveyegge/beads/bd \
 	temporal \
 	tig \
 	tilt \
@@ -157,6 +159,7 @@ brew install --quiet --formula \
 brew install --quiet --cask --force \
 	1password \
 	1password-cli \
+	alacritty \
 	anki \
 	caffeine \
 	chatbox \
@@ -188,10 +191,6 @@ brew install --quiet --cask --force \
 if ! brew list | grep jetbrains-toolbox &>/dev/null; then
 	brew install --quiet --cask --force jetbrains-toolbox
 fi
-
-brew install --quiet --cask --no-quarantine \
-	alacritty \
-	;
 
 brew autoremove --quiet
 brew cleanup
