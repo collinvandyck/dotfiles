@@ -27,9 +27,9 @@ git:
     autoWrapWidth: 80
   #branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --pretty=format:"%C(auto)%h %<(15,trunc)%C(blue)%an %C(auto)%d %s %C(147)%ar" {{branchName}} --
   branchLogCmd: git ll --first-parent {{branchName}} --
-  paging:
-    colorArg: always
-    pager: delta --dark --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --dark --paging=never
   allBranchesLogCmds:
     - git log --graph --color=always --all --abbrev-commit --decorate --pretty=format:'%C(auto)%h %<(10,trunc)%C(blue)%an %<(14)%C(green)%ar %C(auto)%d %s' --
 customCommands:
