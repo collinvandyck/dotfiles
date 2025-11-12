@@ -22,6 +22,7 @@ alias mann='helpman'
 alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
 alias zz='exec zsh'
 alias claude="$HOME/.claude/local/claude"
+alias m='mise'
 
 [[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
 [[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
