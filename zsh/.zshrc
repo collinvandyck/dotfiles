@@ -117,6 +117,9 @@ init-omni() {
     # omni shell integration
     command -v omni &>/dev/null && eval "$(omni hook init zsh)"
 }
+init-cloud-tools() {
+    source-if ~/.cloud-tools/ct_setup_shell.sh
+}
 
 #PROFILE_INIT_FNS=1
 run-init-fn() {
@@ -140,7 +143,8 @@ run-init-fn init-direnv
 run-init-fn init-starship
 run-init-fn init-completions
 run-init-fn init-mise
-run-init-fn init-omni
+# run-init-fn init-omni
+run-init-fn init-cloud-tools
 
 #run-init-fn init-bun
 #run-init-fn init-broot
