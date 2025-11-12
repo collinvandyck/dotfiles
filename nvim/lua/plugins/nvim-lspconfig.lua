@@ -108,32 +108,24 @@ return {
 			vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
 			vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
 		end
-		local enabled_diag_sevs = {
-			vim.diagnostic.severity.ERROR,
-			vim.diagnostic.severity.WARN,
-		}
-		local handlers = {
-			["textDocument/publishDiagnostics"] = vim.lsp.with(
-				vim.lsp.diagnostic.on_publish_diagnostics, {
-					underline = false,
-					--underline = {
-					--severity = enabled_diag_sevs,
-					--},
-					virtual_text = {
-						spacing = 4,
-						severity = enabled_diag_sevs,
-					},
-					signs = {
-						severity = enabled_diag_sevs,
-					},
-					-- Disable a feature
-					update_in_insert = false,
-				}),
-		}
+		-- Configure diagnostics globally using vim.diagnostic.config (Neovim 0.11+)
+		vim.diagnostic.config({
+			underline = false,
+			virtual_text = {
+				spacing = 4,
+				severity = { min = vim.diagnostic.severity.WARN },
+			},
+			signs = {
+				severity = { min = vim.diagnostic.severity.WARN },
+			},
+			update_in_insert = false,
+		})
+
 		local capabilities = require('cmp_nvim_lsp').default_capabilities()
-		require("lspconfig").lua_ls.setup({
+
+		-- Use vim.lsp.config() API for Neovim 0.11+
+		vim.lsp.config('lua_ls', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			settings = {
 				Lua = {
@@ -143,14 +135,14 @@ return {
 				},
 			},
 		})
-		require 'lspconfig'.ts_ls.setup {
+
+		vim.lsp.config('ts_ls', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
-		}
-		require("lspconfig").gopls.setup({
+		})
+
+		vim.lsp.config('gopls', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			cmd = { "gopls", "serve" },
 			root_dir = lsp_util.root_pattern("go.work", "go.mod", ".git"),
@@ -159,9 +151,9 @@ return {
 				usePlaceholders = false,
 			},
 		})
-		require('lspconfig').pyright.setup {
+
+		vim.lsp.config('pyright', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			settings = {
 				pyright = {
@@ -175,31 +167,31 @@ return {
 					},
 				},
 			},
-		}
-		require("lspconfig").ocamllsp.setup({
+		})
+
+		vim.lsp.config('ocamllsp', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 		})
-		require("lspconfig").ruff.setup({
+
+		vim.lsp.config('ruff', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 		})
-		require("lspconfig").sourcekit.setup({
+
+		vim.lsp.config('sourcekit', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 		})
-		require("lspconfig").bashls.setup({
+
+		vim.lsp.config('bashls', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			filetypes = { 'sh', 'bash', 'zsh' },
 		})
-		require("lspconfig").rust_analyzer.setup({
+
+		vim.lsp.config('rust_analyzer', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			settings = (function()
 				local ra_settings = {
@@ -240,16 +232,25 @@ return {
 				return settings
 			end)(),
 		})
-		require("lspconfig").zls.setup({
+
+		vim.lsp.config('zls', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 		})
-		require("lspconfig").clojure_lsp.setup({
+
+		vim.lsp.config('clojure_lsp', {
 			capabilities = capabilities,
-			handlers = handlers,
 			on_attach = custom_attach,
 			filetypes = { 'clojure', 'edn', 'clojurescript' },
 		})
+
+		-- Enable all configured LSP servers
+		local servers = {
+			'lua_ls', 'ts_ls', 'gopls', 'pyright', 'ocamllsp',
+			'ruff', 'sourcekit', 'bashls', 'rust_analyzer', 'zls', 'clojure_lsp'
+		}
+		for _, server in ipairs(servers) do
+			vim.lsp.enable(server)
+		end
 	end
 }
