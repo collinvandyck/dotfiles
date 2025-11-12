@@ -16,7 +16,7 @@ export HOMEBREW_NO_ENV_HINTS=1
 export HOSTNAME=$(hostname)
 export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
-export BROWSER=firefox
+#export BROWSER=firefox
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
