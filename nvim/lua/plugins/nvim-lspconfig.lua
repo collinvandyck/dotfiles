@@ -108,15 +108,30 @@ return {
 			vim.keymap.set('n', '<leader>ai', vim.lsp.buf.incoming_calls, bufopts)
 			vim.keymap.set('n', '<leader>ao', vim.lsp.buf.outgoing_calls, bufopts)
 		end
+
+		-- Enabled diagnostic severities (matching old behavior)
+		local enabled_diag_sevs = {
+			vim.diagnostic.severity.ERROR,
+			vim.diagnostic.severity.WARN,
+		}
+
 		-- Configure diagnostics globally using vim.diagnostic.config (Neovim 0.11+)
 		vim.diagnostic.config({
-			underline = false,
+			underline = {
+				severity = enabled_diag_sevs,
+			},
 			virtual_text = {
 				spacing = 4,
-				severity = { min = vim.diagnostic.severity.WARN },
+				severity = enabled_diag_sevs,
 			},
 			signs = {
-				severity = { min = vim.diagnostic.severity.WARN },
+				severity = enabled_diag_sevs,
+				text = {
+					[vim.diagnostic.severity.ERROR] = 'E',
+					[vim.diagnostic.severity.WARN] = 'W',
+					[vim.diagnostic.severity.INFO] = 'I',
+					[vim.diagnostic.severity.HINT] = 'H',
+				},
 			},
 			update_in_insert = false,
 		})
