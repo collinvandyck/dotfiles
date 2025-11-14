@@ -18,3 +18,5 @@ CLAUDE.md
 CLAUDE.local.md
 /*.md
 .mcp.json
+.beads
+.gitattributes
