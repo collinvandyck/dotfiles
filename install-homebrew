@@ -165,7 +165,6 @@ brew install --quiet --cask --force \
 	chatbox \
 	cleanshot \
 	discord \
-	firefox \
 	font-fira-code-nerd-font \
 	font-fantasque-sans-mono \
 	font-fantasque-sans-mono-nerd-font \
@@ -185,6 +184,10 @@ brew install --quiet --cask --force \
 	utm \
 	yaak \
 	zed \
+	;
+
+[[ -z "${SKIP_FIREFOX_INSTALL:-}" ]] && brew install --quiet --cask --force \
+	firefox \
 	;
 
 # only install jetbrains toolbox once.
