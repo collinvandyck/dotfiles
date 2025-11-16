@@ -26,3 +26,5 @@ keybind = "cmd+z=toggle_split_zoom"
 # for claude
 keybind = shift+enter=text:\x1b\r
 
+# fix the ctrl-[ issue in lazygit
+keybind = "ctrl+[=text:\x1b"
