@@ -25,20 +25,15 @@
     "deny": []
   },
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.dotfiles/ai/claude/code/hooks/pre-tool-use.sh"
-          }
-        ]
-      }
-    ]
+    "PreToolUse": []
   },
   "enabledPlugins": {
     "beads@beads-marketplace": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "statusLine": {
+      "type": "command",
+      "command": "$HOME/.dotfiles/ai/claude/code/statusline.sh",
+      "padding": 0
+  }
 }
