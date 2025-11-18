@@ -22,6 +22,8 @@ keybind = "alt+shift+j=move_tab:+1"
 keybind = "alt+shift+k=move_tab:-1"
 keybind = "global:alt+backquote=toggle_quick_terminal"
 keybind = "alt+,>y=write_scrollback_file:copy"
+keybind = "alt+,>,=prompt_surface_title"
+keybind = "ctrl+b>,=prompt_surface_title"
 keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
 
