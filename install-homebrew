@@ -90,6 +90,7 @@ brew install --quiet --formula \
 	httpie \
 	hwatch \
 	jj \
+	jo \
 	jq \
 	k9s \
 	kompose \
