@@ -4,17 +4,18 @@ font-family = "FiraCode Nerd Font"
 font-size = 14
 font-thicken
 
-theme = "tokyonight"
-macos-option-as-alt = true
-unfocused-split-opacity = 0.80
-split-divider-color = "#888888"
-quick-terminal-animation-duration = 0.05
-shell-integration-features = "no-cursor"
 cursor-style = "block"
 cursor-style-blink = true
-mouse-hide-while-typing = true
-
 macos-option-as-alt = left
+macos-option-as-alt = true
+mouse-hide-while-typing = true
+quick-terminal-animation-duration = 0.05
+quick-terminal-position = "top"
+quick-terminal-size = "800px"
+shell-integration-features = "no-cursor"
+split-divider-color = "#888888"
+theme = "tokyonight"
+unfocused-split-opacity = 0.80
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
