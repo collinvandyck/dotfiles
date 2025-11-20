@@ -27,6 +27,7 @@ keybind = "alt+,>,=prompt_surface_title"
 keybind = "ctrl+b>,=prompt_surface_title"
 keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
+keybind = "ctrl+k=clear_screen"
 
 # for claude
 keybind = shift+enter=text:\x1b\r
