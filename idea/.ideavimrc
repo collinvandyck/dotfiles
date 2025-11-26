@@ -72,7 +72,7 @@ nmap <leader>sa <Action>(GotoAction)
 nmap <leader>sc <Action>(GotoClass)
 nmap <leader>se <Action>(SearchEverywhere)
 nmap <leader>sf <Action>(GotoFile)
-nmap <leader>ss <Action>(SearchEverywhere)
+nmap <leader>ss <Action>(GotoSymbol)
 nmap <leader>th <Action>(TypeHierarchy)
 
 " debugging
