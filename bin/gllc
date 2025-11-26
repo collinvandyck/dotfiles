@@ -6,18 +6,15 @@ set -euo pipefail
 # Any additional args will be globbed as well. If there are not args, the
 # current user will be globbed.
 
-# Initialize array with default globs
-globs=(
-    '--glob=refs/*/main'
-    '--glob=refs/*/master'
-    '--decorate-refs=refs/*/main'
-    '--decorate-refs=refs/*/master'
-)
+globs=("--decorate-refs=HEAD")
 
 add_glob() {
     globs+=("--glob=$1")
     globs+=("--decorate-refs=$1")
 }
+
+add_glob main
+add_glob master
 
 # Process arguments
 if [[ $# -gt 0 ]]; then
