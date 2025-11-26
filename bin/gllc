@@ -5,20 +5,18 @@ set -euo pipefail
 #
 # Any additional args will be globbed as well. If there are not args, the
 # current user will be globbed.
-#
-# TODO: exclude the branch decorations to anything that does not match
-# git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --decorate-refs-exclude='refs/remotes/origin/*'"
-# git config --global alias.ll "log --color=always --first-parent --graph --color=always --abbrev-commit --decorate --exclude='refs/remotes/origin/*' --decorate-refs-exclude='refs/remotes/origin/*'"
 
 # Initialize array with default globs
 globs=(
     '--glob=refs/*/main'
     '--glob=refs/*/master'
+    '--decorate-refs=refs/*/main'
+    '--decorate-refs=refs/*/master'
 )
 
 add_glob() {
-    local glob; glob=$1
-    globs+=("--glob=$glob")
+    globs+=("--glob=$1")
+    globs+=("--decorate-refs=$1")
 }
 
 # Process arguments
@@ -31,6 +29,5 @@ else
 fi
 
 # Execute git command with all globs
-# echo git ll "${globs[@]}"
 git ll "${globs[@]}"
 
