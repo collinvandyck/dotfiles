@@ -13,8 +13,8 @@ add_glob() {
     globs+=("--decorate-refs=$1")
 }
 
-add_glob main
-add_glob master
+add_glob 'refs/*/main'
+add_glob 'refs/*/master'
 
 # Process arguments
 if [[ $# -gt 0 ]]; then
