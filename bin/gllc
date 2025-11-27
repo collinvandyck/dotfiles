@@ -6,13 +6,14 @@ set -euo pipefail
 # Any additional args will be globbed as well. If there are not args, the
 # current user will be globbed.
 
-globs=("--decorate-refs=HEAD")
+globs=()
 
 add_glob() {
     globs+=("--glob=$1")
     globs+=("--decorate-refs=$1")
 }
 
+add_glob 'HEAD'
 add_glob 'refs/*/main'
 add_glob 'refs/*/master'
 
