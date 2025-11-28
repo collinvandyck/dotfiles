@@ -11,7 +11,6 @@ vim.opt.autoindent = true
 vim.opt.autoread = true
 vim.opt.autowrite = true
 vim.opt.background = 'dark'
-vim.opt.backup = false
 vim.opt.cursorline = true
 vim.opt.equalalways = false
 vim.opt.expandtab = true
@@ -43,7 +42,10 @@ vim.opt.textwidth = 0
 vim.opt.updatetime = 100
 vim.opt.wildignore:append('*.a')
 vim.opt.wrap = false
-vim.opt.writebackup = false
+
+vim.opt.backup = false
+vim.opt.writebackup = true              -- write a backup copy
+vim.opt.backupcopy = 'no'               -- neovim will rename the file, write to a new file
 
 require("plugs")                        -- not reloadable
 vim.cmd("colorscheme tokyonight-night") -- set colorscheme after plugins loaded
