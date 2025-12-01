@@ -80,6 +80,7 @@ alias show='git show'
 alias lg='lazygit'
 alias amend='git commit --amend'
 alias gdo='gd origin/$(git rev-parse --abbrev-ref HEAD)'
+alias gdos='gdo --stat'
 alias gdob='gdo | bat'
 alias gdu='gd @{u}'
 alias wt=worktrees
