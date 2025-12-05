@@ -1,4 +1,4 @@
 [global]
 warn_timeout = "1h"
-hide_env_diff = false
+hide_env_diff = true
 log_format = "↠ %s"
