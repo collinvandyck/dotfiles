@@ -25,6 +25,7 @@ alias claude="$HOME/.claude/local/claude"
 alias m='mise'
 alias jl='just -l'
 alias by='bat -lyaml'
+alias cds='z cds'
 
 [[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
 [[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
