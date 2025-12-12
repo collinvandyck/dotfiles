@@ -40,6 +40,7 @@ export PANTS_LINT=true
 export PYENV_ROOT="$HOME/.pyenv"
 export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
 #export WORDCHARS='*?_-[]~&;!#$%^(){}<>|'
+export WORDCHARS=-
 
 paths=()
 for p in $(echo $PATH | tr ':' '\n'); do
