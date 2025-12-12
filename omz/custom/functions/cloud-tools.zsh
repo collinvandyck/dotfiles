@@ -10,7 +10,7 @@ ctt() {
 
     # inject context for these commands
     case "${args[1]}" in
-        kubectl) _ct_inject_context ;;
+        kubectl|k9s) _ct_inject_context "${args[1]}" ;;
     esac
 
     ct "${args[@]}" 2> >(_ct_filter_warnings >&2)
@@ -19,7 +19,7 @@ ctt() {
 _ct_inject_context() {
     [[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
     [[ " ${args[*]} " == *" --context "* ]] && return
-    args=(kubectl --context "$CT_CONTEXT" "${args[@]:1}")
+    args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
 }
 
 _ct_filter_warnings() {
