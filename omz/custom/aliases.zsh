@@ -21,7 +21,6 @@ alias sf='search-files'
 alias mann='helpman'
 alias pd-credential="op read 'op://Engineering Integrations/PagerDuty/credential'"
 alias zz='exec zsh'
-alias claude="$HOME/.claude/local/claude"
 alias m='mise'
 alias jl='just -l'
 alias by='bat -lyaml'
@@ -29,11 +28,12 @@ alias cds='z cds'
 
 [[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
 [[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
-
+alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
-alias cld='claude --dangerously-skip-permissions'
-alias claude-sonnet='claude --model sonnet'
-alias claude-opus='claude --model opus'
+alias cld='cl --dangerously-skip-permissions'
+alias clc='cl --continue'
+alias claude-sonnet='cl --model sonnet'
+alias claude-opus='cl --model opus'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
