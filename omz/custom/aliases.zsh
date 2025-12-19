@@ -28,7 +28,6 @@ alias cds='z cds'
 
 [[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
 [[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
-alias claude="$HOME/.claude/local/claude"
 alias cl='claude'
 alias cld='cl --dangerously-skip-permissions'
 alias clc='cl --continue'
