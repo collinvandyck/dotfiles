@@ -44,6 +44,7 @@ if [[ "$(uname)" =~ "Darwin" ]]; then
 	ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
 	ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
 	ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
+	ln -sf ~/.dotfiles/ai/claude/code/scripts ~/.claude/
 
 	# lazygit
 	mkdir -p ~/Library/Application\ Support/lazygit

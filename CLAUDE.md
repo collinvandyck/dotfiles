@@ -86,6 +86,48 @@ When modifying the dotfiles:
 3. For configuration files, make sure to update `install-paths` if needed
 4. Keep platform-specific code in the appropriate install scripts
 
+## Claude Code Configuration
+
+Claude Code configuration lives in `ai/claude/code/` and is symlinked to `~/.claude/` via `install-paths`.
+
+### Directory Structure
+
+```
+ai/claude/code/
+├── CLAUDE.md        # Global Claude instructions (symlinked to ~/.claude/)
+├── settings.json    # Permissions and settings
+├── commands/        # Custom slash commands (*.md files)
+├── skills/          # Skills with instructions (*/skill.md)
+└── scripts/         # Helper scripts used by skills
+```
+
+### Adding New Claude Components
+
+**Skills** (`ai/claude/code/skills/<name>/skill.md`):
+- Skills provide context and instructions for specific capabilities
+- The skill.md file contains usage patterns, code examples, and important notes
+- Helper scripts that skills reference should go in `scripts/`
+
+**Scripts** (`ai/claude/code/scripts/`):
+- Executable helper scripts used by skills or commands
+- Referenced via `~/.claude/scripts/<script>` in skill documentation
+- Make scripts executable (`chmod +x`)
+
+**Commands** (`ai/claude/code/commands/`):
+- Custom slash commands as markdown files
+
+**Settings** (`ai/claude/code/settings.json`):
+- Auto-allow rules for tools (e.g., `Bash(python3:*)`)
+- Permissions configuration
+
+### Pattern: When Creating New Skills
+
+1. Create `ai/claude/code/skills/<name>/skill.md` with instructions
+2. If the skill needs helper scripts, add them to `ai/claude/code/scripts/`
+3. Reference scripts as `~/.claude/scripts/<script>` in the skill docs
+4. If the skill needs auto-allowed tools, add them to `settings.json`
+5. Symlinks are already set up - new files will be available immediately
+
 # Commands
 
 On my system, `bat` is aliased to `cat`. If you want to use `cat` use `command cat` instead.
