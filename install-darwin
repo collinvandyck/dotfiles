@@ -85,4 +85,3 @@ if [ "${DOTFILES_INSTALL_LAUNCHD:-0}" == "1" ]; then
 fi
 
 ~/.dotfiles/install-common
-~/.dotfiles/install-claude
