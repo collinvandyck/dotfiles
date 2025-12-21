@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(playwright)",
+      "Bash(pip install:*)",
+      "Bash(playwright install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(/Users/collin/Library/Python/3.9/bin/playwright install:*)",
+      "Bash(python3:*)"
+    ]
+  }
+}
