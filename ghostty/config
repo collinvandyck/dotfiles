@@ -24,6 +24,13 @@ keybind = "global:alt+backquote=toggle_quick_terminal"
 #keybind = "global:cmd+backquote=toggle_quick_terminal"
 keybind = "alt+,>y=write_scrollback_file:copy"
 keybind = "alt+,>,=prompt_surface_title"
+
+# window binds
+keybind = "alt+,>l=new_split:right"
+keybind = "alt+,>d=new_split:down"
+keybind = "alt+,>u=new_split:up"
+keybind = "alt+,>r=new_split:right"
+
 #keybind = "ctrl+b>,=prompt_surface_title"
 keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
