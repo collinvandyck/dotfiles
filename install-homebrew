@@ -62,6 +62,7 @@ brew install --quiet --formula \
 	cmake \
 	colima \
 	coreutils \
+	daemontools \
 	delta \
 	detect-secrets \
 	devcontainer \
