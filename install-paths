@@ -25,6 +25,9 @@ ln -sf ~/.dotfiles/zed/tasks.json ~/.config/zed/
 rm -rf ~/.config/yazi
 ln -sf ~/.dotfiles/yazi/ ~/.config
 
+[[ -d ~/.config/btop ]] && rm -rf ~/.config/btop
+ln -sf ~/.dotfiles/btop/ ~/.config
+
 symlink() { ~/.dotfiles/bin/symlink "$@"; }
 
 for dir in "$HOME/Library/Application Support/Firefox/Profiles"/*; do
