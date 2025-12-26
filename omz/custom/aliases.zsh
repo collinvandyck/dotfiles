@@ -87,9 +87,6 @@ alias gdu='gd @{u}'
 alias wt=worktrees
 alias zp='cd $(git rev-parse --git-common-dir)/..'
 
-# remove things that the git plugin defines
-unalias gup
-
 # zsh aliases
 alias reload='exec zsh'
 alias ll='ls -lF'
