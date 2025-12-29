@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # a convenient wrapper for tailspin
 
 if [[ $# -eq 0 ]]; then
