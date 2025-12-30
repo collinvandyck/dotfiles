@@ -12,5 +12,6 @@
   "statusLine": {
     "type": "command",
     "command": "/Users/collin/.dotfiles/ai/claude/code/statusline.sh"
-  }
+  },
+  "model": "opus"
 }
