@@ -45,12 +45,14 @@ nnoremap ya :%y<CR>
 " editor as well.
 inoremap <C-[> <Esc>
 
-nnoremap tn :action NextTab<CR>
-nnoremap tp :action PreviousTab<CR>
+"nnoremap tn :action NextTab<CR>
+"nnoremap tp :action PreviousTab<CR>
 nmap <M-j> <Action>(NextTab)
 nmap <M-k> <Action>(PreviousTab)
 nmap <C-j> <Action>(NextOccurence)
-nmap <C-k> <Action>(PreviousOccurence)
+nmap <C-j> <Action>(PreviousOccurence)
+nmap tn <Action>(NextSplitter)
+nmap tp <Action>(PrevSplitter)
 
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
 nnoremap <leader>q :action CloseContent<CR>
