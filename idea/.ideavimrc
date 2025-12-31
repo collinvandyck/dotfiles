@@ -47,6 +47,11 @@ inoremap <C-[> <Esc>
 
 nnoremap tn :action NextTab<CR>
 nnoremap tp :action PreviousTab<CR>
+nmap <M-j> <Action>(NextTab)
+nmap <M-k> <Action>(PreviousTab)
+nmap <C-j> <Action>(NextOccurence)
+nmap <C-k> <Action>(PreviousOccurence)
+
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
 nnoremap <leader>q :action CloseContent<CR>
 
@@ -100,8 +105,6 @@ nmap gb <Action>(ShowBookmarks)
 
 nmap g[ <Action>(PreviousOccurence)
 nmap g] <Action>(NextOccurence)
-nmap <M-j> <Action>(NextOccurence)
-nmap <M-k> <Action>(PreviousOccurence)
 
 nmap gh <Action>(ShowErrorDescription)
 "nmap K <Action>(QuickJavaDoc)
