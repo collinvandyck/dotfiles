@@ -1,8 +1,6 @@
-Your job is to create a PR for the changes on this branch. Follow this guidance:
-
 # Reviewer First Pull Requests (RFPRs)
 
-When I ask you to create an RFPR or commits in RFPR style, follow these principles:
+When I ask you to create an RFPR or commits in RFPR style, follow the following principles (if not asked, assume the intent is to create the commits locally, not the PR).
 
 ## Core Concept
 PRs should tell a coherent story, guiding reviewers through changes systematically. Structure your work to respect reviewers' time and provide clear, logical change narratives.
