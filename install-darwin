@@ -15,10 +15,8 @@ if ! [[ "$(uname -m)" != "arm64" ]] ; then
     fi
 fi
 
-# homebrew is required for things like ruby-install
+# pre-req for things to follow
 ~/.dotfiles/install-homebrew
-
-[[ -z "${SKIP_RUBY_INSTALL:-}" ]] && ruby-install --no-reinstall ruby 3.1.3
 
 # install aws cli v2
 if ! aws --version &> /dev/null; then
