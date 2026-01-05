@@ -26,13 +26,15 @@ alias jl='just -l'
 alias by='bat -lyaml'
 alias cds='z cds'
 
-[[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
-[[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
+#[[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
+#[[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
 alias cl='claude'
 alias cld='cl --dangerously-skip-permissions'
 alias clc='cl --continue'
-alias claude-sonnet='cl --model sonnet'
-alias claude-opus='cl --model opus'
+alias clr='cl --resume'
+alias cl-sonnet='cl --model sonnet'
+alias cl-opus='cl --model opus'
+alias clsa='cd ~/code/saas-temporal && cl'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 

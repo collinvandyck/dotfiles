@@ -6,8 +6,6 @@
 
 # Commands
 
-- use `command cat` instead of `cat`
-- use `command ls` instead of `ls`
 - `fd` (https://github.com/sharkdp/fd) is installed. You can use it to search for files.
 - Ripgrep (`rg`) is also installed. You can use it to search within files.
 
