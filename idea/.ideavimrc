@@ -50,7 +50,7 @@ inoremap <C-[> <Esc>
 nmap <M-j> <Action>(NextTab)
 nmap <M-k> <Action>(PreviousTab)
 nmap <C-j> <Action>(NextOccurence)
-nmap <C-j> <Action>(PreviousOccurence)
+nmap <C-k> <Action>(PreviousOccurence)
 nmap tn <Action>(NextSplitter)
 nmap tp <Action>(PrevSplitter)
 
