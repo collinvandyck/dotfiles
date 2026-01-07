@@ -53,6 +53,8 @@ nmap <C-j> <Action>(NextOccurence)
 nmap <C-k> <Action>(PreviousOccurence)
 nmap tn <Action>(NextSplitter)
 nmap tp <Action>(PrevSplitter)
+nmap gn <Action>(NextOccurence)
+nmap gp <Action>(PreviousOccurence)
 
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
 nnoremap <leader>q :action CloseContent<CR>
@@ -118,8 +120,8 @@ nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
 
 nnoremap gd :action GotoDeclaration<CR>
 nnoremap gt :action GotoTypeDeclaration<CR>
-nnoremap gn :action GotoNextError<CR>
-nnoremap gp :action GotoPreviousError<CR>
+nnoremap gen :action GotoNextError<CR>
+nnoremap gep :action GotoPreviousError<CR>
 nnoremap gr :action ShowUsages<CR>
 nnoremap gR :action FindUsages<CR>
 
