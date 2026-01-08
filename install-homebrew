@@ -135,6 +135,7 @@ brew install --quiet --formula \
 	sccache \
 	semgrep \
 	shellcheck \
+	snitch \
 	spring-io/tap/spring-boot \
 	steveyegge/beads/bd \
 	temporal \
