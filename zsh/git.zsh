@@ -1,6 +1,3 @@
-alias ci='git ci'
-alias cip='git cip'
-
 function delbranch() {
     git branch -D $1
     git push origin :refs/heads/$1
