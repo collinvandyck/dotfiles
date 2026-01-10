@@ -136,11 +136,14 @@ alias tk=task
 
 # lsd config
 alias ls='lsd --color=always'
+alias l='ls -lah'
+alias lr='ls -lahr'
 alias lt='ls --tree'
 alias llt='ll --tree'
 alias lld='ll -d'
 for i in $(seq 1 9); do
     alias "llt${i}"="ll --tree --depth ${i}"
+    alias "lt${i}"="lt --tree --depth ${i}"
 done
 
 # hyperfine
