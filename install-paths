@@ -37,43 +37,25 @@ for dir in "$HOME/Library/Application Support/Firefox/Profiles"/*; do
 	fi
 done
 
-# os specific symlinking
-if [[ "$(uname)" =~ "Darwin" ]]; then
-    # claude
-    mkdir -p ~/Library/Application\ Support/Claude
-    ln -sf ~/.dotfiles/ai/claude/claude_desktop_config.json ~/Library/Application\ Support/Claude/
-	mkdir -p ~/.claude
-	ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
-	ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
-	ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
-	ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
-	ln -sf ~/.dotfiles/ai/claude/code/scripts ~/.claude/
+mkdir -p ~/.config/Claude
+ln -sf ~/.dotfiles/ai/claude/claude_desktop_config.json ~/.config/Claude/
+mkdir -p ~/.claude
+ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/scripts ~/.claude/
 
-	# lazygit
-	mkdir -p ~/Library/Application\ Support/lazygit
-	symlink ~/.dotfiles/lazygit/config.yml ~/Library/Application\ Support/lazygit
 
-	# urlwatch
-	symlink ~/.dotfiles/urlwatch ~/Library/Application\ Support/urlwatch
+mkdir -p ~/.config/lazygit
+symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit
 
-	# nushell
-	mkdir -p ~/Library/Application\ Support/nushell
-	symlink ~/.dotfiles/nushell/config.nu ~/Library/Application\ Support/nushell
-	symlink ~/.dotfiles/nushell/env.nu ~/Library/Application\ Support/nushell
+symlink ~/.dotfiles/urlwatch ~/.config/urlwatch
 
-	# bacon
-	mkdir -p ~/Library/Application\ Support/org.dystroy.bacon
-	symlink ~/.dotfiles/bacon/prefs.toml ~/Library/Application\ Support/org.dystroy.bacon
-else
-	mkdir -p ~/.config/lazygit
-	symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit/config.yml
-	symlink ~/.dotfiles/urlwatch ~/.cofnig/urlwatch
-fi
+mkdir -p ~/.config/org.dystroy.bacon
+symlink ~/.dotfiles/bacon/prefs.toml ~/.config/org.dystroy.bacon
 
-if [ -d ~/.config/broot ]; then
-    # we will replace it with our symlinked dir
-    rm -rf ~/.config/broot
-fi
+[[ -d ~/.config/broot ]] && rm -rf ~/.config/broot
 
 if ! [[ -d /usr/local/bin ]]; then
     sudo mkdir -p /usr/local/bin
