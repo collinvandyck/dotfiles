@@ -5,6 +5,9 @@
 unset GOROOT
 unset GOPATH
 
+export XDG_CONFIG_HOME=~/.config
+export K9S_CONFIG_DIR=~/.config/k9s
+
 export BAT_STYLE="plain"
 export DOCKER_CLI_HINTS=false
 export DOCKER_SCAN_SUGGEST=false
@@ -18,7 +21,6 @@ export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-export K9S_CONFIG_DIR=~/.config/k9s
 
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
