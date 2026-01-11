@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# k9s plugins to install from https://github.com/derailed/k9s/tree/master/plugins
+# Add or remove plugins from this list as needed
+K9S_PLUGINS=(
+	debug-container
+	helm-values
+	watch-events
+)
+
+K9S_PLUGINS_URL="https://raw.githubusercontent.com/derailed/k9s/master/plugins"
+SCRIPT_DIR=$(dirname "$0")
+K9S_PLUGINS_DIR="$SCRIPT_DIR/k9s/plugins"
+
+echo "Installing k9s plugins to $K9S_PLUGINS_DIR"
+
+mkdir -p "$K9S_PLUGINS_DIR"
+
+for plugin in "${K9S_PLUGINS[@]}"; do
+	echo "  Fetching $plugin"
+	curl -sL "$K9S_PLUGINS_URL/$plugin.yaml" -o "$K9S_PLUGINS_DIR/$plugin.yaml"
+done
+
+echo "Done. Installed ${#K9S_PLUGINS[@]} plugins."
