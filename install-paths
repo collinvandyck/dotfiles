@@ -93,6 +93,7 @@ symlink ~/.dotfiles/broot                      ~/.config/broot
 symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
 symlink ~/.dotfiles/direnv                     ~/.config/direnv
 symlink ~/.dotfiles/dlv                        ~/.config/dlv
+symlink ~/.dotfiles/k9s                        ~/.config/k9s
 symlink ~/.dotfiles/git/.gitconfig             ~
 symlink ~/.dotfiles/git/.gitignore_global      ~
 symlink ~/.dotfiles/git/tigrc                  ~/.tigrc
