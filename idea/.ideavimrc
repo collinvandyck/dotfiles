@@ -10,31 +10,23 @@
 "
 " Try using nmap instead of nnoremap if a command is buggy.
 
-" yank to the system clipboard
-set clipboard+=unnamed
-" allow pasting from the IDEA clipboard
-set clipboard+=ideaput
-
-set visualbell
-set noerrorbell
-set timeoutlen=3000
-set notimeout
+set clipboard+=ideaput " allow pasting from the IDEA clipboard
+set clipboard+=unnamed " yank to the system clipboard
 set ideajoin
-set scrolloff=10
-set incsearch
-"set hlsearch
-set smartcase
 set ignorecase
+set incsearch
+set noerrorbell
+set notimeout
+set scrolloff=10
+set smartcase
+set timeoutlen=3000
+set visualbell
+"set hlsearch
 
 "set which-key
 "let g:WhichKey_FontSize = 20
 
 let mapleader=","
-
-" nnoremap <C-s> I want to map C-s to save.
-
-" TODO:
-" Use <Action> instead of :action: https://github.com/JetBrains/ideavim
 
 nmap [[ :action MethodUp<CR>
 nmap ]] :action MethodDown<CR>
@@ -44,119 +36,76 @@ nnoremap ya :%y<CR>
 " to dismiss dialogs, and adding this mapping in .ideavimrc allows me to also use it in the
 " editor as well.
 inoremap <C-[> <Esc>
+imap <C-s> <Esc><Action>(SaveAll)
+inoremap <c-e> <Esc>A
 
-"nnoremap tn :action NextTab<CR>
-"nnoremap tp :action PreviousTab<CR>
-nmap <M-j> <Action>(NextTab)
-nmap <M-k> <Action>(PreviousTab)
+nmap <C-8> <Action>(HideAllWindows)
+nmap <C-h> <Action>(RecentFiles)
+nmap <C-i> <Action>(Forward)
 nmap <C-j> <Action>(NextOccurence)
 nmap <C-k> <Action>(PreviousOccurence)
-nmap tn <Action>(NextSplitter)
-nmap tp <Action>(PrevSplitter)
-nmap gn <Action>(NextOccurence)
-nmap gp <Action>(PreviousOccurence)
-
-nnoremap <leader>h :action HideActiveWindow<CR> " buggy
-nnoremap <leader>q :action CloseContent<CR>
-
-imap <C-s> <Esc><Action>(SaveAll)
-nmap <C-s> <Action>(SaveAll)
 nmap <C-o> <Action>(Back)
-nmap <C-i> <Action>(Forward)
-
-nmap <leader>hw <Action>(ActivateHierarchyToolWindow)
-nmap <leader>twh <Action>(ActivateHierarchyToolWindow)
-
+nmap <C-s> <Action>(SaveAll)
+nmap <M-j> <Action>(NextTab)
+nmap <M-k> <Action>(PreviousTab)
 nmap <leader>R <Action>(IdeaVim.ReloadVimRc.reload)
 nmap <leader>ar <Action>(RenameElement)
 nmap <leader>ch <Action>(CallHierarchy)
+nmap <leader>da <Action>(EditorPopupMenuDebug)
+nmap <leader>dd <Action>(Debug)
+nmap <leader>dep <Action>(ShowExecutionPoint)
 nmap <leader>fs <Action>(FindInPath)
 nmap <leader>gb <Action>(Annotate)
+nmap <leader>gcb <Action>(Git.CompareWithBranch)
 nmap <leader>gf <Action>(GotoFile)
+nmap <leader>hw <Action>(ActivateHierarchyToolWindow)
 nmap <leader>oog <Action>(OpenEditorInOppositeTabGroup)
 nmap <leader>rc <Action>(RunClass)
 nmap <leader>rr <Action>(Run)
-nmap <leader>dd <Action>(Debug)
 nmap <leader>sa <Action>(GotoAction)
 nmap <leader>sc <Action>(GotoClass)
 nmap <leader>se <Action>(SearchEverywhere)
 nmap <leader>sf <Action>(GotoFile)
 nmap <leader>ss <Action>(GotoSymbol)
-nmap <leader>th <Action>(TypeHierarchy)
-
-" debugging
-" show debug actions
-nmap <leader>da <Action>(EditorPopupMenuDebug)
-" show execution point (where we are breakpointed)
-nmap <leader>dep <Action>(ShowExecutionPoint)
-
-" toggles
-nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
-nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
-nmap <leader>tb <Action>(ToggleBookmark)
 nmap <leader>taid <Action>(VimFindActionIdAction)
-
-" git
-nmap <leader>gcb <Action>(Git.CompareWithBranch)
-
+nmap <leader>tb <Action>(ToggleBookmark)
+nmap <leader>th <Action>(TypeHierarchy)
+nmap <leader>ti <Action>(ToggleInlayHintsGloballyAction)
+nmap <leader>tw <Action>(EditorToggleUseSoftWraps)
+nmap <leader>twh <Action>(ActivateHierarchyToolWindow)
+nmap K <Action>(ShowHoverInfo)
 nmap gT <Action>(GotoTest)
-nmap gy <Action>(GotoTest)
-nmap gs <Action>(FileStructurePopup)
-nmap ga <Action>(ShowIntentionActions)
-nmap gu <Action>(GotoSuperMethod)
-nmap gi <Action>(GotoImplementation)
-nmap gb <Action>(ShowBookmarks)
-
 nmap g[ <Action>(PreviousOccurence)
 nmap g] <Action>(NextOccurence)
-
+nmap ga <Action>(ShowIntentionActions)
+nmap gb <Action>(ShowBookmarks)
 nmap gh <Action>(ShowErrorDescription)
-"nmap K <Action>(QuickJavaDoc)
-nmap K <Action>(ShowHoverInfo)
-nmap <C-8> <Action>(HideAllWindows)
-nmap <C-h> <Action>(RecentFiles)
+nmap gi <Action>(GotoImplementation)
+nmap gn <Action>(NextOccurence)
+nmap gp <Action>(PreviousOccurence)
+nmap gs <Action>(FileStructurePopup)
+nmap gu <Action>(GotoSuperMethod)
+nmap gy <Action>(GotoTest)
+nmap tn <Action>(NextSplitter)
+nmap tp <Action>(PrevSplitter)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
-
+nnoremap <leader>h :action HideActiveWindow<CR> " buggy
+nnoremap <leader>q :action CloseContent<CR>
+nnoremap gR :action FindUsages<CR>
 nnoremap gd :action GotoDeclaration<CR>
-nnoremap gt :action GotoTypeDeclaration<CR>
 nnoremap gen :action GotoNextError<CR>
 nnoremap gep :action GotoPreviousError<CR>
 nnoremap gr :action ShowUsages<CR>
-nnoremap gR :action FindUsages<CR>
+nnoremap gt :action GotoTypeDeclaration<CR>
 
-" inoremap jk <Esc>
-inoremap <c-e> <Esc>A
-
-" NERDTREE Config
-Plug 'preservim/nerdtree'
-" nmap F :NERDTreeFocus<CR>
-nmap F :NERDTreeFind<CR>
-
-"" -- Suggested options --
-" Show a few lines of context around the cursor. Note that this makes the
-" text scroll if you mouse-click near the start or end of the window.
-
-
-" Don't use Ex mode, use Q for formatting.
 map Q gq
 
-" --- Enable IdeaVim plugins https://jb.gg/ideavim-plugins
+" --- IdeaVim plugins https://jb.gg/ideavim-plugins
 
+Plug 'preservim/nerdtree'
+nmap F :NERDTreeFind<CR>
 Plug 'machakann/vim-highlightedyank'
 Plug 'justinmk/vim-sneak' " [sS] + two chars. ; and , to navigate
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
-" Plug 'michaeljsmith/vim-indent-object'
-
-
-"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
-"" Map \r to the Reformat Code action
-"map \r <Action>(ReformatCode)
-
-"" Map <leader>d to start debug
-"map <leader>d <Action>(Debug)
-
-"" Map \b to toggle the breakpoint on the current line
-"map \b <Action>(ToggleLineBreakpoint)
-
