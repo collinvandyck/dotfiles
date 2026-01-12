@@ -4,6 +4,9 @@ set -euo pipefail
 # sets up the standard operating environment for claude.
 # explicitly a bash script to avoid inheriting aliases for things like lsd.
 
+# use bash for claude code sessions
+export CLAUDE_CODE_SHELL=bash
+
 claudes=(
 	"$HOME/.claude/local/claude"
 	"$HOME/.local/bin/claude"
