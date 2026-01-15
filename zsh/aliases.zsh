@@ -26,8 +26,6 @@ alias jl='just -l'
 alias by='bat -lyaml'
 alias cds='z cds'
 
-#[[ -f "$HOME/.claude/local/claude" ]] && alias claude="$HOME/.claude/local/claude"
-#[[ -f "$HOME/.local/bin/claude" ]] && alias claude="$HOME/.local/bin/claude"
 alias cl='claude'
 alias cld='cl --dangerously-skip-permissions'
 alias clc='cl --continue'
@@ -57,6 +55,7 @@ alias cip='git cip'
 alias gst='git status'
 alias gcav='git add -A && git commit -v'
 alias gb='GIT_PAGER= git branch --sort=committerdate'
+alias gbfmom='git branch -f main $(git_main_branch)'
 alias gf='git fetch'
 alias gl='git pull'
 alias glr='git pull --rebase'
@@ -66,7 +65,6 @@ alias glla='git lla'
 alias gllah='glla | hd'
 alias gllch='gllc | hd'
 alias glog='git log'
-#alias log='glog'
 alias stash='git add -A && git stash'
 alias pop='git stash pop'
 alias gitk='gitk --all > /dev/null 2>&1 &'
@@ -151,5 +149,3 @@ done
 # hyperfine
 alias hf='hyperfine 2>/dev/null'
 
-# ripgrep + fzf
-alias rs='~/.dotfiles/bin/rs'
