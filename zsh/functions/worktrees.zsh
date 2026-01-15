@@ -41,42 +41,42 @@ worktrees() {
         cd "$full_path"
     }
 
-    switch-worktree() {
-        [[ $# -lt 1 ]] && error "$usage: switch [name] ..." && return 1
-        cd "$(worktree-dir "$1")"
-    }
+switch-worktree() {
+    [[ $# -lt 1 ]] && error "$usage: switch [name] ..." && return 1
+    cd "$(worktree-dir "$1")"
+}
 
-    remove-worktree() {
-        [[ $# -lt 1 ]] && error "$usage: remove [name] ..." && return 1
-        root=$(root)
-        git worktree remove "$@" || return $?
-        cd $root
-    }
+remove-worktree() {
+    [[ $# -lt 1 ]] && error "$usage: remove [name] ..." && return 1
+    root=$(root)
+    git worktree remove "$@" || return $?
+    cd $root
+}
 
-    list-worktrees() {
-        git worktree list
-    }
+list-worktrees() {
+    git worktree list
+}
 
-    case "$1" in
-        "create")
-            shift
-            create-worktree "$@"
-            ;;
-        "remove")
-            shift
-            remove-worktree "$@"
-            ;;
-        "switch")
-            shift
-            switch-worktree "$@"
-            ;;
-        "list")
-            shift
-            list-worktrees "$@"
-            ;;
+case "$1" in
+    "create")
+        shift
+        create-worktree "$@"
+        ;;
+    "remove")
+        shift
+        remove-worktree "$@"
+        ;;
+    "switch")
+        shift
+        switch-worktree "$@"
+        ;;
+    "list")
+        shift
+        list-worktrees "$@"
+        ;;
 
-        *)
-            list-worktrees
-            ;;
-    esac
+    *)
+        list-worktrees
+        ;;
+esac
 }
