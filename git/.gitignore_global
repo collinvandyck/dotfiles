@@ -13,10 +13,8 @@ profile*.svg
 .mutagen
 .mutagen.yml
 slammo.sql
-CLAUDE.md
 .claude
 CLAUDE.local.md
-/*.md
 .mcp.json
 .beads
 /worktrees
