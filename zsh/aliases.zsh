@@ -33,6 +33,8 @@ alias clr='cl --resume'
 alias cl-sonnet='cl --model sonnet'
 alias cl-opus='cl --model opus'
 alias clsa='cd ~/code/saas-temporal && cl'
+alias clsac='cd ~/code/saas-temporal && cl --continue'
+alias clsar='cd ~/code/saas-temporal && cl --resume'
 
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
