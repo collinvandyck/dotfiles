@@ -60,6 +60,7 @@ ovimrc=~/code/notes/.obsidian.vimrc
 
 
 symlink ~/.dotfiles/atuin                      ~/.config/atuin
+symlink ~/.dotfiles/bat                        ~/.config/bat
 symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
 symlink ~/.dotfiles/broot                      ~/.config/broot
 symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
