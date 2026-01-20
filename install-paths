@@ -37,16 +37,6 @@ for dir in "$HOME/Library/Application Support/Firefox/Profiles"/*; do
 	fi
 done
 
-mkdir -p ~/.config/Claude
-ln -sf ~/.dotfiles/ai/claude/claude_desktop_config.json ~/.config/Claude/
-mkdir -p ~/.claude
-ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
-ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
-ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
-ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
-ln -sf ~/.dotfiles/ai/claude/code/scripts ~/.claude/
-
-
 mkdir -p ~/.config/lazygit
 symlink ~/.dotfiles/lazygit/config.yml ~/.config/lazygit
 
