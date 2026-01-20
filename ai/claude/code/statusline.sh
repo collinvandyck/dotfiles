@@ -24,6 +24,19 @@ _PAYLOAD_FORMAT='
     "total_api_duration_ms": 2300,
     "total_lines_added": 156,
     "total_lines_removed": 23
+  },
+  "context_window": {
+    "total_input_tokens": 15234,
+    "total_output_tokens": 4521,
+    "context_window_size": 200000,
+    "used_percentage": 42.5,
+    "remaining_percentage": 57.5,
+    "current_usage": {
+      "input_tokens": 8500,
+      "output_tokens": 1200,
+      "cache_creation_input_tokens": 5000,
+      "cache_read_input_tokens": 2000
+    }
   }
 }
 '
@@ -32,6 +45,8 @@ input=$(cat)
 MODEL_DISPLAY=$(echo "$input" | jq -r '.model.display_name')
 CURRENT_DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 COST_USD=$(echo "$input" | jq -r '.cost.total_cost_usd' | xargs printf "%.2f" )
+SESSION_NAME=$(echo "$input" | jq -r '.session_name // .session_id' | cut -c1-16)
+CONTEXT_REMAINING=$(echo "$input" | jq -r '.context_window.remaining_percentage')
 
-echo "[$MODEL_DISPLAY] 💰 \$${COST_USD} 📁 ${CURRENT_DIR/#$HOME/~}"
+echo "[$MODEL_DISPLAY] ⏰ ${CONTEXT_REMAINING}% 💰 \$${COST_USD} 📁 ${CURRENT_DIR/#$HOME/~}"
 
