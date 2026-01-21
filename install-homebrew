@@ -50,6 +50,7 @@ brew install --quiet --formula \
 	aichat \
 	asdf \
 	bash-language-server \
+	bat \
 	bat-extras \
 	borkdude/brew/babashka \
 	broot \
@@ -150,6 +151,7 @@ brew install --quiet --formula \
 	watch \
 	web-ext \
 	wget \
+	xh \
 	xz \
 	yazi \
 	zig \
