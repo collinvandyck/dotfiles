@@ -14,7 +14,9 @@ claudes=(
 
 find-claude() {
 	for claude in "${claudes[@]}"; do
-		[[ -f "$claude" ]] && CLAUDE="$claude"
+		if [[ -f "$claude" ]]; then
+			CLAUDE="$claude"
+		fi
 	done
 }
 

@@ -44,44 +44,16 @@ export RIPGREP_CONFIG_PATH=~/.ripgrep.conf
 #export WORDCHARS='*?_-[]~&;!#$%^(){}<>|'
 export WORDCHARS=-
 
-paths=()
-for p in $(echo $PATH | tr ':' '\n'); do
-	paths+=($p)
-done
-
-# addPath adds the path if it exists and is not already in PATH
-addPath() {
-	local add=$1
-	paths=("${(@)paths:#$add}")
-	if ! [ -d $add ]; then
-		return 0
-	fi
-	export PATH="$add:$PATH"
-}
-
-addPaths=(
-    /snap/bin
-    /opt/homebrew/bin
-    /opt/homebrew/sbin
-    ~/Library/Python/3.9/bin
-    ~/go/bin
-    ~/bin
-    ~/.fzf/bin
-    ~/.local/bin
-    ~/.cargo/bin
-    ~/.tfenv/bin
-    ~/.powerline/scripts
-    ~/.npm-global/bin
-    /usr/local/go/bin
-    /usr/local/bin
-    ~/.dotfiles/bin
-    ~/.dotfiles/bin/clj
-    ~/code/temporal-utils
-    /usr/local/sqlite3/bin
-    /opt/homebrew/share/google-cloud-sdk/bin
-    $PYENV_ROOT
-)
-
-for p in ${addPaths[@]}; do
-	addPath $(echo $p)
-done
+export PATH=$PATH:~/.dotfiles/bin
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.fzf/bin
+export PATH=$PATH:~/.cargo/bin
+export PATH=$PATH:~/code/temporal-utils
+export PATH=$PATH:~/go/bin
+export PATH=$PATH:/snap/bin
+export PATH=$PATH:/opt/homebrew/bin
+export PATH=$PATH:/opt/homebrew/sbin
+export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/bin
+export PATH=$PATH:~/.tfenv/bin
+export PATH=$PATH:/opt/homebrew/share/google-cloud-sdk/bin
