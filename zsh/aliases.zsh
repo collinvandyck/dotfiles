@@ -1,5 +1,7 @@
 # misc
 
+command -v batcat &>/dev/null && alias bat='batcat'
+
 alias tma=tmuxinator
 alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
 alias sshctl='ll ~/.ssh/control/'
@@ -151,4 +153,3 @@ done
 
 # hyperfine
 alias hf='hyperfine 2>/dev/null'
-
