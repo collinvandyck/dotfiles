@@ -12,8 +12,17 @@ claudes=(
 	"$HOME/.local/bin/claude"
 )
 
-for claude in "${claudes[@]}"; do
-	[[ -f "$claude" ]] && CLAUDE="$claude"
-done
+find-claude() {
+	for claude in "${claudes[@]}"; do
+		[[ -f "$claude" ]] && CLAUDE="$claude"
+	done
+}
 
-$CLAUDE "$@"
+find-claude
+[[ -z "${CLAUDE:-}" ]] && {
+	echo "Installing claude..."
+	curl -fsSL https://claude.ai/install.sh | bash
+}
+
+find-claude
+${CLAUDE:?no claude found} "$@"
