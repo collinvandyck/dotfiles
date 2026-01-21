@@ -37,8 +37,8 @@ fi
 # dog is no longer maintained
 # logi-options-plus is terrible when updating via homebrew
 # dotnet-sdk no longer used
-for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ dotnet-sdk moreutils; do
-	if brew list -1 | grep -q "^${pkg}\$"; then
+for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ dotnet-sdk moreutils istat-menus; do
+	if brew list -1 "$pkg" &>/dev/null; then
 		echo "Removing $pkg"
 		brew remove -f $pkg
 	fi
@@ -177,7 +177,6 @@ brew install --quiet --cask --force \
 	gcloud-cli \
 	hidock \
 	imhex \
-	istat-menus \
 	kitty \
 	mitmproxy \
 	obsidian \
