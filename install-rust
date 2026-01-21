@@ -2,6 +2,7 @@
 
 set -euo pipefail
 
+
 if ! command -v rustc &> /dev/null; then
     echo "Installing Rust.."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
@@ -16,11 +17,17 @@ rustup toolchain install nightly-2024-03-29
 
 echo "Installing Rust programs"
 
+mkdir -p ~/.cargo/tmp
+trap 'rm -r ~/.cargo/tmp' EXIT
+export CARGO_TARGET_DIR=~/.cargo/tmp
+
 cargo_install() {
     cargo install --locked "$@"
 }
 
 for proj in ~/.dotfiles/bin/rust/*; do
+	[[ "$proj" = *paths-to-tree* ]] && continue
+	[[ "$proj" = *spacer* ]] && continue
     cargo_install --path $proj
 done
 
@@ -28,40 +35,9 @@ if [[ $# == 1 && $1 == "--local" ]]; then
     exit 0
 fi
 
-cargo_install \
-    ag \
-    ast-grep \
-    bacon \
-    bat \
-    cargo-asm \
-    cargo-generate \
-    cargo-expand \
-    cargo-lipo \
-    cargo-nextest \
-    cargo-watch \
-    diskonaut \
-    erdtree \
-    eva \
-    fd-find \
-    hyperfine \
-    just \
-    lsd \
-    mdbook \
-    miniserve \
-    pastel \
-    pipr \
-    ripgrep \
-    scooter \
-    starship \
-    tailspin \
-    tealdeer \
-    tokei \
-    trunk \
-    wasm-pack \
-    watchexec-cli \
-    xh \
-    ;
-
+cargo_install cargo-nextest
+cargo_install cargo-watch
+cargo_install diskonaut
 cargo_install atuin --version 18.10.0
 cargo_install --features cli dotenv
 

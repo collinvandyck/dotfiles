@@ -11,6 +11,7 @@ sudo apt install -y \
 	asciinema \
 	autoconf \
 	automake \
+	bat \
 	btop \
 	build-essential \
 	ca-certificates \
@@ -28,10 +29,13 @@ sudo apt install -y \
 	gnupg \
 	htop \
 	httpie \
+	hyperfine \
 	iproute2 \
 	iputils-ping \
 	jq \
+	just \
 	kitty-terminfo \
+	lazygit \
 	libfuse2 \
 	libluajit-5.1-dev \
 	libpcap-dev \
@@ -42,6 +46,7 @@ sudo apt install -y \
 	libtree-sitter-dev \
 	lld \
 	lsb-release \
+	lsd \
 	man \
 	man-db \
 	net-tools \
@@ -62,14 +67,18 @@ sudo apt install -y \
 	snapd \
 	software-properties-common \
 	sqlite3 \
+	starship \
+	tailspin \
 	tcl \
 	tig \
 	tmux \
+	tokei \
 	traceroute \
 	tree \
 	unzip \
 	valgrind \
 	wget \
+	xh \
 	xsel \
 	zoxide \
 	zsh \
@@ -87,14 +96,15 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 # golang
 (
+	version=1.25.6
 	echo "checking golang"
-	if ! [[ "$(go version 2>/dev/null || true)" == *"go version go1.25.0"* ]]; then
+	if ! [[ "$(go version 2>/dev/null || true)" == *"go version ${version}"* ]]; then
 		cd "$(mktemp -d)"
-		if [[ "$(uname -i)" == "aarch64" ]]; then
-			artifact="go1.25.0.linux-arm64.tar.gz"
-		else
-			artifact="go1.25.0.linux-amd64.tar.gz"
-		fi
+		case "$(uname -m)" in
+			aarch64) arch=arm64;;
+			*) arch="$(uname -m)";;
+		esac
+		artifact="go${version}.linux-${arch}.tar.gz"
 		curl -LO "https://go.dev/dl/${artifact}"
 		sudo rm -rf /usr/local/go
 		sudo tar -C /usr/local -xzf "$artifact"
@@ -119,20 +129,8 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 	fi
 )
 
-# lazygit
-(
-	if ! [[ "$(lazygit --version || true)" == *"version=0.44.1"* ]]; then
-		cd "$(mktemp -d)"
-		LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*')
-		echo "LAZYGIT_VERSION: ${LAZYGIT_VERSION}"
-		curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
-		tar xf lazygit.tar.gz lazygit
-		sudo install lazygit -D -t /usr/local/bin/
-	fi
-)
-
 # add tailscale
-(
+[[ -n "${INSTALL_TAILSCALE:-}" ]] && (
 	echo "checking tailscale"
 	# Exit node stuff
 	ts_conf=/etc/sysctl.d/99-tailscale.conf
@@ -171,28 +169,15 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 		echo "installing delta pager ${delta_version}"
 		cd "$(mktemp -d)"
 
-		filename=git-delta_${delta_version}_amd64.deb
+		case "$(uname -m)" in
+			aarch64) arch=arm64;;
+			*) arch="$(uname -m)";;
+		esac
+		filename="git-delta_${delta_version}_${arch}.deb"
 		url="https://github.com/dandavison/delta/releases/download/${delta_version}/${filename}"
 		echo "Downloading from $url"
 		wget "$url"
 		sudo dpkg -i $filename
-	fi
-)
-
-# pyenv
-export PATH=~/.pyenv/bin:$PATH
-if [[ "$(command -v pyenv)" == "" ]]; then
-	curl https://pyenv.run | bash
-fi
-
-# chruby
-(
-	if [[ "$(command -v chruby)" == "" ]]; then
-		cd "$(mktemp -d)"
-		wget https://github.com/postmodern/chruby/releases/download/v0.3.9/chruby-0.3.9.tar.gz
-		tar -xzvf chruby-0.3.9.tar.gz
-		cd chruby-0.3.9/
-		sudo make install
 	fi
 )
 
