@@ -6,25 +6,11 @@ set -euo pipefail
 
 # use bash for claude code sessions
 export CLAUDE_CODE_SHELL=bash
+export CLAUDE=~/.local/bin/claude
 
-claudes=(
-	"$HOME/.claude/local/claude"
-	"$HOME/.local/bin/claude"
-)
-
-find-claude() {
-	for claude in "${claudes[@]}"; do
-		if [[ -f "$claude" ]]; then
-			CLAUDE="$claude"
-		fi
-	done
-}
-
-find-claude
-[[ -z "${CLAUDE:-}" ]] && {
+[[ ! -e "${CLAUDE:-}" ]] && {
 	echo "Installing claude..."
 	curl -fsSL https://claude.ai/install.sh | bash
 }
 
-find-claude
-${CLAUDE:?no claude found} "$@"
+$CLAUDE "$@"
