@@ -31,6 +31,9 @@ for f in ~/.dotfiles/zsh/*.zsh; do source "$f"; done
 # Initialize completion system (required for compdef used by many tools)
 autoload -Uz compinit && compinit
 
+# Use emacs keybindings (zsh defaults to vi mode when EDITOR=vim/nvim)
+bindkey -e
+
 source-if() { [[ -f "$1" ]] && source "$1"; }
 cmd_exists() { command -v "$1" &>/dev/null; }
 
