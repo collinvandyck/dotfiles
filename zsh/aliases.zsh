@@ -1,3 +1,7 @@
+# temporal
+alias cds='z cds'
+alias sa='z saas temporal'
+alias awslocal='uvx --from awscli-local awslocal'
 # misc
 
 command -v batcat &>/dev/null && alias bat='batcat'
@@ -26,7 +30,6 @@ alias zz='exec zsh'
 alias m='mise'
 alias jl='just -l'
 alias by='bat -lyaml'
-alias cds='z cds'
 
 alias cl='claude'
 alias cld='cl --dangerously-skip-permissions'
