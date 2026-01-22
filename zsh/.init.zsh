@@ -65,11 +65,11 @@ init-cloud-tools() {
 
 init-completions
 init-cloud-tools
-init-direnv
 init-fzf
 init-just
 init-mise
 init-starship
 init-zoxide
 init-atuin
+init-direnv
 
