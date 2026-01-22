@@ -5,6 +5,7 @@ add_newline = false
 right_format = ''
 # Which is equivalent to
 format = """
+$hostname\
 $directory\
 $git_branch\
 $git_commit\
@@ -29,6 +30,10 @@ truncation_length = 4
 [git_status]
 style = 'cyan'
 ignore_submodules = true
+
+[hostname]
+ssh_only = false
+format = '[$hostname]($style) '
 
 [character]
 success_symbol = '[➜](bold green)'
