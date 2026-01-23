@@ -17,6 +17,7 @@ usage() {
 	printf "$fmt" "list, ls" "list vms"
 	printf "$fmt" "create <name> [-f,--force]" "create a vm"
 	printf "$fmt" "delete [name]" "delete a vm"
+	printf "$fmt" "stop [name]" "stop a vm"
 	printf "$fmt" "<inst> [cmds...]" "run shell commands on an instance"
 	exit 1
 }
@@ -64,6 +65,10 @@ case "$cmd" in
 			esac
 		done
 		cmd_create "$inst" "$force"
+		;;
+	stop)
+		inst="${1:?inst required as first param}"; shift;
+		limactl stop "$inst"
 		;;
 	delete)
 		inst="${1:?inst required as first param}"; shift;
