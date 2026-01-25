@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/load-versions
-source "$(dirname "$0")/bin/load-versions"
-
 cd ~/.dotfiles
 
 ~/.dotfiles/install-paths

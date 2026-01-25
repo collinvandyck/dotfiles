@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+awk -F= -v key="$1" '$1 == key { print $2 }' "$HOME/.dotfiles/.versions"

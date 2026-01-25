@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/load-versions
-source "$(dirname "$0")/bin/load-versions"
-
 if ! command -v rustc &> /dev/null; then
     echo "Installing Rust.."
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | bash -s -- -y --no-modify-path
@@ -40,6 +37,6 @@ fi
 cargo_install cargo-nextest
 cargo_install cargo-watch
 cargo_install diskonaut
-cargo_install atuin --version "${DOTFILES_ATUIN_VERSION}"
+cargo_install atuin --version "$(~/.dotfiles/bin/dotfiles-version atuin)"
 cargo_install --features cli dotenv
 
