@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-export DOTFILES_CODESEARCH_VERSION=v1.2.0
-export DOTFILES_TASK_VERSION=3.27.1
+# shellcheck source=bin/load-versions
+source "$(dirname "$0")/bin/load-versions"
 
 echo "Installing Go programs"
 go version

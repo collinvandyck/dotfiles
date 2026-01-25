@@ -2,14 +2,15 @@
 
 set -euo pipefail
 
-export DOTFILES_GOLINT_VERSION=v1.51.2
-export DOTFILES_NVIM_VERSION=v0.10.0
-export DOTFILES_BOTTOM_VERSION=0.9.6
+# shellcheck source=bin/load-versions
+source "$(dirname "$0")/bin/load-versions"
 
 cd ~/.dotfiles
 
 ~/.dotfiles/install-paths
 
-osarch=$(echo "$(uname -s)-$(uname -m)" | tr '[:upper:]' '[:lower:]')
-./install-${osarch}
+case "$(uname -s)" in
+    Linux) ./install-linux ;;
+    Darwin) ./install-darwin ;;
+esac
 

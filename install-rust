@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+# shellcheck source=bin/load-versions
+source "$(dirname "$0")/bin/load-versions"
 
 if ! command -v rustc &> /dev/null; then
     echo "Installing Rust.."
@@ -13,7 +15,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 rustup default stable
 rustup component add rust-src rust-analyzer
 rustup target add wasm32-unknown-unknown x86_64-pc-windows-gnu aarch64-apple-darwin
-rustup toolchain install nightly-2024-03-29
+rustup toolchain install nightly
 
 echo "Installing Rust programs"
 
@@ -38,6 +40,6 @@ fi
 cargo_install cargo-nextest
 cargo_install cargo-watch
 cargo_install diskonaut
-cargo_install atuin --version 18.10.0
+cargo_install atuin --version "${DOTFILES_ATUIN_VERSION}"
 cargo_install --features cli dotenv
 
