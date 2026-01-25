@@ -2,11 +2,8 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/load-versions
-source "$(dirname "$0")/bin/load-versions"
-
 # Parse comma-separated node versions into array
-IFS=',' read -ra node_versions <<< "$DOTFILES_NODE_VERSION"
+IFS=',' read -ra node_versions <<< "$(~/.dotfiles/bin/dotfiles-version node)"
 
 get-nvm-version() {
 	if [ -d ~/.nvm ]; then
@@ -14,10 +11,11 @@ get-nvm-version() {
 	fi
 }
 
-if ! [ "$(get-nvm-version)" = "$DOTFILES_NVM_VERSION" ]; then
-	curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${DOTFILES_NVM_VERSION}/install.sh" | bash
+nvm_version="$(~/.dotfiles/bin/dotfiles-version nvm)"
+if ! [ "$(get-nvm-version)" = "$nvm_version" ]; then
+	curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${nvm_version}/install.sh" | bash
 else
-	echo "nvm ${DOTFILES_NVM_VERSION} already installed"
+	echo "nvm ${nvm_version} already installed"
 fi
 
 # shellcheck source=/dev/null.

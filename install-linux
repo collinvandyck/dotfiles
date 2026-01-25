@@ -4,9 +4,6 @@
 
 set -eu
 
-# shellcheck source=bin/load-versions
-source "$(dirname "$0")/bin/load-versions"
-
 sudo apt update
 sudo apt install -y \
 	apt-transport-https \
@@ -99,13 +96,14 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 # golang
 (
 	echo "checking golang"
-	if ! [[ "$(go version 2>/dev/null || true)" == *"go version ${DOTFILES_GO_VERSION}"* ]]; then
+	go_version="$(~/.dotfiles/bin/dotfiles-version go)"
+	if ! [[ "$(go version 2>/dev/null || true)" == *"go version ${go_version}"* ]]; then
 		cd "$(mktemp -d)"
 		case "$(uname -m)" in
 			aarch64) arch=arm64;;
 			*) arch="$(uname -m)";;
 		esac
-		artifact="go${DOTFILES_GO_VERSION}.linux-${arch}.tar.gz"
+		artifact="go${go_version}.linux-${arch}.tar.gz"
 		curl -LO "https://go.dev/dl/${artifact}"
 		sudo rm -rf /usr/local/go
 		sudo tar -C /usr/local -xzf "$artifact"
@@ -115,9 +113,10 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 # neovim
 (
 	echo "checking neovim"
-	if ! [[ "$(nvim --version 2>/dev/null || true)" == *"NVIM ${DOTFILES_NVIM_VERSION}"* ]]; then
+	nvim_version="$(~/.dotfiles/bin/dotfiles-version nvim)"
+	if ! [[ "$(nvim --version 2>/dev/null || true)" == *"NVIM ${nvim_version}"* ]]; then
 		cd "$(mktemp -d)"
-		git clone --depth 1 --branch "${DOTFILES_NVIM_VERSION}" https://github.com/neovim/neovim.git
+		git clone --depth 1 --branch "${nvim_version}" https://github.com/neovim/neovim.git
 		cd neovim
 		make CMAKE_BUILD_TYPE=RelWithDebInfo
 		sudo make install
@@ -164,16 +163,17 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 # delta pager
 (
-	if ! [[ "$(delta --version)" = "delta ${DOTFILES_DELTA_VERSION}" ]]; then
-		echo "installing delta pager ${DOTFILES_DELTA_VERSION}"
+	delta_version="$(~/.dotfiles/bin/dotfiles-version delta)"
+	if ! [[ "$(delta --version)" = "delta ${delta_version}" ]]; then
+		echo "installing delta pager ${delta_version}"
 		cd "$(mktemp -d)"
 
 		case "$(uname -m)" in
 			aarch64) arch=arm64;;
 			*) arch="$(uname -m)";;
 		esac
-		filename="git-delta_${DOTFILES_DELTA_VERSION}_${arch}.deb"
-		url="https://github.com/dandavison/delta/releases/download/${DOTFILES_DELTA_VERSION}/${filename}"
+		filename="git-delta_${delta_version}_${arch}.deb"
+		url="https://github.com/dandavison/delta/releases/download/${delta_version}/${filename}"
 		echo "Downloading from $url"
 		wget "$url"
 		sudo dpkg -i $filename

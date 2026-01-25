@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# shellcheck source=bin/load-versions
-source "$(dirname "$0")/bin/load-versions"
-
 echo "Installing Go programs"
 go version
 
@@ -33,15 +30,16 @@ echo "Installing charm mods"
 # go install github.com/charmbracelet/mods@latest
 
 echo "Installing codesearch"
-go install github.com/boyter/cs@${DOTFILES_CODESEARCH_VERSION}
+go install "github.com/boyter/cs@$(~/.dotfiles/bin/dotfiles-version codesearch)"
 
 echo "Installing gpterm"
 go install github.com/collinvandyck/gpterm/cmd/gpterm@latest
 
 # we have to install task manually since it's not in apt
-if [[ $(task --version 2>/dev/null | grep -o "$DOTFILES_TASK_VERSION") != "$DOTFILES_TASK_VERSION" ]]; then
-	echo "Installing task ${DOTFILES_TASK_VERSION}"
-	go install github.com/go-task/task/v3/cmd/task@v${DOTFILES_TASK_VERSION}
+task_version="$(~/.dotfiles/bin/dotfiles-version task)"
+if [[ $(task --version 2>/dev/null | grep -o "$task_version") != "$task_version" ]]; then
+	echo "Installing task ${task_version}"
+	go install "github.com/go-task/task/v3/cmd/task@v${task_version}"
 fi
 
 echo "Installing air"
