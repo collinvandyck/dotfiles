@@ -1,0 +1,20 @@
+# .versions - Centralized version management for dotfiles
+# Format: package=version
+
+# Core tools
+go=1.25.6
+nvim=v0.11.1
+delta=0.18.2
+bottom=0.9.6
+
+# Go tools
+golint=v1.51.2
+codesearch=v1.2.0
+task=3.27.1
+
+# Rust
+atuin=18.10.0
+
+# Node
+nvm=v0.39.3
+node=v19.9.0,v22.17.1
