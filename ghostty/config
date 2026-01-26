@@ -1,5 +1,8 @@
 # vim:filetype=toml
 
+window-width = 180
+window-height = 65
+
 font-family = "FiraCode Nerd Font"
 font-size = 15
 font-thicken
