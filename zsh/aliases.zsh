@@ -57,6 +57,7 @@ alias j='just'
 alias c='cargo'
 
 # git aliases
+alias g='git'
 alias ci='git ci'
 alias cip='git cip'
 alias gst='git status'
