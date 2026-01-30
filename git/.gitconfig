@@ -58,6 +58,7 @@
     staged = diff --cached
     w = whatchanged
     sw = switch
+    put = "!git rev-parse @{u} &>/dev/null && git push || git push -u origin @"
 
     # typos
     rebsae = rebase
@@ -83,9 +84,8 @@
     all = true
 
 [push]
-    default = current
-    default = tracking
-	autoSetupRemote = true
+    default = upstream
+    autoSetupRemote = true
 
 [grep]
     lineNumber = true
