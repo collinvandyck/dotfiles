@@ -83,8 +83,8 @@
     all = true
 
 [push]
-    default = tracking
     default = current
+    default = tracking
 	autoSetupRemote = true
 
 [grep]
