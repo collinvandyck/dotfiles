@@ -43,6 +43,10 @@ When adding new configuration files:
 1. Add the file to the appropriate directory in the repository
 2. Update `install-paths` to create the necessary symlink
 
+### Justfile
+
+This repo uses `.justfile` (hidden) for task running. Run `just` to see available recipes. When adding justfiles to other projects, use `.justfile` as the standard filename.
+
 ## Core Features
 
 ### Shell Configuration (ZSH)
