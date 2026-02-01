@@ -137,6 +137,7 @@ brew install --quiet --formula \
 	semgrep \
 	shellcheck \
 	snitch \
+	speedtest-cli \
 	spring-io/tap/spring-boot \
 	steveyegge/beads/bd \
 	temporal \
