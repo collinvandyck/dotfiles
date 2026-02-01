@@ -4,11 +4,12 @@
 " https://github.com/JetBrains/ideavim/blob/master/doc/IdeaVim%20Plugins.md
 " https://github.com/TheBlob42/idea-which-key
 "
+"
 " Examples:
 " https://github.com/JetBrains/ideavim/discussions/303
 " https://github.com/citizenmatt/dotfiles/blob/master/ideavimrc -- GOOD
 "
-" Try using nmap instead of nnoremap if a command is buggy.
+" https://gist.github.com/dewaka/ef947e52767bf453eaf77c852051eb7e
 
 set clipboard+=ideaput " allow pasting from the IDEA clipboard
 set clipboard+=unnamed " yank to the system clipboard
@@ -49,6 +50,7 @@ nmap <C-s> <Action>(SaveAll)
 nmap <M-j> <Action>(NextTab)
 nmap <M-k> <Action>(PreviousTab)
 nmap <leader>R <Action>(IdeaVim.ReloadVimRc.reload)
+nmap <leader>al :actionlist<CR>
 nmap <leader>ar <Action>(RenameElement)
 nmap <leader>ch <Action>(CallHierarchy)
 nmap <leader>da <Action>(EditorPopupMenuDebug)
@@ -88,6 +90,8 @@ nmap gu <Action>(GotoSuperMethod)
 nmap gy <Action>(GotoTest)
 nmap tn <Action>(NextSplitter)
 nmap tp <Action>(PrevSplitter)
+
+" nmap <C-w> <Action>(ExtendSelection)
 
 nnoremap <leader>R :action IdeaVim.ReloadVimRc.reload<CR>
 nnoremap <leader>h :action HideActiveWindow<CR> " buggy
