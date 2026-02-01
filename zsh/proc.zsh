@@ -1,2 +1,6 @@
 # ruf: repeat-until-fail
-ruf() { while "$@"; do :; done; }
+ruf() {
+    while :; do
+        "$@" || return $?
+    done
+}
