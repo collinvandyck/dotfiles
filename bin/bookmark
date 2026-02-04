@@ -7,6 +7,6 @@ if [[ "$name" == "" ]]; then
 	name=bookmark
 fi
 name="collin/${name}"
-git branch "${name}" 2>/dev/null
+git branch "${name}" 2>/dev/null || true
 git branch --force "${name}" HEAD
 git co "${name}"
