@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+python3 -c "import sys, urllib.parse
+for line in sys.stdin:
+    print(urllib.parse.unquote(line.rstrip()))"
+
