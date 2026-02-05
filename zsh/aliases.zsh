@@ -1,6 +1,7 @@
 # temporal
 alias cds='z cds'
 alias sa='z saas temporal'
+alias saw='z saas temporal worktrees'
 alias awslocal='uvx --from awscli-local awslocal'
 # misc
 
