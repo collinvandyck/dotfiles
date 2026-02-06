@@ -177,6 +177,7 @@ brew install --quiet --cask --force \
 	font-fantasque-sans-mono-nerd-font \
 	font-hack-nerd-font \
 	gcloud-cli \
+	hammerspoon \
 	hidock \
 	imhex \
 	kitty \
