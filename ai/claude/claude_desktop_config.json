@@ -10,9 +10,11 @@
   },
   "preferences": {
     "menuBarEnabled": false,
-    "quickEntryDictationShortcut": "off",
     "quickEntryShortcut": {
       "accelerator": "Alt+Space"
-    }
+    },
+    "quickEntryDictationShortcut": "off",
+    "sidebarMode": "chat",
+    "coworkScheduledTasksEnabled": false
   }
 }
