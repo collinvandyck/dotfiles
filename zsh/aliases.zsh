@@ -31,6 +31,7 @@ alias zz='exec zsh'
 alias m='mise'
 alias jl='just -l'
 alias by='bat -lyaml'
+alias jqc='jq -C'
 
 alias cl='claude'
 alias cld='cl --dangerously-skip-permissions'
