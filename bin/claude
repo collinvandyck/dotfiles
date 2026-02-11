@@ -13,4 +13,4 @@ export CLAUDE=~/.local/bin/claude
 	curl -fsSL https://claude.ai/install.sh | bash
 }
 
-$CLAUDE "$@"
+exec $CLAUDE "$@"
