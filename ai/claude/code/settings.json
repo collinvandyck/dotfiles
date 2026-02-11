@@ -14,6 +14,11 @@
     "command": "/Users/collin/.dotfiles/ai/claude/code/statusline.sh"
   },
   "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
-  }
+    "cds@temporal": true,
+    "general@collin": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true
+  },
+  "model": "opus"
 }
