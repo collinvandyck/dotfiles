@@ -6,7 +6,6 @@ mkdir -p ~/.config
 mkdir -p ~/.ssh
 mkdir -p ~/.ssh/control
 mkdir -p ~/.config/bottom
-mkdir -p ~/.claude
 
 chmod 700 ~/.ssh
 chmod 600 ~/.dotfiles/ssh/config
@@ -29,7 +28,11 @@ ln -sf ~/.dotfiles/yazi/ ~/.config
 [[ -d ~/.config/btop ]] && rm -rf ~/.config/btop
 ln -sf ~/.dotfiles/btop/ ~/.config
 
+mkdir -p ~/.claude
 ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
+
+[[ -d ~/.config/mise ]] && rm -rf ~/config/mise
+ln -sf ~/.dotfiles/mise ~/.config
 
 symlink() { ~/.dotfiles/bin/symlink "$@"; }
 
