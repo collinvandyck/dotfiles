@@ -9,6 +9,25 @@
       "Bash(python3:*)"
     ]
   },
+  "model": "opus",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/ai/claude/code/hooks/session-start.sh"
+          }
+        ]
+      }
+    ],
+    "TaskCompleted": [
+      {
+        "matcher": "",
+        "hooks": []
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "/Users/collin/.dotfiles/ai/claude/code/statusline.sh"
@@ -19,6 +38,5 @@
     "pyright-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true
-  },
-  "model": "opus"
+  }
 }
