@@ -40,7 +40,7 @@ keybind = "alt+,>r=new_split:right"
 #keybind = "ctrl+b>,=prompt_surface_title"
 keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
-keybind = "ctrl+k=clear_screen"
+#keybind = "ctrl+k=clear_screen"
 
 # for claude
 keybind = shift+enter=text:\x1b\r
