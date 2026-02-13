@@ -4,107 +4,120 @@
 
 set -eu
 
-sudo apt update
-sudo apt install -y \
-	apt-transport-https \
-	asciinema \
-	autoconf \
-	automake \
-	bat \
-	btop \
-	build-essential \
-	ca-certificates \
-	cmake \
-	curl \
-	direnv \
-	doxygen \
-	fatrace \
-	fd-find \
-	fswatch \
-	g++ \
-	gettext \
-	gh \
-	gnome-tweaks \
-	gnupg \
-	htop \
-	httpie \
-	hyperfine \
-	iproute2 \
-	iputils-ping \
-	jq \
-	just \
-	kitty-terminfo \
-	lazygit \
-	libfuse2 \
-	libluajit-5.1-dev \
-	libpcap-dev \
-	librust-alsa-sys-dev \
-	libssl-dev \
-	libtool \
-	libtool-bin \
-	libtree-sitter-dev \
-	lld \
-	lsb-release \
-	lsd \
-	man \
-	man-db \
-	net-tools \
-	nethogs \
-	ninja-build \
-	nmap \
-	nodejs \
-	openssh-server \
-	pipx \
-	pkg-config \
-	protobuf-compiler \
-	psmisc \
-	python-is-python3 \
-	python3-pip \
-	ripgrep \
-	shellcheck \
-	shfmt \
-	snapd \
-	software-properties-common \
-	sqlite3 \
-	starship \
-	tailspin \
-	tcl \
-	tig \
-	tmux \
-	tokei \
-	traceroute \
-	tree \
-	unzip \
-	valgrind \
-	wget \
-	xh \
-	xsel \
-	zoxide \
-	zsh \
-	;
+if [[ -z "${SKIP_APT:-}" ]]; then
+	sudo apt update
+	sudo apt install -y \
+		apt-transport-https \
+		asciinema \
+		autoconf \
+		automake \
+		bat \
+		btop \
+		build-essential \
+		ca-certificates \
+		cmake \
+		curl \
+		direnv \
+		doxygen \
+		fatrace \
+		fd-find \
+		fswatch \
+		g++ \
+		gettext \
+		gh \
+		gnome-tweaks \
+		gnupg \
+		htop \
+		httpie \
+		hyperfine \
+		iproute2 \
+		iputils-ping \
+		jq \
+		just \
+		kitty-terminfo \
+		libfuse2 \
+		libluajit-5.1-dev \
+		libpcap-dev \
+		librust-alsa-sys-dev \
+		libssl-dev \
+		libtool \
+		libtool-bin \
+		libtree-sitter-dev \
+		lld \
+		lsb-release \
+		lsd \
+		man \
+		man-db \
+		net-tools \
+		nethogs \
+		ninja-build \
+		nmap \
+		nodejs \
+		openssh-server \
+		pipx \
+		pkg-config \
+		protobuf-compiler \
+		psmisc \
+		python-is-python3 \
+		python3-pip \
+		ripgrep \
+		shellcheck \
+		shfmt \
+		snapd \
+		software-properties-common \
+		sqlite3 \
+		tailspin \
+		tcl \
+		tig \
+		tmux \
+		traceroute \
+		tree \
+		unzip \
+		valgrind \
+		wget \
+		xsel \
+		zoxide \
+		zsh \
+		;
 
-if [[ "$(uname -a)" =~ WSL2 ]]; then
-	sudo apt install -y linux-tools-generic
+	if [[ "$(uname -a)" =~ WSL2 ]]; then
+		sudo apt install -y linux-tools-generic
+	fi
+
+	sudo apt autoremove -y
 fi
-
-sudo apt autoremove -y
 sudo chsh -s "$(which zsh)" "$USER"
 
 # for testing binaries on a fresh install
 export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
+convert-x86_64() {
+	case "$1" in
+		"x86_64") echo "amd64" ;;
+		*) echo "$1" ;;
+	esac
+}
+
 # golang
 (
+	set -x
 	echo "checking golang"
 	go_version="$(~/.dotfiles/bin/dotfiles-version go)"
+	echo "checking golang version ${go_version}"
 	if ! [[ "$(go version 2>/dev/null || true)" == *"go version ${go_version}"* ]]; then
 		cd "$(mktemp -d)"
 		case "$(uname -m)" in
 			aarch64) arch=arm64;;
+			x86_64) arch=amd64;;
 			*) arch="$(uname -m)";;
 		esac
+		echo "arch is ${arch}"
 		artifact="go${go_version}.linux-${arch}.tar.gz"
-		curl -LO "https://go.dev/dl/${artifact}"
+		echo "golang artifact: ${artifact}" 
+		url="https://go.dev/dl/${artifact}"
+		echo "golang artifact url: $url" 
+		echo "$url" 
+		curl -LO "$url"
 		sudo rm -rf /usr/local/go
 		sudo tar -C /usr/local -xzf "$artifact"
 	fi
