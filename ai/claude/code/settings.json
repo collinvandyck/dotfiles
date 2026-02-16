@@ -9,7 +9,7 @@
       "Bash(python3:*)"
     ]
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "hooks": {
     "SessionStart": [
       {
@@ -37,7 +37,8 @@
     "general@collin": true,
     "pyright-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true
+    "lua-lsp@claude-plugins-official": true,
+    "superpowers@superpowers-marketplace": true
   },
   "skipDangerousModePermissionPrompt": true
 }
