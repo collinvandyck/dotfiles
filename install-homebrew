@@ -138,6 +138,8 @@ brew install --quiet --formula \
 	shellcheck \
 	snitch \
 	speedtest-cli \
+	spotifyd \
+	spotify_player \
 	spring-io/tap/spring-boot \
 	steveyegge/beads/bd \
 	temporal \
