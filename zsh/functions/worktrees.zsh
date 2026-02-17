@@ -19,7 +19,7 @@ new-worktree() {
     wtpath="$root/worktrees/$name"
     git worktree add "$wtpath" -b "collin/$name" "$ref"
     cd "$wtpath"
-    if [[ -f "$root"/.claude ]]; then
+    if [[ -d "$root"/.claude ]]; then
         ln -s "$root"/.claude .
     fi
     if [[ -f "$root"/mise.toml ]]; then
