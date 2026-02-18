@@ -4,4 +4,5 @@ rust = "latest"
 
 [settings]
 go_set_gobin = false
+env_shell_expand = false
 
