@@ -50,6 +50,7 @@ brew install --quiet --formula \
 	aichat \
 	asdf \
 	bash-language-server \
+	bats-core \
 	bat \
 	bat-extras \
 	borkdude/brew/babashka \
