@@ -33,10 +33,14 @@ alias jl='just -l'
 alias by='bat -lyaml'
 alias jqc='jq -C'
 
+CLAUDE_DSP="--allow-dangerously-skip-permissions --dangerously-skip-permissions"
+
 alias cl='claude'
-alias cld='cl --dangerously-skip-permissions'
+alias cldsp="cl ${CLAUDE_DSP}"
 alias clc='cl --continue'
+alias clcdsp="clc ${CLAUDE_DSP}"
 alias clr='cl --resume'
+alias clrdsp="clr ${CLAUDE_DSP}"
 alias cl-sonnet='cl --model sonnet'
 alias cl-opus='cl --model opus'
 alias clsa='cd ~/code/saas-temporal && cl'
