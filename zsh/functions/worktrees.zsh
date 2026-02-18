@@ -22,6 +22,9 @@ new-worktree() {
     if [[ -d "$root"/.claude ]]; then
         ln -s "$root"/.claude .
     fi
+    if [[ -d "$root"/gen ]]; then
+        ln -s "$root"/gen .
+    fi
     if [[ -f "$root"/mise.toml ]]; then
         mise trust .
         mise install
