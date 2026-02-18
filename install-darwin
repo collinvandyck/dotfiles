@@ -75,6 +75,11 @@ defaults write com.apple.finder DisableAllAnimations -bool false
 defaults write com.apple.mail DisableReplyAnimations -bool false || true
 defaults write com.apple.spaces spans-displays -bool false                               # spaces shared across monitors
 
+# Island browser (Chromium) - reduce memory usage
+# These are standard Chromium policy keys; Island may ignore them if MDM-only.
+defaults write io.island.Island HighEfficiencyModeEnabled -bool true                     # enable Memory Saver (tab discarding)
+defaults write io.island.Island RendererProcessLimit -integer 4                          # limit renderer processes
+
 killall Dock
 killall SystemUIServer
 
