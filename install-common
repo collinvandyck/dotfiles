@@ -23,3 +23,6 @@ fi
 
 # install nodejs and npm things
 ~/.dotfiles/install-js
+
+# apply GoLand VM options
+~/.dotfiles/goland/apply-vmoptions

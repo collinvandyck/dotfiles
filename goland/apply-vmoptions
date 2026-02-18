@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Merge custom VM options into each GoLand version's config.
+# Preserves Toolbox-managed lines; replaces flags that match ours.
+#
+# Usage: apply-vmoptions [JETBRAINS_DIR]
+#   JETBRAINS_DIR defaults to ~/Library/Application Support/JetBrains
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+CONF="$SCRIPT_DIR/vmoptions.conf"
+BASE_DIR="${1:-$HOME/Library/Application Support/JetBrains}"
+
+for dir in "$BASE_DIR"/GoLand*/; do
+	[[ -d "$dir" ]] || continue
+	vmopts="$dir/goland.vmoptions"
+	[[ -f "$vmopts" ]] || continue
+
+	while IFS= read -r line; do
+		# skip comments and blank lines
+		[[ "$line" =~ ^#|^$ ]] && continue
+		# extract the flag name (e.g. -Xmx, -XX:ReservedCodeCacheSize)
+		flag="${line%%=*}"
+		flag="${flag%%[0-9]*}"
+		# remove any existing line with the same flag prefix, then append ours
+		tmp=$(grep -v "^${flag}" "$vmopts" 2>/dev/null || true)
+		printf '%s\n' "$tmp" > "$vmopts"
+		echo "$line" >> "$vmopts"
+	done < "$CONF"
+
+	echo "Updated $vmopts"
+done
