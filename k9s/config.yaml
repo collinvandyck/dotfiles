@@ -26,6 +26,7 @@ k9s:
     limits:
       cpu: 100m
       memory: 100Mi
+    tty: true
   imageScans:
     enable: false
     exclusions:
