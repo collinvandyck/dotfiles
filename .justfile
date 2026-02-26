@@ -3,8 +3,8 @@ set shell := ["zsh", "-cu"]
 default:
     @just --list --unsorted
 
-shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update goland/apply-vmoptions taskfile/scripts/default.sh"
-shfmt-scripts := "taskfile/scripts/default.sh"
+shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update goland/apply-vmoptions"
+shfmt-scripts := "bin/dotfiles-version"
 
 install:
     ./install-all
@@ -26,6 +26,9 @@ lint-shellcheck:
 
 lint-shfmt:
     shfmt -d {{shfmt-scripts}}
+
+shfmt:
+    shfmt -w {{shell-scripts}}
 
 ci:
     just lint-shellcheck
