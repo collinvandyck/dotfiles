@@ -7,7 +7,6 @@ cd ~/.dotfiles
 ~/.dotfiles/install-paths
 
 case "$(uname -s)" in
-    Linux) ./install-linux ;;
-    Darwin) ./install-darwin ;;
+Linux) ./install-linux ;;
+Darwin) ./install-darwin ;;
 esac
-
