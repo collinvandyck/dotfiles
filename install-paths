@@ -54,8 +54,8 @@ symlink ~/.dotfiles/bacon/prefs.toml ~/.config/org.dystroy.bacon
 [[ -d ~/.config/broot ]] && rm -rf ~/.config/broot
 
 if ! [[ -d /usr/local/bin ]]; then
-    sudo mkdir -p /usr/local/bin
-    sudo chown "$USER" /usr/local/bin
+	sudo mkdir -p /usr/local/bin
+	sudo chown "$USER" /usr/local/bin
 fi
 
 # we do not symlink obsidian into the notes repo anymore b/c it doesn't work
@@ -64,42 +64,40 @@ ovimrc=~/code/notes/.obsidian.vimrc
 [[ -L $ovimrc ]] && rm $ovimrc
 [[ -d ~/code/notes ]] && cp ~/.dotfiles/obsidian/.obsidian.vimrc ~/code/notes
 
-
-symlink ~/.dotfiles/atuin                      ~/.config/atuin
-symlink ~/.dotfiles/bat                        ~/.config/bat
-symlink ~/.dotfiles/ghostty                    ~/.config/ghostty
-symlink ~/.dotfiles/broot                      ~/.config/broot
-symlink ~/.dotfiles/btm/bottom.toml            ~/.config/bottom/
-symlink ~/.dotfiles/direnv                     ~/.config/direnv
-symlink ~/.dotfiles/dlv                        ~/.config/dlv
-symlink ~/.dotfiles/k9s                        ~/.config/k9s
-symlink ~/.dotfiles/git/.gitconfig             ~
-symlink ~/.dotfiles/git/.gitignore_global      ~
-symlink ~/.dotfiles/git/tigrc                  ~/.tigrc
-symlink ~/.dotfiles/hammerspoon                ~/.hammerspoon
-symlink ~/.dotfiles/idea/.ideavimrc            ~/.ideavimrc
-symlink ~/.dotfiles/kitty                      ~/.config/kitty
-symlink ~/.dotfiles/lsd                        ~/.config/lsd
-symlink ~/.dotfiles/mutagen/.mutagen.yml       ~/.mutagen.yml
-symlink ~/.dotfiles/nvim                       ~/.config/nvim
-symlink ~/.dotfiles/powerline                  ~/.config/powerline
-symlink ~/.dotfiles/ripgrep/.ripgrep.conf      ~/.ripgrep.conf
-symlink ~/.dotfiles/runcom/.imwheelrc          ~
-symlink ~/.dotfiles/runcom/p10k.zsh            ~/.p10k.zsh
-symlink ~/.dotfiles/sqlite/sqliterc            ~/.sqliterc
-symlink ~/.dotfiles/ssh/config                 ~/.ssh/config
-symlink ~/.dotfiles/starship/starship.toml     ~/.config/
-symlink ~/.dotfiles/tailspin                   ~/.config/tailspin
-symlink ~/.dotfiles/taskfile/taskfile.yml      ~/.taskfile
-symlink ~/.dotfiles/tmux-powerline             ~/.config/tmux-powerline
-symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
-symlink ~/.dotfiles/tmux/tmux.conf             ~/.tmux.conf
-symlink ~/.dotfiles/tmuxinator                 ~/.config/tmuxinator
+symlink ~/.dotfiles/atuin ~/.config/atuin
+symlink ~/.dotfiles/bat ~/.config/bat
+symlink ~/.dotfiles/ghostty ~/.config/ghostty
+symlink ~/.dotfiles/broot ~/.config/broot
+symlink ~/.dotfiles/btm/bottom.toml ~/.config/bottom/
+symlink ~/.dotfiles/direnv ~/.config/direnv
+symlink ~/.dotfiles/dlv ~/.config/dlv
+symlink ~/.dotfiles/k9s ~/.config/k9s
+symlink ~/.dotfiles/git/.gitconfig ~
+symlink ~/.dotfiles/git/.gitignore_global ~
+symlink ~/.dotfiles/git/tigrc ~/.tigrc
+symlink ~/.dotfiles/hammerspoon ~/.hammerspoon
+symlink ~/.dotfiles/idea/.ideavimrc ~/.ideavimrc
+symlink ~/.dotfiles/kitty ~/.config/kitty
+symlink ~/.dotfiles/lsd ~/.config/lsd
+symlink ~/.dotfiles/mutagen/.mutagen.yml ~/.mutagen.yml
+symlink ~/.dotfiles/nvim ~/.config/nvim
+symlink ~/.dotfiles/powerline ~/.config/powerline
+symlink ~/.dotfiles/ripgrep/.ripgrep.conf ~/.ripgrep.conf
+symlink ~/.dotfiles/runcom/.imwheelrc ~
+symlink ~/.dotfiles/runcom/p10k.zsh ~/.p10k.zsh
+symlink ~/.dotfiles/sqlite/sqliterc ~/.sqliterc
+symlink ~/.dotfiles/ssh/config ~/.ssh/config
+symlink ~/.dotfiles/starship/starship.toml ~/.config/
+symlink ~/.dotfiles/tailspin ~/.config/tailspin
+symlink ~/.dotfiles/taskfile/taskfile.yml ~/.taskfile
+symlink ~/.dotfiles/tmux-powerline ~/.config/tmux-powerline
+symlink ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf
+symlink ~/.dotfiles/tmux/tmux.conf ~/.tmux.conf
+symlink ~/.dotfiles/tmuxinator ~/.config/tmuxinator
 symlink ~/.dotfiles/tmuxinator/.tmuxinator.yml ~
-symlink ~/.dotfiles/zellij                     ~/.config/zellij
-symlink ~/.dotfiles/cargo/config.toml          ~/.cargo/config.toml
+symlink ~/.dotfiles/zellij ~/.config/zellij
+symlink ~/.dotfiles/cargo/config.toml ~/.cargo/config.toml
 
 # old tm path
 rm -f /usr/local/bin/tm
 touch ~/.tmux.custom.conf
-

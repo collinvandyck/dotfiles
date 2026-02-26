@@ -41,4 +41,3 @@ sudo systemctl daemon-reload
 
 check-active com.fightcpu.debug.service
 check-active com.fightcpu.ngrok-tidy.timer
-

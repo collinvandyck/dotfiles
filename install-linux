@@ -93,8 +93,8 @@ export PATH="/snap/bin:/usr/local/bin:/usr/local/go/bin:$PATH"
 
 convert-x86_64() {
 	case "$1" in
-		"x86_64") echo "amd64" ;;
-		*) echo "$1" ;;
+	"x86_64") echo "amd64" ;;
+	*) echo "$1" ;;
 	esac
 }
 
@@ -107,16 +107,16 @@ convert-x86_64() {
 	if ! [[ "$(go version 2>/dev/null || true)" == *"go version ${go_version}"* ]]; then
 		cd "$(mktemp -d)"
 		case "$(uname -m)" in
-			aarch64) arch=arm64;;
-			x86_64) arch=amd64;;
-			*) arch="$(uname -m)";;
+		aarch64) arch=arm64 ;;
+		x86_64) arch=amd64 ;;
+		*) arch="$(uname -m)" ;;
 		esac
 		echo "arch is ${arch}"
 		artifact="go${go_version}.linux-${arch}.tar.gz"
-		echo "golang artifact: ${artifact}" 
+		echo "golang artifact: ${artifact}"
 		url="https://go.dev/dl/${artifact}"
-		echo "golang artifact url: $url" 
-		echo "$url" 
+		echo "golang artifact url: $url"
+		echo "$url"
 		curl -LO "$url"
 		sudo rm -rf /usr/local/go
 		sudo tar -C /usr/local -xzf "$artifact"
@@ -182,8 +182,8 @@ convert-x86_64() {
 		cd "$(mktemp -d)"
 
 		case "$(uname -m)" in
-			aarch64) arch=arm64;;
-			*) arch="$(uname -m)";;
+		aarch64) arch=arm64 ;;
+		*) arch="$(uname -m)" ;;
 		esac
 		filename="git-delta_${delta_version}_${arch}.deb"
 		url="https://github.com/dandavison/delta/releases/download/${delta_version}/${filename}"

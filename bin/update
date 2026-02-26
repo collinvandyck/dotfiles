@@ -16,13 +16,14 @@ if [[ $# = 0 ]]; then
 fi
 
 case $1 in
-	go)
-		exec ./install-go
-		;;
-	js)
-		exec ./install-js
-		;;
-	**)
-		echo "unexpected: $1"
-		exit 1
+go)
+	exec ./install-go
+	;;
+js)
+	exec ./install-js
+	;;
+**)
+	echo "unexpected: $1"
+	exit 1
+	;;
 esac

@@ -3,11 +3,11 @@
 set -euo pipefail
 
 # Parse comma-separated node versions into array
-IFS=',' read -ra node_versions <<< "$(~/.dotfiles/bin/dotfiles-version node)"
+IFS=',' read -ra node_versions <<<"$(~/.dotfiles/bin/dotfiles-version node)"
 
 get-nvm-version() {
 	if [ -d ~/.nvm ]; then
-        (cd ~/.nvm && git describe --tags)
+		(cd ~/.nvm && git describe --tags)
 	fi
 }
 

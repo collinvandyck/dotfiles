@@ -11,25 +11,25 @@ if [ ! "$(command -v brew)" ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-brew tap spring-io/tap              # required for springboot
-brew tap launchdarkly/homebrew-tap  # for the LD cli
+brew tap spring-io/tap             # required for springboot
+brew tap launchdarkly/homebrew-tap # for the LD cli
 brew tap steveyegge/beads
 
 # update homebrew packages
 brew update --quiet
 
 # ensure that xcode is installed. We'll do this using the `mas` cli.
-if ! command -v mas &>/dev/null ; then
+if ! command -v mas &>/dev/null; then
 	echo "Installing mas"
 	brew install --quiet --formula mas
 fi
 
 #if [[ "$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]]; then
-	#echo "Installing xcode"
-	#xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
-	#mas install "$xcode_id"
-	#echo "Accepting license agreement"
-	#sudo xcodebuild -license accept
+#echo "Installing xcode"
+#xcode_id=$(mas search xcode | rg '^\s*\d+\s+Xcode\s+\([\d\.]+\)' | awk '{print $1}')
+#mas install "$xcode_id"
+#echo "Accepting license agreement"
+#sudo xcodebuild -license accept
 #fi
 
 # openssh does not play well with macos
@@ -209,4 +209,3 @@ fi
 
 brew autoremove --quiet
 brew cleanup
-
