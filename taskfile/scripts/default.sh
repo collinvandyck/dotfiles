@@ -3,13 +3,8 @@
 # This is the default task that runs. It should be non-destructive because
 # it can be invoked from anywhere that does not already have a taskfile.
 
-set -e
+set -euo pipefail
 
-if [[ -x "Cargo.toml" ]]; then
-	case $1 in
-		**)
-			cargo run $@
-			;;
-	esac
+if [[ -f "Cargo.toml" ]]; then
+	cargo run "$@"
 fi
-

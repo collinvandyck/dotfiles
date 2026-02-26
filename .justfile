@@ -3,6 +3,8 @@ set shell := ["zsh", "-cu"]
 default:
     @just --list --unsorted
 
+shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update goland/apply-vmoptions taskfile/scripts/default.sh"
+
 install:
     ./install-all
 
@@ -18,3 +20,13 @@ version tool:
 test:
     bats goland/apply-vmoptions.bats
 
+lint-shellcheck:
+    shellcheck -S warning {{shell-scripts}}
+
+lint-shfmt:
+    shfmt -d {{shell-scripts}}
+
+ci:
+    just lint-shellcheck
+    just lint-shfmt
+    just test
