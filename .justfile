@@ -4,7 +4,6 @@ default:
     @just --list --unsorted
 
 shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update goland/apply-vmoptions"
-shfmt-scripts := "bin/dotfiles-version"
 
 install:
     ./install-all
@@ -25,7 +24,7 @@ lint-shellcheck:
     shellcheck -S warning {{shell-scripts}}
 
 lint-shfmt:
-    shfmt -d {{shfmt-scripts}}
+    shfmt -d {{shell-scripts}}
 
 shfmt:
     shfmt -w {{shell-scripts}}

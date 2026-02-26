@@ -1,0 +1,22 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.{sh,bash,zsh}]
+indent_style = tab
+indent_size = tab
+
+[install-*]
+indent_style = tab
+indent_size = tab
+
+[bin/*]
+indent_style = tab
+indent_size = tab
+
+[goland/*]
+indent_style = tab
+indent_size = tab
