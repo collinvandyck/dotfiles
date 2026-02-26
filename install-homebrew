@@ -61,6 +61,7 @@ brew install --quiet --formula \
 	chruby \
 	clojure \
 	clojure-lsp \
+	codex \
 	cmake \
 	colima \
 	coreutils \
