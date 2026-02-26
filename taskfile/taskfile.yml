@@ -4,5 +4,5 @@ tasks:
   default:
     dir: '{{.USER_WORKING_DIR}}'
     cmds:
-      - ~/.dotfiles/taskfile/scripts/default.sh
+      - true
     silent: true
