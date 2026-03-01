@@ -14,8 +14,6 @@
     autocrlf = input
     #pager = "bat --pager='less -R'"
     pager = delta
-    fsmonitor = true
-    untrackedcache = true
 
 [color]
     pager = true
