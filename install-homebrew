@@ -61,7 +61,6 @@ brew install --quiet --formula \
 	chruby \
 	clojure \
 	clojure-lsp \
-	codex \
 	cmake \
 	colima \
 	coreutils \
@@ -176,6 +175,7 @@ brew install --quiet --cask --force \
 	caffeine \
 	chatbox \
 	cleanshot \
+	codex \
 	discord \
 	font-fira-code-nerd-font \
 	font-fantasque-sans-mono \
