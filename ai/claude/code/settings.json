@@ -1,13 +1,50 @@
 {
   "permissions": {
     "allow": [
-      "Skill(playwright)",
+      "Bash(awk:*)",
+      "Bash(bash:*)",
+      "Bash(cat:*)",
+      "Bash(cds/cmd/wal-admin/*)",
+      "Bash(chmod:*)",
+      "Bash(docker:*)",
+      "Bash(done)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(gh:*)",
+      "Bash(git:*)",
+      "Bash(go:*)",
+      "Bash(golangci-lint run:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(make:*)",
+      "Bash(mise run:*)",
+      "Bash(open:*)",
       "Bash(pip install:*)",
-      "Bash(playwright install:*)",
       "Bash(pip3 install:*)",
-      "Bash(/Users/collin/Library/Python/3.9/bin/playwright install:*)",
-      "Bash(python3:*)"
-    ]
+      "Bash(playwright install:*)",
+      "Bash(python3:*)",
+      "Bash(sort:*)",
+      "Bash(sqlite3:*)",
+      "Bash(tee:*)",
+      "Bash(unset:*)",
+      "Bash(wc:*)",
+      "Bash(xargs:*)",
+      "Bash(xxd:*)",
+      "Skill(cds:rework-commits)",
+      "Skill(cds:wal-admin)",
+      "Skill(greetings)",
+      "Skill(playwright)",
+      "Skill(wal-admin)",
+      "WebFetch(domain:berthub.eu)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:riverqueue.com)",
+      "WebSearch",
+      "mcp__notion__notion-fetch"
+    ],
+    "deny": [],
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "additionalDirectories": [ ]
   },
   "model": "opus[1m]",
   "hooks": {
@@ -33,7 +70,6 @@
     "command": "/Users/collin/.dotfiles/ai/claude/code/statusline.sh"
   },
   "enabledPlugins": {
-    "cds@temporal": true,
     "general@collin": true,
     "pyright-lsp@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
@@ -41,5 +77,6 @@
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "high"
 }
