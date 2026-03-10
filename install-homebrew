@@ -117,6 +117,7 @@ brew install --quiet --formula \
 	mise \
 	mtr \
 	mutagen-io/mutagen/mutagen \
+	neofetch \
 	neovim \
 	nmap \
 	noahgorstein/tap/jqp \
