@@ -48,6 +48,7 @@ brew upgrade --quiet
 brew install --quiet --formula \
 	act \
 	aichat \
+	asciinema \
 	asdf \
 	bash-language-server \
 	bats-core \
