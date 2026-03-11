@@ -19,6 +19,7 @@ version tool:
 
 test:
     bats goland/apply-vmoptions.bats
+    bats bin/paragraphs.bats
 
 lint-shellcheck:
     shellcheck -S warning {{shell-scripts}}

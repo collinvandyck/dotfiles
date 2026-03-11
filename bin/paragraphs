@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+#
+# Joins lines within paragraphs but preserves paragraph breaks.
+# Useful for reformatting text before pasting into GitHub, where
+# single newlines become hard line breaks in markdown.
+#
+# Usage: paragraphs < file.txt
+#        cat file.txt | paragraphs
+#        paragraphs file.txt
+
+set -e
+
+exec awk '
+    /^[[:space:]]*$/ {
+        if (buf != "") { print buf; buf = "" }
+        print
+        next
+    }
+    {
+        buf = (buf == "") ? $0 : buf " " $0
+    }
+    END {
+        if (buf != "") print buf
+    }
+' "${@:--}"
