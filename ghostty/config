@@ -1,17 +1,14 @@
 # vim:filetype=toml
 
-window-width = 180
-window-height = 65
-
+#window-width = 180
+#window-height = 65
+cursor-style = "block"
+cursor-style-blink = true
 font-family = "FiraCode Nerd Font"
 font-size = 15
 font-thicken
-
-cursor-style = "block"
-cursor-style-blink = true
 macos-option-as-alt = left
 macos-option-as-alt = true
-window-theme = "system"
 macos-titlebar-style = "tabs"
 mouse-hide-while-typing = true
 quick-terminal-animation-duration = 0.05
@@ -21,29 +18,23 @@ shell-integration-features = "no-cursor"
 split-divider-color = "#888888"
 theme = "tokyonight"
 unfocused-split-opacity = 0.80
+window-position-x = 1000
+window-position-y = 500
+window-theme = "system"
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
 keybind = "alt+shift+j=move_tab:+1"
 keybind = "alt+shift+k=move_tab:-1"
 keybind = "global:alt+backquote=toggle_quick_terminal"
-#keybind = "global:cmd+backquote=toggle_quick_terminal"
 keybind = "alt+,>y=write_scrollback_file:copy"
 keybind = "alt+,>,=prompt_surface_title"
-
-# window binds
 keybind = "alt+,>l=new_split:right"
 keybind = "alt+,>d=new_split:down"
 keybind = "alt+,>u=new_split:up"
 keybind = "alt+,>r=new_split:right"
-
-#keybind = "ctrl+b>,=prompt_surface_title"
 keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
-#keybind = "ctrl+k=clear_screen"
 
-# for claude
 keybind = shift+enter=text:\x1b\r
-
-# fix the ctrl-[ issue in lazygit
 keybind = "ctrl+[=text:\x1b"
