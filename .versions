@@ -13,7 +13,7 @@ codesearch=v1.2.0
 task=3.27.1
 
 # Rust
-atuin=18.10.0
+atuin=18.13.3
 
 # Node
 nvm=v0.39.3
