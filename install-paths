@@ -52,7 +52,10 @@ symlink ~/.dotfiles/urlwatch ~/.config/urlwatch
 mkdir -p ~/.config/org.dystroy.bacon
 symlink ~/.dotfiles/bacon/prefs.toml ~/.config/org.dystroy.bacon
 
+[[ -d ~/.config/glow ]] && rm -rf ~/.config/glow
+
 [[ -d ~/.config/broot ]] && rm -rf ~/.config/broot
+symlink ~/.dotfiles/glow ~/.config/glow
 
 if ! [[ -d /usr/local/bin ]]; then
 	sudo mkdir -p /usr/local/bin
