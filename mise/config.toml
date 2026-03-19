@@ -2,7 +2,7 @@
 just = "latest"
 shellcheck = "latest"
 shfmt = "latest"
-rust = "latest"
+rust = "1.94.0"
 
 [settings]
 go_set_gobin = false
