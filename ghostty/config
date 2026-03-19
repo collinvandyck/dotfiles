@@ -24,6 +24,7 @@ unfocused-split-opacity = 0.80
 window-position-x = 1000
 window-position-y = 500
 window-theme = "system"
+confirm-close-surface = false
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
