@@ -31,6 +31,8 @@ ln -sf ~/.dotfiles/btop/ ~/.config
 mkdir -p ~/.claude
 ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/agents ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
 
 [[ -d ~/.config/mise ]] && rm -rf ~/.config/mise
 ln -sf ~/.dotfiles/mise/ ~/.config
