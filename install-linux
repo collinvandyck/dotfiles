@@ -181,8 +181,6 @@ convert-x86_64() {
 	if ! command -v bash-language-server &>/dev/null; then
 		if command -v snap &>/dev/null && [ -S /run/snapd.socket ]; then
 			sudo snap install bash-language-server --classic
-		else
-			sudo npm install -g bash-language-server
 		fi
 	fi
 )
