@@ -44,7 +44,7 @@ init-zoxide() {
     cmd_exists zoxide && eval "$(zoxide init zsh --cmd z)"
 }
 init-just() {
-    cmd_exists just && eval "$(just --completions zsh)"
+    cmd_exists just && eval "$(just --completions zsh | grep -v '^_just "\$@"$')"
 }
 init-atuin() {
     cmd_exists atuin && eval "$(atuin init zsh --disable-up-arrow)"
