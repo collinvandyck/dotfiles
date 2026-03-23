@@ -25,6 +25,7 @@ if [[ -z "${SKIP_APT:-}" ]]; then
 		g++ \
 		gettext \
 		gh \
+		git-delta \
 		gnome-tweaks \
 		gnupg \
 		htop \
@@ -175,25 +176,6 @@ convert-x86_64() {
 		else
 			sudo npm install -g bash-language-server
 		fi
-	fi
-)
-
-# delta pager
-(
-	delta_version="$(~/.dotfiles/bin/dotfiles-version delta)"
-	if ! [[ "$(delta --version)" = "delta ${delta_version}" ]]; then
-		echo "installing delta pager ${delta_version}"
-		cd "$(mktemp -d)"
-
-		case "$(uname -m)" in
-		aarch64) arch=arm64 ;;
-		*) arch="$(uname -m)" ;;
-		esac
-		filename="git-delta_${delta_version}_${arch}.deb"
-		url="https://github.com/dandavison/delta/releases/download/${delta_version}/${filename}"
-		echo "Downloading from $url"
-		wget "$url"
-		sudo dpkg -i $filename
 	fi
 )
 
