@@ -14,7 +14,7 @@ Host *
     ControlPath ~/.ssh/control/%r@%h:%p
     ControlPersist yes
 
-Host vps nas ryzen cortex
+Host vps nas ryzen cortex exe.dev *.exe.xyz
     AddKeysToAgent yes
     ForwardAgent yes
     UseKeychain yes
