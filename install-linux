@@ -169,8 +169,12 @@ convert-x86_64() {
 # bash-language-server
 (
 	echo "checking bash-language-server"
-	if ! [[ "$(bash-language-server --version 2>/dev/null || true)" == *"4.7.0"* ]]; then
-		sudo snap install bash-language-server --classic
+	if ! command -v bash-language-server &>/dev/null; then
+		if command -v snap &>/dev/null && [ -S /run/snapd.socket ]; then
+			sudo snap install bash-language-server --classic
+		else
+			sudo npm install -g bash-language-server
+		fi
 	fi
 )
 
