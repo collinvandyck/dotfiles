@@ -167,6 +167,14 @@ convert-x86_64() {
 	sudo systemctl enable --now tailscale.nginx-auth.socket
 )
 
+# starship prompt
+(
+	echo "checking starship"
+	if ! command -v starship &>/dev/null; then
+		curl -sS https://starship.rs/install.sh | sh -s -- -y
+	fi
+)
+
 # bash-language-server
 (
 	echo "checking bash-language-server"
