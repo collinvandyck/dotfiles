@@ -4,7 +4,6 @@
 # Core tools
 go=1.26.0
 nvim=v0.11.1
-delta=0.18.2
 bottom=0.9.6
 
 # Go tools
