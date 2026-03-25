@@ -33,6 +33,7 @@ ln -sf ~/.dotfiles/ai/claude/code/settings.json ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/agents ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
+ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
 
 [[ -d ~/.config/mise ]] && rm -rf ~/.config/mise
 ln -sf ~/.dotfiles/mise/ ~/.config
