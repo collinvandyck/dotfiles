@@ -6,13 +6,10 @@
 profile*.svg
 .bacon-locations
 .env
-.envrc
 .envrc*
 .starship.toml
 *.env
-.mutagen
-.mutagen.yml
-slammo.sql
+.mutagen*
 .mcp.json
 .beads
 /worktrees
