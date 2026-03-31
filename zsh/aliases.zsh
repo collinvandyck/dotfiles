@@ -1,7 +1,6 @@
 # temporal
-alias cds='z cds'
-alias sa='z saas temporal'
-alias saw='z saas temporal worktrees'
+alias sa='cd ~/code/temporal/saas-temporal'
+alias cds='sa && cd ./cds'
 alias awslocal='uvx --from awscli-local awslocal'
 # misc
 
@@ -137,10 +136,10 @@ alias de='docker exec'
 
 # clipboard
 if [ ! -f "/usr/bin/pbcopy" ]; then
-    alias pbcopy='xsel --clipboard --input'
+	alias pbcopy='xsel --clipboard --input'
 fi
 if [ ! -f "/usr/bin/pbpaste" ]; then
-    alias pbpaste='xsel --clipboard --output'
+	alias pbpaste='xsel --clipboard --output'
 fi
 
 # other
@@ -160,8 +159,8 @@ alias lt='ls --tree'
 alias llt='ll --tree'
 alias lld='ll -d'
 for i in $(seq 1 9); do
-    alias "llt${i}"="ll --tree --depth ${i}"
-    alias "lt${i}"="lt --tree --depth ${i}"
+	alias "llt${i}"="ll --tree --depth ${i}"
+	alias "lt${i}"="lt --tree --depth ${i}"
 done
 
 # hyperfine
