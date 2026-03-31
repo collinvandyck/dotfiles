@@ -27,7 +27,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export NEEDRESTART_MODE=a
 
 if [[ "$(hostname)" != "ryzen-ubuntu" ]]; then
-    export LC_ALL=en_US.UTF-8
+	export LC_ALL=en_US.UTF-8
 fi
 export LESS="-XFR"
 export LESS='-R'
@@ -47,7 +47,7 @@ export WORDCHARS=-
 export PATH=~/.local/bin:$PATH
 export PATH=~/.fzf/bin:$PATH
 export PATH=~/.cargo/bin:$PATH
-export PATH=~/code/temporal-utils:$PATH
+export PATH=~/code/temporal/temporal-utils/bin:$PATH
 export PATH=~/go/bin:$PATH
 export PATH=/snap/bin:$PATH
 export PATH=/usr/local/go/bin:$PATH
