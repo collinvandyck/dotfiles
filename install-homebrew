@@ -159,6 +159,7 @@ brew install --quiet --formula \
 	web-ext \
 	wget \
 	whosthere \
+	xan \
 	xh \
 	xz \
 	yazi \
