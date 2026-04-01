@@ -21,6 +21,7 @@ export HWATCH="--color --no-help-banner --border --with-scrollbar"
 export KUBE_EDITOR=nvim
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export GOOGLE_WORKSPACE_CLI_KEYRING_BACKEND=file
 
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
