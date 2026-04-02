@@ -145,6 +145,7 @@ brew install --quiet --formula \
 	spotifyd \
 	spotify_player \
 	spring-io/tap/spring-boot \
+	starship \
 	steveyegge/beads/bd \
 	temporal \
 	tig \
