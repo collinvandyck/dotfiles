@@ -32,6 +32,7 @@ alias m='mise'
 alias jl='just -l'
 alias by='bat -lyaml'
 alias jqc='jq -C'
+alias sp='searchpath'
 
 alias cl='claude'
 alias clc='cl --continue'
