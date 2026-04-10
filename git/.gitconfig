@@ -135,3 +135,6 @@
     aiModelProvider = anthropic
     aiAnthropicKeyOption = bringYourOwn
     aiAnthropicModelName = claude-3-5-sonnet-20240620
+
+[cargo "net"]
+    git-fetch-with-cli = true
