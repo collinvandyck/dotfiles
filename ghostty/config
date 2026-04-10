@@ -29,6 +29,7 @@ window-position-x = 1000
 window-position-y = 500
 window-theme = "system"
 confirm-close-surface = false
+copy-on-select = clipboard
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
@@ -45,6 +46,8 @@ keybind = "cmd+;=goto_split:next"
 keybind = "cmd+z=toggle_split_zoom"
 keybind = "alt+p=scroll_page_lines:-3"
 keybind = "alt+n=scroll_page_lines:+3"
+keybind = "alt+shift+p=scroll_page_up"
+keybind = "alt+shift+n=scroll_page_down"
 
 keybind = shift+enter=text:\x1b\r
 keybind = "ctrl+[=text:\x1b"
