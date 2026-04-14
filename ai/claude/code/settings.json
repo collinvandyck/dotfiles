@@ -21,6 +21,7 @@
     }
   },
   "hooks": {},
+  "model": "opus[1m]",
   "permissions": {
     "additionalDirectories": [
       "~/code/temporal",
