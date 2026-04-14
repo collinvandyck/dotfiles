@@ -13,4 +13,14 @@ export CLAUDE=~/.local/bin/claude
 	curl -fsSL https://claude.ai/install.sh | bash
 }
 
-exec $CLAUDE "$@"
+args=("$@")
+mixins=(~/code/temporal/temporal-utils)
+
+for mixin in "${mixins[@]}"; do
+	if [[ -d "$mixin" ]]; then
+		export CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1
+		args+=("--add-dir" "$mixin")
+	fi
+done
+
+exec $CLAUDE "${args[@]}"
