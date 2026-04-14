@@ -1,0 +1,97 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "effortLevel": "high",
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "orient@learning-opportunities": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "superpowers@superpowers-marketplace": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "learning-opportunities": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
+      }
+    }
+  },
+  "hooks": {},
+  "permissions": {
+    "additionalDirectories": [
+      "~/code/temporal",
+      "~/code/temporal/boss-proxy",
+      "~/code/temporal/cloud-tools",
+      "~/code/temporal/omes",
+      "~/code/temporal/runbooks",
+      "~/code/temporal/saas-components",
+      "~/code/temporal/saas-control-plane",
+      "~/code/temporal/saas-control-plane-vis-admin",
+      "~/code/temporal/saas-infra-plane",
+      "~/code/temporal/saas-temporal",
+      "~/code/temporal/temporal",
+      "~/code/temporal/temporal-claude-marketplace",
+      "~/code/temporal/temporal-utils",
+      "~/code/temporal/cds-wiki",
+      "~/code/temporal/canary-go",
+      "~/code/bookkeeper",
+      "~/code",
+      "/tmp/",
+      "~/go/pkg/mod"
+    ],
+    "allow": [
+      "Bash(awk:*)",
+      "Bash(bash:*)",
+      "Bash(cat:*)",
+      "Bash(cds/cmd/wal-admin/*)",
+      "Bash(chmod:*)",
+      "Bash(docker:*)",
+      "Bash(done)",
+      "Bash(echo:*)",
+      "Bash(find:*)",
+      "Bash(gh:*)",
+      "Bash(git:*)",
+      "Bash(go:*)",
+      "Bash(golangci-lint run:*)",
+      "Bash(grep:*)",
+      "Bash(ls:*)",
+      "Bash(make:*)",
+      "Bash(mise run:*)",
+      "Bash(open:*)",
+      "Bash(pip install:*)",
+      "Bash(pip3 install:*)",
+      "Bash(playwright install:*)",
+      "Bash(python3:*)",
+      "Bash(sort:*)",
+      "Bash(sqlite3:*)",
+      "Bash(tee:*)",
+      "Bash(unset:*)",
+      "Bash(wc:*)",
+      "Bash(xargs:*)",
+      "Bash(xxd:*)",
+      "Skill(cds:rework-commits)",
+      "Skill(cds:wal-admin)",
+      "Skill(greetings)",
+      "Skill(playwright)",
+      "Skill(wal-admin)",
+      "WebFetch(domain:berthub.eu)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:riverqueue.com)",
+      "WebSearch",
+      "mcp__notion__notion-fetch"
+    ],
+    "ask": [],
+    "defaultMode": "acceptEdits",
+    "deny": []
+  },
+  "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "command": "claude-statusline",
+    "refreshInterval": 1,
+    "type": "command"
+  }
+}
