@@ -3,47 +3,7 @@
     "commit": "",
     "pr": ""
   },
-  "effortLevel": "high",
-  "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "orient@learning-opportunities": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "superpowers@superpowers-marketplace": true,
-    "typescript-lsp@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "learning-opportunities": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
-      }
-    }
-  },
-  "hooks": {},
-  "model": "opus[1m]",
   "permissions": {
-    "additionalDirectories": [
-      "~/code/temporal",
-      "~/code/temporal/boss-proxy",
-      "~/code/temporal/cloud-tools",
-      "~/code/temporal/omes",
-      "~/code/temporal/runbooks",
-      "~/code/temporal/saas-components",
-      "~/code/temporal/saas-control-plane",
-      "~/code/temporal/saas-control-plane-vis-admin",
-      "~/code/temporal/saas-infra-plane",
-      "~/code/temporal/saas-temporal",
-      "~/code/temporal/temporal",
-      "~/code/temporal/temporal-claude-marketplace",
-      "~/code/temporal/temporal-utils",
-      "~/code/temporal/cds-wiki",
-      "~/code/temporal/canary-go",
-      "~/code/bookkeeper",
-      "~/code",
-      "/tmp/",
-      "~/go/pkg/mod"
-    ],
     "allow": [
       "Bash(awk:*)",
       "Bash(bash:*)",
@@ -85,14 +45,61 @@
       "WebSearch",
       "mcp__notion__notion-fetch"
     ],
+    "deny": [],
     "ask": [],
     "defaultMode": "acceptEdits",
-    "deny": []
+    "additionalDirectories": [
+      "~/code/temporal",
+      "~/code/temporal/boss-proxy",
+      "~/code/temporal/cloud-tools",
+      "~/code/temporal/omes",
+      "~/code/temporal/runbooks",
+      "~/code/temporal/saas-components",
+      "~/code/temporal/saas-control-plane",
+      "~/code/temporal/saas-control-plane-vis-admin",
+      "~/code/temporal/saas-infra-plane",
+      "~/code/temporal/saas-temporal",
+      "~/code/temporal/temporal",
+      "~/code/temporal/temporal-claude-marketplace",
+      "~/code/temporal/temporal-utils",
+      "~/code/temporal/cds-wiki",
+      "~/code/temporal/canary-go",
+      "~/code/bookkeeper",
+      "~/code",
+      "/tmp/",
+      "~/go/pkg/mod"
+    ]
   },
-  "skipDangerousModePermissionPrompt": true,
+  "model": "opus[1m]",
+  "hooks": {},
   "statusLine": {
+    "type": "command",
     "command": "claude-statusline",
-    "refreshInterval": 1,
-    "type": "command"
-  }
+    "refreshInterval": 1
+  },
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "orient@learning-opportunities": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "superpowers@superpowers-marketplace": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "plannotator@plannotator": true
+  },
+  "extraKnownMarketplaces": {
+    "learning-opportunities": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
+      }
+    },
+    "plannotator": {
+      "source": {
+        "source": "github",
+        "repo": "backnotprop/plannotator"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "skipDangerousModePermissionPrompt": true
 }
