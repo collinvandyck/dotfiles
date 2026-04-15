@@ -84,7 +84,8 @@
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
-    "plannotator@plannotator": true
+    "plannotator@plannotator": true,
+    "temporal-developer@temporal-marketplace": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {
@@ -97,6 +98,12 @@
       "source": {
         "source": "github",
         "repo": "backnotprop/plannotator"
+      }
+    },
+    "temporal-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "temporalio/claude-temporal-plugin"
       }
     }
   },
