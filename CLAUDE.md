@@ -101,7 +101,7 @@ ai/claude/code/
 ├── CLAUDE.md        # Global Claude instructions (symlinked to ~/.claude/)
 ├── settings.json    # Permissions and settings
 ├── commands/        # Custom slash commands (*.md files)
-├── skills/          # Skills with instructions (*/skill.md)
+├── skills/          # Skills with instructions (**/SKILL.md)
 └── scripts/         # Helper scripts used by skills
 ```
 

@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+	echo "usage: $(basename "$0") <cell>" >&2
+	exit 2
+fi
+
+CELL=$1
+NS="agent.internal-$CELL"
+STATS_PATH='_stats?filter_path=indices.*.primaries.docs.count,indices.*.primaries.store.size_in_bytes'
+
+es_primary() {
+	local path=$1
+	local env_cmd='export $(yq e "to_entries | map(.key + \"=\" + .value) | join(\" \")" /secrets/elasticsearch/elasticsearchcreds.yml)'
+	local curl_cmd="curl -s -k -u \$username:\$password \$scheme://\$hostname:\$port/\$visindex/$path"
+	ct admintools --context "$CELL" -- sh -c "$env_cmd; $curl_cmd"
+}
+
+es_secondary() {
+	local path=$1
+	local env_cmd='export $(yq e ".visindex = .secondaryVisindex | to_entries | map(.key + \"=\" + .value) | join(\" \")" /secrets/elasticsearch/elasticsearchcreds.yml)'
+	local curl_cmd="curl -s -u \$secondaryUsername:\$secondaryPassword \$secondaryScheme://\$secondaryHostname:\$secondaryPort/\$visindex/$path"
+	ct admintools --context "$CELL" -- sh -c "$env_cmd; $curl_cmd"
+}
+
+PRI=$(es_primary   "$STATS_PATH" | tr -d '\r')
+SEC=$(es_secondary "$STATS_PATH" | tr -d '\r')
+
+WFS=$(ct admintools --context "$CELL" -- temporal workflow list \
+	-n "$NS" \
+	-q "WorkflowType='es-reindex-workflow' AND ExecutionStatus='Running'" \
+	--output json |
+	tr -d '\r' |
+	jq -r '.[].execution.workflowId')
+
+N=$(printf '%s' "$WFS" | { grep -c . || true; })
+
+RATE=0
+if [ "$N" -eq 1 ]; then
+	RATE=$(ct admintools --context "$CELL" -- \
+		temporal workflow describe -n "$NS" -w "$WFS" --output json |
+		tr -d '\r' |
+		jq -r '
+			[ .pendingActivities[]?
+			  | (.heartbeatDetails[0].NumDocsRead // 0) as $d
+			  | (now - (.scheduledTime | sub("\\..*Z$"; "Z") | fromdateiso8601)) as $s
+			  | (if $s > 0 then ($d / $s) else 0 end)
+			] | (add // 0) | floor
+		')
+fi
+
+jq -n \
+	--argjson pri "$PRI" \
+	--argjson sec "$SEC" \
+	--argjson rate "$RATE" '
+	def pickone:
+		.indices | to_entries
+		| map(select(.key | startswith("temporal_visibility_v2_")))
+		| .[0];
+
+	($pri | pickone) as $p
+	| ($sec | pickone) as $s
+	| $p.value.primaries.docs.count as $pd
+	| $s.value.primaries.docs.count as $sd
+	| $p.value.primaries.store.size_in_bytes as $pb
+	| $s.value.primaries.store.size_in_bytes as $sb
+	| ($pd - $sd) as $remaining
+	| {
+		primary:   { index: $p.key, docs: $pd, bytes: $pb },
+		secondary: { index: $s.key, docs: $sd, bytes: $sb },
+		progress: {
+			docs_pct:       (($sd / $pd * 10000 | floor) / 100),
+			size_pct:       (($sb / $pb * 10000 | floor) / 100),
+			docs_remaining: $remaining
+		},
+		eta: (
+			if $rate > 0 and $remaining > 0
+			then ($remaining / $rate) as $secs
+				| ($secs / 86400 | floor) as $d
+				| (($secs - $d * 86400) / 3600 | floor) as $h
+				| (($secs - $d * 86400 - $h * 3600) / 60 | floor) as $m
+				| {
+					rate_docs_per_sec: $rate,
+					seconds: ($secs | floor),
+					human: (if $d > 0 then "\($d)d \($h)h \($m)m" else "\($h)h \($m)m" end)
+				  }
+			elif $rate == 0
+			then { rate_docs_per_sec: 0, note: "no active reindex" }
+			else { rate_docs_per_sec: $rate, note: "secondary >= primary" }
+			end
+		)
+	}
+'

@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# given $1, cd into that repo and pull it to get it up to date if there are no changes.
+# if no arg is given, use the current dir.
+
+dirs=()
+for dir in "$@"; do
+	dirs+=("$dir")
+done
+[[ ${#dirs[@]} == 0 ]] && dirs=("$(pwd)")
+for dir in "${dirs[@]}"; do
+	[[ -d "$dir" ]] && (
+		cd $dir
+		git rev-parse --is-inside-work-tree &>/dev/null || exit 0
+		branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+		[[ "$branch" == "main" ]] || exit 0
+		git status 2>/dev/null | grep 'working tree clean' &>/dev/null || exit 0
+		echo "Updating $dir"
+		git pull --ff-only &>/dev/null || true
+	)
+done

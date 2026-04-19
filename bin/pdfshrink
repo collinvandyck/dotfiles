@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+# shrink a pdf using ghostscript. mono scans are kept at 300 DPI with CCITT G4
+# encoding; color/gray images are downsampled to 200 DPI.
+
+set -euo pipefail
+
+usage() {
+	echo "usage: $(basename $0) [--force] <file.pdf>"
+	exit 1
+}
+
+force=0
+input=""
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		-f|--force)
+			force=1
+			shift
+			;;
+		-h|--help)
+			usage
+			;;
+		-*)
+			echo "unknown flag: $1"
+			usage
+			;;
+		*)
+			[[ -n "$input" ]] && usage
+			input="$1"
+			shift
+			;;
+	esac
+done
+
+[[ -z "$input" ]] && usage
+
+if [[ ! -f "$input" ]]; then
+	echo "not a file: $input"
+	exit 1
+fi
+
+dir=$(dirname "$input")
+base=$(basename "$input")
+stem="${base%.*}"
+ext="${base##*.}"
+output="${dir}/${stem}_shrunk.${ext}"
+
+if [[ -e "$output" && "$force" -ne 1 ]]; then
+	echo "target already exists: $output"
+	echo "use --force to overwrite"
+	exit 1
+fi
+
+gs=/opt/homebrew/bin/gs
+[[ -x "$gs" ]] || gs=$(command -v gs)
+
+"$gs" -sDEVICE=pdfwrite -dCompatibilityLevel=1.6 \
+	-dDownsampleColorImages=true -dColorImageResolution=200 \
+	-dDownsampleGrayImages=true  -dGrayImageResolution=200 \
+	-dDownsampleMonoImages=true  -dMonoImageResolution=300 \
+	-dColorImageDownsampleType=/Bicubic \
+	-dGrayImageDownsampleType=/Bicubic \
+	-dMonoImageFilter=/CCITTFaxEncode \
+	-dEncodeMonoImages=true \
+	-dCompressFonts=true -dSubsetFonts=true \
+	-dDetectDuplicateImages=true \
+	-dNOPAUSE -dQUIET -dBATCH \
+	-sOutputFile="$output" \
+	"$input"
+
+before=$(stat -f%z "$input")
+after=$(stat -f%z "$output")
+pct=$(( 100 - (after * 100 / before) ))
+echo "wrote: $output"
+echo "$(( before / 1024 / 1024 )) MB -> $(( after / 1024 / 1024 )) MB (${pct}% smaller)"

@@ -20,6 +20,7 @@ version tool:
 test:
     bats goland/apply-vmoptions.bats
     bats bin/paragraphs.bats
+    python3 bin/pipefmt_test.py
 
 lint-shellcheck:
     shellcheck -S warning {{shell-scripts}}
