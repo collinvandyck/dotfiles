@@ -124,6 +124,7 @@ brew install --quiet --formula \
 	noahgorstein/tap/jqp \
 	nvr \
 	opam \
+	anomalyco/tap/opencode \
 	opencv \
 	openssl \
 	ov \
