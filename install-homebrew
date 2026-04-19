@@ -131,6 +131,7 @@ brew install --quiet --formula \
 	pam-reattach \
 	pandoc \
 	parallel \
+	pi-coding-agent \
 	pipx \
 	protobuf \
 	pstree \

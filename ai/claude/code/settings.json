@@ -17,7 +17,7 @@
       "Bash(gh:*)",
       "Bash(git:*)",
       "Bash(go:*)",
-      "Bash(golangci-lint run:*)",
+      "Bash(golangci-lint:*)",
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(make:*)",
@@ -107,7 +107,7 @@
       }
     }
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "skipAutoPermissionPrompt": true
 }
