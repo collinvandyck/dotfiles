@@ -14,7 +14,7 @@ export CLAUDE=~/.local/bin/claude
 }
 
 args=("$@")
-mixins=(~/code/temporal/temporal-utils)
+mixins=(~/code/temporal)
 
 for mixin in "${mixins[@]}"; do
 	if [[ -d "$mixin" ]]; then

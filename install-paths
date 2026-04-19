@@ -70,6 +70,13 @@ if ! [[ -d /usr/local/bin ]]; then
 	sudo chown "$USER" /usr/local/bin
 fi
 
+# symlink obsidian vault to ~/code/notes (macOS only; iCloud path)
+obsidian_vault="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
+if [[ -d "$obsidian_vault" ]]; then
+	mkdir -p ~/code
+	ln -sf "$obsidian_vault" ~/code/notes
+fi
+
 # we do not symlink obsidian into the notes repo anymore b/c it doesn't work
 # when using obsidian on windows
 ovimrc=~/code/notes/.obsidian.vimrc

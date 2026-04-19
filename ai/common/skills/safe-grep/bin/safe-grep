@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Safe grep with regex validation — wraps rg for patterns with special characters
+# Usage: safe-grep [--dry-run] <pattern> <file>
+set -euo pipefail
+
+DRY_RUN=false
+ARGS=()
+for arg in "$@"; do
+  if [[ "$arg" == "--dry-run" ]]; then DRY_RUN=true; else ARGS+=("$arg"); fi
+done
+
+PATTERN="${ARGS[0]:-}"
+FILE="${ARGS[1]:-}"
+
+[[ -n "$PATTERN" && -n "$FILE" ]] || { echo "Usage: safe-grep [--dry-run] <pattern> <file>" >&2; exit 1; }
+[[ -f "$FILE" ]] || { echo "File not found: $FILE" >&2; exit 1; }
+
+# Validate regex by asking rg to parse it against empty input
+if ! echo -n | rg "$PATTERN" 2>/tmp/safe-grep-err; then
+  if grep -q "regex" /tmp/safe-grep-err; then
+    echo "Invalid regex: $(cat /tmp/safe-grep-err)" >&2
+    exit 1
+  fi
+fi
+
+if $DRY_RUN; then
+  echo "would run: rg '$PATTERN' '$FILE'"
+  exit 0
+fi
+
+rg "$PATTERN" "$FILE"

@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# Wrapper for gws sheets operations. Filters keyring stderr noise and handles
+# common JSON extraction so the caller doesn't need python3 one-liners.
+# Usage: gws-sheets <command> [args...]
+set -euo pipefail
+
+DRY_RUN=false
+ARGS=()
+for arg in "$@"; do
+  if [[ "$arg" == "--dry-run" ]]; then DRY_RUN=true; else ARGS+=("$arg"); fi
+done
+
+CMD="${ARGS[0]:-help}"
+shift_args() { ARGS=("${ARGS[@]:1}"); }
+shift_args
+
+# Run gws, filtering the "Using keyring backend" line from stderr.
+run_gws() {
+  if $DRY_RUN; then
+    echo "[dry-run] gws $*"
+    return 0
+  fi
+  gws "$@" 2> >(grep -v "^Using keyring" >&2)
+}
+
+case "$CMD" in
+  create)
+    # Usage: gws-sheets create <title> [sheet1,sheet2,...]
+    TITLE="${ARGS[0]:-}"
+    SHEETS="${ARGS[1]:-Sheet1}"
+    if [[ -z "$TITLE" ]]; then
+      echo "Usage: gws-sheets create <title> [sheet1,sheet2,...]" >&2
+      exit 1
+    fi
+    # Build sheets array from comma-separated names
+    SHEETS_JSON="["
+    IFS=',' read -ra SHEET_NAMES <<< "$SHEETS"
+    for i in "${!SHEET_NAMES[@]}"; do
+      [[ $i -gt 0 ]] && SHEETS_JSON+=","
+      SHEETS_JSON+="{\"properties\":{\"title\":\"${SHEET_NAMES[$i]}\",\"index\":$i}}"
+    done
+    SHEETS_JSON+="]"
+    if $DRY_RUN; then
+      echo "[dry-run] gws sheets spreadsheets create --json {properties:{title:$TITLE},sheets:$SHEETS_JSON}"
+    else
+      run_gws sheets spreadsheets create --json "{\"properties\":{\"title\":\"$TITLE\"},\"sheets\":$SHEETS_JSON}" \
+        | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+print(json.dumps({'spreadsheetId': d['spreadsheetId'], 'spreadsheetUrl': d['spreadsheetUrl']}, indent=2))
+"
+    fi
+    ;;
+
+  get-sheet-ids)
+    # Usage: gws-sheets get-sheet-ids <spreadsheet-id>
+    SPREADSHEET_ID="${ARGS[0]:-}"
+    if [[ -z "$SPREADSHEET_ID" ]]; then
+      echo "Usage: gws-sheets get-sheet-ids <spreadsheet-id>" >&2
+      exit 1
+    fi
+    if $DRY_RUN; then
+      echo "[dry-run] gws sheets spreadsheets get --params {spreadsheetId:$SPREADSHEET_ID}"
+    else
+      run_gws sheets spreadsheets get --params "{\"spreadsheetId\":\"$SPREADSHEET_ID\"}" \
+        | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+for s in d.get('sheets', []):
+    p = s['properties']
+    print(f\"{p['title']}={p['sheetId']}\")
+"
+    fi
+    ;;
+
+  get-values)
+    # Usage: gws-sheets get-values <spreadsheet-id> <range>
+    SPREADSHEET_ID="${ARGS[0]:-}"
+    RANGE="${ARGS[1]:-}"
+    if [[ -z "$SPREADSHEET_ID" || -z "$RANGE" ]]; then
+      echo "Usage: gws-sheets get-values <spreadsheet-id> <range>" >&2
+      exit 1
+    fi
+    run_gws sheets spreadsheets values get \
+      --params "{\"spreadsheetId\":\"$SPREADSHEET_ID\",\"range\":\"$RANGE\"}"
+    ;;
+
+  get-formulas)
+    # Usage: gws-sheets get-formulas <spreadsheet-id> <range>
+    SPREADSHEET_ID="${ARGS[0]:-}"
+    RANGE="${ARGS[1]:-}"
+    if [[ -z "$SPREADSHEET_ID" || -z "$RANGE" ]]; then
+      echo "Usage: gws-sheets get-formulas <spreadsheet-id> <range>" >&2
+      exit 1
+    fi
+    run_gws sheets spreadsheets values get \
+      --params "{\"spreadsheetId\":\"$SPREADSHEET_ID\",\"range\":\"$RANGE\",\"valueRenderOption\":\"FORMULA\"}"
+    ;;
+
+  update-values)
+    # Usage: gws-sheets update-values <spreadsheet-id> <range> <json-file>
+    SPREADSHEET_ID="${ARGS[0]:-}"
+    RANGE="${ARGS[1]:-}"
+    JSON_FILE="${ARGS[2]:-}"
+    if [[ -z "$SPREADSHEET_ID" || -z "$RANGE" || -z "$JSON_FILE" ]]; then
+      echo "Usage: gws-sheets update-values <spreadsheet-id> <range> <json-file>" >&2
+      exit 1
+    fi
+    if [[ ! -f "$JSON_FILE" ]]; then
+      echo "Error: file not found: $JSON_FILE" >&2
+      exit 1
+    fi
+    run_gws sheets spreadsheets values update \
+      --params "{\"spreadsheetId\":\"$SPREADSHEET_ID\",\"range\":\"$RANGE\",\"valueInputOption\":\"USER_ENTERED\"}" \
+      --json "$(cat "$JSON_FILE")"
+    ;;
+
+  batch-update)
+    # Usage: gws-sheets batch-update <spreadsheet-id> <json-file>
+    SPREADSHEET_ID="${ARGS[0]:-}"
+    JSON_FILE="${ARGS[1]:-}"
+    if [[ -z "$SPREADSHEET_ID" || -z "$JSON_FILE" ]]; then
+      echo "Usage: gws-sheets batch-update <spreadsheet-id> <json-file>" >&2
+      exit 1
+    fi
+    if [[ ! -f "$JSON_FILE" ]]; then
+      echo "Error: file not found: $JSON_FILE" >&2
+      exit 1
+    fi
+    run_gws sheets spreadsheets batchUpdate \
+      --params "{\"spreadsheetId\":\"$SPREADSHEET_ID\"}" \
+      --json "$(cat "$JSON_FILE")"
+    ;;
+
+  schema)
+    # Usage: gws-sheets schema <method>
+    METHOD="${ARGS[0]:-}"
+    if [[ -z "$METHOD" ]]; then
+      echo "Usage: gws-sheets schema <method>  (e.g. sheets.spreadsheets.batchUpdate)" >&2
+      exit 1
+    fi
+    run_gws schema "$METHOD" --resolve-refs
+    ;;
+
+  help|--help|-h)
+    cat <<'USAGE'
+gws-sheets — Google Sheets wrapper for Claude Code
+
+Commands:
+  create <title> [sheet1,sheet2,...]         Create spreadsheet, returns ID+URL
+  get-sheet-ids <id>                         List sheet names and numeric IDs
+  get-values <id> <range>                    Read computed values
+  get-formulas <id> <range>                  Read raw formulas
+  update-values <id> <range> <json-file>     Write values from JSON file
+  batch-update <id> <json-file>              Apply formatting/structure from JSON file
+  schema <method>                            Show API schema for a method
+
+Options:
+  --dry-run    Print the gws command without executing
+USAGE
+    ;;
+
+  *)
+    echo "Unknown command: $CMD. Run 'gws-sheets help' for usage." >&2
+    exit 1
+    ;;
+esac
