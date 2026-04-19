@@ -35,6 +35,11 @@ ln -sf ~/.dotfiles/ai/claude/code/agents ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
 
+mkdir -p ~/.config/opencode
+for f in ~/.dotfiles/ai/opencode/*; do
+	ln -sf "$f" ~/.config/opencode/
+done
+
 [[ -d ~/.config/mise ]] && rm -rf ~/.config/mise
 ln -sf ~/.dotfiles/mise/ ~/.config
 
