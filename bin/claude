@@ -7,20 +7,22 @@ set -euo pipefail
 # use bash for claude code sessions
 export CLAUDE_CODE_SHELL=bash
 export CLAUDE=~/.local/bin/claude
+export CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1
 
 [[ ! -e "${CLAUDE:-}" ]] && {
 	echo "Installing claude..."
 	curl -fsSL https://claude.ai/install.sh | bash
 }
 
-args=("$@")
-mixins=(~/code/temporal/temporal-utils)
+args=()
+mixins=(~/code/temporal)
 
-for mixin in "${mixins[@]}"; do
-	if [[ -d "$mixin" ]]; then
-		export CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1
-		args+=("--add-dir" "$mixin")
-	fi
-done
+if [[ $# == 0 ]] || ! [[ "$1" =~ ^(agents|auth|auto-mode|doctor|install|mcp|plugin|plugins|project|setup-token|ultrareview|update|upgrade|-h|--help)$ ]]; then
+	for mixin in "${mixins[@]}"; do
+		if [[ -d "$mixin" ]]; then
+			args+=("--add-dir" "$mixin")
+		fi
+	done
+fi
 
-exec $CLAUDE "${args[@]}"
+exec $CLAUDE "${args[@]}" "$@"

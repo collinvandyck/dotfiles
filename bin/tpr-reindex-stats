@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -ne 1 ]; then
+	echo "usage: $(basename "$0") <cell>" >&2
+	exit 2
+fi
+
+CELL=$1
+NS="agent.internal-$CELL"
+WFS=$(ct admintools --context "$CELL" -- temporal workflow list \
+	-n "$NS" \
+	-q "WorkflowType='es-reindex-workflow' AND ExecutionStatus='Running'" \
+	--output json |
+	tr -d '\r' |
+	jq -r '.[].execution.workflowId')
+
+N=$(printf '%s' "$WFS" | { grep -c . || true; })
+
+if [ "$N" -eq 0 ]; then
+	echo "no running es-reindex-workflow in $CELL" >&2
+	exit 1
+fi
+
+if [ "$N" -gt 1 ]; then
+	echo "expected 1 running es-reindex-workflow in $CELL, found $N:" >&2
+	echo "$WFS" | sed 's/^/  /' >&2
+	exit 1
+fi
+
+WF=$WFS
+
+ct admintools --context "$CELL" -- temporal workflow describe -n "$NS" -w "$WF" --output json | tr -d '\r' | jq '
+  [ .pendingActivities[] | {
+      id:   .activityId,
+      docs: .heartbeatDetails[0].NumDocsRead,
+      secs: (now - (.scheduledTime | sub("\\..*Z$"; "Z") | fromdateiso8601))
+    } | .rate = (.docs / .secs | floor)
+  ]
+  | { activities: .,
+      total_rate: (map(.rate) | add),
+      total_docs: (map(.docs) | add) }
+'

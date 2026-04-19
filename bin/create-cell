@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CELL="s-cds-collin-$(date +%y%m%d)"
+TEMPLATE=v5-aws-small
+
+usage() {
+	echo -e "usage: $(basename "$0") --cell [CELL] --template [TEMPLATE]" >&2
+	exit 1
+}
+
+die() {
+	echo -e "$@" >&2
+	usage
+}
+
+run() {
+	echo "$@"
+	"$@"
+}
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--cell | -c)
+		CELL=$2
+		shift 2
+		;;
+	--cell=*)
+		CELL="${1#*=}"
+		shift
+		;;
+	--template | -t)
+		TEMPLATE=$2
+		shift 2
+		;;
+	--template=*)
+		TEMPLATE="${1#*=}"
+		shift
+		;;
+	**)
+		usage
+		;;
+	esac
+done
+
+[[ -z "$CELL" ]] && die "cell required"
+[[ -z "$TEMPLATE" ]] && die "template required"
+
+run omni scaffold environment create --cell-id "$CELL" --benchgo-enabled --namespace "$CELL-marathon" --yaml "$TEMPLATE"

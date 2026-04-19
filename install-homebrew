@@ -60,6 +60,7 @@ brew install --quiet --formula \
 	bzip2 \
 	caddy \
 	chruby \
+	circumflex \
 	clojure \
 	clojure-lsp \
 	cmake \
@@ -74,6 +75,7 @@ brew install --quiet --formula \
 	exiftool \
 	eugene1g/safehouse/agent-safehouse \
 	eza \
+	fastmod \
 	fd \
 	fileicon \
 	fx \
@@ -86,6 +88,7 @@ brew install --quiet --formula \
 	golang \
 	gomplate \
 	gource \
+	graphviz \
 	grpcurl \
 	gum \
 	helix \
@@ -118,6 +121,7 @@ brew install --quiet --formula \
 	mise \
 	mtr \
 	mutagen-io/mutagen/mutagen \
+	mysql-client \
 	neofetch \
 	neovim \
 	nmap \
@@ -133,6 +137,7 @@ brew install --quiet --formula \
 	parallel \
 	pi-coding-agent \
 	pipx \
+	plaid/plaid-cli/plaid \
 	protobuf \
 	pstree \
 	pyenv \
@@ -149,9 +154,12 @@ brew install --quiet --formula \
 	spring-io/tap/spring-boot \
 	starship \
 	steveyegge/beads/bd \
+	stress-ng \
 	temporal \
+	gromgit/brewtils/taproom \
 	tig \
 	tilt \
+	timg \
 	tokei \
 	tmux \
 	tree \

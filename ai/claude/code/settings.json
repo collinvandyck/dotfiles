@@ -19,7 +19,7 @@
       "Bash(go:*)",
       "Bash(golangci-lint:*)",
       "Bash(grep:*)",
-      "Bash(ls:*)",
+      "Bash(ls)",
       "Bash(make:*)",
       "Bash(mise run:*)",
       "Bash(open:*)",
@@ -27,11 +27,12 @@
       "Bash(pip3 install:*)",
       "Bash(playwright install:*)",
       "Bash(python3:*)",
-      "Bash(sort:*)",
+      "Bash(sed)",
+      "Bash(sort)",
       "Bash(sqlite3:*)",
-      "Bash(tee:*)",
+      "Bash(tee)",
       "Bash(unset:*)",
-      "Bash(wc:*)",
+      "Bash(wc)",
       "Bash(xargs:*)",
       "Bash(xxd:*)",
       "Skill(cds:rework-commits)",
@@ -47,30 +48,16 @@
     ],
     "deny": [],
     "ask": [],
-    "defaultMode": "acceptEdits",
+    "defaultMode": "auto",
     "additionalDirectories": [
       "~/code/temporal",
-      "~/code/temporal/boss-proxy",
-      "~/code/temporal/cloud-tools",
-      "~/code/temporal/omes",
-      "~/code/temporal/runbooks",
-      "~/code/temporal/saas-components",
-      "~/code/temporal/saas-control-plane",
-      "~/code/temporal/saas-control-plane-vis-admin",
-      "~/code/temporal/saas-infra-plane",
-      "~/code/temporal/saas-temporal",
-      "~/code/temporal/temporal",
-      "~/code/temporal/temporal-claude-marketplace",
-      "~/code/temporal/temporal-utils",
-      "~/code/temporal/cds-wiki",
-      "~/code/temporal/canary-go",
       "~/code/bookkeeper",
       "~/code",
+      "~/Downloads",
       "/tmp/",
       "~/go/pkg/mod"
     ]
   },
-  "model": "claude-opus-4-7[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
@@ -84,8 +71,9 @@
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
-    "plannotator@plannotator": true,
-    "temporal-developer@temporal-marketplace": true
+    "temporal-developer@temporal-marketplace": true,
+    "mcp-server-dev@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {
@@ -105,9 +93,18 @@
         "source": "github",
         "repo": "temporalio/claude-temporal-plugin"
       }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      }
     }
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
+  "skipWorkflowUsageWarning": true,
+  "theme": "custom:collin",
+  "preferredNotifChannel": "ghostty",
   "skipAutoPermissionPrompt": true
 }

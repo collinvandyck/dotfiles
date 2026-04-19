@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+# Fetch and parse CI test artifacts for a PR or run
+# Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]
+set -euo pipefail
+
+DRY_RUN=false
+PR=""
+RUN_ID=""
+REPO="temporalio/saas-temporal"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --dry-run) DRY_RUN=true; shift ;;
+    --pr) PR="$2"; shift 2 ;;
+    --run) RUN_ID="$2"; shift 2 ;;
+    --repo) REPO="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1" >&2; echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2; exit 1 ;;
+  esac
+done
+
+[[ -n "$PR" || -n "$RUN_ID" ]] || { echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2; exit 1; }
+
+# Resolve PR URL to number if needed
+if [[ -n "$PR" && "$PR" =~ ^https://github.com/.*/pull/([0-9]+) ]]; then
+  REPO=$(echo "$PR" | sed 's|https://github.com/||; s|/pull/.*||')
+  PR="${BASH_REMATCH[1]}"
+fi
+
+# If we have a PR, find the CI run
+if [[ -n "$PR" ]]; then
+  echo "Finding CI run for PR #$PR on $REPO..." >&2
+  BRANCH=$(gh pr view "$PR" --repo "$REPO" --json headRefName --jq '.headRefName')
+  RUN_ID=$(gh api "repos/$REPO/actions/runs?branch=$BRANCH&per_page=20" \
+    --jq '[.workflow_runs[] | select(.name == "CI")] | sort_by(.created_at) | last | .id')
+  [[ -n "$RUN_ID" && "$RUN_ID" != "null" ]] || { echo "No CI run found for PR #$PR" >&2; exit 1; }
+  echo "Found run $RUN_ID" >&2
+fi
+
+OUTDIR="/tmp/ci-tests/$RUN_ID"
+
+if $DRY_RUN; then
+  echo "would fetch all artifacts for run $RUN_ID from $REPO to $OUTDIR"
+  exit 0
+fi
+
+mkdir -p "$OUTDIR"
+
+# Download ALL artifacts
+echo "Downloading artifacts for run $RUN_ID..." >&2
+ARTIFACTS=$(gh api "repos/$REPO/actions/runs/$RUN_ID/artifacts" \
+  --jq '.artifacts[] | .name')
+
+for name in $ARTIFACTS; do
+  if [[ ! -d "$OUTDIR/$name" ]]; then
+    echo "  $name" >&2
+    gh run download "$RUN_ID" --repo "$REPO" --name "$name" --dir "$OUTDIR/$name" 2>/dev/null || true
+  else
+    echo "  $name (cached)" >&2
+  fi
+done
+
+# Report download size
+TOTAL_SIZE=$(du -sh "$OUTDIR" | cut -f1)
+echo "Total download: $TOTAL_SIZE" >&2
+echo "" >&2
+
+# Parse JUnit XMLs and produce summary
+python3 - "$OUTDIR" <<'PYTHON'
+import sys, os, glob
+from xml.etree import ElementTree
+
+outdir = sys.argv[1]
+failures = []
+total_tests = 0
+total_failures = 0
+
+for xml_path in sorted(glob.glob(f"{outdir}/**/*.junit.xml", recursive=True)):
+    artifact = os.path.basename(os.path.dirname(xml_path))
+    try:
+        tree = ElementTree.parse(xml_path)
+        root = tree.getroot()
+        suites = root.findall('.//testsuite') if root.tag == 'testsuites' else [root]
+        for suite in suites:
+            for tc in suite.findall('testcase'):
+                total_tests += 1
+                failure = tc.find('failure')
+                if failure is not None:
+                    total_failures += 1
+                    name = tc.get('name', 'unknown')
+                    classname = tc.get('classname', '')
+                    duration = tc.get('time', '?')
+                    message = (failure.text or failure.get('message', ''))[:2000]
+                    failures.append({
+                        'artifact': artifact,
+                        'name': name,
+                        'classname': classname,
+                        'duration': duration,
+                        'message': message,
+                    })
+    except Exception as e:
+        print(f"Error parsing {xml_path}: {e}", file=sys.stderr)
+
+print(f"Run artifacts: {outdir}")
+print(f"Total tests: {total_tests}, Failures: {total_failures}")
+print()
+
+if failures:
+    print("## Failed/Flaky Tests")
+    print()
+    for f in failures:
+        print(f"### {f['name']}")
+        print(f"Artifact: {f['artifact']}")
+        print(f"Class: {f['classname']}")
+        print(f"Duration: {f['duration']}s")
+        print()
+        lines = f['message'].strip().split('\n')
+        for line in lines[:30]:
+            print(f"    {line}")
+        if len(lines) > 30:
+            print(f"    ... ({len(lines) - 30} more lines)")
+        print()
+else:
+    print("No failures found in JUnit artifacts.")
+    print("(If tests were retried internally, check the test logs for retry output.)")
+PYTHON
+
+echo "" >&2
+echo "Artifacts saved to: $OUTDIR" >&2

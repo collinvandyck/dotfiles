@@ -2,26 +2,26 @@
 CT_CONTEXT_SAFE_PATTERN="collin"
 
 ctt() {
-    # poor man's aliases (eg kc -> kubectl)
-    local -a args=("${@}")
-    case "$1" in
-        kc) args[1]=kubectl ;;
-    esac
+	# poor man's aliases (eg kc -> kubectl)
+	local -a args=("${@}")
+	case "$1" in
+	kc) args[1]=kubectl ;;
+	esac
 
-    # inject context for these commands
-    case "${args[1]}" in
-        kubectl|k9s) _ct_inject_context "${args[1]}" ;;
-    esac
+	# inject context for these commands
+	case "${args[1]}" in
+	kubectl | k9s) _ct_inject_context "${args[1]}" ;;
+	esac
 
-    ct "${args[@]}" 2> >(_ct_filter_warnings >&2)
+	ct "${args[@]}" 2> >(_ct_filter_warnings >&2)
 }
 
 _ct_inject_context() {
-    [[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
-    [[ " ${args[*]} " == *" --context "* ]] && return
-    args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
+	[[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
+	[[ " ${args[*]} " == *" --context "* ]] && return
+	args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
 }
 
 _ct_filter_warnings() {
-    rg --line-buffered -v 'warning: no --duration provided|reusing cached approved access|\x1b'
+	rg --line-buffered -v 'warning: no --duration provided|reusing cached approved access|submitted access request|access request status|waiting for aws credentials to propagate|aws credentials ready|\x1b'
 }
