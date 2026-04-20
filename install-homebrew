@@ -149,6 +149,7 @@ brew install --quiet --formula \
 	spring-io/tap/spring-boot \
 	starship \
 	steveyegge/beads/bd \
+	stress-ng \
 	temporal \
 	tig \
 	tilt \
