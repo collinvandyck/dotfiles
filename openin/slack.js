@@ -9,7 +9,6 @@
     try {
         url.protocol = 'slack';
 
-        // Extract workspace name from the URL host
         const workspaceName = url.hostname.split('.')[0];
         const teamId = workspaceLookup[workspaceName];
         console.log("workspace:" + workspaceName);
@@ -18,20 +17,22 @@
             throw new Error(`Workspace ${workspaceName} not found in lookup.`);
         }
 
-        // Extract Channel ID and Timestamp from the URL path
         const pathSegments = url.pathname.split('/');
         const channelId = pathSegments[2];
-        const raw = pathSegments[3].replace('p', '');
-        const timestamp = raw.slice(0, 10) + '.' + raw.slice(10);
 
-        // Update the URL with new format (remove hostname)
-        url.hostname = 'channel'; // Remove the workspace hostname
+        url.hostname = 'channel';
         url.pathname = '';
         url.searchParams.set('team', teamId);
         url.searchParams.set('id', channelId);
-        url.searchParams.set('message', timestamp);
+
+        if (pathSegments[3]) {
+            const raw = pathSegments[3].replace('p', '');
+            const timestamp = raw.slice(0, 10) + '.' + raw.slice(10);
+            url.searchParams.set('message', timestamp);
+        }
 
     } catch (error) {
         console.log(`Error converting URL: ${error.message}`);
     }
 })();
+
