@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+import argparse
+import sys
+
+
+def join_continuations(text):
+    """Collapse unquoted backslash-newline continuations into single spaces."""
+    out = []
+    sq = dq = False
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if sq:
+            out.append(c)
+            if c == "'":
+                sq = False
+            i += 1
+        elif dq:
+            out.append(c)
+            if c == "\\" and i + 1 < n:
+                out.append(text[i + 1])
+                i += 2
+            else:
+                if c == '"':
+                    dq = False
+                i += 1
+        elif c == "'":
+            sq = True
+            out.append(c)
+            i += 1
+        elif c == '"':
+            dq = True
+            out.append(c)
+            i += 1
+        elif c == "\\" and i + 1 < n and text[i + 1] == "\n":
+            i += 2
+            while i < n and text[i] in " \t":
+                i += 1
+            while out and out[-1] in (" ", "\t"):
+                out.pop()
+            out.append(" ")
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def break_pipes(text):
+    """Insert ` \\\\\\n  | ` at every top-level ` | `."""
+    out = []
+    sq = dq = False
+    i, n = 0, len(text)
+    while i < n:
+        c = text[i]
+        if sq:
+            out.append(c)
+            if c == "'":
+                sq = False
+            i += 1
+        elif dq:
+            out.append(c)
+            if c == "\\" and i + 1 < n:
+                out.append(text[i + 1])
+                i += 2
+            else:
+                if c == '"':
+                    dq = False
+                i += 1
+        elif c == "'":
+            sq = True
+            out.append(c)
+            i += 1
+        elif c == '"':
+            dq = True
+            out.append(c)
+            i += 1
+        elif text[i:i + 3] == " | ":
+            out.append(" \\\n  | ")
+            i += 3
+        else:
+            out.append(c)
+            i += 1
+    return "".join(out)
+
+
+def tokenize(s):
+    """Split on unquoted whitespace, preserving quoted strings as single tokens."""
+    tokens = []
+    current = []
+    sq = dq = False
+    i, n = 0, len(s)
+    while i < n:
+        c = s[i]
+        if sq:
+            current.append(c)
+            if c == "'":
+                sq = False
+            i += 1
+        elif dq:
+            current.append(c)
+            if c == "\\" and i + 1 < n:
+                current.append(s[i + 1])
+                i += 2
+            else:
+                if c == '"':
+                    dq = False
+                i += 1
+        elif c == "'":
+            sq = True
+            current.append(c)
+            i += 1
+        elif c == '"':
+            dq = True
+            current.append(c)
+            i += 1
+        elif c == " ":
+            if current:
+                tokens.append("".join(current))
+                current = []
+            i += 1
+        else:
+            current.append(c)
+            i += 1
+    if current:
+        tokens.append("".join(current))
+    return tokens
+
+
+def group_blocks(tokens):
+    """Group tokens so each flag collects its trailing non-flag args into one block."""
+    blocks = []
+    for t in tokens:
+        if not blocks or t.startswith("-"):
+            blocks.append([t])
+        else:
+            blocks[-1].append(t)
+    return [" ".join(b) for b in blocks]
+
+
+def break_line(line, width):
+    """If line body exceeds width, greedy-fill flag-blocks into continuation lines."""
+    trailing = ""
+    body = line
+    if body.endswith(" \\"):
+        trailing = " \\"
+        body = body[:-2]
+
+    if len(body) <= width:
+        return line
+
+    stripped = body.lstrip()
+    indent = body[: len(body) - len(stripped)]
+    cont_indent = indent + "  "
+
+    blocks = group_blocks(tokenize(stripped))
+    if len(blocks) < 2:
+        return line
+
+    lines = []
+    current = blocks[0]
+    cur_indent = len(indent)
+    for b in blocks[1:]:
+        if cur_indent + len(current) + 1 + len(b) <= width:
+            current = current + " " + b
+        else:
+            lines.append(current)
+            current = b
+            cur_indent = len(cont_indent)
+    lines.append(current)
+
+    if len(lines) == 1:
+        return line
+
+    result = indent + lines[0]
+    for l in lines[1:]:
+        result += " \\\n" + cont_indent + l
+    return result + trailing
+
+
+def main():
+    p = argparse.ArgumentParser(
+        description="Format a bash pipeline by breaking at top-level pipes."
+    )
+    p.add_argument(
+        "-w", "--width", type=int, default=None,
+        help="break to keep lines within WIDTH columns",
+    )
+    args = p.parse_args()
+
+    joined = join_continuations(sys.stdin.read())
+
+    if args.width is None:
+        result = break_pipes(joined)
+    else:
+        longest = max((len(line) for line in joined.splitlines()), default=0)
+        if longest <= args.width:
+            result = joined
+        else:
+            piped = break_pipes(joined)
+            result = "\n".join(break_line(l, args.width) for l in piped.splitlines())
+
+    sys.stdout.write(result)
+    if result and not result.endswith("\n"):
+        sys.stdout.write("\n")
+
+
+if __name__ == "__main__":
+    main()
