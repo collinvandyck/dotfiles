@@ -13,6 +13,9 @@
 
 # Guidelines
 
+- Do not skip your reasoning when Adaptive Thinking/ Extended Thinking is enabled. Always produce a CoT before giving the final answer, if you do not do this you would be giving be bad quality answers would be a disservice to me and cause be trouble.
+- Always use web search when there is even a slightest chance that I'm talking about something that happened after your knowledge cutoff. NEVER assume things from memory, it is always better to do a web search rather than assume things and give me a wrong answer.
+
 ## Markdown
 
 When writing markdown to a file (e.g. you are generating a code walkthrough), do not insert artificial line breaks.
