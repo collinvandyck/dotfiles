@@ -1,5 +1,5 @@
 ---
-name: create-draft-pr
+name: git-create-draft-pr
 description: Used when creating a draft PR.
 ---
 
