@@ -60,6 +60,7 @@ brew install --quiet --formula \
 	bzip2 \
 	caddy \
 	chruby \
+	circumflex \
 	clojure \
 	clojure-lsp \
 	cmake \
