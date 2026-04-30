@@ -153,6 +153,7 @@ brew install --quiet --formula \
 	steveyegge/beads/bd \
 	stress-ng \
 	temporal \
+	gromgit/brewtils/taproom \
 	tig \
 	tilt \
 	tokei \
