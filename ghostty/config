@@ -19,17 +19,19 @@ quick-terminal-position = "center"
 quick-terminal-size = "1800px,500px"
 shell-integration-features = "no-cursor"
 split-divider-color = "#888888"
-theme = "tokyonight"
 theme = Arthur
 theme = Monokai Remastered
 theme = Monokai Pro
 theme = Monokai Pro Spectrum
+theme = "tokyonight"
 unfocused-split-opacity = 0.80
 window-position-x = 1000
 window-position-y = 500
 window-theme = "system"
 confirm-close-surface = false
 copy-on-select = clipboard
+window-step-resize = true
+window-decoration = auto
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
