@@ -120,6 +120,7 @@ brew install --quiet --formula \
 	mise \
 	mtr \
 	mutagen-io/mutagen/mutagen \
+	mysql-client \
 	neofetch \
 	neovim \
 	nmap \
