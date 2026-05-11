@@ -59,7 +59,18 @@
     ]
   },
   "model": "claude-opus-4-7[1m]",
-  "hooks": {},
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/Users/collin/.claude/hooks/context-mode-cache-heal.mjs\""
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "claude-statusline",
@@ -73,7 +84,8 @@
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
     "plannotator@plannotator": true,
-    "temporal-developer@temporal-marketplace": true
+    "temporal-developer@temporal-marketplace": true,
+    "context-mode@context-mode": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {
@@ -92,6 +104,12 @@
       "source": {
         "source": "github",
         "repo": "temporalio/claude-temporal-plugin"
+      }
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
       }
     }
   },
