@@ -84,8 +84,7 @@
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
     "plannotator@plannotator": true,
-    "temporal-developer@temporal-marketplace": true,
-    "context-mode@context-mode": true
+    "temporal-developer@temporal-marketplace": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {
