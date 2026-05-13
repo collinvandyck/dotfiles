@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{{TITLE}}</title>
+<style>
+  /* ===== Design tokens ===== */
+  :root {
+    --bg: #0e1116;
+    --bg-elev: #161b22;
+    --bg-elev-2: #1c232c;
+    --border: #2a3240;
+    --border-strong: #3a4555;
+    --text: #d7dde5;
+    --text-dim: #8a95a5;
+    --text-faint: #5d6776;
+    --accent: #f0b86e;
+    --accent-dim: #b8864c;
+    --blue: #6aa6f7;
+    --green: #5fb87a;
+    --red: #e06b6b;
+    --purple: #b48ad5;
+    --code-bg: #0a0d12;
+    --code-border: #232b36;
+    --shadow: 0 8px 24px rgba(0,0,0,0.4);
+    --radius: 8px;
+    --mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ===== Hero ===== */
+  header.hero {
+    margin-bottom: 48px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+  header.hero .eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  header.hero h1 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  header.hero .sub {
+    color: var(--text-dim);
+    font-size: 17px;
+    max-width: 680px;
+  }
+  header.hero .meta {
+    margin-top: 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  header.hero .meta a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--border-strong);
+  }
+
+  /* ===== Headings ===== */
+  h2 {
+    margin: 56px 0 16px;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  h2 .stepnum {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    background: var(--accent);
+    color: #1a1a1a;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 50%;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+  h3 {
+    margin: 32px 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  p { margin: 12px 0; }
+
+  a { color: var(--blue); }
+
+  /* ===== Code ===== */
+  code {
+    font-family: var(--mono);
+    font-size: 0.9em;
+    background: var(--bg-elev-2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: #e8c890;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+  }
+  pre code {
+    background: transparent;
+    padding: 0;
+    color: #c9d1d9;
+    font-size: inherit;
+  }
+
+  /* Syntax tokens (used by the highlighters at the bottom of the page) */
+  .tok-kw    { color: #c678dd; }
+  .tok-type  { color: #56b6c2; }
+  .tok-str   { color: #98c379; }
+  .tok-num   { color: #d19a66; }
+  .tok-com   { color: #6a737d; font-style: italic; }
+  .tok-fn    { color: #61afef; }
+  .tok-pkg   { color: #e5c07b; }
+  .tok-op    { color: #abb2bf; }
+
+  /* ===== Callouts ===== */
+  blockquote {
+    border-left: 3px solid var(--accent-dim);
+    background: rgba(240, 184, 110, 0.06);
+    padding: 12px 18px;
+    margin: 20px 0;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text);
+  }
+  blockquote.gotcha { border-left-color: var(--red); background: rgba(224, 107, 107, 0.07); }
+  blockquote.note   { border-left-color: var(--blue); background: rgba(106, 166, 247, 0.07); }
+  blockquote strong { color: var(--accent); }
+  blockquote.gotcha strong { color: var(--red); }
+  blockquote.note strong   { color: var(--blue); }
+
+  /* ===== ASCII diagrams ===== */
+  .ascii {
+    font-family: var(--mono);
+    white-space: pre;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: var(--radius);
+    padding: 16px;
+    overflow-x: auto;
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--text-dim);
+    margin: 20px 0;
+  }
+
+  /* ===== Table of contents ===== */
+  nav.toc {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 24px 0 40px;
+  }
+  nav.toc .label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+  }
+  nav.toc ol {
+    counter-reset: toc;
+    list-style: none;
+    padding: 0; margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 24px;
+  }
+  nav.toc ol li {
+    counter-increment: toc;
+    font-size: 14px;
+  }
+  nav.toc ol li::before {
+    content: counter(toc, decimal-leading-zero);
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-size: 11px;
+    margin-right: 10px;
+  }
+  nav.toc a {
+    color: var(--text-dim);
+    text-decoration: none;
+  }
+  nav.toc a:hover { color: var(--accent); }
+
+  /* ===== Collapsible deep-dive ===== */
+  details.dive {
+    margin: 16px 0;
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  details.dive summary {
+    padding: 12px 18px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  details.dive summary::-webkit-details-marker { display: none; }
+  details.dive summary::before {
+    content: '▸';
+    color: var(--text-faint);
+    transition: transform 0.2s;
+    display: inline-block;
+  }
+  details.dive[open] summary::before { transform: rotate(90deg); }
+  details.dive .dive-body {
+    padding: 0 18px 16px;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  /* ===== Footer ===== */
+  footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--text-faint);
+    font-size: 12px;
+    font-family: var(--mono);
+    text-align: center;
+  }
+
+  /* ===== Tiny screens ===== */
+  @media (max-width: 640px) {
+    header.hero h1 { font-size: 26px; }
+    nav.toc ol { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!--
+    HERO. eyebrow = breadcrumb / category. sub = one-paragraph summary.
+    meta = repo · path · context-tag (mono, dim). All three are optional but
+    the page reads better with all three populated.
+  -->
+  <header class="hero">
+    <div class="eyebrow">Code Walkthrough</div>
+    <h1>{{Walkthrough title}}</h1>
+    <p class="sub">
+      One-paragraph summary of what this walkthrough explains and why the
+      reader should care. Keep it under three sentences.
+    </p>
+    <div class="meta">
+      {{repo}} · {{path/to/file.go}} · {{optional tag}}
+    </div>
+  </header>
+
+  <!-- TABLE OF CONTENTS. Two-column grid on wide screens, single column on phones. -->
+  <nav class="toc">
+    <div class="label">Contents</div>
+    <ol>
+      <li><a href="#section-1">First section</a></li>
+      <li><a href="#section-2">Second section</a></li>
+    </ol>
+  </nav>
+
+  <!--
+    NUMBERED STEP. h2 + circular stepnum badge for ordered walkthroughs.
+    Use plain h2 (no stepnum) for non-step sections like "Putting it all
+    together" or "Things to know."
+  -->
+  <section id="section-1">
+    <h2><span class="stepnum">1</span>First section</h2>
+
+    <p>
+      Body copy. Inline <code>code</code> uses the muted gold color. Long
+      blocks of prose flow naturally — no manual line breaks inside a
+      paragraph.
+    </p>
+
+    <pre><code class="go">// Go code goes here. The class="go" attribute opts in to the
+// minimal Go highlighter at the bottom of this file.
+func example() error {
+    return nil
+}</code></pre>
+
+    <blockquote class="note">
+      <strong>Note.</strong> Use for subtle invariants, design choices worth
+      naming, or behavior the reader might not notice on first read.
+    </blockquote>
+
+    <blockquote class="gotcha">
+      <strong>Gotcha.</strong> Use for things that surprise people — common
+      mistakes, footguns, places where the obvious mental model is wrong.
+    </blockquote>
+
+    <pre class="ascii">┌─────────────────────────────┐
+│   ASCII diagrams live here  │
+│   inside &lt;pre class="ascii"&gt; │
+└─────────────────────────────┘</pre>
+
+    <details class="dive">
+      <summary>Optional deep-dive — fold this open for asides</summary>
+      <div class="dive-body">
+        <p>
+          Use this for explanations that interrupt the main flow but are
+          worth keeping. The reader gets to choose whether to expand.
+        </p>
+      </div>
+    </details>
+  </section>
+
+  <section id="section-2">
+    <h2><span class="stepnum">2</span>Second section</h2>
+    <p>And so on.</p>
+
+    <pre><code class="sh">temporal workflow signal \
+  --workflow-id &lt;wf-id&gt; \
+  --name set-max-concurrency \
+  --input 16</code></pre>
+  </section>
+
+  <footer>
+    {{repo}} · {{path/to/file.go}}
+  </footer>
+</div>
+
+<script>
+// ===== Minimal Go syntax highlighter =====
+// Targets <pre><code class="go">...</code></pre>. Extend the keyword/type
+// sets below if a walkthrough needs them. For other languages, add a new
+// branch in the loop at the bottom of this script.
+(function () {
+  const goKeywords = new Set([
+    'func','return','var','const','for','if','else','range','break','continue',
+    'switch','case','default','package','import','type','struct','interface',
+    'go','defer','select','chan','map','nil','true','false','new'
+  ]);
+  const goTypes = new Set([
+    'int','int32','int64','uint','uint32','uint64','string','bool','byte','rune',
+    'float32','float64','error','workflow.Context','workflow.ReceiveChannel','workflow.Future'
+  ]);
+
+  function escapeHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function highlightGo(src) {
+    const tokens = [];
+    let i = 0;
+    while (i < src.length) {
+      const c = src[i];
+      if (c === '/' && src[i+1] === '/') {
+        let j = i;
+        while (j < src.length && src[j] !== '\n') j++;
+        tokens.push({t:'com', v: src.slice(i, j)});
+        i = j;
+        continue;
+      }
+      if (c === '"' || c === '`') {
+        const quote = c;
+        let j = i+1;
+        while (j < src.length && src[j] !== quote) {
+          if (src[j] === '\\' && quote === '"') j++;
+          j++;
+        }
+        j = Math.min(j+1, src.length);
+        tokens.push({t:'str', v: src.slice(i, j)});
+        i = j;
+        continue;
+      }
+      if (/[0-9]/.test(c)) {
+        let j = i;
+        while (j < src.length && /[0-9.]/.test(src[j])) j++;
+        tokens.push({t:'num', v: src.slice(i, j)});
+        i = j;
+        continue;
+      }
+      if (/[A-Za-z_]/.test(c)) {
+        let j = i;
+        while (j < src.length && /[A-Za-z0-9_.]/.test(src[j])) j++;
+        const word = src.slice(i, j);
+        const bare = word.split('.').pop();
+        let tag = null;
+        if (goKeywords.has(word) || goKeywords.has(bare)) tag = 'kw';
+        else if (goTypes.has(word) || goTypes.has(bare)) tag = 'type';
+        else if (word.includes('.')) tag = 'pkg';
+        else if (src[j] === '(') tag = 'fn';
+        tokens.push(tag ? {t:tag, v:word} : {t:null, v:word});
+        i = j;
+        continue;
+      }
+      tokens.push({t:null, v:c});
+      i++;
+    }
+    return tokens.map(tok => {
+      const v = escapeHtml(tok.v);
+      return tok.t ? `<span class="tok-${tok.t}">${v}</span>` : v;
+    }).join('');
+  }
+
+  function highlightSh(src) {
+    return escapeHtml(src)
+      .replace(/(^|\s)(#.*)$/gm, '$1<span class="tok-com">$2</span>')
+      .replace(/("[^"]*")/g, '<span class="tok-str">$1</span>')
+      .replace(/(\\)/g, '<span class="tok-op">$1</span>')
+      .replace(/(^|\s)(temporal|tctl)\b/g, '$1<span class="tok-fn">$2</span>')
+      .replace(/(--[a-z-]+|\-[a-z])/g, '<span class="tok-kw">$1</span>');
+  }
+
+  document.querySelectorAll('pre code').forEach(el => {
+    const src = el.textContent;
+    if (el.classList.contains('go')) {
+      el.innerHTML = highlightGo(src);
+    } else if (el.classList.contains('sh')) {
+      el.innerHTML = highlightSh(src);
+    }
+  });
+})();
+</script>
+</body>
+</html>
