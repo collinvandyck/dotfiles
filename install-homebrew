@@ -88,6 +88,7 @@ brew install --quiet --formula \
 	golang \
 	gomplate \
 	gource \
+	graphviz \
 	grpcurl \
 	gum \
 	helix \
