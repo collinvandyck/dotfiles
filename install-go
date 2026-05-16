@@ -44,3 +44,5 @@ fi
 
 echo "Installing air"
 go install github.com/air-verse/air@latest
+
+go telemetry off
