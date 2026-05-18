@@ -38,7 +38,7 @@ If you build something interactive, hand-roll it for this specific mechanic. Don
 
 # Output location
 
-Write to `~/code/notes/ai/gen/walkthroughs/walkthrough-$topic.html` (kebab-case, matching the convention used by `write-generated-doc` for markdown walkthroughs). If a file with that name exists, append `-YYYY-mm-dd`.
+Write to `/tmp/interactive-walkthroughs/walkthrough-$topic.html` (kebab-case, matching the convention used by `write-generated-doc` for markdown walkthroughs). If a file with that name exists, append `-YYYY-mm-dd`.
 
 Open the resulting file with `open "$path"` — this launches the default browser. Do not use the Obsidian deep-link (Obsidian won't render HTML).
 
