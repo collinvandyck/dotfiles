@@ -48,6 +48,17 @@ The kind should be `cover-letter`, `pr-$num`, `walkthrough`, etc.
 PR files should include the PR number in the filename.
 For example, a PR review might look like: `pr-6202-review-refactor-tests.md`.
 
+# Formatting Conventions
+
+- No hard line breaks inside a paragraph. Write each paragraph as a single unbroken line and let it wrap — GitHub renders manual newlines as `<br>`, which truncates the width and reads as generated. Blank lines between paragraphs are fine; this only applies to prose, not lists, tables, or code blocks.
+- Headers: `###` inside the PR template; `##` for larger PRs that step outside it.
+- Inline `code` for identifiers (methods, types, flags, files).
+- Fenced code blocks for snippets, always with a language (`go`, `sh`, `proto`, `yaml`, `mermaid`, `protobuf`, `diff`).
+- Tables are good for before/after measurements and flag references.
+- **Bold** used sparingly as an inline label (`**Before:**`, `**After:**`, `**Why this is safe:**`, `**Workflows**` / `**SAAs**` when contrasting two things). Never as scattered emphasis or decoration.
+- Diagrams (mermaid or ASCII) only when they illustrate something a paragraph can't.
+
+
 ## Opening the doc
 
 After writing the file, always open it in Obsidian using the deep link. The
