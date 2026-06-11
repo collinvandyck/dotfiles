@@ -4,7 +4,10 @@
 #window-height = 65
 cursor-style = "block"
 cursor-style-blink = true
+font-family = "Monaco"
+font-family = "Hack Nerd Font Mono"
 font-family = "FiraCode Nerd Font"
+
 font-size = 15
 font-thicken
 macos-option-as-alt = left
@@ -26,6 +29,7 @@ theme = Monokai Remastered
 theme = Monokai Pro
 theme = Monokai Pro Spectrum
 theme = "tokyonight"
+theme = "Aizen Dark"
 unfocused-split-opacity = 0.80
 window-position-x = 1000
 window-position-y = 500
