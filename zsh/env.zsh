@@ -24,6 +24,7 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export GOOGLE_WORKSPACE_CLI_KEYRING_BACKEND=file
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_SCROLL_SPEED=3
+export SEM_NO_TELEMETRY=1
 
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
