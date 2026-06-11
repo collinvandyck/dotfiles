@@ -28,6 +28,7 @@
       "Bash(playwright install:*)",
       "Bash(python3:*)",
       "Bash(sed)",
+      "Bash(sem:*)",
       "Bash(sort)",
       "Bash(sqlite3:*)",
       "Bash(tee)",
