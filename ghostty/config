@@ -56,6 +56,7 @@ keybind = "alt+p=scroll_page_lines:-3"
 keybind = "alt+n=scroll_page_lines:+3"
 keybind = "alt+shift+p=scroll_page_up"
 keybind = "alt+shift+n=scroll_page_down"
+keybind = "cmd+k=clear_screen"
 
 keybind = shift+enter=text:\x1b\r
 keybind = "ctrl+[=text:\x1b"
