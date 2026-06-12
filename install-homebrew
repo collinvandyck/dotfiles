@@ -184,6 +184,7 @@ brew install --quiet --formula \
 
 brew install --quiet --cask --force \
 	1password-cli \
+	agentsview \
 	alacritty \
 	anki \
 	caffeine \
