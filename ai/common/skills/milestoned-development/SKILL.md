@@ -12,9 +12,11 @@ it is your goal to do the following:
 
 1. Use the superpowers:brainstorm skill to think deeply about what the user wants and how this might be implemented. Examine the code to understand the project and any dependencies it may have that may be relevant. Ask the user for clarifying details if necessary and if there are multiple ways the design could be implemented, guide the user through the choices.
 
+   **Override the brainstorming skill's tail behavior:** use brainstorming ONLY for the design dialogue (exploring intent, clarifying questions, proposing approaches). Do NOT follow its instructions to write a spec into `docs/superpowers/specs/`, commit it, or invoke the `writing-plans` skill — none of those steps apply to this workflow. The single planning artifact is the milestone plan written in step 3. Do not write any spec or plan document into the repository.
+
 2. Create a detailed plan that is broken out by milestones. The goal is that each milestone should be achievable by a sub-agent that is small enough in scope that the sub-agent should be able to successfully complete it. 
 
-3. Use the write-generated-doc skill to write the plan and open it. At this point the user may decide to make changes to the final plan. Make changes as the user requests and update the plan to reflect the decisions.
+3. Use the write-generated-doc skill to write the milestone plan into the Obsidian `plans/` folder (`plan-<topic>.md`) and open it. Do NOT write the plan (or any spec) into the repository. At this point the user may decide to make changes to the final plan. Make changes as the user requests and update the plan to reflect the decisions.
 
 4. Once the plan is complete, wait for the user to give you the go-ahead to proceed with the plan.
 
