@@ -102,6 +102,7 @@
       }
     }
   },
+  "model": "claude-opus-4-8[1m]",
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
