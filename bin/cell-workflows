@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
+
+usage() {
+	>&2 echo -e "usage: $(basename "$0") --cell|-c [CELL]"
+}
+
+CELL=
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	--cell | -c)
+		CELL="$2"
+		shift 2
+		;;
+	esac
+done
+
+[[ -z "$CELL" ]] && usage
+
+: "${TEMPORAL_OPS_NAMESPACE:?set TEMPORAL_OPS_NAMESPACE in ~/.env}"
+open "https://cloud.temporal.io/namespaces/${TEMPORAL_OPS_NAMESPACE}/workflows?query=%60CellId%60%3D%22${CELL}%22"
