@@ -13,5 +13,4 @@
 if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 
 CELL="$1"
-: "${TEMPORAL_OPS_NAMESPACE:?set TEMPORAL_OPS_NAMESPACE in ~/.env}"
 open "https://cloud.temporal.io/namespaces/${TEMPORAL_OPS_NAMESPACE}/workflows?query=%60CellId%60%3D%22${CELL}%22"
