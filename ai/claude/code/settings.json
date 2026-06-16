@@ -22,6 +22,7 @@
       "Bash(ls)",
       "Bash(make:*)",
       "Bash(mise run:*)",
+      "Bash(obsidian:*)",
       "Bash(open:*)",
       "Bash(pip install:*)",
       "Bash(pip3 install:*)",
