@@ -45,7 +45,7 @@ vim.opt.wrap = false
 
 vim.opt.backup = false
 vim.opt.writebackup = true              -- write a backup copy
-vim.opt.backupcopy = 'no'               -- neovim will rename the file, write to a new file
+vim.opt.backupcopy = 'auto'             -- copy-in-place for symlinks/hardlinks, rename otherwise
 
 require("plugs")                        -- not reloadable
 vim.cmd("colorscheme tokyonight-night") -- set colorscheme after plugins loaded
