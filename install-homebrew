@@ -82,6 +82,7 @@ brew install --quiet --formula \
 	gemini-cli \
 	gh \
 	git-extras \
+	git-filter-repo \
 	git-machete \
 	glow \
 	gnuplot \
