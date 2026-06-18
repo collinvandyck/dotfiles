@@ -7,5 +7,8 @@ clpr() {
 	if [[ $1 =~ '([^/]+)/pull/([0-9]+)' ]]; then
 		title="lpr ${match[1]}/${match[2]}"
 	fi
-	claude --name "$title" --effort high -- "/local-pr-review $*"
+	(
+		cd ~/code/temporal
+		claude --name "$title" --effort high -- "/local-pr-review $*"
+	)
 }
