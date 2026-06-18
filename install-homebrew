@@ -71,6 +71,7 @@ brew install --quiet --formula \
 	detect-secrets \
 	devcontainer \
 	direnv \
+	duckdb \
 	dust \
 	exiftool \
 	eugene1g/safehouse/agent-safehouse \
