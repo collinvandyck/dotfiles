@@ -23,5 +23,17 @@ _ct_inject_context() {
 }
 
 _ct_filter_warnings() {
-	rg --line-buffered -v 'warning: no --duration provided|reusing cached approved access|submitted access request|access request status|waiting for aws credentials to propagate|aws credentials ready|\x1b'
+	grep --line-buffered . |
+		grep --line-buffered -E -v \
+			-e 'warning: no --duration provided' \
+			-e 'reusing cached approved access' \
+			-e 'submitted access request' \
+			-e 'access request status' \
+			-e 'waiting for aws credentials to propagate' \
+			-e 'WARNING: proto: extension number' \
+			-e 'previously from:' \
+			-e 'currently from:' \
+			-e 'See https://protobuf.dev/reference/go/faq#namespace-conflict' \
+			-e 'aws credentials ready' \
+		;
 }
