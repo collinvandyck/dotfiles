@@ -9,7 +9,7 @@ font-family = "Hack Nerd Font Mono"
 font-family = "FiraCode Nerd Font"
 
 font-size = 15
-font-thicken
+#font-thicken
 macos-option-as-alt = left
 macos-option-as-alt = true
 macos-non-native-fullscreen = true
