@@ -70,6 +70,14 @@ Tick the boxes that actually apply. Don't invent categories.
 
 For multi-commit PRs structured for commit-order review, say so explicitly.
 
+# Branch
+
+If the branch does not already exist for the work being done (e.g. the user has asked you to spike out a draft pr without having done work on a branch first) you should create a new branch in the format of `collin/[kebab-named-short-desc]`.
+
+For example, if asked to create a draft pr for increasing the timeout of a healthcheck, the name could be `collin/increase-healthcheck-timeout`.
+If the work has a known JIRA ticket, use `collin/cds-123-increase-healthcheck-timeout`.
+Avoid excessively long branch names. Err on the side of brevity without sacrificing meaning´.
+
 # Voice
 
 - First person. "I did X because Y."
