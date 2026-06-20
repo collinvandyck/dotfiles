@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Renders a session preview for `cr` from a session jsonl file passed as $1.
+# The jq program is a quoted heredoc, so the shell leaves $id/$cwd/etc. alone.
+jq -rs "$(cat <<'EOF'
+# Records are appended over time, so we take the LAST of each titled field.
+(map(.sessionId  // empty)              | last) as $id     |
+(map(.customTitle // empty)             | last) as $custom |
+(map(select(.type=="ai-title").aiTitle) | last) as $ai     |
+# launch dir = the recorded cwd whose '/'->'-' encoding matches the project
+# folder. a session may cd anywhere mid-run, so first/last cwd is unreliable;
+# only the launch dir is a valid 'claude --resume' target. fall back to first.
+(input_filename | split("/") | .[-2]) as $folder |
+((map(.cwd // empty) | map(select(gsub("/";"-") == $folder)) | first)
+ // (map(.cwd // empty) | first))        as $cwd   |
+(map(.gitBranch // empty)               | last) as $branch |
+([.[]|select(.type=="user")]     | length) as $nin  |
+([.[]|select(.type=="assistant")]| length) as $nout |
+([.[]|.timestamp // empty] | last) as $ts |
+(try (($ts|sub("\\.[0-9]+Z$";"Z")|fromdateiso8601)) catch null) as $t |
+(if $t == null then "?"
+ else ((now - $t)/60) | if . < 60 then "\(.|floor)m ago"
+   elif . < 1440 then "\((./60)|floor)h ago"
+   else "\((./1440)|floor)d ago" end end) as $age |
+# real prompts only: string content that isn't a command/caveat/tool wrapper
+[ .[] | select(.type=="user") | .message.content
+  | select(type=="string") | select(startswith("<")|not) ] as $prompts |
+($custom // $ai // "(untitled)"),
+"",
+"  dir     \($cwd)",
+"  branch  \($branch // "-")",
+"  id      \($id)",
+"  msgs    \($nin) in / \($nout) out",
+"  active  \($age)",
+"",
+"recent",
+($prompts[-5:] | reverse | .[] | "  › " + (gsub("\\s+";" ") | .[0:72]))
+EOF
+)" "$1"
