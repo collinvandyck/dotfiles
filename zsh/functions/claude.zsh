@@ -17,9 +17,10 @@ qq() {
 	# disableAllHooks: skip the superpowers SessionStart hook, which otherwise
 	# injects "you MUST invoke a skill" context and forces an extra skill/tool
 	# round-trip even for trivial prompts. CLAUDE.md/MCP/skills still load.
-	cl --settings '{"disableAllHooks":true}' --model haiku --effort low -p "$(
+	cl --settings '{"disableAllHooks":true}' --model haiku -p "$(
 		<<-EOF
 			The user has a request. When using fenced code blocks also include language identifiers.
+			The output will be flowed through a markdown formatter which does not support mermaid syntax, so avoid using mermaid diagrams.
 
 			User: "$*"
 		EOF
