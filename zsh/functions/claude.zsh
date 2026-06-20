@@ -61,9 +61,9 @@ cr() {
 			IFS=$'\t' read -r cwd id session <<< "$line"
 			printf '%s\t%s\t%s\t%s\n' "$f" "$cwd" "$id" "${(D)cwd}:$session"
 		done \
-		| fzf --delimiter='\t' --with-nth=4 --no-hscroll \
+		| fzf --ansi --delimiter='\t' --with-nth=4 --no-hscroll \
 		      --height=80% --layout=reverse --border --prompt='cr › ' \
-		      --preview 'cr-preview {1}' \
+		      --preview 'cr-preview-glow {1}' \
 		      --preview-window='right,55%,wrap'
 	) || return
 	local f cwd id rest
