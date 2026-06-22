@@ -118,6 +118,7 @@ brew install --quiet --formula \
 	luajit-openresty \
 	luarocks \
 	lxc \
+	mdfried \
 	minikube \
 	mingw-w64 \
 	mise \
