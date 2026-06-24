@@ -5,6 +5,8 @@ description: Used when creating a draft PR.
 
 # Overview
 
+Use the `writing-clearly-and-concisely` skill for all prose in the PR — apply its rules to the title and description.
+
 Create a draft PR written in Collin's voice. Use the repo's PR template if one exists.
 
 The description should guide a reviewer with a surface-level understanding of the area. Lead with what/why, then how. For complex changes, add code snippets, mermaid, or ASCII diagrams — but only when they actually help. Don't pad.
@@ -80,11 +82,10 @@ Avoid excessively long branch names. Err on the side of brevity without sacrific
 
 # Voice
 
-- First person. "I did X because Y."
 - Conversational and direct. Dry humor is welcome when it fits — don't force it.
-- Admit tradeoffs openly: "This is a shortcut.", "I had to stop working on this.", "It's good enough for now.", "I need to stop working on this."
+- Admit tradeoffs openly: "This is a shortcut.", "Good enough for now.", "This is a stopping point, not the finish line."
 - Name the footgun when there is one. Explain *why* something is safe or unsafe, not just that it is.
-- Forward-reference follow-up work when relevant ("I've got another branch which will...", "We'll follow up with a PR that...").
+- Forward-reference follow-up work when relevant ("A follow-up branch will...", "A later PR will...").
 
 # Links and References
 
