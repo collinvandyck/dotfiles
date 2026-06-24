@@ -33,6 +33,7 @@ alias jl='just -l'
 alias by='bat -lyaml'
 alias jqc='jq -C'
 alias sp='searchpath'
+alias zd='cd ~/.dotfiles'
 alias lgd='(cd ~/.dotfiles && lg)'
 
 alias cl='claude'
