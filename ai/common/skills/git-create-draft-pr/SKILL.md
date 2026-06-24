@@ -5,9 +5,7 @@ description: Used when creating a draft PR.
 
 # Overview
 
-Use the `writing-clearly-and-concisely` skill for all prose in the PR — apply its rules to the title and description.
-
-Create a draft PR written in Collin's voice. Use the repo's PR template if one exists.
+Create a draft PR in Collin's tone — direct, dry, honest about tradeoffs (see Voice below) — with the clarity and concision shaped by the `writing-clearly-and-concisely` skill. Tone comes from Collin; the mechanics come from the skill. Apply it to both the title and the description. Use the repo's PR template if one exists.
 
 The description should guide a reviewer with a surface-level understanding of the area. Lead with what/why, then how. For complex changes, add code snippets, mermaid, or ASCII diagrams — but only when they actually help. Don't pad.
 
