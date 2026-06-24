@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # only inject context that match this pattern
 CT_CONTEXT_SAFE_PATTERN="collin"
 
@@ -30,10 +32,20 @@ _ct_filter_warnings() {
 			-e 'submitted access request' \
 			-e 'access request status' \
 			-e 'waiting for aws credentials to propagate' \
-			-e 'WARNING: proto: extension number' \
 			-e 'previously from:' \
 			-e 'currently from:' \
 			-e 'See https://protobuf.dev/reference/go/faq#namespace-conflict' \
 			-e 'aws credentials ready' \
+			-e 'Attempting to automatically open the SSO authorization page' \
+			-e 'If the browser does not open, open the following URL:' \
+			-e 'https://oidc.us-west-2.amazonaws.com/authorize' \
+			-e 'WARNING' \
+			-e 'Successfully logged in' \
+			-e 'Verbose logs at' \
+			-e 'Warning: Failed to update cloud-tools' \
+			-e 'Continuing with current version...' \
+			-e 'Warning: Failed to update runbooks repository' \
 		;
 }
+
+ctt "$@"
