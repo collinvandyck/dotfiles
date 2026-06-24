@@ -60,6 +60,7 @@
       "~/go/pkg/mod"
     ]
   },
+  "model": "claude-opus-4-8[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
@@ -69,7 +70,6 @@
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
-    "orient@learning-opportunities": true,
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
@@ -78,32 +78,13 @@
     "frontend-design@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
-    "learning-opportunities": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
-      }
-    },
-    "plannotator": {
-      "source": {
-        "source": "github",
-        "repo": "backnotprop/plannotator"
-      }
-    },
     "temporal-marketplace": {
       "source": {
         "source": "github",
         "repo": "temporalio/claude-temporal-plugin"
       }
-    },
-    "context-mode": {
-      "source": {
-        "source": "github",
-        "repo": "mksglu/context-mode"
-      }
     }
   },
-  "model": "claude-opus-4-8[1m]",
   "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
