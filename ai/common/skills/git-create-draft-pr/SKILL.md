@@ -91,7 +91,20 @@ Include these freely when they exist:
 
 - Jira: `https://temporalio.atlassian.net/browse/CDS-XXXX` (often right under "What changed?" or as `Fixes <url>`)
 - Slack: `[slack discussion](https://temporaltechnologies.slack.com/archives/...)` or `see: [slack discussion](...)` or `nb: [slack discussion](...)`
-- Related PRs: bare `#1234` refs, often in a `### Related PRs:` list for stacks
+- Related PRs: a bare `#1234` ref is fine **only** for the same repo the PR lives in — GitHub autolinks it correctly there. For **any** cross-repo PR or issue, use the full URL: `https://github.com/<owner>/<repo>/pull/<N>` (or `/issues/<N>`). The `owner/repo#N` shorthand does **not** reliably resolve across repos and can misrender — it may send the reader to the wrong repo or even turn into a bogus Jira link. Readable link text over the full URL is fine.
+
+  A `### Related PRs:` list for a stack might look like:
+
+  ```
+  ### Related PRs:
+  - #1233 (same repo, bare ref is fine)
+  - [saas-infra-plane#3962](https://github.com/temporalio/saas-infra-plane/pull/3962)
+  ```
+
+  **Cross-repo, before/after:**
+
+  - Broken: `temporalio/saas-infra-plane#3962` — misresolves to the wrong repo, can become `https://temporalio.atlassian.net/browse/INFRA-plane`.
+  - Correct: `[saas-infra-plane#3962](https://github.com/temporalio/saas-infra-plane/pull/3962)`
 
 # Formatting Conventions
 
