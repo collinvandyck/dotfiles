@@ -18,8 +18,7 @@ version tool:
     @./bin/dotfiles-version {{tool}}
 
 test:
-    bats goland/apply-vmoptions.bats
-    bats bin/paragraphs.bats
+    bats **/*.bats
     python3 bin/pipefmt_test.py
 
 lint-shellcheck:

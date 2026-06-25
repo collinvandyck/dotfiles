@@ -15,6 +15,11 @@ ctt() {
 	kubectl | k9s) _ct_inject_context "${args[1]}" ;;
 	esac
 
+	# inject a default duration for these commands (kc resolves to kubectl above)
+	case "${args[1]}" in
+	kubectl | access) _ct_inject_duration ;;
+	esac
+
 	omni "${args[@]}" 2> >(_ct_filter_warnings >&2)
 }
 
@@ -22,6 +27,13 @@ _ct_inject_context() {
 	[[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
 	[[ " ${args[*]} " == *" --context "* ]] && return
 	args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
+}
+
+_ct_inject_duration() {
+	# don't override an explicitly provided duration
+	[[ " ${args[*]} " == *" -d "* ]] && return
+	[[ " ${args[*]} " == *" --duration "* ]] && return
+	args=("${args[1]}" -d 8h "${args[@]:1}")
 }
 
 _ct_filter_warnings() {
