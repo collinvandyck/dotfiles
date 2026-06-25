@@ -15,7 +15,7 @@ ctt() {
 	kubectl | k9s) _ct_inject_context "${args[1]}" ;;
 	esac
 
-	ct "${args[@]}" 2> >(_ct_filter_warnings >&2)
+	omni "${args[@]}" 2> >(_ct_filter_warnings >&2)
 }
 
 _ct_inject_context() {
