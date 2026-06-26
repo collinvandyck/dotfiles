@@ -26,6 +26,10 @@ function zshaddhistory() {
     return 0
 }
 
+if [[ -d ~/.docker/completions/ ]]; then
+	fpath=(~/.docker/completions $fpath)
+fi
+
 for f in ~/.dotfiles/zsh/*.zsh; do source "$f"; done
 
 # Initialize completion system (required for compdef used by many tools)
