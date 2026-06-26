@@ -7,7 +7,8 @@ allowed-tools: Bash, Read, WebFetch, Skill(superpowers:*)
 
 # Overview
 
-Use the superpowers:code-reviewer skill to perform a code review.
+Your job is to perform a local view of this branch's changes.
+Use the superpowers:code-reviewer skill, if available.
 
 Get a sense of the commits via:
 

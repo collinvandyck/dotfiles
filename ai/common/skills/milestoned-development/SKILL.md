@@ -10,9 +10,12 @@ disable-model-invocation: true
 The user has a specific project they want executed. The user will give you details about the project and then
 it is your goal to do the following:
 
-1. Use the superpowers:brainstorm skill to think deeply about what the user wants and how this might be implemented. Examine the code to understand the project and any dependencies it may have that may be relevant. Ask the user for clarifying details if necessary and if there are multiple ways the design could be implemented, guide the user through the choices.
+1. Think deeply about what the user wants and how this might be implemented. Examine the code to understand the project and any dependencies it may have that may be relevant. Ask the user for clarifying details if necessary and if there are multiple ways the design could be implemented, guide the user through the choices.
 
+   <superpowers>
+   If the superpowers:brainstorm skill is available, use that.
    **Override the brainstorming skill's tail behavior:** use brainstorming ONLY for the design dialogue (exploring intent, clarifying questions, proposing approaches). Do NOT follow its instructions to write a spec into `docs/superpowers/specs/`, commit it, or invoke the `writing-plans` skill — none of those steps apply to this workflow. The single planning artifact is the milestone plan written in step 3. Do not write any spec or plan document into the repository.
+   </superpowers>
 
 2. Create a detailed plan that is broken out by milestones. The goal is that each milestone should be achievable by a sub-agent that is small enough in scope that the sub-agent should be able to successfully complete it. 
 
@@ -30,7 +33,7 @@ it is your goal to do the following:
  
 - If the project involves debugging an issue, the milestones should reflect that. For example, if there is an issue for which the cause is unclear, consider adding milestones that help making that more clear, either through adding unit tests, debug logging, and so on. 
 
-- Bias to using the superpowers skill set to perform the brainstorming and planning work.
+- Bias to using the superpowers skill set, if available, to perform the brainstorming and planning work.
 
 - **Important**: after each milestone is verified, commit the changes and ensure the working tree is clean.
 
