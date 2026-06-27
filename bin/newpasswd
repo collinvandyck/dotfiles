@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+
+# No pipefail: the random pipelines rely on `head` closing the pipe and
+# killing `tr` via SIGPIPE, which is the expected, non-error behavior.
+set -eu
+
+usage() {
+	>&2 echo -e "usage: $(basename "$0") [-l, --length len] [-s, --symbols [n]] [-d, --digits [n]]"
+	exit 1
+}
+
+# A bare flag (or no flag) means "at least 1": the class stays in the fill pool
+# so more may appear. An explicit count means "exactly N": the class is kept out
+# of the fill pool so the count is precise. 0 likewise means exactly none.
+LENGTH=32
+SYMBOLS=1
+DIGITS=1
+SYMBOLS_EXACT=0
+DIGITS_EXACT=0
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	-l | --length)
+		LENGTH="$2"
+		shift 2
+		;;
+	-s | --symbols)
+		if [[ "${2:-}" =~ ^[0-9]+$ ]]; then
+			SYMBOLS="$2"
+			SYMBOLS_EXACT=1
+			shift 2
+		else
+			SYMBOLS=1
+			shift
+		fi
+		;;
+	-d | --digits)
+		if [[ "${2:-}" =~ ^[0-9]+$ ]]; then
+			DIGITS="$2"
+			DIGITS_EXACT=1
+			shift 2
+		else
+			DIGITS=1
+			shift
+		fi
+		;;
+	*)
+		usage
+		;;
+	esac
+done
+
+# Clamp the guaranteed counts so they fit within LENGTH (symbols win ties).
+if ((SYMBOLS > LENGTH)); then SYMBOLS="$LENGTH"; fi
+if ((DIGITS > LENGTH - SYMBOLS)); then DIGITS=$((LENGTH - SYMBOLS)); fi
+
+LETTERS='A-Za-z'
+SYMSET='!@#$%^&*()'
+DIGSET='0-9'
+
+# A class joins the fill pool only in "at least" mode; an exact count keeps it
+# out so the guaranteed draw is the whole story.
+POOL="$LETTERS"
+if ((SYMBOLS > 0)) && ((SYMBOLS_EXACT == 0)); then POOL+="$SYMSET"; fi
+if ((DIGITS > 0)) && ((DIGITS_EXACT == 0)); then POOL+="$DIGSET"; fi
+
+REST=$((LENGTH - SYMBOLS - DIGITS))
+
+# Draw COUNT chars from CHARSET (no-op when COUNT <= 0).
+draw() {
+	local charset="$1" count="$2"
+	((count > 0)) || return 0
+	LC_ALL=C tr -dc "$charset" < /dev/urandom | head -c "$count"
+}
+
+# Emit the guaranteed chars plus the random fill, then shuffle so the forced
+# symbols/digits aren't clustered at the front.
+{
+	draw "$SYMSET" "$SYMBOLS"
+	draw "$DIGSET" "$DIGITS"
+	draw "$POOL" "$REST"
+} | fold -w1 | shuf --random-source=/dev/urandom | tr -d '\n'
