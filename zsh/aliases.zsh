@@ -1,6 +1,7 @@
 # temporal
 alias temp='cd ~/code/temporal'
 alias sa='cd ~/code/temporal/saas-temporal'
+alias oss='cd ~/code/temporal/temporal'
 alias cds='sa && cd ./cds'
 alias awslocal='uvx --from awscli-local awslocal'
 # misc
