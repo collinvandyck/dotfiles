@@ -1,11 +1,14 @@
 ---
 name: git-create-draft-pr
 description: Used when creating a draft PR.
+allowed-tools: Bash, Read, WebFetch, Skill(write-generated-doc)
 ---
 
 # Overview
 
 Create a draft PR in Collin's tone — direct, dry, honest about tradeoffs (see Voice below) — with the clarity and concision shaped by the `writing-clearly-and-concisely` skill. Tone comes from Collin; the mechanics come from the skill. Apply it to both the title and the description. Use the repo's PR template if one exists.
+
+**IMPORTANT** you must use the writing-clearly-and-concisely skill.
 
 The description should guide a reviewer with a surface-level understanding of the area. Lead with what/why, then how. For complex changes, add code snippets, mermaid, or ASCII diagrams — but only when they actually help. Don't pad.
 
