@@ -58,7 +58,7 @@
     staged = diff --cached
     w = whatchanged
     sw = switch
-    put = "!git rev-parse @{u} &>/dev/null && git push || git push -u origin @"
+    put = push
 
     # typos
     rebsae = rebase
@@ -71,6 +71,7 @@
 
 [branch]
     sort = -committerdate
+    autoSetupMerge = false
 
 [tag]
     sort = version:refname
@@ -84,7 +85,7 @@
     all = true
 
 [push]
-    default = upstream
+    default = simple
     autoSetupRemote = true
 
 [grep]
