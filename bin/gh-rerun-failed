@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+# re-runs the failed jobs for the current branch's latest gh run. future improvements would include polling the overall
+# workflow until it completes and then re-running the failed jobs, up to N (3) times.
+
+usage() {
+	echo -e "usage: $(basename "$0") [--dry-run]" >&2
+	exit 1
+}
+
+DRY_RUN=
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		--dry-run)
+			DRY_RUN=1
+			shift
+			;;
+		**)
+			usage
+			;;
+	esac
+done
+
+rerun() {
+	local runs=$1
+	if [[ -z "$runs" ]]; then
+		echo "no failed runs for $sha" >&2
+		return 0
+	fi
+	if [[ -n "$DRY_RUN" ]]; then
+		echo "$runs" | xargs -I{} echo gh run rerun {} --failed
+	else
+		echo "$runs" | xargs -I{} gh run rerun {} --failed
+	fi
+}
+
+sha=$(git rev-parse HEAD)
+runs=$(gh run list -b "$(git branch --show-current)" -L 50 \
+	--json databaseId,headSha,conclusion \
+	-q ".[] | select(.headSha==\"$sha\" and .conclusion==\"failure\") | .databaseId" )
+
+rerun "$runs"
