@@ -60,7 +60,7 @@
       "~/go/pkg/mod"
     ]
   },
-  "model": "claude-opus-4-8[1m]",
+  "model": "claude-sonnet-5[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
