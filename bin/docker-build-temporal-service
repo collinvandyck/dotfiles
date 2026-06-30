@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+usage() {
+	echo -e "usage: $(basename "$0") [--dry-run] [--platform [linux/arm64,linux/amd64]]" >&2
+	exit 1
+}
+
+DRY_RUN=
+SHA=$(git rev-parse HEAD)
+PLATFORM=linux/arm64
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		--dry-run)
+			DRY_RUN=1
+			shift
+			;;
+		--platform)
+			PLATFORM="$2"
+			shift 2
+			;;
+		**)
+			usage
+			;;
+	esac
+done
+
+eval $(ssh-agent) &>/dev/null
+for k in ~/.ssh/*; do
+	[[ -f "$k" ]] || continue
+	if grep 'PRIVATE KEY' < "$k" &>/dev/null; then
+		ssh-add "$k"
+	fi
+done
+
+runit() {
+	echo "$@"
+	if [[ -n "$DRY_RUN" ]]; then
+		return
+	else
+		"$@"
+	fi
+}
+
+SHA="${SHA[1,9]}-collin"
+
+runit make docker-build/temporal-service "PLATFORM=$PLATFORM" "DOCKER_IMAGE_TAG=$SHA"
+runit make docker-push/temporal-service  "DOCKER_IMAGE_TAG=$SHA"
