@@ -4,36 +4,97 @@
 CT_CONTEXT_SAFE_PATTERN="collin"
 
 ctt() {
-	# poor man's aliases (eg kc -> kubectl)
 	local -a args=("${@}")
-	case "$1" in
-	kc) args[1]=kubectl ;;
+	local dry_run=
+
+	# pull out our own --dry-run flag (anywhere in the args) before dispatching
+	_ct_extract_dry_run
+
+	# handle each command individually: expand poor man's aliases (eg kc ->
+	# kubectl) and apply that command's context/duration injections.
+	case "${args[1]}" in
+	kc | kubectl)
+		args[1]=kubectl
+		_ct_inject_context "${args[1]}"
+		_ct_inject_duration
+		_ct_inject_namespace
+		;;
+	k9s)
+		_ct_inject_context "${args[1]}"
+		_ct_inject_duration
+		_ct_inject_namespace
+		_ct_inject_k9s_write
+		;;
+	admintools)
+		_ct_inject_context "${args[1]}"
+		;;
+	access)
+		_ct_inject_duration
+		;;
 	esac
 
-	# inject context for these commands
-	case "${args[1]}" in
-	kubectl | k9s) _ct_inject_context "${args[1]}" ;;
-	esac
-
-	# inject a default duration for these commands (kc resolves to kubectl above)
-	case "${args[1]}" in
-	kubectl | access) _ct_inject_duration ;;
-	esac
+	# with --dry-run, print the resolved command and stop short of running it
+	if [[ -n "$dry_run" ]]; then
+		echo "omni ${args[*]}" >&2
+		return
+	fi
 
 	omni "${args[@]}" 2> >(_ct_filter_warnings >&2)
+}
+
+# strips --dry-run from args, setting dry_run=1 when present
+_ct_extract_dry_run() {
+	local -a kept=()
+	local arg
+	for arg in "${args[@]}"; do
+		case "$arg" in
+		--dry-run) dry_run=1 ;;
+		*) kept+=("$arg") ;;
+		esac
+	done
+	args=("${kept[@]}")
 }
 
 _ct_inject_context() {
 	[[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
 	[[ " ${args[*]} " == *" --context "* ]] && return
+	[[ " ${args[*]} " == *" -c "* ]] && return
 	args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
 }
 
 _ct_inject_duration() {
-	# don't override an explicitly provided duration
 	[[ " ${args[*]} " == *" -d "* ]] && return
 	[[ " ${args[*]} " == *" --duration "* ]] && return
 	args=("${args[1]}" -d 8h "${args[@]:1}")
+}
+
+_ct_inject_namespace() {
+	[[ " ${args[*]} " == *" -n "* ]] && return
+	[[ " ${args[*]} " == *" --namespace "* ]] && return
+	args=("${args[1]}" -n temporal "${args[@]:1}")
+}
+
+_ct_inject_k9s_write() {
+	# only enable writes when the effective context is our own cell
+	# shellcheck disable=SC2119  # zsh: _ct_context_value reads $args, not positional args
+	[[ "$(_ct_context_value)" == "$CT_CONTEXT" ]] || return
+	[[ " ${args[*]} " == *" --write "* ]] && return
+	args=("${args[1]}" --write "${args[@]:1}")
+}
+
+# echoes the context currently set in args (via -c or --context), if any
+# shellcheck disable=SC2120  # zsh: $#args is the array length, not bash's $# (positional count)
+_ct_context_value() {
+	local -i i
+	for ((i = 2; i <= $#args; i++)); do
+		case "${args[i]}" in
+		-c | --context)
+			echo "${args[i + 1]}"
+			return
+			;;
+		*) ;;
+		esac
+	done
 }
 
 _ct_filter_warnings() {
