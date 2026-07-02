@@ -65,19 +65,24 @@ After writing the file, always open it in Obsidian using the deep link. The
 vault is named `notes` and the `file` parameter is the path relative to the
 vault root — drop the `~/code/notes/` prefix.
 
+Use `open -g` so Obsidian navigates to the note in the background without
+stealing focus from the user's current window:
+
 ```bash
-open "obsidian://open?vault=notes&file=ai/gen/<type>/<filename-without-md>"
+open -g "obsidian://open?vault=notes&file=ai/gen/<type>/<filename-without-md>"
 ```
 
 Example: a file written to `~/code/notes/ai/gen/walkthroughs/walkthrough-foo.md`
 is opened with:
 
 ```bash
-open "obsidian://open?vault=notes&file=ai/gen/walkthroughs/walkthrough-foo"
+open -g "obsidian://open?vault=notes&file=ai/gen/walkthroughs/walkthrough-foo"
 ```
 
 The `.md` extension can be omitted — Obsidian resolves it. Always wrap the URL
-in double quotes so the shell doesn't misinterpret `&`.
+in double quotes so the shell doesn't misinterpret `&`. The `-g` flag keeps
+Obsidian in the background (it's advisory — a cold start may still foreground
+once, but an already-running Obsidian stays put).
 
 # Context
 
