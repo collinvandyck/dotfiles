@@ -18,7 +18,11 @@ CLAUDE=~/.local/bin/claude
 args=(--ide)
 mixins=(~/code/temporal)
 
-if [[ $# == 0 ]] || ! [[ "$1" =~ ^(agents|auth|auto-mode|doctor|install|mcp|plugin|plugins|project|setup-token|ultrareview|update|upgrade|-h|--help)$ ]]; then
+if [[ $# -gt 0 ]] && [[ "$1" =~ ^(agents|auth|auto-mode|daemon|doctor|install|mcp|plugin|plugins|project|setup-token|ultrareview|update|upgrade|-h|--help)$ ]]; then
+	exec $CLAUDE "$@"
+fi
+
+if [[ $# == 0 ]] || ! [[ "$1" =~ ^(agents|auth|auto-mode|daemon|doctor|install|mcp|plugin|plugins|project|setup-token|ultrareview|update|upgrade|-h|--help)$ ]]; then
 	for mixin in "${mixins[@]}"; do
 		if [[ -d "$mixin" ]]; then
 			args+=("--add-dir" "$mixin")
