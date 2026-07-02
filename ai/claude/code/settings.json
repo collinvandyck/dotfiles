@@ -60,7 +60,6 @@
       "~/go/pkg/mod"
     ]
   },
-  "model": "claude-sonnet-5[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
