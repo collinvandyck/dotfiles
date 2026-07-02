@@ -73,7 +73,6 @@
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
-    "temporal-developer@temporal-marketplace": true,
     "mcp-server-dev@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true
   },
