@@ -4,9 +4,10 @@ alias sa='cd ~/code/temporal/saas-temporal'
 alias oss='cd ~/code/temporal/temporal'
 alias cds='sa && cd ./cds'
 alias awslocal='uvx --from awscli-local awslocal'
-# misc
 
+# misc
 command -v batcat &>/dev/null && alias bat='batcat'
+[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 
 alias tma=tmuxinator
 alias copy-ssh-key='cat ~/.ssh/id_rsa.pub | pbcopy'
@@ -15,7 +16,6 @@ alias xx='ssh -t 5xx.engineer .dotfiles/bin/tm'
 alias ut='ssh -t ubuntu-test tm'
 alias appsup='cd ~/Library/Application\ Support'
 alias da='direnv allow'
-#alias cat=bat
 alias be='bundle exec'
 alias front='cd "$(zoxide query brain-app)" && td'
 alias back='cd "$(zoxide query brain-backend)" && td'
@@ -36,14 +36,10 @@ alias jqc='jq -C'
 alias sp='searchpath'
 alias zd='cd ~/.dotfiles'
 alias lgd='(cd ~/.dotfiles && lg)'
-
+alias ff='fastfetch'
 alias cl='claude'
 alias clc='cl --continue'
 alias clr='cl --resume'
-
-[ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
-
-# vim
 alias vi=nvim
 alias vim=nvim
 
