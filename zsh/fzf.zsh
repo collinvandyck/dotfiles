@@ -62,7 +62,7 @@ FZF_THEME_TOKYONIGHT_MOON=" \
 --color=info:#82aaff,prompt:#86e1fc,pointer:#86e1fc \
 --color=marker:#c3e88d,spinner:#c3e88d,header:#c3e88d"
 
-FZF_THEME=$FZF_THEME_TOKYONIGHT_MOON
+FZF_THEME=
 export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS} ${FZF_THEME}"
 
 # Advanced customization of fzf options via _fzf_comprun function
