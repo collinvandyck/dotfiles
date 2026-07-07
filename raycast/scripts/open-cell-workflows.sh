@@ -13,5 +13,10 @@
 if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 
 CELL="$1"
+
+# starts-with control plane workflows
 open "https://cloud.temporal.io/namespaces/${TEMPORAL_CP_NAMESPACE}/workflows?query=%60WorkflowId%60+STARTS_WITH+%22cell-entity-${CELL}%22"
-open "https://cloud.temporal.io/namespaces/${TEMPORAL_OPS_NAMESPACE}/workflows?query=%60CellId%60%3D%22${CELL}%22"
+open "https://cloud.temporal.io/namespaces/${TEMPORAL_TEST_CP_NAMESPACE}/workflows?query=%60WorkflowId%60+STARTS_WITH+%22cell-entity-${CELL}%22"
+
+# infra workflows tagged with cell id
+open "https://cloud.temporal.io/namespaces/${TEMPORAL_INFRA_NAMESPACE}/workflows?query=%60CellId%60%3D%22${CELL}%22"
