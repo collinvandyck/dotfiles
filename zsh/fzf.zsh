@@ -10,7 +10,7 @@ export FZF_TMUX_OPTS="-p90%,90%"
 export FZF_DEFAULT_COMMAND='rg --files --follow --hidden -g "!.git"'
 export FZF_DEFAULT_OPTS="\
 	--reverse \
-	--border rounded \
+	--border none \
 	--pointer ✨ \
 	--marker » \
 	--bind 'ctrl-p:up'  \
