@@ -72,3 +72,17 @@ teardown() {
 	[ "$status" -eq 0 ]
 	[ -f "$STUB_DIR/ran" ]
 }
+
+@test "--dry-run prints the resolved command but does not run omni" {
+	run "$BATS_TEST_DIRNAME/create-cell" --cell mycell --template v5-gcp-small --dry-run
+	[ "$status" -eq 0 ]
+	[[ "$output" == *"omni scaffold environment create"* ]]
+	[[ "$output" == *"--cloud-provider gcp"* ]]
+	[ ! -f "$STUB_DIR/ran" ]
+}
+
+@test "-n is an alias for --dry-run" {
+	run "$BATS_TEST_DIRNAME/create-cell" --cell mycell --template v5-gcp-small -n
+	[ "$status" -eq 0 ]
+	[ ! -f "$STUB_DIR/ran" ]
+}

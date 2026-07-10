@@ -4,9 +4,10 @@ set -euo pipefail
 CELL="s-cds-collin-$(date +%y%m%d)"
 TEMPLATE=v5-aws-small
 CLOUD_PROVIDER=""
+DRY_RUN=""
 
 usage() {
-	echo -e "usage: $(basename "$0") --cell [CELL] --template [TEMPLATE] [--cloud-provider aws|gcp]" >&2
+	echo -e "usage: $(basename "$0") --cell [CELL] --template [TEMPLATE] [--cloud-provider aws|gcp] [--dry-run]" >&2
 	exit 1
 }
 
@@ -17,6 +18,7 @@ die() {
 
 run() {
 	echo "$@"
+	[[ -n "$DRY_RUN" ]] && return 0
 	"$@"
 }
 
@@ -44,6 +46,10 @@ while [[ $# -gt 0 ]]; do
 		;;
 	--cloud-provider=*)
 		CLOUD_PROVIDER="${1#*=}"
+		shift
+		;;
+	--dry-run | -n)
+		DRY_RUN=1
 		shift
 		;;
 	**)
