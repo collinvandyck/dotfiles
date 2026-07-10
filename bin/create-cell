@@ -3,9 +3,10 @@ set -euo pipefail
 
 CELL="s-cds-collin-$(date +%y%m%d)"
 TEMPLATE=v5-aws-small
+CLOUD_PROVIDER=""
 
 usage() {
-	echo -e "usage: $(basename "$0") --cell [CELL] --template [TEMPLATE]" >&2
+	echo -e "usage: $(basename "$0") --cell [CELL] --template [TEMPLATE] [--cloud-provider aws|gcp]" >&2
 	exit 1
 }
 
@@ -37,6 +38,14 @@ while [[ $# -gt 0 ]]; do
 		TEMPLATE="${1#*=}"
 		shift
 		;;
+	--cloud-provider | -p)
+		CLOUD_PROVIDER=$2
+		shift 2
+		;;
+	--cloud-provider=*)
+		CLOUD_PROVIDER="${1#*=}"
+		shift
+		;;
 	**)
 		usage
 		;;
@@ -46,4 +55,18 @@ done
 [[ -z "$CELL" ]] && die "cell required"
 [[ -z "$TEMPLATE" ]] && die "template required"
 
-run omni scaffold environment create --cell-id "$CELL" --benchgo-enabled --namespace "$CELL-marathon" --yaml "$TEMPLATE"
+# omni's cloud provider defaults to aws regardless of the template name, so a
+# gcp template lands on aws infra unless we say otherwise. Infer the provider
+# from the template (v5-<provider>-*) when it wasn't set explicitly.
+if [[ -z "$CLOUD_PROVIDER" ]]; then
+	case "$TEMPLATE" in
+	*gcp*) CLOUD_PROVIDER=gcp ;;
+	*aws*) CLOUD_PROVIDER=aws ;;
+	*) ;;
+	esac
+fi
+
+args=(--cell-id "$CELL" --benchgo-enabled --namespace "$CELL-marathon" --yaml "$TEMPLATE")
+[[ -n "$CLOUD_PROVIDER" ]] && args+=(--cloud-provider "$CLOUD_PROVIDER")
+
+run omni scaffold environment create "${args[@]}"
