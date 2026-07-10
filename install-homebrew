@@ -44,8 +44,8 @@ for pkg in openssh microsoft-remote-desktop dog logi-options-plus logi-options+ 
 	fi
 done
 
-brew upgrade --quiet
-brew install --quiet --formula \
+brew upgrade --quiet --yes
+brew install --quiet --yes --formula \
 	act \
 	aichat \
 	asciinema \
@@ -186,7 +186,7 @@ brew install --quiet --formula \
 	zoxide \
 	;
 
-brew install --quiet --cask --force \
+brew install --quiet --yes --cask --force \
 	1password-cli \
 	agentsview \
 	alacritty \
@@ -223,7 +223,7 @@ brew install --quiet --cask --force \
 
 # only install jetbrains toolbox once.
 if ! brew list | grep jetbrains-toolbox &>/dev/null; then
-	brew install --quiet --cask --force jetbrains-toolbox
+	brew install --quiet --yes --cask --force jetbrains-toolbox
 fi
 
 brew autoremove --quiet
