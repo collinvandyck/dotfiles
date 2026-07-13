@@ -3,7 +3,8 @@
 # Hybrid: a compact metadata header, then the last 50 filtered messages (user
 # prompts + assistant replies) in reverse-chron order, rendered as markdown.
 # thinking/tool blocks dropped. Width from fzf's $FZF_PREVIEW_COLUMNS.
-jq -rs "$(cat <<'EOF'
+jq -rs "$(
+	cat <<'EOF'
 (map(.sessionId  // empty)              | last) as $id     |
 (map(.customTitle // empty)             | last) as $custom |
 (map(select(.type=="ai-title").aiTitle) | last) as $ai     |

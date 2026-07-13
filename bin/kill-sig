@@ -4,6 +4,5 @@
 
 pid=$1
 kill -l | tr ' ' '\n' | fzf \
-    --ansi \
+	--ansi \
 	--exact | xargs -I SIG kill -SIG $1
-

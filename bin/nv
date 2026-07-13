@@ -7,12 +7,10 @@ set -eopipefail
 
 PIPE=~/.cache/nvim/server.pipe
 
-if [ ! -e $PIPE ]; then 
+if [ ! -e $PIPE ]; then
 	echo "pipe does not exist"
 	mkdir -p $(dirname $PIPE)
 	exec nvim --listen $PIPE $@
-else 
+else
 	exec nvim --server $PIPE $@
 fi
-
-

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 
+#
 # A wrapper around envsubst that reads env variables from the .env.dist and .env
 # override file.
 
@@ -16,17 +16,15 @@ usage() {
 infile=""
 outfile=""
 case $# in
-	0) 
-		;;
-	2)
-		infile=$1
-		outfile=$2
-		;;
-	*)
-		usage
-		;;
+0) ;;
+2)
+	infile=$1
+	outfile=$2
+	;;
+*)
+	usage
+	;;
 esac
-
 
 # source and export the specified env file
 export_file() {
@@ -45,9 +43,8 @@ if [ -n $infile ]; then
 		rm $outfile
 	fi
 	tmp=$(mktemp)
-	envsubst < $infile > $tmp
+	envsubst <$infile >$tmp
 	mv $tmp $outfile
 else
 	exec envsubst
 fi
-

@@ -13,4 +13,3 @@
 # @raycast.author Collin
 
 echo "Hello World!"
-

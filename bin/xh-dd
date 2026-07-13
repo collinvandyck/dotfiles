@@ -3,6 +3,6 @@ set -euo pipefail
 
 # makes requests to the DD api
 
- xh "$@" \
-	 "DD-API-KEY: $(op read "op://Engineering Integrations/Datadog/Api Key")" \
-	 "DD-APPLICATION-KEY: $(op read "op://Engineering Integrations/Datadog/App Key")"
+xh "$@" \
+	"DD-API-KEY: $(op read "op://Engineering Integrations/Datadog/Api Key")" \
+	"DD-APPLICATION-KEY: $(op read "op://Engineering Integrations/Datadog/App Key")"

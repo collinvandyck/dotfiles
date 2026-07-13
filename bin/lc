@@ -5,13 +5,16 @@ set -euo pipefail
 
 KEY=~/.ssh/lima
 
-bail() { echo "$@" >&2; exit 1; }
+bail() {
+	echo "$@" >&2
+	exit 1
+}
 
 usage() {
 	cat <<-EOF
-	usage: $(basename "$0") <command> [args]
+		usage: $(basename "$0") <command> [args]
 
-	commands:
+		commands:
 	EOF
 	local fmt="  %-28s %s\n"
 	printf "$fmt" "list, ls" "list vms"
@@ -23,8 +26,10 @@ usage() {
 }
 
 cmd_create() {
-	inst="${1:?instance required}"; shift;
-	force="${1:-}"; shift;
+	inst="${1:?instance required}"
+	shift
+	force="${1:-}"
+	shift
 	if limactl list "$inst" &>/dev/null; then
 		[[ -z "$force" ]] && bail "$inst vm already exists. use --force to recreate"
 		limactl delete "$inst" -f
@@ -35,7 +40,7 @@ cmd_create() {
 	fi
 	limactl create --name "$inst" \
 		template:default \
-		--set '.user.name = "collin"'  \
+		--set '.user.name = "collin"' \
 		--set '.user.home = "/home/collin"' \
 		--yes
 	limactl start "$inst" --mount-none
@@ -51,39 +56,49 @@ cmd="${1:-}"
 shift || usage
 
 case "$cmd" in
-	list|ls)
-		limactl list
-		;;
-	create)
-		inst="${1:?inst required as first param}"; shift;
-		force=""
-		while [[ $# -gt 0 ]]; do
-			case "$1" in
-				--force|-f) force=1; shift ;;
-				-*) bail "unknown flag: $1" ;;
-				*) bail "unexpected argument: $1" ;;
-			esac
-		done
-		cmd_create "$inst" "$force"
-		;;
-	stop)
-		inst="${1:?inst required as first param}"; shift;
-		limactl stop "$inst"
-		;;
-	delete)
-		inst="${1:?inst required as first param}"; shift;
-		force=""
-		while [[ $# -gt 0 ]]; do
-			case "$1" in
-				--force|-f) force="--force"; shift ;;
-				-*) bail "unknown flag: $1" ;;
-				*) bail "unexpected argument: $1" ;;
-			esac
-		done
-		limactl delete "$inst" ${force:+"$force"}
-		;;
-	*)
-		inst="$cmd"
-		limactl shell "$inst" "$@"
+list | ls)
+	limactl list
+	;;
+create)
+	inst="${1:?inst required as first param}"
+	shift
+	force=""
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--force | -f)
+			force=1
+			shift
+			;;
+		-*) bail "unknown flag: $1" ;;
+		*) bail "unexpected argument: $1" ;;
+		esac
+	done
+	cmd_create "$inst" "$force"
+	;;
+stop)
+	inst="${1:?inst required as first param}"
+	shift
+	limactl stop "$inst"
+	;;
+delete)
+	inst="${1:?inst required as first param}"
+	shift
+	force=""
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		--force | -f)
+			force="--force"
+			shift
+			;;
+		-*) bail "unknown flag: $1" ;;
+		*) bail "unexpected argument: $1" ;;
+		esac
+	done
+	limactl delete "$inst" ${force:+"$force"}
+	;;
+*)
+	inst="$cmd"
+	limactl shell "$inst" "$@"
+	;;
 esac
 exit

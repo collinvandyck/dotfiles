@@ -49,4 +49,3 @@ CONTEXT_REMAINING=$(echo "$input" | jq -r '.context_window.remaining_percentage 
 SESSION_ID=$(echo "$input" | jq -r '.session_id // "—"')
 
 echo "[$MODEL_DISPLAY] ⏰ ${CONTEXT_REMAINING} 💰 \$${COST_USD} 📁 ${CURRENT_DIR/#$HOME/~} -- ${SESSION_ID}"
-

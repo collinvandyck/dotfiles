@@ -14,13 +14,13 @@ DRY_RUN=
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-		--dry-run)
-			DRY_RUN=1
-			shift
-			;;
-		**)
-			usage
-			;;
+	--dry-run)
+		DRY_RUN=1
+		shift
+		;;
+	**)
+		usage
+		;;
 	esac
 done
 
@@ -40,6 +40,6 @@ rerun() {
 sha=$(git rev-parse HEAD)
 runs=$(gh run list -b "$(git branch --show-current)" -L 50 \
 	--json databaseId,headSha,conclusion \
-	-q ".[] | select(.headSha==\"$sha\" and .conclusion==\"failure\") | .databaseId" )
+	-q ".[] | select(.headSha==\"$sha\" and .conclusion==\"failure\") | .databaseId")
 
 rerun "$runs"

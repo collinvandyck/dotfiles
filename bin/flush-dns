@@ -3,4 +3,3 @@ set -euo pipefail
 
 sudo dscacheutil -flushcache
 sudo killall -9 mDNSResponder
-

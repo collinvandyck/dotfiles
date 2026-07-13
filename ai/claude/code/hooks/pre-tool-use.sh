@@ -13,4 +13,4 @@
 #  }
 
 line=$(cat)
-printf "%s\n" "$line" >> /tmp/claude-hooks-pre-tool.log
+printf "%s\n" "$line" >>/tmp/claude-hooks-pre-tool.log

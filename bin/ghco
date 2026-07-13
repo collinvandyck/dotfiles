@@ -31,5 +31,5 @@ main_branch=$(git branch -l master main | awk '{print $2}')
 git worktrees add worktrees/prs origin/${main_branch} &>/dev/null || true
 cd worktrees/prs
 gh pr checkout "$1"
-tmux rename-window "$(git rev-parse --abbrev-ref HEAD)" &> /dev/null
+tmux rename-window "$(git rev-parse --abbrev-ref HEAD)" &>/dev/null
 exec zsh

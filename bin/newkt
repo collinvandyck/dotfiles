@@ -15,7 +15,7 @@ fatal() {
 word-segment() {
 	local word
 	while :; do
-		word=$(sed -n "$((RANDOM % $(wc -l < /usr/share/dict/words) + 1))p" /usr/share/dict/words)
+		word=$(sed -n "$((RANDOM % $(wc -l </usr/share/dict/words) + 1))p" /usr/share/dict/words)
 		if [[ "$word" =~ ^[a-z]+$ ]] && [[ ${#word} -gt 2 ]] && [[ ${#word} -lt 10 ]]; then
 			echo "$word"
 			return
@@ -28,15 +28,15 @@ name=""
 
 while [[ $# -gt 0 ]]; do
 	case $1 in
-		--local)
-			dir="$(pwd)"
-			shift
-			;;
-		*)
-			[[ "$name" ]] && usage
-			name=$1
-			shift
-			;;
+	--local)
+		dir="$(pwd)"
+		shift
+		;;
+	*)
+		[[ "$name" ]] && usage
+		name=$1
+		shift
+		;;
 	esac
 done
 
@@ -69,4 +69,3 @@ rm "$name".zip
 
 idea . src/main/kotlin/collin/DemoApplication.kt &>/dev/null
 exec zsh
-

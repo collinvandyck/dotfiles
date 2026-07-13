@@ -1,4 +1,3 @@
 use_pyenv() {
-    eval "$(pyenv init -)"
+	eval "$(pyenv init -)"
 }
-

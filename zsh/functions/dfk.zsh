@@ -6,19 +6,20 @@
 # after the command is finished, successfully or otherwise, the tmux window name
 # will be restored.
 dfk() {
-	case "${1}" in 
-		s3)
-			shift
-			local title=$(tmux display-message -p '#W' || true)
-			local args=$(printf "%q " "$@")
-			local in_shell=$(echo $title | grep -E '^s3');
-			tmux rename-window "s3: $args" 2>/dev/null
-			if [ -f .dfks3 ]; then
-				# if we are in the shell then don't bother creating a new one
-				command dfk s3 $args
-				return $?
-			fi
-			zsh -c "$(cat <<-EOF
+	case "${1}" in
+	s3)
+		shift
+		local title=$(tmux display-message -p '#W' || true)
+		local args=$(printf "%q " "$@")
+		local in_shell=$(echo $title | grep -E '^s3')
+		tmux rename-window "s3: $args" 2>/dev/null
+		if [ -f .dfks3 ]; then
+			# if we are in the shell then don't bother creating a new one
+			command dfk s3 $args
+			return $?
+		fi
+		zsh -c "$(
+			cat <<-EOF
 				cd "$(mktemp -d)"
 				touch .dfks3
 				if ! command dfk s3 $args; then
@@ -26,12 +27,11 @@ dfk() {
 				fi
 				exec zsh
 			EOF
-			)"
-			tmux rename-window "$title" 2>/dev/null
-			;;
-		*)
-			command dfk "$@"
-			;;
+		)"
+		tmux rename-window "$title" 2>/dev/null
+		;;
+	*)
+		command dfk "$@"
+		;;
 	esac
 }
-

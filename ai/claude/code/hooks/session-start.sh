@@ -13,10 +13,10 @@ INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.source')
 
 case "$COMMAND" in
-	"startup")
-		#say "here we go"
-		;;
-	*)
-		#say "foo ${COMMAND}"
-		;;
+"startup")
+	#say "here we go"
+	;;
+*)
+	#say "foo ${COMMAND}"
+	;;
 esac

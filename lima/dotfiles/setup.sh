@@ -4,7 +4,10 @@ set -euo pipefail
 
 INST=dotfiles
 
-bail() { echo "$*" >&1; exit 1; }
+bail() {
+	echo "$*" >&1
+	exit 1
+}
 
 if limactl list $INST &>/dev/null; then
 	[[ $# -gt 0 && "$1" = "--force" ]] || bail "$INST vm already exists. use --force to recreate"
@@ -13,7 +16,7 @@ fi
 
 limactl create --name $INST \
 	template:default \
-	--set '.user.name = "collin"'  \
+	--set '.user.name = "collin"' \
 	--set '.user.home = "/home/collin"' \
 	--yes
 limactl start $INST --mount-none

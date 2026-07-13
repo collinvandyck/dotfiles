@@ -9,23 +9,23 @@ set -euo pipefail
 command git rev-parse --git-dir &>/dev/null || return
 
 url="$(git config --get remote.origin.url)"
-case "$url" in 
-	"git@github.com:Rippling/rippling-client.git")
-		for ref in refs/{heads,remotes/{origin,upstream}}/{master,main,trunk,mainline,default,stable}; do
-			if command git show-ref -q --verify $ref; then
-				echo ${ref:t}
-				exit 0
-			fi
-		done
-		;;
-	**)
-		for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default,stable,master}; do
-			if command git show-ref -q --verify $ref; then
-				echo ${ref:t}
-				exit 0
-			fi
-		done
-		;;
+case "$url" in
+"git@github.com:Rippling/rippling-client.git")
+	for ref in refs/{heads,remotes/{origin,upstream}}/{master,main,trunk,mainline,default,stable}; do
+		if command git show-ref -q --verify $ref; then
+			echo ${ref:t}
+			exit 0
+		fi
+	done
+	;;
+**)
+	for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default,stable,master}; do
+		if command git show-ref -q --verify $ref; then
+			echo ${ref:t}
+			exit 0
+		fi
+	done
+	;;
 esac
 
 # If no main branch was found, fall back to master but return error

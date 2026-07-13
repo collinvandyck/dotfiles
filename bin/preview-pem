@@ -3,5 +3,5 @@ file=${1}
 
 rg "BEGIN" $file | rg -o '[\w ]+'
 
-echo 
+echo
 openssl x509 -in $file -text -noout

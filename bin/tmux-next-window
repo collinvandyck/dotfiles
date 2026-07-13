@@ -3,6 +3,5 @@
 set -euo pipefail
 
 if [ "$(~/.dotfiles/bin/tmux-num-windows)" != "1" ]; then
-    tmux next-window
+	tmux next-window
 fi
-

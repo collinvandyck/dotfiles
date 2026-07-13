@@ -26,16 +26,16 @@ fi
 file=$dir/$name
 
 if [ ! -f "$file" ]; then
-	cat <<-eos > "$file"
-	#!/usr/bin/env bash
-	set -euo pipefail
+	cat <<-eos >"$file"
+		#!/usr/bin/env bash
+		set -euo pipefail
 
 
 	eos
 fi
 
 if [ "$addmake" = "true" ]; then
-	cat <<eos > "$dir"/Makefile
+	cat <<eos >"$dir"/Makefile
 run:
 	./test
 eos

@@ -70,7 +70,7 @@ REST=$((LENGTH - SYMBOLS - DIGITS))
 draw() {
 	local charset="$1" count="$2"
 	((count > 0)) || return 0
-	LC_ALL=C tr -dc "$charset" < /dev/urandom | head -c "$count"
+	LC_ALL=C tr -dc "$charset" </dev/urandom | head -c "$count"
 }
 
 # Emit the guaranteed chars plus the random fill, then shuffle so the forced

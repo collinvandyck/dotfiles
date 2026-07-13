@@ -5,6 +5,6 @@
 set -euo pipefail
 
 cd $(gitroot)
-git diff "$@" --name-only -- . |\
+git diff "$@" --name-only -- . |
 	fzf --ansi \
-	--preview "git diff --color=always "$@" -- {}"
+		--preview "git diff --color=always "$@" -- {}"

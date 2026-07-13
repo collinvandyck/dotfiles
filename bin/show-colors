@@ -3,13 +3,13 @@
 set -euo pipefail
 
 usage() {
-cat <<-eos
-shows current terminal colors according to kitty terminal settings.
-by default it will show the colors as configured with the base theme followed by
+	cat <<-eos
+		shows current terminal colors according to kitty terminal settings.
+		by default it will show the colors as configured with the base theme followed by
 
-usage: $(basename $0) [files]
-eos
-exit 1
+		usage: $(basename $0) [files]
+	eos
+	exit 1
 }
 
 [[ "$@" = -h ]] && usage

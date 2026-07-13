@@ -3,4 +3,4 @@
 set -e # exit on failure
 set -u # fail if vars are not defined
 
-qlmanage -p "$@" > /dev/null
+qlmanage -p "$@" >/dev/null

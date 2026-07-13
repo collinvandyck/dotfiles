@@ -2,7 +2,6 @@
 
 # loops the command until it is interrupted
 
-while : 
-do
+while :; do
 	eval $@
 done

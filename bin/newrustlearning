@@ -17,7 +17,7 @@ cargo add \
 	--features tokio/full \
 	--features tracing-subscriber/env-filter
 
-cat <<eos > src/main.rs
+cat <<eos >src/main.rs
 use anyhow::Result;
 
 #[tokio::main]

@@ -8,23 +8,26 @@ cmd=$(basename $0)
 
 choose() {
 	local query="${@-""}"
-	(date; ps -ef | grep -v "${cmd}") | \
-	fzf \
-		--ansi \
-		--exact \
-		--height="100%" \
-		--header-lines=2 \
-		--reverse \
-		--bind='ctrl-h:first' \
-		--bind="ctrl-k:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
-		--bind="ctrl-r:reload(date; ps -ef | grep -v \"${cmd}\")" \
-		--bind='ctrl-x:preview(ps --forest {2})' \
-		--bind='ctrl-/:change-preview-window(hidden|)' \
-		--bind="enter:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
-		--preview-window='down,50%,wrap' \
-		--preview "$cmd --show {2}" \
-		--query "$query" \
-	|| true
+	(
+		date
+		ps -ef | grep -v "${cmd}"
+	) |
+		fzf \
+			--ansi \
+			--exact \
+			--height="100%" \
+			--header-lines=2 \
+			--reverse \
+			--bind='ctrl-h:first' \
+			--bind="ctrl-k:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
+			--bind="ctrl-r:reload(date; ps -ef | grep -v \"${cmd}\")" \
+			--bind='ctrl-x:preview(ps --forest {2})' \
+			--bind='ctrl-/:change-preview-window(hidden|)' \
+			--bind="enter:execute(kill -9 {2})+reload(date; ps -ef | grep -v \"${cmd}\")" \
+			--preview-window='down,50%,wrap' \
+			--preview "$cmd --show {2}" \
+			--query "$query" ||
+		true
 }
 
 show() {
@@ -35,7 +38,7 @@ show() {
 		# -c disable compaction of subtrees
 		pstree -p $pid -s -H $pid -l -n -a -T
 	else
-		pstree -p $pid 
+		pstree -p $pid
 	fi
 }
 
@@ -45,12 +48,11 @@ if [[ $# = 0 ]]; then
 fi
 
 case $1 in
-	"--show")
-		show $2
-		;;
-	**)
-		choose "$@"
-		exit 0
-		;;
+"--show")
+	show $2
+	;;
+**)
+	choose "$@"
+	exit 0
+	;;
 esac
-

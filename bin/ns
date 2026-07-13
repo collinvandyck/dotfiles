@@ -6,28 +6,28 @@
 
 # parse command line options
 glob=""
-while (( $# )); do
+while (($#)); do
 	case $1 in
-	-g|--glob)
-		if (( $# > 1)); then
+	-g | --glob)
+		if (($# > 1)); then
 			glob+="-g '$2' "
 			shift
 		else
 			echo >&2 "Missing argument for $1"
 			exit 1
 		fi
-	;;
+		;;
 	-*)
 		echo >&2 "Invalid option: $1"
 		exit 1
-	;;
+		;;
 	esac
 	shift
 done
 
 # change into the ngrok directory if we need to.
 if [ $# -eq 0 ]; then
-	if ! $(pwd | grep -q ngrok); then 
+	if ! $(pwd | grep -q ngrok); then
 		cd ~/ngrok 2>/dev/null || cd ~/code/ngrok
 		eval "$(direnv export zsh 2>/dev/null)"
 	fi
@@ -45,20 +45,20 @@ RG="rg --column --line-number --no-heading --color=always --smart-case ${glob}"
 QUERY="${*:-}"
 FZF_DEFAULT_COMMAND="$RG '$QUERY'" \
 	fzf \
-		--bind "change:reload:sleep 0.1; $RG {q} || true" \
-		--bind 'ctrl-/:toggle-preview' \
-		--bind 'enter:execute:env -u FZF_DEFAULT_COMMAND nvim {1} +{2}' \
-		--bind 'ctrl-space:execute:ns-menu {1} --line={2}' \
-		--bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(fzf: )+enable-search+clear-query+rebind(ctrl-r)" \
-		--bind "ctrl-r:unbind(ctrl-r)+change-prompt(rg: )+disable-search+reload($RG {q} || true)+rebind(change,ctrl-f)" \
-		--preview "bat --color=always --highlight-line {2} --number {1} --theme 'Monokai Extended Bright'" \
-		--preview-window "right,50%,+{2}/2" \
-		--delimiter : \
-		--disabled \
-		--ansi \
-		--phony \
-		--no-sort \
-		--history=$history_file \
-		--prompt 'rg: ' \
-		--query "$QUERY" \
-	|| true
+	--bind "change:reload:sleep 0.1; $RG {q} || true" \
+	--bind 'ctrl-/:toggle-preview' \
+	--bind 'enter:execute:env -u FZF_DEFAULT_COMMAND nvim {1} +{2}' \
+	--bind 'ctrl-space:execute:ns-menu {1} --line={2}' \
+	--bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(fzf: )+enable-search+clear-query+rebind(ctrl-r)" \
+	--bind "ctrl-r:unbind(ctrl-r)+change-prompt(rg: )+disable-search+reload($RG {q} || true)+rebind(change,ctrl-f)" \
+	--preview "bat --color=always --highlight-line {2} --number {1} --theme 'Monokai Extended Bright'" \
+	--preview-window "right,50%,+{2}/2" \
+	--delimiter : \
+	--disabled \
+	--ansi \
+	--phony \
+	--no-sort \
+	--history=$history_file \
+	--prompt 'rg: ' \
+	--query "$QUERY" ||
+	true

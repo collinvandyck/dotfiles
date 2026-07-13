@@ -7,7 +7,7 @@ set -eopipefail
 source ~/.dotfiles/bin/cd-ngrok
 
 args=()
-for arg ; do
+for arg; do
 	case $arg in
 
 	"--e2e=true")
@@ -33,7 +33,7 @@ attempt=0
 
 run() {
 	run_start=$(epoch)
-	attempt=$((attempt+1))
+	attempt=$((attempt + 1))
 	nd env create --recreate $args && nd go install ngrok
 }
 
@@ -46,20 +46,20 @@ record() {
 	local now=$(epoch)
 	local duration=$((now - run_start))
 	if [ ! -e $db ]; then
-		sqlite3 $db <<- eos
-		create table ngrok_builds (
-			timestamp datetime not null default CURRENT_TIMESTAMP,
-			success   int,
-			duration  int,
-			attempt   int,
-			branch    string,
-			sha       string
-		);
+		sqlite3 $db <<-eos
+			create table ngrok_builds (
+				timestamp datetime not null default CURRENT_TIMESTAMP,
+				success   int,
+				duration  int,
+				attempt   int,
+				branch    string,
+				sha       string
+			);
 		eos
 	fi
-	sqlite3 $db <<- eos
-	insert into ngrok_builds (timestamp, attempt, success, duration, branch, sha) 
-	                  values (CURRENT_TIMESTAMP, $attempt, $success, $duration, '$branch', '$commit');
+	sqlite3 $db <<-eos
+		insert into ngrok_builds (timestamp, attempt, success, duration, branch, sha) 
+		                  values (CURRENT_TIMESTAMP, $attempt, $success, $duration, '$branch', '$commit');
 	eos
 }
 
@@ -82,7 +82,6 @@ loop() {
 loop
 
 stop=$(epoch)
-duration=$((stop-start))
+duration=$((stop - start))
 
 echo "attempts: $attempt duration: $(duration $duration)"
-

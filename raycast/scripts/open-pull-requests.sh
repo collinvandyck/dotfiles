@@ -11,4 +11,3 @@
 # @raycast.iconDark images/github-logo-iconDark.png
 
 open https://github.com/pulls/
-

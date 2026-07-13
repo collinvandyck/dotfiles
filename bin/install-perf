@@ -2,7 +2,7 @@
 
 # adapted from https://opeonikute.dev/posts/how-to-use-perf-on-macos
 
-set -e 
+set -e
 set -u
 
 cd $(mktemp -d)
@@ -36,5 +36,3 @@ sudo apt -y install \
 make -C .
 make install
 cp perf /usr/local/bin
-
-

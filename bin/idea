@@ -16,12 +16,11 @@ else
 fi
 
 launch() {
-    if [[ -e "$1" ]]; then
-        "$1" $args &>"$(mktemp /tmp/idealaunchXXXX)" &
-    fi
+	if [[ -e "$1" ]]; then
+		"$1" $args &>"$(mktemp /tmp/idealaunchXXXX)" &
+	fi
 }
 
 for p in "$app" "$usr1" "$usr2" "$usr3"; do
-    launch "$p"
+	launch "$p"
 done
-

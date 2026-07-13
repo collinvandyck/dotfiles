@@ -14,7 +14,7 @@ fatal() {
 word-segment() {
 	local word
 	while :; do
-		word=$(sed -n "$((RANDOM % $(wc -l < /usr/share/dict/words) + 1))p" /usr/share/dict/words)
+		word=$(sed -n "$((RANDOM % $(wc -l </usr/share/dict/words) + 1))p" /usr/share/dict/words)
 		if [[ "$word" =~ ^[a-z]+$ ]] && [[ ${#word} -gt 2 ]] && [[ ${#word} -lt 10 ]]; then
 			echo "$word"
 			return
@@ -27,15 +27,15 @@ name=""
 
 while [[ $# -gt 0 ]]; do
 	case $1 in
-		--local)
-			dir="$(pwd)"
-			shift
-			;;
-		*)
-			[[ "$name" ]] && usage
-			name=$1
-			shift
-			;;
+	--local)
+		dir="$(pwd)"
+		shift
+		;;
+	*)
+		[[ "$name" ]] && usage
+		name=$1
+		shift
+		;;
 	esac
 done
 
@@ -55,7 +55,7 @@ mkdir -p "$proj"
 cd "$proj"
 
 if [ ! -f main.clj ]; then
-cat <<eos > main.clj
+	cat <<eos >main.clj
 #!/usr/bin/env bb
 
 (println (+ 41 1))
@@ -63,7 +63,7 @@ eos
 fi
 
 if [ ! -f .justfile ]; then
-cat <<eos > .justfile
+	cat <<eos >.justfile
 run:
 	@bb main.clj
 
@@ -73,7 +73,7 @@ eos
 fi
 
 if [ ! -f bb.edn ]; then
-cat <<eos > bb.edn
+	cat <<eos >bb.edn
 {
  :paths ["."]
 
@@ -91,4 +91,3 @@ fi
 
 nvim main.clj
 exec zsh
-

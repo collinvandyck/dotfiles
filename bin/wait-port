@@ -12,23 +12,22 @@ HOST=localhost
 PORT=
 
 case $# in
-	1)
-		PORT=$1
-		shift
-		;;
-	2)
-		HOST=$1
-		shift
-		PORT=$1
-		shift
-		;;
-	*)
-		usage
-		;;
+1)
+	PORT=$1
+	shift
+	;;
+2)
+	HOST=$1
+	shift
+	PORT=$1
+	shift
+	;;
+*)
+	usage
+	;;
 esac
 
 [ -z "$HOST" ] && usage
 [ -z "$PORT" ] && usage
 
 while ! nc -z "$HOST" "$PORT" &>/dev/null; do sleep 0.5; done
-

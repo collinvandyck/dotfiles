@@ -3,7 +3,6 @@ set -euo pipefail
 
 # repeats the supplied command
 
-while :;
-do
+while :; do
 	"$@"
 done

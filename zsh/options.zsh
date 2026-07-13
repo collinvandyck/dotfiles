@@ -6,11 +6,11 @@ setopt noauto_cd
 
 # setup easy access to cd paths
 cdpath=(
-	$HOME/code/rust-learning/aoc-2022 
-	$HOME/code/rust-learning/pragprog 
-	$HOME/code/rust-learning/oreilly 
-	$HOME/code/rust-learning 
-	$HOME/code 
+	$HOME/code/rust-learning/aoc-2022
+	$HOME/code/rust-learning/pragprog
+	$HOME/code/rust-learning/oreilly
+	$HOME/code/rust-learning
+	$HOME/code
 	$HOME
 )
 

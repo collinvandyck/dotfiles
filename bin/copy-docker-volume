@@ -25,17 +25,17 @@ volume_exists() {
 
 while [ $# -gt 0 ]; do
 	case "$1" in
-		--from)
-			src=$2
-			shift 2
-			;;
-		--to)
-			dst=$2
-			shift 2
-			;;
-		*)
-			usage
-			;;
+	--from)
+		src=$2
+		shift 2
+		;;
+	--to)
+		dst=$2
+		shift 2
+		;;
+	*)
+		usage
+		;;
 	esac
 done
 
@@ -43,23 +43,23 @@ if [[ -z "${src}" || -z "${dst}" ]]; then
 	usage
 fi
 
-if ! volume_exists "${src}"; then 
+if ! volume_exists "${src}"; then
 	bail "src volume '${src}' does not exist."
 fi
 
-docker volume create "${dst}" > /dev/null
+docker volume create "${dst}" >/dev/null
 echo "Created volume ${dst}"
 
 echo "Transferring data to the new volume"
 sync_log=$(mktemp -d)/sync.log
-docker run --rm -v ${src}:/src -v ${dst}:/dst bash -c "$(cat <<EOF
+docker run --rm -v ${src}:/src -v ${dst}:/dst bash -c "$(
+	cat <<EOF
 	apk add rsync
 	rsync -avHAXShSt /src/ /dst/
 EOF
-)" > $sync_log
+)" >$sync_log
 
 echo "Copy complete. log: $sync_log"
 echo "Volumes:"
 
 docker system df -v | grep -E "^${src}|^${dst}"
-

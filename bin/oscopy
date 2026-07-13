@@ -10,11 +10,11 @@ input=$(</dev/stdin)
 # Encode the input in base64, using appropriate options based on the operating system
 os=$(uname)
 if [[ "$os" =~ "Darwin" ]]; then
-  # macOS
-  encoded_input=$(printf "%s" "$input" | base64)
+	# macOS
+	encoded_input=$(printf "%s" "$input" | base64)
 else
-  # Linux
-  encoded_input=$(printf "%s" "$input" | base64 -w 0)
+	# Linux
+	encoded_input=$(printf "%s" "$input" | base64 -w 0)
 fi
 
 # Send the OSC52 escape sequence to set the clipboard contents

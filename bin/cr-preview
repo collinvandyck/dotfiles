@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Renders a session preview for `cr` from a session jsonl file passed as $1.
 # The jq program is a quoted heredoc, so the shell leaves $id/$cwd/etc. alone.
-jq -rs "$(cat <<'EOF'
+jq -rs "$(
+	cat <<'EOF'
 # Records are appended over time, so we take the LAST of each titled field.
 (map(.sessionId  // empty)              | last) as $id     |
 (map(.customTitle // empty)             | last) as $custom |

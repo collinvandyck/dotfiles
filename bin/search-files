@@ -16,14 +16,14 @@ usage() {
 
 while [ $# -gt 0 ]; do
 	case $1 in
-		--dir|-d)
-			[ $# -gt 0 ] || usage
-			shift
-			DIR=$1
-			;;
-		*)
-			ARGS+=("$1")
-			;;
+	--dir | -d)
+		[ $# -gt 0 ] || usage
+		shift
+		DIR=$1
+		;;
+	*)
+		ARGS+=("$1")
+		;;
 	esac
 	shift
 	:

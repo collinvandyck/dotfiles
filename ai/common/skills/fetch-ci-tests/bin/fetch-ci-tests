@@ -9,38 +9,60 @@ RUN_ID=""
 REPO="temporalio/saas-temporal"
 
 while [[ $# -gt 0 ]]; do
-  case "$1" in
-    --dry-run) DRY_RUN=true; shift ;;
-    --pr) PR="$2"; shift 2 ;;
-    --run) RUN_ID="$2"; shift 2 ;;
-    --repo) REPO="$2"; shift 2 ;;
-    *) echo "Unknown arg: $1" >&2; echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2; exit 1 ;;
-  esac
+	case "$1" in
+	--dry-run)
+		DRY_RUN=true
+		shift
+		;;
+	--pr)
+		PR="$2"
+		shift 2
+		;;
+	--run)
+		RUN_ID="$2"
+		shift 2
+		;;
+	--repo)
+		REPO="$2"
+		shift 2
+		;;
+	*)
+		echo "Unknown arg: $1" >&2
+		echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2
+		exit 1
+		;;
+	esac
 done
 
-[[ -n "$PR" || -n "$RUN_ID" ]] || { echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2; exit 1; }
+[[ -n "$PR" || -n "$RUN_ID" ]] || {
+	echo "Usage: fetch-ci-tests [--dry-run] (--pr <number|url> | --run <id>) [--repo owner/repo]" >&2
+	exit 1
+}
 
 # Resolve PR URL to number if needed
 if [[ -n "$PR" && "$PR" =~ ^https://github.com/.*/pull/([0-9]+) ]]; then
-  REPO=$(echo "$PR" | sed 's|https://github.com/||; s|/pull/.*||')
-  PR="${BASH_REMATCH[1]}"
+	REPO=$(echo "$PR" | sed 's|https://github.com/||; s|/pull/.*||')
+	PR="${BASH_REMATCH[1]}"
 fi
 
 # If we have a PR, find the CI run
 if [[ -n "$PR" ]]; then
-  echo "Finding CI run for PR #$PR on $REPO..." >&2
-  BRANCH=$(gh pr view "$PR" --repo "$REPO" --json headRefName --jq '.headRefName')
-  RUN_ID=$(gh api "repos/$REPO/actions/runs?branch=$BRANCH&per_page=20" \
-    --jq '[.workflow_runs[] | select(.name == "CI")] | sort_by(.created_at) | last | .id')
-  [[ -n "$RUN_ID" && "$RUN_ID" != "null" ]] || { echo "No CI run found for PR #$PR" >&2; exit 1; }
-  echo "Found run $RUN_ID" >&2
+	echo "Finding CI run for PR #$PR on $REPO..." >&2
+	BRANCH=$(gh pr view "$PR" --repo "$REPO" --json headRefName --jq '.headRefName')
+	RUN_ID=$(gh api "repos/$REPO/actions/runs?branch=$BRANCH&per_page=20" \
+		--jq '[.workflow_runs[] | select(.name == "CI")] | sort_by(.created_at) | last | .id')
+	[[ -n "$RUN_ID" && "$RUN_ID" != "null" ]] || {
+		echo "No CI run found for PR #$PR" >&2
+		exit 1
+	}
+	echo "Found run $RUN_ID" >&2
 fi
 
 OUTDIR="/tmp/ci-tests/$RUN_ID"
 
 if $DRY_RUN; then
-  echo "would fetch all artifacts for run $RUN_ID from $REPO to $OUTDIR"
-  exit 0
+	echo "would fetch all artifacts for run $RUN_ID from $REPO to $OUTDIR"
+	exit 0
 fi
 
 mkdir -p "$OUTDIR"
@@ -48,15 +70,15 @@ mkdir -p "$OUTDIR"
 # Download ALL artifacts
 echo "Downloading artifacts for run $RUN_ID..." >&2
 ARTIFACTS=$(gh api "repos/$REPO/actions/runs/$RUN_ID/artifacts" \
-  --jq '.artifacts[] | .name')
+	--jq '.artifacts[] | .name')
 
 for name in $ARTIFACTS; do
-  if [[ ! -d "$OUTDIR/$name" ]]; then
-    echo "  $name" >&2
-    gh run download "$RUN_ID" --repo "$REPO" --name "$name" --dir "$OUTDIR/$name" 2>/dev/null || true
-  else
-    echo "  $name (cached)" >&2
-  fi
+	if [[ ! -d "$OUTDIR/$name" ]]; then
+		echo "  $name" >&2
+		gh run download "$RUN_ID" --repo "$REPO" --name "$name" --dir "$OUTDIR/$name" 2>/dev/null || true
+	else
+		echo "  $name (cached)" >&2
+	fi
 done
 
 # Report download size

@@ -28,7 +28,7 @@ cd $dir
 
 # standard main file
 if [ ! -f main.go ]; then
-cat <<eos > main.go
+	cat <<eos >main.go
 package main
 
 import "fmt"
@@ -41,7 +41,7 @@ fi
 
 # standard test file
 if [ ! -f main_test.go ]; then
-cat <<testfile > main_test.go
+	cat <<testfile >main_test.go
 package main
 
 import "testing"
@@ -60,7 +60,7 @@ go mod init $project
 
 # create a .justfile
 if [ ! -f .justfile ]; then
-cat <<eos > .justfile
+	cat <<eos >.justfile
 run:
 	go run .
 
@@ -74,9 +74,9 @@ fi
 
 # Set up git
 if [ ! -d .git ]; then
-git init
-git add -A
-git commit -m "Initial Commit"
+	git init
+	git add -A
+	git commit -m "Initial Commit"
 fi
 
 pwd | pbcopy

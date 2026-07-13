@@ -9,8 +9,8 @@ set -euo pipefail
 globs=()
 
 add_glob() {
-    globs+=("--glob=$1")
-    globs+=("--decorate-refs=$1")
+	globs+=("--glob=$1")
+	globs+=("--decorate-refs=$1")
 }
 
 add_glob 'HEAD'
@@ -19,13 +19,12 @@ add_glob 'refs/*/master'
 
 # Process arguments
 if [[ $# -gt 0 ]]; then
-    for arg in "$@"; do
-        add_glob "refs/**${arg}**"
-    done
+	for arg in "$@"; do
+		add_glob "refs/**${arg}**"
+	done
 else
-    add_glob "refs/*/${USER}/*"
+	add_glob "refs/*/${USER}/*"
 fi
 
 # Execute git command with all globs
 git ll "${globs[@]}"
-

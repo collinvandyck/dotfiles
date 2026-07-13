@@ -9,21 +9,21 @@ fi
 
 case "${arg}" in
 
-"d"|"dev")
+"d" | "dev")
 	arg=dev
 	exec env NGROK_ENV=dev nd "$@"
 	;;
-"p"|"prod")
+"p" | "prod")
 	exec env NGROK_ENV=prod nd "$@"
 	;;
-"s"|"stage")
+"s" | "stage")
 	exec env NGROK_ENV=stage nd "$@"
 	;;
-"or"|"us"|"eu"|"au"|"ap"|"jp"|"sa"|"in")
+"or" | "us" | "eu" | "au" | "ap" | "jp" | "sa" | "in")
 	exec env NGROK_ENV=prod nd -r "${arg}" "$@"
 	;;
 **)
 	exec nd "${arg}" "$@"
-;;
+	;;
 
 esac

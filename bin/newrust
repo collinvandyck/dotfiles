@@ -12,21 +12,21 @@ usage() {
 }
 
 bail() {
-    echo "fatal: $1"
-    exit 1
+	echo "fatal: $1"
+	exit 1
 }
 
 while [[ $# -gt 0 ]]; do
-    case $1 in
-        --full)
-            full=1
-            shift
-            ;;
-        *)
-            name="$1"
-            shift
-            ;;
-    esac
+	case $1 in
+	--full)
+		full=1
+		shift
+		;;
+	*)
+		name="$1"
+		shift
+		;;
+	esac
 done
 
 if [ "$name" = "" ]; then
@@ -37,7 +37,7 @@ fi
 cd "$dir"
 
 if [ -d "$name" ]; then
-    bail "$name already exists"
+	bail "$name already exists"
 fi
 
 cargo new "$name"
@@ -47,12 +47,12 @@ cd "$name"
 cargo-tweak --allow-unused true
 
 if [[ $full -eq 1 ]]; then
-    cargo-starter-pack
+	cargo-starter-pack
 fi
 
 rustfmt-starter-pack
 
-cat > rust-toolchain.toml <<EOF
+cat >rust-toolchain.toml <<EOF
 [toolchain]
 channel = "1.90.0"
 EOF
@@ -68,7 +68,7 @@ test:
     cargo test
 eos
 
-cat <<eos > Makefile
+cat <<eos >Makefile
 run:
 	cargo run
 
@@ -80,7 +80,7 @@ test:
 
 eos
 
-cat <<eos > src/main.rs
+cat <<eos >src/main.rs
 #[tokio::main]
 async fn main() {}
 eos

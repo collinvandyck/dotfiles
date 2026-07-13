@@ -5,10 +5,10 @@ set -euo pipefail
 commit="$1"
 
 tmp=$(mktemp)
-git show --patch "${commit}" > $tmp
+git show --patch "${commit}" >$tmp
 
 editor=$(mktemp)
-cat > $editor << EOF
+cat >$editor <<EOF
 #!/usr/bin/env bash
 set -e
 cat $tmp >> \$1
@@ -23,7 +23,7 @@ chmod 755 $editor
 export GIT_EDITOR="$editor"
 
 if git commit --fixup=reword:${commit} -v 2>/dev/null; then
-    git -c sequence.editor=: rebase -i --autosquash ${commit}^
+	git -c sequence.editor=: rebase -i --autosquash ${commit}^
 fi
 
 rm $tmp || true

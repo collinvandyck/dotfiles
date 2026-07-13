@@ -8,9 +8,10 @@ bindkey "^[[1;3D" backward-word
 #KEYTIMEOUT=1 # 100ms
 
 prepend-sudo() {
-  if [[ $BUFFER != "sudo "* ]]; then
-    BUFFER="sudo $BUFFER"; CURSOR+=5
-  fi
+	if [[ $BUFFER != "sudo "* ]]; then
+		BUFFER="sudo $BUFFER"
+		CURSOR+=5
+	fi
 }
 
 zle -N prepend-sudo

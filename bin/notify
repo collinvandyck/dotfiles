@@ -6,10 +6,10 @@ set -euo pipefail
 body="${*}"
 arch=$(uname -s)
 case $arch in
-    Darwin)
-        osascript -e "display notification \"${body}\"" #with title \"Title\""
-        ;;
-    *)
-        printf "\a>> %s\n" "$body" >&2
-        ;;
+Darwin)
+	osascript -e "display notification \"${body}\"" #with title \"Title\""
+	;;
+*)
+	printf "\a>> %s\n" "$body" >&2
+	;;
 esac

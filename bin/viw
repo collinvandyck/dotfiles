@@ -5,5 +5,5 @@
 
 set -euo pipefail
 
-export RA_TARGET=x86_64-pc-windows-gnu 
+export RA_TARGET=x86_64-pc-windows-gnu
 exec nvim "$@"

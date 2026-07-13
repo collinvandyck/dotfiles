@@ -24,12 +24,12 @@ TIME_FROM="now-1h"
 TIME_TO="now"
 EXPR="{cluster=\"${CLUSTER}\", k8s_component=\"history\"} | json | level = \`error\`"
 PANES=$(jq -n -c \
-  --arg uid "$DATASOURCE_UID" \
-  --arg type "$DATASOURCE_TYPE" \
-  --arg expr "$EXPR" \
-  --arg from "$TIME_FROM" \
-  --arg to "$TIME_TO" \
-  '{
+	--arg uid "$DATASOURCE_UID" \
+	--arg type "$DATASOURCE_TYPE" \
+	--arg expr "$EXPR" \
+	--arg from "$TIME_FROM" \
+	--arg to "$TIME_TO" \
+	'{
     "prod-history-logs": {
       "datasource": $uid,
       "queries": [{
@@ -45,4 +45,3 @@ PANES=$(jq -n -c \
 
 ENCODED_PANES=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$PANES")
 open "https://${GRAFANA_HOST}/explore?schemaVersion=1&panes=${ENCODED_PANES}&orgId=${ORG_ID}"
-

@@ -2,8 +2,6 @@
 
 # loops the command while it is successful
 
-while eval $@ 
-do
-	sleep 0	
+while eval $@; do
+	sleep 0
 done
-

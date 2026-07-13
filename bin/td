@@ -3,13 +3,14 @@
 set -euo pipefail
 
 window_name() {
-    local name; name=$(basename "$(pwd)")
-    case "$name" in
-        brain-backend) echo be ;;
-        brain-backend-2) echo be-2 ;;
-        brain-app) echo fe ;;
-        *) echo "$name" ;;
-    esac
+	local name
+	name=$(basename "$(pwd)")
+	case "$name" in
+	brain-backend) echo be ;;
+	brain-backend-2) echo be-2 ;;
+	brain-app) echo fe ;;
+	*) echo "$name" ;;
+	esac
 }
 
 if [[ $# -gt 0 ]]; then
@@ -17,4 +18,3 @@ if [[ $# -gt 0 ]]; then
 else
 	tmux rename-window "$(window_name)" 2>/dev/null
 fi
-

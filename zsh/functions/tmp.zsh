@@ -1,5 +1,3 @@
 tmp() {
 	cd $(mktemp -d)
 }
-
-

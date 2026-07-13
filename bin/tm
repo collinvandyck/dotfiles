@@ -31,4 +31,3 @@ else
 	tmux new-session -d -s $session
 	exec tmux switch -t $session
 fi
-

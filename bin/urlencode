@@ -2,4 +2,3 @@
 set -euo pipefail
 
 python3 -c "import sys, urllib.parse; [print(urllib.parse.quote(line.rstrip(), safe='')) for line in sys.stdin]"
-

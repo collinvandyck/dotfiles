@@ -8,6 +8,5 @@ fi
 
 # do the search and preview results
 fd $args -S '+1b' | fzf \
-	--preview 'preview-pem {}'  \
+	--preview 'preview-pem {}' \
 	--no-sort
-

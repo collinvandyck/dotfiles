@@ -15,22 +15,22 @@ input=""
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-		-f|--force)
-			force=1
-			shift
-			;;
-		-h|--help)
-			usage
-			;;
-		-*)
-			echo "unknown flag: $1"
-			usage
-			;;
-		*)
-			[[ -n "$input" ]] && usage
-			input="$1"
-			shift
-			;;
+	-f | --force)
+		force=1
+		shift
+		;;
+	-h | --help)
+		usage
+		;;
+	-*)
+		echo "unknown flag: $1"
+		usage
+		;;
+	*)
+		[[ -n "$input" ]] && usage
+		input="$1"
+		shift
+		;;
 	esac
 done
 
@@ -58,8 +58,8 @@ gs=/opt/homebrew/bin/gs
 
 "$gs" -sDEVICE=pdfwrite -dCompatibilityLevel=1.6 \
 	-dDownsampleColorImages=true -dColorImageResolution=200 \
-	-dDownsampleGrayImages=true  -dGrayImageResolution=200 \
-	-dDownsampleMonoImages=true  -dMonoImageResolution=300 \
+	-dDownsampleGrayImages=true -dGrayImageResolution=200 \
+	-dDownsampleMonoImages=true -dMonoImageResolution=300 \
 	-dColorImageDownsampleType=/Bicubic \
 	-dGrayImageDownsampleType=/Bicubic \
 	-dMonoImageFilter=/CCITTFaxEncode \
@@ -72,6 +72,6 @@ gs=/opt/homebrew/bin/gs
 
 before=$(stat -f%z "$input")
 after=$(stat -f%z "$output")
-pct=$(( 100 - (after * 100 / before) ))
+pct=$((100 - (after * 100 / before)))
 echo "wrote: $output"
-echo "$(( before / 1024 / 1024 )) MB -> $(( after / 1024 / 1024 )) MB (${pct}% smaller)"
+echo "$((before / 1024 / 1024)) MB -> $((after / 1024 / 1024)) MB (${pct}% smaller)"

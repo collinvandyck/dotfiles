@@ -23,9 +23,8 @@ add() {
 	res+=($1)
 }
 
-IFS=':' read -r -a paths <<< "$PATH"
-for path in ${paths[@]}
-do
+IFS=':' read -r -a paths <<<"$PATH"
+for path in ${paths[@]}; do
 	full="$path/$search"
 	if [ -x $full ]; then
 		add $full
@@ -35,7 +34,3 @@ done
 for r in ${res[@]}; do
 	echo $r
 done
-
-
-
-

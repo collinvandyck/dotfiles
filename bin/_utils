@@ -4,9 +4,8 @@
 
 # Enable automatic cleanup of child processes on script exit
 trap_kill_children() {
-    _cleanup() {
-        pkill -P $$ 2>/dev/null || true
-    }
-    trap _cleanup EXIT INT TERM
+	_cleanup() {
+		pkill -P $$ 2>/dev/null || true
+	}
+	trap _cleanup EXIT INT TERM
 }
-

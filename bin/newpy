@@ -28,7 +28,7 @@ uv init "$name"
 cd "$name"
 uv add --dev pytest
 
-cat <<eos > main.py
+cat <<eos >main.py
 def main():
     print("Hello World!")
 
@@ -36,12 +36,12 @@ if __name__ == "__main__":
     main()
 eos
 
-cat <<eos > test_main.py
+cat <<eos >test_main.py
 def test_hello():
 	pass
 eos
 
-cat <<eos > .justfile
+cat <<eos >.justfile
 run:
 	@uv run python main.py
 

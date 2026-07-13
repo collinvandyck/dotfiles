@@ -4,4 +4,3 @@
 
 set -e # exit on failure
 set -u # fail if vars are not defined
-

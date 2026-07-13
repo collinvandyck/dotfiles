@@ -8,11 +8,10 @@ set -euo pipefail
 # of the last 1k lines.
 amt="-1000"
 if [ $# -gt 0 ]; then
-    if [[ "$1" =~ [+-][0-9]+ ]]; then
-        amt="$1"
-        shift
-    fi
+	if [[ "$1" =~ [+-][0-9]+ ]]; then
+		amt="$1"
+		shift
+	fi
 fi
 
 tail -F -n "$amt" "$@" | tspin
-

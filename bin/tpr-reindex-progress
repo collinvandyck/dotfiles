@@ -24,7 +24,7 @@ es_secondary() {
 	ct admintools --context "$CELL" -- sh -c "$env_cmd; $curl_cmd"
 }
 
-PRI=$(es_primary   "$STATS_PATH" | tr -d '\r')
+PRI=$(es_primary "$STATS_PATH" | tr -d '\r')
 SEC=$(es_secondary "$STATS_PATH" | tr -d '\r')
 
 WFS=$(ct admintools --context "$CELL" -- temporal workflow list \

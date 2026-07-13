@@ -3,23 +3,22 @@
 set -euo pipefail
 
 cargo add tokio \
-    anyhow \
-    clap \
-    futures-util \
-    itertools \
-    rand \
-    regex \
-    serde \
-    serde_json \
-    strum \
-    thiserror \
-    tracing \
-    tracing-subscriber \
-    --features clap/derive \
-    --features serde/derive \
-    --features tokio/full \
-    --features tracing-subscriber/env-filter \
-    --features strum/derive \
-    --features strum/strum_macros \
-    ;
-
+	anyhow \
+	clap \
+	futures-util \
+	itertools \
+	rand \
+	regex \
+	serde \
+	serde_json \
+	strum \
+	thiserror \
+	tracing \
+	tracing-subscriber \
+	--features clap/derive \
+	--features serde/derive \
+	--features tokio/full \
+	--features tracing-subscriber/env-filter \
+	--features strum/derive \
+	--features strum/strum_macros \
+	;
