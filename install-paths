@@ -37,6 +37,10 @@ ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
 
 mkdir -p ~/.agents
 ln -sf ~/.dotfiles/ai/claude/code/skills ~/.agents/
+ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.agents/AGENTS.md
+
+mkdir -p ~/.config/herdr
+ln -sf ~/.dotfiles/herdr/config.toml ~/.config/herdr/
 
 mkdir -p ~/.config/opencode
 for f in ~/.dotfiles/ai/opencode/*; do
