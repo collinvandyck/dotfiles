@@ -21,36 +21,48 @@ test:
     bats **/*.bats
     python3 bin/pipefmt_test.py
 
-lint-shellcheck:
-    shellcheck -S warning {{shell-scripts}}
-
-lint-shfmt:
+# shellcheck runs on the curated bash/sh set (it can't parse zsh); fmt/fix
+# discover any tracked .sh/.zsh or bash/zsh-shebang file, skipping the few with
+# zsh-specific syntax shfmt can't parse.
+# Modes: shellcheck | fmt (check formatting) | fix (apply formatting in place)
+lint mode:
     #!/usr/bin/env bash
     set -euo pipefail
     cd "$(git rev-parse --show-toplevel)"
-    files=()
-    while IFS= read -r -d '' f; do
-        [ -f "$f" ] || continue
-        case "$f" in
-        *.sh | *.zsh) files+=("$f") ; continue ;;
-        esac
-        IFS= read -r shebang <"$f" 2>/dev/null || true
-        case "$shebang" in
-        '#!'*bash* | '#!'*zsh*) files+=("$f") ;;
-        esac
-    done < <(git ls-files -z)
-    # drop anything shfmt can't parse (zsh-specific syntax) so they don't fail the run
-    survivors=()
-    for f in "${files[@]}"; do
-        shfmt "$f" &>/dev/null && survivors+=("$f") || true
-    done
-    if [ ${#survivors[@]} -eq 0 ]; then exit 0; fi
-    shfmt -d "${survivors[@]}"
-
-shfmt:
-    shfmt -w {{shell-scripts}}
+    case "{{mode}}" in
+    shellcheck)
+        shellcheck -S warning {{shell-scripts}}
+        ;;
+    fmt | fix)
+        files=()
+        while IFS= read -r -d '' f; do
+            [ -f "$f" ] || continue
+            case "$f" in
+            *.sh | *.zsh) files+=("$f") ; continue ;;
+            esac
+            IFS= read -r shebang <"$f" 2>/dev/null || true
+            case "$shebang" in
+            '#!'*bash* | '#!'*zsh*) files+=("$f") ;;
+            esac
+        done < <(git ls-files -z)
+        survivors=()
+        for f in "${files[@]}"; do
+            shfmt "$f" &>/dev/null && survivors+=("$f") || true
+        done
+        if [ ${#survivors[@]} -eq 0 ]; then exit 0; fi
+        if [ "{{mode}}" = fix ]; then
+            shfmt -w "${survivors[@]}"
+        else
+            shfmt -d "${survivors[@]}"
+        fi
+        ;;
+    *)
+        echo "usage: just lint {shellcheck|fmt|fix}" >&2
+        exit 2
+        ;;
+    esac
 
 ci:
-    just lint-shellcheck
-    just lint-shfmt
+    just lint shellcheck
+    just lint fmt
     just test
