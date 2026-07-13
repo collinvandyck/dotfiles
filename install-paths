@@ -35,6 +35,11 @@ ln -sf ~/.dotfiles/ai/claude/code/agents ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/commands ~/.claude/
 ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
 
+# hooks/ is a real dir (herdr installs its managed hooks there), so we link our
+# own hook files in individually rather than symlinking the whole directory.
+mkdir -p ~/.claude/hooks
+ln -sf ~/.dotfiles/ai/claude/code/hooks/herdr-tab-title.sh ~/.claude/hooks/
+
 mkdir -p ~/.agents
 ln -sf ~/.dotfiles/ai/claude/code/skills ~/.agents/
 ln -sf ~/.dotfiles/ai/claude/code/CLAUDE.md ~/.agents/AGENTS.md
