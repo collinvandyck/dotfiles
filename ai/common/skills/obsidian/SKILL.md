@@ -24,12 +24,12 @@ Conventions: `file=<name>` resolves like a wikilink (no extension); `path=<folde
 
 | Job | Command |
 |-----|---------|
-| Read a note | `obsidian read path=temporal/projects/vis.md` |
+| Read a note | `obsidian read path=work/temporal/projects/vis.md` |
 | Read today's daily note | `obsidian daily:read` |
 | Daily note path | `obsidian daily:path` |
 | Append to today's note | `obsidian daily:append content="..."` |
 | Append to a note | `obsidian append path=foo.md content="..."` |
-| Create a note | `obsidian create path=general/foo.md content="..."` (add `template=<name>`) |
+| Create a note | `obsidian create path=tech/foo.md content="..."` (add `template=<name>`) |
 | List tasks | `obsidian tasks [todo|done] [path=…] [status="<char>"] [daily] [verbose] [format=json|tsv|csv]` |
 | Update a task | `obsidian task ref=path:line [done|todo|toggle|status="<char>"]` |
 | Search | `obsidian search query="text" [path=folder] [limit=N]` |
@@ -46,7 +46,9 @@ Conventions: `file=<name>` resolves like a wikilink (no extension); `path=<folde
 
 Follow these by default; they're the grain of the vault, not a straitjacket.
 
-**Folders**: `daily/YYYY/` (daily notes), `temporal/{projects,runbooks,people}/` (work), `_templates/`, `general/`, plus topic folders (`banjo/`, `rust/`, `people/`, …). New tasks and captures go in the **freeform section of the daily note**, below the `---`; the Tasks queries sit above it.
+**Folders** (domain-first, restructured 2026-07): `daily/YYYY/` (daily notes), `work/temporal/{projects,runbooks,rcas,on-call}/` (the job), `tech/` (technical reference — languages, tools, infra), `life/{health,finance,home,banjo,games,divorce,jobsearch}/` (personal), `people/` (all person-notes), `archive/` (dormant / former-work), `_templates/`, `_attachments/`, `_meta/`. New tasks and captures go in the **freeform section of the daily note**, below the `---`; the Tasks queries sit above it.
+
+**Frontmatter**: every non-daily note carries `type` (one of `project`/`reference`/`person`/`runbook`/`rca`/`meeting`/`note`) and `tags: [...]`; `project` notes also carry `status` (`active`/`done`/`dormant`). The folder supplies domain/area — don't duplicate it into frontmatter. The full spec lives in `_meta/conventions.md`, and the `_meta/` Bases dashboards (`Home`, `Now`, `Work`, `Tech`, `Life`, `People`) read these properties to build themselves.
 
 **Tasks syntax** (Tasks plugin):
 
@@ -71,7 +73,7 @@ today=$(date +%F)
 obsidian daily:append content="- [ ] #task #vis wire up the reindex helper ➕ $today"
 ```
 
-For a due date, append ` 📅 <due>`. To add a task to a project note instead, `obsidian append path=temporal/projects/vis.md content="..."`.
+For a due date, append ` 📅 <due>`. To add a task to a project note instead, `obsidian append path=work/temporal/projects/vis.md content="..."`.
 
 ### Complete a task (with the ✅ date)
 
@@ -102,7 +104,7 @@ obsidian daily:append content="\nHit a wall on the async write batching — part
 ### Author a new note
 
 ```sh
-obsidian create path=temporal/projects/foo/overview.md content="# Foo\n\nLinks to [[ms tiered storage]]." open
+obsidian create path=work/temporal/projects/foo/overview.md content="# Foo\n\nLinks to [[ms tiered storage]]." open
 ```
 
 Use `template=<name>` to start from a template (`obsidian templates` lists them). Set frontmatter with `obsidian property:set name=tag value=temporal path=...`.

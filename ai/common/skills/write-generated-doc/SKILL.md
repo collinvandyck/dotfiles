@@ -3,16 +3,16 @@ name: write-generated-doc
 description: Writes a generated doc into a common location dependent on type
 disable-model-invocation: false
 user-invocable: true
-allowed-tools: Write(~/code/notes/ai/gen/**), Bash(open:*)
+allowed-tools: Write(~/code/notes/tech/ai/gen/**), Bash(open:*)
 ---
 
-The `~/code/notes/ai/gen/` folder is the Obsidian vault location where
+The `~/code/notes/tech/ai/gen/` folder is the Obsidian vault location where
 generated documents are collected over time. (`~/code/notes` is a symlink to
 the iCloud Obsidian vault.)
 
 ```shell
-tree ~/code/notes/ai/gen -L 1
-~/code/notes/ai/gen
+tree ~/code/notes/tech/ai/gen -L 1
+~/code/notes/tech/ai/gen
 ├── cover-letters
 ├── implementations
 ├── investigations
@@ -37,8 +37,8 @@ Example:
 Use write-generated-doc to save the [cover letter|local review| etc]
 ```
 
-Cover letters are written into `~/code/notes/ai/gen/cover-letters`.
-Plans are written into `~/code/notes/ai/gen/plans`.
+Cover letters are written into `~/code/notes/tech/ai/gen/cover-letters`.
+Plans are written into `~/code/notes/tech/ai/gen/plans`.
 And so on.
 
 The file name should be formatted as `$kind-$topic.md`.
@@ -69,14 +69,14 @@ Use `open -g` so Obsidian navigates to the note in the background without
 stealing focus from the user's current window:
 
 ```bash
-open -g "obsidian://open?vault=notes&file=ai/gen/<type>/<filename-without-md>"
+open -g "obsidian://open?vault=notes&file=tech/ai/gen/<type>/<filename-without-md>"
 ```
 
-Example: a file written to `~/code/notes/ai/gen/walkthroughs/walkthrough-foo.md`
+Example: a file written to `~/code/notes/tech/ai/gen/walkthroughs/walkthrough-foo.md`
 is opened with:
 
 ```bash
-open -g "obsidian://open?vault=notes&file=ai/gen/walkthroughs/walkthrough-foo"
+open -g "obsidian://open?vault=notes&file=tech/ai/gen/walkthroughs/walkthrough-foo"
 ```
 
 The `.md` extension can be omitted — Obsidian resolves it. Always wrap the URL
