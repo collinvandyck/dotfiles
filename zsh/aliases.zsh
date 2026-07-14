@@ -42,6 +42,7 @@ alias clc='cl --continue'
 alias clr='cl --resume'
 alias vi=nvim
 alias vim=nvim
+alias tt=temporal-tools
 
 # rust aliases
 alias co='cargo'
