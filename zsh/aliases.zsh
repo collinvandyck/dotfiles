@@ -43,6 +43,7 @@ alias clr='cl --resume'
 alias vi=nvim
 alias vim=nvim
 alias tt=temporal-tools
+alias cat=bat
 
 # rust aliases
 alias co='cargo'
