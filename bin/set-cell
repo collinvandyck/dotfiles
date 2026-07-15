@@ -2,18 +2,24 @@
 
 set -euo pipefail
 
-gh=$(searchpath gh | grep -v .dotfiles | head -1)
-if [ -z $gh ]; then
+ENVRC=~/code/temporal/.envrc
+PRELUDE="export CELL="
+
+usage() {
+	echo >&2 -e "$(basename "$0") sets the current CELL env var\n"
+	echo >&2 "usage: $(basename "$0") [cell]"
 	exit 1
-fi
+}
 
-if [ $# -gt 0 ]; then
-	cmd=$(compgen -A function | grep "^$1$" | head -1)
-	if ! [ -z $cmd ]; then
-		shift
-		$cmd "$@"
-		exit 0
-	fi
-fi
+die() {
+	echo >&2 -e "fatal: $*"
+	exit 1
+}
 
-exec $gh "$@"
+[[ $# -eq 1 ]] || usage
+[[ -z "$1" ]] || [[ "$1" =~ [[:space:]] ]] && die "malformed cell"
+[[ -f $ENVRC ]] || die "$ENVRC not found"
+
+sed -i -E "s/^$PRELUDE.*/$PRELUDE$1/" $ENVRC
+grep "^$PRELUDE$1$" $ENVRC &>/dev/null || die "setting failed"
+cd ~/code/temporal && direnv allow
