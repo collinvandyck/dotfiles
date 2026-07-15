@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 # only inject context that match this pattern
-CT_CONTEXT_SAFE_PATTERN="collin"
+CELL_SAFE_PATTERN="collin"
 
 ctt() {
 	local -a args=("${@}")
@@ -56,10 +56,10 @@ _ct_extract_dry_run() {
 }
 
 _ct_inject_context() {
-	[[ "$CT_CONTEXT" == *${CT_CONTEXT_SAFE_PATTERN}* ]] || return
+	[[ "$CELL" == *${CELL_SAFE_PATTERN}* ]] || return
 	[[ " ${args[*]} " == *" --context "* ]] && return
 	[[ " ${args[*]} " == *" -c "* ]] && return
-	args=("$1" --context "$CT_CONTEXT" "${args[@]:1}")
+	args=("$1" --context "$CELL" "${args[@]:1}")
 }
 
 _ct_inject_duration() {
@@ -77,7 +77,7 @@ _ct_inject_namespace() {
 _ct_inject_k9s_write() {
 	# only enable writes when the effective context is our own cell
 	# shellcheck disable=SC2119  # zsh: _ct_context_value reads $args, not positional args
-	[[ "$(_ct_context_value)" == "$CT_CONTEXT" ]] || return
+	[[ "$(_ct_context_value)" == "$CELL" ]] || return
 	[[ " ${args[*]} " == *" --write "* ]] && return
 	args=("${args[1]}" --write "${args[@]:1}")
 }

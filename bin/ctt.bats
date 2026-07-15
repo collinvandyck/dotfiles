@@ -5,7 +5,7 @@
 
 setup() {
 	STUB_DIR="$(mktemp -d)"
-	cat > "$STUB_DIR/omni" <<-'EOF'
+	cat >"$STUB_DIR/omni" <<-'EOF'
 		#!/usr/bin/env sh
 		# record that omni actually ran, so dry-run tests can assert it didn't
 		touch "$(dirname "$0")/ran"
@@ -15,7 +15,7 @@ setup() {
 	PATH="$STUB_DIR:$PATH"
 
 	# a safe-pattern context so injection is enabled
-	export CT_CONTEXT="collin-cluster"
+	export CELL="collin-cluster"
 }
 
 teardown() {
@@ -70,8 +70,8 @@ teardown() {
 	[ "$output" = "omni kubectl -n temporal -d 8h --context other get pods" ]
 }
 
-@test "does not inject context for unsafe CT_CONTEXT" {
-	export CT_CONTEXT="someone-else-cluster"
+@test "does not inject context for unsafe CELL" {
+	export CELL="someone-else-cluster"
 	run "$BATS_TEST_DIRNAME/ctt" kubectl get pods
 	[ "$status" -eq 0 ]
 	[ "$output" = "omni kubectl -n temporal -d 8h get pods" ]
