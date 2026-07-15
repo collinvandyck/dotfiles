@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	echo >&2 -e "usage: $(basename "$0") [file name]"
+	exit 1
+}
+
+find_up() {
+	local dir=$PWD
+	local found=
+	while :; do
+		local check=$dir/$1
+		[[ "$check" = //* ]] && check="${check:1}"
+		[[ -e "$check" ]] && {
+			echo "$check"
+			found=true
+		}
+		if [[ $dir == "/" ]]; then
+			break
+		fi
+		dir=$(dirname "$dir")
+	done
+	[[ -n $found ]] || return 1
+}
+
+[[ $# -eq 1 ]] || usage
+find_up "$1"
