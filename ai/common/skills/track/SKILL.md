@@ -3,6 +3,7 @@ name: track
 description: Given a set of tasks by the user, create claude code tasks to track but not immediately start on
 disable-model-invocation: true
 model: haiku
+effort: low
 ---
 
 # Overview
