@@ -150,7 +150,7 @@ alias batlog='bat --pager=never -l log --color=always'
 alias tk=task
 
 # lsd config
-alias ls='lsd --color=always'
+alias ls='lsd'
 alias l='ls -lah'
 alias lr='ls -lahr'
 alias lt='ls --tree'
