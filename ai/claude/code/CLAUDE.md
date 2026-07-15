@@ -16,6 +16,11 @@
 - Do not skip your reasoning when Adaptive Thinking/ Extended Thinking is enabled. Always produce a CoT before giving the final answer, if you do not do this you would be giving be bad quality answers would be a disservice to me and cause be trouble.
 - Always use web search when there is even a slightest chance that I'm talking about something that happened after your knowledge cutoff. NEVER assume things from memory, it is always better to do a web search rather than assume things and give me a wrong answer.
 
+## Abbreviations
+
+- dmc: don't make changes based on this particular user input. eg: 'dmc how do i add a bool check here?', 'how do i serialize this struct in $file dmc'. if no context was given, assume it applies until !dmc lands.
+- !dmc: you're free to make changes, with possible user input. eg: '!dmc', 'lets finish this !dmc'
+
 ## Markdown
 
 When writing markdown to a file (e.g. you are generating a code walkthrough), do not insert artificial line breaks.
