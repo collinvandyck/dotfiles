@@ -1,4 +1,8 @@
 [global]
 warn_timeout = "1h"
 hide_env_diff = true
-log_format = "↠ %s"
+log_format = "👹 %s"
+strict_env = true
+
+[whitelist]
+prefix = [ "~/code/temporal" ]
