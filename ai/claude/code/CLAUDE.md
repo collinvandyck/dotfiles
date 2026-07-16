@@ -18,7 +18,7 @@
 
 ## Abbreviations
 
-- dmc: don't make changes based on this particular user input. eg: 'dmc how do i add a bool check here?', 'how do i serialize this struct in $file dmc'. if no context was given, assume it applies until !dmc lands.
+- dmc: don't make changes based on this particular user input. eg: 'dmc how do i add a bool check here?', 'how do i serialize this struct in $file dmc'. if no context was given, assume it applies until !dmc lands. IMPORTANT: this doesn't mean you can't read file -- you can and should when appropriate.
 - !dmc: you're free to make changes, with possible user input. eg: '!dmc', 'lets finish this !dmc'
 
 ## Markdown
