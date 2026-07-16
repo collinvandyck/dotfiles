@@ -38,6 +38,7 @@ confirm-close-surface = false
 copy-on-select = clipboard
 window-step-resize = true
 window-decoration = auto
+split-preserve-zoom = navigation
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
