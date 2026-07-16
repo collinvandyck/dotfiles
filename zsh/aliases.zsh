@@ -45,6 +45,8 @@ alias vim=nvim
 alias tt=temporal-tools
 alias cat=bat
 
+dy() { echo -n "$(pwd)" | pbcopy; }
+
 # rust aliases
 alias co='cargo'
 alias we='watchexec'
