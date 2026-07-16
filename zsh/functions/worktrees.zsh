@@ -1,5 +1,14 @@
-# create a new worktree. assumes that you're in the repo
-new-worktree() {
+# launches the worktrees script and cds into the resultiing dir
+wt() {
+	setopt local_options err_return no_unset pipe_fail
+
+	local dir="$(command worktrees "$@")" || return 1
+	[[ -z "$dir" ]] && return
+	cd -- "$dir"
+}
+
+# OLD. create a new worktree. assumes that you're in the repo
+old-new-worktree() {
 	if ! git rev-parse --git-common-dir &>/dev/null; then
 		echo "not in a git repo" >&2
 		return 1

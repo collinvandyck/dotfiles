@@ -104,7 +104,6 @@ alias gdos='gdo --stat'
 alias gdob='gdo | bat'
 alias gdu='gd @{u}'
 alias gt='git tag'
-alias wt=worktrees
 alias zp='cd $(git rev-parse --git-common-dir)/..'
 
 # zsh aliases

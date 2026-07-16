@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+#
+# worktrees — sibling git worktrees by convention, driven by the `wt` shell function.
+#
+# Layout is a sibling dir <repo>-<slug>, on branch collin/<slug>, cut from origin/main.
+# The contract with the wt function: stdout is the single dir to cd into; empty stdout
+# means "stay put". All chatter goes to stderr. See worktrees.bats.
+
+set -euo pipefail
+
+BRANCH_PREFIX=collin/
+BASE_DEFAULT=origin/main
+
+# gum theming — one accent, applied across confirm/choose so the tool feels of a piece.
+C_ACCENT="${WT_ACCENT:-212}"
+export GUM_CONFIRM_PROMPT_FOREGROUND="$C_ACCENT"
+export GUM_CHOOSE_CURSOR_FOREGROUND="$C_ACCENT"
+export GUM_CHOOSE_SELECTED_FOREGROUND="$C_ACCENT"
+
+# --- output helpers ---
+
+msg() { gum style --foreground "$C_ACCENT" "$*" >&2 2>/dev/null || printf '%s\n' "$*" >&2; }
+die() { msg "$*"; exit 2; }
+
+gum_confirm() { gum confirm "$@"; }
+gum_choose() { gum choose; }
+
+# --- repo geometry ---
+
+# main_root — absolute path of the *main* worktree, correct even from inside a linked one.
+main_root() {
+  local common
+  common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) \
+    || die "not in a git repository"
+  dirname "$common"
+}
+
+# worktree_path SLUG — the conventional sibling path for a slug.
+worktree_path() {
+  local root; root=$(main_root)
+  printf '%s/%s-%s\n' "$(dirname "$root")" "$(basename "$root")" "$1"
+}
+
+# list_slugs — every sibling worktree as "slug<TAB>path".
+list_slugs() {
+  local root name; root=$(main_root); name=$(basename "$root")
+  git -C "$root" worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r p; do
+    local b=${p##*/}
+    case $b in
+    "$name"-*) printf '%s\t%s\n' "${b#"$name"-}" "$p" ;;
+    *) : ;;
+    esac
+  done
+}
+
+branch_exists() { git -C "$(main_root)" show-ref --verify --quiet "refs/heads/$1"; }
+
+# match QUERY — echo "slug<TAB>path" for an existing worktree: exact wins, else unique
+# substring, else gum-pick among the hits. Returns non-zero when nothing matches.
+match() {
+  local query=$1 exact="" pr
+  local -a pairs=()
+  while IFS=$'\t' read -r s p; do
+    [[ -z $s ]] && continue
+    [[ $s == "$query" ]] && exact="$s"$'\t'"$p"
+    [[ $s == *"$query"* ]] && pairs+=("$s"$'\t'"$p")
+  done < <(list_slugs)
+
+  [[ -n $exact ]] && { printf '%s\n' "$exact"; return 0; }
+  case ${#pairs[@]} in
+  0) return 1 ;;
+  1) printf '%s\n' "${pairs[0]}"; return 0 ;;
+  *)
+    local pick
+    pick=$(printf '%s\n' "${pairs[@]}" | cut -f1 | gum_choose) || return 1
+    [[ -z $pick ]] && return 1
+    for pr in "${pairs[@]}"; do
+      [[ ${pr%%$'\t'*} == "$pick" ]] && { printf '%s\n' "$pr"; return 0; }
+    done
+    return 1
+    ;;
+  esac
+}
+
+# --- commands ---
+
+# create SLUG [BASE] — fetch, cut the worktree, run post-create hooks, print its path.
+create() {
+  local slug=${1:-} base=${2:-$BASE_DEFAULT}
+  [[ -z $slug ]] && die "usage: wt add <slug> [base]"
+
+  local root name parent path branch
+  root=$(main_root); name=${root##*/}; parent=${root%/*}
+  path="$parent/$name-$slug"
+  branch="$BRANCH_PREFIX$slug"
+
+  # freshen the base's remote so we branch from current, not a stale tracking ref.
+  if [[ $base == */* ]]; then
+    local remote=${base%%/*}
+    git -C "$root" remote get-url "$remote" &>/dev/null && git -C "$root" fetch -q "$remote"
+  fi
+
+  if [[ -e $path ]]; then
+    gum_confirm "worktree dir $path already exists — cd into it?" && { printf '%s\n' "$path"; return 0; }
+    die "aborted"
+  fi
+
+  if branch_exists "$branch"; then
+    local choice
+    choice=$(printf '%s\n' "check out existing branch" "force a new branch (-B)" "cancel" | gum_choose) || die "aborted"
+    case $choice in
+    "check out existing branch") git -C "$root" worktree add -q "$path" "$branch" ;;
+    "force a new branch (-B)") git -C "$root" worktree add -q "$path" -B "$branch" "$base" ;;
+    *) die "aborted" ;;
+    esac
+  else
+    git -C "$root" worktree add -q "$path" -b "$branch" "$base"
+  fi
+
+  post_create "$path" "$root"
+  msg "created $path"
+  printf '%s\n' "$path"
+}
+
+# post_create PATH ROOT — link .claude from the main repo, kick mise if configured.
+post_create() {
+  local path=$1 root=$2
+  [[ -e $root/.claude && ! -e $path/.claude ]] && ln -s "$root/.claude" "$path/.claude"
+  if [[ -f $path/mise.toml ]]; then
+    (cd "$path" && mise trust && mise install) >&2
+  fi
+  return 0
+}
+
+# resolve SLUG — the bare `wt <slug>` hot path: cd to a match, else create it.
+resolve() {
+  local query=$1 hit
+  if hit=$(match "$query"); then
+    printf '%s\n' "${hit#*$'\t'}"
+  else
+    create "$query"
+  fi
+}
+
+# switch — no-arg `wt`: pick any worktree and print its path. [root] leads the list
+# and takes you back to the main worktree, unless you're already there.
+switch() {
+  local pick hit root cur
+  root=$(main_root)
+  cur=$(git rev-parse --show-toplevel 2>/dev/null || true)
+  pick=$( { [[ $cur != "$root" ]] && printf '[root]\n'; list_slugs | cut -f1; } | gum_choose) || return 0
+  [[ -z $pick ]] && return 0
+  [[ $pick == "[root]" ]] && { printf '%s\n' "$root"; return 0; }
+  hit=$(match "$pick") || return 0
+  printf '%s\n' "${hit#*$'\t'}"
+}
+
+list() { git -C "$(main_root)" worktree list >&2; }
+
+# remove [SLUG] — drop a worktree (fzf-style pick if no slug), then offer to delete its branch.
+remove() {
+  local query=${1:-} hit slug path root
+  root=$(main_root)
+
+  if [[ -z $query ]]; then
+    local pick
+    pick=$(list_slugs | cut -f1 | gum_choose) || return 0
+    [[ -z $pick ]] && return 0
+    hit=$(match "$pick") || die "no such worktree: $pick"
+  else
+    hit=$(match "$query") || die "no worktree matches: $query"
+  fi
+
+  slug=${hit%%$'\t'*}; path=${hit#*$'\t'}
+  git -C "$root" worktree remove "$path"
+  msg "removed $path"
+
+  local branch="$BRANCH_PREFIX$slug"
+  if branch_exists "$branch" && gum_confirm "delete branch $branch?"; then
+    git -C "$root" branch -D "$branch" >&2
+    msg "deleted $branch"
+  fi
+}
+
+# from_pr URL|NUMBER — a worktree checked out to a PR head.
+from_pr() {
+  local ref=${1:-}; [[ -z $ref ]] && die "usage: wt pr <url|number>"
+  local root name parent num path
+  root=$(main_root); name=${root##*/}; parent=${root%/*}
+  num=${ref##*/}
+  path="$parent/$name-pr-$num"
+
+  [[ -e $path ]] && die "worktree dir $path already exists"
+  git -C "$root" worktree add -q --detach "$path"
+  (cd "$path" && gh pr checkout "$ref") >&2
+  post_create "$path" "$root"
+  msg "created $path"
+  printf '%s\n' "$path"
+}
+
+usage() {
+  cat >&2 <<'EOF'
+usage: wt [command | slug]
+
+  wt <slug>              switch to a matching worktree, or create it if none match
+  wt                     pick a worktree to switch to
+  wt add <slug> [base]   create <repo>-<slug> on branch collin/<slug>, off origin/main
+  wt ls                  list worktrees
+  wt rm [slug]           remove a worktree, then optionally delete its branch
+  wt pr <url|number>     create a worktree from a pull request
+  wt -h                  show this help
+EOF
+}
+
+main() {
+  local cmd=${1:-}
+  case $cmd in
+  "") switch ;;
+  -h | --help | help) usage ;;
+  add) shift; create "$@" ;;
+  ls | list) list ;;
+  rm | remove) shift; remove "$@" ;;
+  pr) shift; from_pr "$@" ;;
+  *) resolve "$cmd" ;;
+  esac
+}
+
+main "$@"
