@@ -16,6 +16,9 @@ C_ACCENT="${WT_ACCENT:-212}"
 export GUM_CONFIRM_PROMPT_FOREGROUND="$C_ACCENT"
 export GUM_CHOOSE_CURSOR_FOREGROUND="$C_ACCENT"
 export GUM_CHOOSE_SELECTED_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_INDICATOR_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_MATCH_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_PROMPT_FOREGROUND="$C_ACCENT"
 
 # --- output helpers ---
 
@@ -23,7 +26,14 @@ msg() { gum style --foreground "$C_ACCENT" "$*" >&2 2>/dev/null || printf '%s\n'
 die() { msg "$*"; exit 2; }
 
 gum_confirm() { gum confirm "$@"; }
-gum_choose() { gum choose; }
+gum_choose() { gum choose; }   # fixed menus
+# long lists — inline, word-start match, input order preserved. Buffers stdin so
+# we can skip the picker entirely on empty input (gum otherwise lists files).
+gum_filter() {
+  local input; input=$(cat)
+  [[ -z $input ]] && return 1
+  printf '%s\n' "$input" | gum filter --no-fuzzy --no-fuzzy-sort --height "${WT_PICK_HEIGHT:-15}"
+}
 
 # --- repo geometry ---
 
@@ -41,19 +51,42 @@ worktree_path() {
   printf '%s/%s-%s\n' "$(dirname "$root")" "$(basename "$root")" "$1"
 }
 
-# list_slugs — every sibling worktree as "slug<TAB>path".
+# list_slugs — every sibling worktree as "slug<TAB>path", most recently active
+# first (by the worktree HEAD's commit time).
 list_slugs() {
   local root name; root=$(main_root); name=$(basename "$root")
   git -C "$root" worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r p; do
-    local b=${p##*/}
+    local b=${p##*/} ts
     case $b in
-    "$name"-*) printf '%s\t%s\n' "${b#"$name"-}" "$p" ;;
+    "$name"-*)
+      ts=$(git -C "$p" log -1 --format=%ct 2>/dev/null || echo 0)
+      printf '%s\t%s\t%s\n' "$ts" "${b#"$name"-}" "$p" ;;
     *) : ;;
     esac
-  done
+  done | sort -rn -k1,1 | cut -f2-
 }
 
 branch_exists() { git -C "$(main_root)" show-ref --verify --quiet "refs/heads/$1"; }
+
+# slugify ARGS... — join args and collapse whitespace runs to single dashes, so
+# `wt test this and that` becomes the slug test-this-and-that.
+slugify() {
+  local s; s=$(printf '%s' "$*" | tr -s '[:space:]' '-')
+  s=${s#-}; s=${s%-}
+  printf '%s' "$s"
+}
+
+# gh_owner_repo URL — extract lowercased owner/repo from a github url or remote
+# (https or ssh), else empty.
+gh_owner_repo() {
+  local u=${1%.git}
+  case $u in
+  *://*) u=${u#*://}; u=${u#*/} ;;   # scheme://host/owner/repo/... -> owner/repo/...
+  *@*:*) u=${u#*:} ;;                # git@host:owner/repo -> owner/repo
+  *) : ;;
+  esac
+  printf '%s\n' "$u" | cut -d/ -f1,2 | tr 'A-Z' 'a-z'
+}
 
 # match QUERY — echo "slug<TAB>path" for an existing worktree: exact wins, else unique
 # substring, else gum-pick among the hits. Returns non-zero when nothing matches.
@@ -72,7 +105,7 @@ match() {
   1) printf '%s\n' "${pairs[0]}"; return 0 ;;
   *)
     local pick
-    pick=$(printf '%s\n' "${pairs[@]}" | cut -f1 | gum_choose) || return 1
+    pick=$(printf '%s\n' "${pairs[@]}" | cut -f1 | gum_filter) || return 1
     [[ -z $pick ]] && return 1
     for pr in "${pairs[@]}"; do
       [[ ${pr%%$'\t'*} == "$pick" ]] && { printf '%s\n' "$pr"; return 0; }
@@ -86,7 +119,8 @@ match() {
 
 # create SLUG [BASE] — fetch, cut the worktree, run post-create hooks, print its path.
 create() {
-  local slug=${1:-} base=${2:-$BASE_DEFAULT}
+  local slug base=${2:-$BASE_DEFAULT}
+  slug=$(slugify "${1:-}")
   [[ -z $slug ]] && die "usage: wt add <slug> [base]"
 
   local root name parent path branch
@@ -122,14 +156,26 @@ create() {
   printf '%s\n' "$path"
 }
 
-# post_create PATH ROOT — link .claude from the main repo, kick mise if configured.
+# post_create PATH ROOT — link .claude from the main repo (and hide it from git),
+# kick mise if configured.
 post_create() {
   local path=$1 root=$2
-  [[ -e $root/.claude && ! -e $path/.claude ]] && ln -s "$root/.claude" "$path/.claude"
+  if [[ -e $root/.claude && ! -e $path/.claude ]]; then
+    ln -s "$root/.claude" "$path/.claude"
+    git_exclude "$path" .claude
+  fi
   if [[ -f $path/mise.toml ]]; then
     (cd "$path" && mise trust && mise install) >&2
   fi
   return 0
+}
+
+# git_exclude PATH PATTERN — add PATTERN to the worktree's info/exclude, once.
+git_exclude() {
+  local path=$1 pat=$2 file
+  file=$(git -C "$path" rev-parse --path-format=absolute --git-path info/exclude) || return 0
+  mkdir -p "$(dirname "$file")"
+  grep -qxF "$pat" "$file" 2>/dev/null || printf '%s\n' "$pat" >> "$file"
 }
 
 # resolve SLUG — the bare `wt <slug>` hot path: cd to a match, else create it.
@@ -148,7 +194,7 @@ switch() {
   local pick hit root cur
   root=$(main_root)
   cur=$(git rev-parse --show-toplevel 2>/dev/null || true)
-  pick=$( { [[ $cur != "$root" ]] && printf '[root]\n'; list_slugs | cut -f1; } | gum_choose) || return 0
+  pick=$( { [[ $cur != "$root" ]] && printf '[root]\n'; list_slugs | cut -f1; } | gum_filter) || return 0
   [[ -z $pick ]] && return 0
   [[ $pick == "[root]" ]] && { printf '%s\n' "$root"; return 0; }
   hit=$(match "$pick") || return 0
@@ -164,7 +210,7 @@ remove() {
 
   if [[ -z $query ]]; then
     local pick
-    pick=$(list_slugs | cut -f1 | gum_choose) || return 0
+    pick=$(list_slugs | cut -f1 | gum_filter) || return 0
     [[ -z $pick ]] && return 0
     hit=$(match "$pick") || die "no such worktree: $pick"
   else
@@ -172,6 +218,18 @@ remove() {
   fi
 
   slug=${hit%%$'\t'*}; path=${hit#*$'\t'}
+
+  # if we're standing in the worktree we're about to remove, we'd be left in a
+  # dir that no longer exists — note it now so we can hand root back to the
+  # shell function to cd into once it's gone.
+  local here="" cur
+  cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
+  [[ -n $cur && $(realpath "$path") == "$(realpath "$cur")" ]] && here=1
+
+  # step out of the doomed dir first, else later git calls run in a cwd that's
+  # about to vanish (the script's own cwd, not yet the shell's).
+  [[ -n $here ]] && cd "$root"
+
   git -C "$root" worktree remove "$path"
   msg "removed $path"
 
@@ -180,22 +238,62 @@ remove() {
     git -C "$root" branch -D "$branch" >&2
     msg "deleted $branch"
   fi
+
+  [[ -n $here ]] && printf '%s\n' "$root"
+  return 0
 }
 
-# from_pr URL|NUMBER — a worktree checked out to a PR head.
+# from_pr [URL|NUMBER] — a worktree checked out to a PR head. With no arg, pick one
+# from the open PRs (type to narrow).
 from_pr() {
-  local ref=${1:-}; [[ -z $ref ]] && die "usage: wt pr <url|number>"
-  local root name parent num path
+  local ref=${1:-}
+  if [[ -z $ref ]]; then
+    ref=$(pick_pr) || return 0
+    [[ -z $ref ]] && return 0
+  fi
+
+  local root name parent num path branch
   root=$(main_root); name=${root##*/}; parent=${root%/*}
+
+  # A PR url must belong to this repo — otherwise we'd mislabel the worktree and
+  # check out the wrong project's PR. (A bare number is always this repo.)
+  if [[ $ref == *://* || $ref == *github.com* ]]; then
+    local want here
+    want=$(gh_owner_repo "$ref")
+    here=$(gh_owner_repo "$(git -C "$root" remote get-url origin 2>/dev/null || true)")
+    [[ -n $here && $want == "$here" ]] || die "this PR url is for '$want', but you're in '$here'"
+  fi
+
   num=${ref##*/}
   path="$parent/$name-pr-$num"
+  branch="${BRANCH_PREFIX}pr-$num"
 
   [[ -e $path ]] && die "worktree dir $path already exists"
   git -C "$root" worktree add -q --detach "$path"
-  (cd "$path" && gh pr checkout "$ref") >&2
+
+  # Check out the PR into our own branch. gh leaves the upstream pointing at the
+  # PR's branch, so `git pull` follows the author. We then make pushes go to our
+  # own origin/<branch>: push.default=current (repo-wide) picks the same-named
+  # branch, and pushRemote=origin sends it to origin even for a fork PR.
+  (cd "$path" && gh pr checkout "$ref" --branch "$branch") >&2
+  git -C "$root" config push.default current
+  git -C "$root" config branch."$branch".pushRemote origin
+
   post_create "$path" "$root"
   msg "created $path"
   printf '%s\n' "$path"
+}
+
+# pick_pr — list open PRs (number, author, title, branch) so any of them can be
+# filtered on, let the user narrow, echo the chosen PR number.
+pick_pr() {
+  local line
+  line=$(gh pr list --limit "${WT_PR_LIMIT:-100}" \
+    --json number,author,title,headRefName \
+    --template '{{range .}}{{.number}}{{"\t"}}{{.author.login}}{{"\t"}}{{.title}}{{"\t"}}{{.headRefName}}{{"\n"}}{{end}}' \
+    | gum_filter) || return 1
+  [[ -z $line ]] && return 1
+  printf '%s\n' "${line%%$'\t'*}"
 }
 
 usage() {
@@ -207,7 +305,7 @@ usage: wt [command | slug]
   wt add <slug> [base]   create <repo>-<slug> on branch collin/<slug>, off origin/main
   wt ls                  list worktrees
   wt rm [slug]           remove a worktree, then optionally delete its branch
-  wt pr <url|number>     create a worktree from a pull request
+  wt pr [url|number]     create a worktree from a pull request (no arg: pick one)
   wt -h                  show this help
 EOF
 }
@@ -221,7 +319,7 @@ main() {
   ls | list) list ;;
   rm | remove) shift; remove "$@" ;;
   pr) shift; from_pr "$@" ;;
-  *) resolve "$cmd" ;;
+  *) resolve "$(slugify "$@")" ;;
   esac
 }
 

@@ -25,8 +25,9 @@ setup() {
 	mkdir -p "$TMP/bin"
 	stub_gum
 	stub_logger mise
-	stub_logger gh
+	stub_gh
 	export MISE_LOG="$TMP/mise.log"
+	export GUM_LOG="$TMP/gum.log"
 	PATH="$TMP/bin:$PATH"
 
 	REPO="$TMP/myrepo"
@@ -72,6 +73,14 @@ teardown() {
 	[ ! -d "$TMP/myrepo-existing-nested" ]
 }
 
+@test "a multi-word bare invocation is slugified into a single worktree" {
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" test this and that
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-test-this-and-that" ]
+	[[ "$output" == *"/myrepo-test-this-and-that" ]]
+	[ ! -d "$TMP/myrepo-test" ]
+}
+
 @test "a bare slug that uniquely matches an existing worktree prints its path and creates nothing" {
 	git worktree add -q "$TMP/myrepo-vis-admin" -b collin/vis-admin
 	before="$(git worktree list | wc -l)"
@@ -105,6 +114,42 @@ teardown() {
 	[ -L "$TMP/myrepo-withclaude/.claude" ]
 }
 
+@test "add excludes the symlinked .claude via the worktree's info/exclude" {
+	mkdir "$REPO/.claude"
+	run "$BATS_TEST_DIRNAME/worktrees" add withclaude
+	[ "$status" -eq 0 ]
+	excl="$(git -C "$TMP/myrepo-withclaude" rev-parse --path-format=absolute --git-path info/exclude)"
+	grep -qxF '.claude' "$excl"
+}
+
+@test "pr with no args lists PRs (including author) and checks out into our own tracked branch" {
+	line=$'7\tcollin\tfix the thing\tcollin/fix'
+	GH_PR_LIST="$line" GUM_CHOICE="$line" run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" pr
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-pr-7" ]
+	grep -q author "$TMP/gh.log"
+	grep -q -- "pr checkout 7 --branch collin/pr-7" "$TMP/gh.log"
+	[ "$(git -C "$TMP/myrepo-pr-7" config --get push.default)" = "current" ]
+	[ "$(git -C "$TMP/myrepo-pr-7" config --get branch.collin/pr-7.pushRemote)" = "origin" ]
+	[[ "$output" == *"/myrepo-pr-7" ]]
+}
+
+@test "pr with a url for a different repo errors before doing anything" {
+	git remote set-url origin https://github.com/temporalio/temporal.git
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" pr https://github.com/someone/fork/pull/9
+	[ "$status" -ne 0 ]
+	[ ! -d "$TMP/myrepo-pr-9" ]
+	[ ! -f "$TMP/gh.log" ] || ! grep -q "pr checkout" "$TMP/gh.log"
+}
+
+@test "pr with a url matching the repo remote checks it out" {
+	git remote set-url origin https://github.com/temporalio/temporal.git
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" pr https://github.com/temporalio/temporal/pull/9
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-pr-9" ]
+	grep -q -- "--branch collin/pr-9" "$TMP/gh.log"
+}
+
 @test "add runs mise install when the new worktree contains a mise.toml" {
 	printf '' > "$REPO/mise.toml"
 	git add mise.toml
@@ -124,12 +169,35 @@ teardown() {
 	[ "$(head -n1 "$TMP/menu")" = "[root]" ]
 }
 
+@test "the switch picker orders worktrees by last-active, most recent first" {
+	# names chosen so alphabetical/creation order (aaa, zzz) disagrees with
+	# recency: aaa is older, zzz is newer, so last-active must put zzz first.
+	git worktree add -q "$TMP/myrepo-aaa" -b collin/aaa
+	GIT_COMMITTER_DATE="2020-01-01T00:00:00 +0000" git -C "$TMP/myrepo-aaa" commit -q --allow-empty -m aaa
+	git worktree add -q "$TMP/myrepo-zzz" -b collin/zzz
+	GIT_COMMITTER_DATE="2030-01-01T00:00:00 +0000" git -C "$TMP/myrepo-zzz" commit -q --allow-empty -m zzz
+
+	GUM_MENU_LOG="$TMP/menu" run "$BATS_TEST_DIRNAME/worktrees"
+	[ "$status" -eq 0 ]
+	[ "$(sed -n 1p "$TMP/menu")" = "zzz" ]
+	[ "$(sed -n 2p "$TMP/menu")" = "aaa" ]
+}
+
 @test "the switch picker omits [root] when already in the main repo root" {
 	git worktree add -q "$TMP/myrepo-a" -b collin/a
 	# setup leaves us in the main root
 	GUM_MENU_LOG="$TMP/menu" run "$BATS_TEST_DIRNAME/worktrees"
 	[ "$status" -eq 0 ]
 	! grep -qxF '[root]' "$TMP/menu"
+}
+
+@test "switch with no worktrees never opens the picker" {
+	# main root, no linked worktrees -> nothing to pick; the picker must not open
+	# (gum filter on empty input falls back to listing files)
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees"
+	[ "$status" -eq 0 ]
+	[ -z "$output" ]
+	[ ! -f "$TMP/gum.log" ] || ! grep -q filter "$TMP/gum.log"
 }
 
 @test "selecting [root] in the switch picker returns the main repo root" {
@@ -141,11 +209,22 @@ teardown() {
 	[[ "$output" != *"/myrepo-a" ]]
 }
 
-@test "rm removes the worktree" {
+@test "rm removes a worktree you're not in and stays put (empty stdout)" {
 	git worktree add -q "$TMP/myrepo-doomed" -b collin/doomed
-	run "$BATS_TEST_DIRNAME/worktrees" rm doomed
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm doomed
 	[ "$status" -eq 0 ]
 	[ ! -d "$TMP/myrepo-doomed" ]
+	[ -z "$output" ]
+}
+
+@test "rm from inside the target worktree removes it and returns you to root" {
+	git worktree add -q "$TMP/myrepo-here" -b collin/here
+	cd "$TMP/myrepo-here"
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm here
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-here" ]
+	[[ "$output" == *"/myrepo" ]]
+	[[ "$output" != *"/myrepo-here" ]]
 }
 
 # --- helpers ---
@@ -156,6 +235,7 @@ teardown() {
 stub_gum() {
 	cat > "$TMP/bin/gum" <<-'EOF'
 		#!/usr/bin/env sh
+		[ -n "${GUM_LOG:-}" ] && echo "$*" >> "$GUM_LOG"
 		sub=$1; shift
 		case "$sub" in
 			confirm) exit "${GUM_CONFIRM:-1}" ;;
@@ -178,4 +258,17 @@ stub_logger() {
 		echo "\$*" >> "$TMP/$1.log"
 	EOF
 	chmod +x "$TMP/bin/$1"
+}
+
+# gh stub: logs args like stub_logger, and for `pr list` prints $GH_PR_LIST so the
+# picker has rows to choose from.
+stub_gh() {
+	cat > "$TMP/bin/gh" <<-EOF
+		#!/usr/bin/env sh
+		echo "\$*" >> "$TMP/gh.log"
+		if [ "\$1" = "pr" ] && [ "\$2" = "list" ]; then
+			printf '%s\n' "\${GH_PR_LIST:-}"
+		fi
+	EOF
+	chmod +x "$TMP/bin/gh"
 }
