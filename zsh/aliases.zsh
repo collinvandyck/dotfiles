@@ -47,6 +47,7 @@ alias tt=temporal-tools
 alias cat=bat
 
 dy() { echo -n "$(pwd)" | pbcopy; }
+viw() { vi $(which "$@"); }
 
 # rust aliases
 alias co='cargo'
@@ -92,7 +93,11 @@ alias grhom='grh origin/$(git_main_branch)'
 alias grhlb='grh @{-1}'
 alias grom='gr origin/master'
 alias rev='git rev-parse HEAD'
+
 alias gg='git grep'
+alias ggp='git grep -p'
+ggpc() { ggp -C 5 "$@"; }
+
 alias put='git put'
 alias gla='git last'
 alias shove='git shove'
