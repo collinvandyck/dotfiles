@@ -94,8 +94,8 @@ alias grhlb='grh @{-1}'
 alias grom='gr origin/master'
 alias rev='git rev-parse HEAD'
 
-alias gg='git grep'
-alias ggp='git grep -p'
+alias gg='git grep -P'
+alias ggp='gg -p'
 ggpc() { ggp -C 5 "$@"; }
 
 alias put='git put'

@@ -90,7 +90,6 @@
 
 [grep]
     lineNumber = true
-    extendedRegexp = true
 
 [remote "origin"]
     prune = true
