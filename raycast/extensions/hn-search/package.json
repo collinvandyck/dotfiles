@@ -1,0 +1,45 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "hn-search",
+  "title": "Hacker News Search",
+  "description": "Search Hacker News through Algolia, scoped to a time window and ranked by points or comments.",
+  "icon": "command-icon.png",
+  "author": "collin",
+  "categories": [
+    "News",
+    "Web"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "search",
+      "title": "Search Hacker News",
+      "subtitle": "Hacker News",
+      "description": "Search recent HN stories on a topic, limited by time range and ranked by points or comments.",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.23",
+    "@raycast/utils": "^2.2.7"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2",
+    "vitest": "^4.1.10"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "lint": "ray lint",
+    "fix-lint": "ray lint --fix",
+    "test": "vitest run"
+  },
+  "allowScripts": {
+    "esbuild@0.27.7": true
+  }
+}
