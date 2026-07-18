@@ -46,6 +46,7 @@ alias vim=nvim
 alias tt=temporal-tools
 alias cat=bat
 
+clt() { cd ~/code/temporal && cl; }
 dy() { echo -n "$(pwd)" | pbcopy; }
 viw() { vi $(which "$@"); }
 
