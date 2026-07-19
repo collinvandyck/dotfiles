@@ -38,6 +38,22 @@ const RANGE_SECONDS: Record<Exclude<TimeRange, "all">, number> = {
   year: 365 * DAY,
 };
 
+// Canonical ordering of the ranges, shortest to longest — the source of truth
+// for both the dropdown and the cycle hotkey.
+export const TIME_RANGE_ORDER: readonly TimeRange[] = [
+  "24h",
+  "week",
+  "month",
+  "year",
+  "all",
+];
+
+// The next range in order, wrapping past the end back to the start.
+export function nextTimeRange(range: TimeRange): TimeRange {
+  const i = TIME_RANGE_ORDER.indexOf(range);
+  return TIME_RANGE_ORDER[(i + 1) % TIME_RANGE_ORDER.length];
+}
+
 // Lower bound on created_at_i for a range, or null for "all" (no time filter).
 export function timeRangeToCutoff(
   range: TimeRange,

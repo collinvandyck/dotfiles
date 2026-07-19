@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   timeRangeToCutoff,
+  nextTimeRange,
   buildSearchURL,
   sortStories,
   toStory,
@@ -93,6 +94,19 @@ describe("buildSearchURL", () => {
     );
     expect(url.searchParams.get("typoTolerance")).toBe("false");
     expect(url.searchParams.get("queryType")).toBe("prefixNone");
+  });
+});
+
+describe("nextTimeRange", () => {
+  it("advances to the next range in order", () => {
+    expect(nextTimeRange("24h")).toBe("week");
+    expect(nextTimeRange("week")).toBe("month");
+    expect(nextTimeRange("month")).toBe("year");
+    expect(nextTimeRange("year")).toBe("all");
+  });
+
+  it("wraps from the last range back to the first", () => {
+    expect(nextTimeRange("all")).toBe("24h");
   });
 });
 

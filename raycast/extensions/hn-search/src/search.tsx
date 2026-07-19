@@ -3,8 +3,10 @@ import { Action, ActionPanel, Icon, List, Keyboard, open } from "@raycast/api";
 import { useFetch, useLocalStorage } from "@raycast/utils";
 import {
   buildSearchURL,
+  nextTimeRange,
   sortStories,
   toStory,
+  TIME_RANGE_ORDER,
   type AlgoliaHit,
   type MatchMode,
   type SortMode,
@@ -16,13 +18,13 @@ interface SearchResponse {
   hits: AlgoliaHit[];
 }
 
-const TIME_RANGES: { value: TimeRange; title: string }[] = [
-  { value: "24h", title: "Last 24 Hours" },
-  { value: "week", title: "Past Week" },
-  { value: "month", title: "Past Month" },
-  { value: "year", title: "Past Year" },
-  { value: "all", title: "All Time" },
-];
+const TIME_RANGE_TITLES: Record<TimeRange, string> = {
+  "24h": "Last 24 Hours",
+  week: "Past Week",
+  month: "Past Month",
+  year: "Past Year",
+  all: "All Time",
+};
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
@@ -60,10 +62,7 @@ export default function Command() {
     void setSort(sort === "points" ? "comments" : "points");
   const toggleMatch = () =>
     void setMatch(match === "fuzzy" ? "exact" : "fuzzy");
-  const cycleRange = () => {
-    const i = TIME_RANGES.findIndex((t) => t.value === range);
-    void setRange(TIME_RANGES[(i + 1) % TIME_RANGES.length].value);
-  };
+  const cycleRange = () => void setRange(nextTimeRange(range));
 
   return (
     <List
@@ -77,8 +76,12 @@ export default function Command() {
           value={range}
           onChange={(v) => void setRange(v as TimeRange)}
         >
-          {TIME_RANGES.map((r) => (
-            <List.Dropdown.Item key={r.value} title={r.title} value={r.value} />
+          {TIME_RANGE_ORDER.map((value) => (
+            <List.Dropdown.Item
+              key={value}
+              title={TIME_RANGE_TITLES[value]}
+              value={value}
+            />
           ))}
         </List.Dropdown>
       }
@@ -124,10 +127,7 @@ function StoryItem({
 }) {
   const hasArticle = story.articleUrl !== null;
   const primaryUrl = story.articleUrl ?? story.discussionUrl;
-  const nextRange =
-    TIME_RANGES[
-      (TIME_RANGES.findIndex((t) => t.value === range) + 1) % TIME_RANGES.length
-    ];
+  const nextRangeTitle = TIME_RANGE_TITLES[nextTimeRange(range)];
 
   return (
     <List.Item
@@ -178,7 +178,7 @@ function StoryItem({
             shortcut={Keyboard.Shortcut.Common.Save}
           />
           <Action
-            title={`Time Range: ${nextRange.title}`}
+            title={`Time Range: ${nextRangeTitle}`}
             icon={Icon.Clock}
             onAction={onCycleRange}
             shortcut={{ modifiers: ["cmd"], key: "t" }}
