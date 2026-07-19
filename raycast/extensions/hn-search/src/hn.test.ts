@@ -73,6 +73,27 @@ describe("buildSearchURL", () => {
     );
     expect(url.searchParams.get("hitsPerPage")).toBe("50");
   });
+
+  it("stays fuzzy by default — no typo or prefix tightening", () => {
+    const url = new URL(
+      buildSearchURL({ query: "rust", range: "week", nowSeconds: NOW }),
+    );
+    expect(url.searchParams.has("typoTolerance")).toBe(false);
+    expect(url.searchParams.has("queryType")).toBe(false);
+  });
+
+  it("tightens to exact matches when match is 'exact'", () => {
+    const url = new URL(
+      buildSearchURL({
+        query: "rust",
+        range: "week",
+        nowSeconds: NOW,
+        match: "exact",
+      }),
+    );
+    expect(url.searchParams.get("typoTolerance")).toBe("false");
+    expect(url.searchParams.get("queryType")).toBe("prefixNone");
+  });
 });
 
 describe("sortStories", () => {

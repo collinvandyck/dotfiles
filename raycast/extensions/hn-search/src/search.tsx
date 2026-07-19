@@ -6,6 +6,7 @@ import {
   sortStories,
   toStory,
   type AlgoliaHit,
+  type MatchMode,
   type SortMode,
   type Story,
   type TimeRange,
@@ -25,21 +26,30 @@ const TIME_RANGES: { value: TimeRange; title: string }[] = [
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
-  const [sort, setSort] = useState<SortMode>("points");
-  // Persisted across launches so the last-picked window sticks.
+  // Persisted across launches so the last-picked window and sort stick.
   const {
     value: range = "week",
     setValue: setRange,
     isLoading: isRangeLoading,
   } = useLocalStorage<TimeRange>("time-range", "week");
+  const {
+    value: sort = "points",
+    setValue: setSort,
+    isLoading: isSortLoading,
+  } = useLocalStorage<SortMode>("sort", "points");
+  const {
+    value: match = "fuzzy",
+    setValue: setMatch,
+    isLoading: isMatchLoading,
+  } = useLocalStorage<MatchMode>("match", "fuzzy");
   // Fixed at mount so keystrokes don't churn the time window (and the fetch URL).
   const [nowSeconds] = useState(() => Math.floor(Date.now() / 1000));
 
   const { data, isLoading } = useFetch<SearchResponse>(
-    buildSearchURL({ query: searchText, range, nowSeconds }),
+    buildSearchURL({ query: searchText, range, nowSeconds, match }),
     {
-      // Wait for the stored range before firing, so we don't flash the default.
-      execute: !isRangeLoading,
+      // Wait for stored prefs before firing, so we don't flash the defaults.
+      execute: !isRangeLoading && !isMatchLoading,
       keepPreviousData: true,
       failureToastOptions: { title: "Could not reach Hacker News" },
     },
@@ -47,7 +57,9 @@ export default function Command() {
 
   const stories = sortStories((data?.hits ?? []).map(toStory), sort);
   const toggleSort = () =>
-    setSort((s) => (s === "points" ? "comments" : "points"));
+    void setSort(sort === "points" ? "comments" : "points");
+  const toggleMatch = () =>
+    void setMatch(match === "fuzzy" ? "exact" : "fuzzy");
   const cycleRange = () => {
     const i = TIME_RANGES.findIndex((t) => t.value === range);
     void setRange(TIME_RANGES[(i + 1) % TIME_RANGES.length].value);
@@ -55,7 +67,7 @@ export default function Command() {
 
   return (
     <List
-      isLoading={isLoading || isRangeLoading}
+      isLoading={isLoading || isRangeLoading || isSortLoading || isMatchLoading}
       throttle
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search Hacker News…"
@@ -72,7 +84,9 @@ export default function Command() {
       }
     >
       <List.Section
-        title={`Sorted by ${sort === "points" ? "points" : "comments"}`}
+        title={`Sorted by ${sort === "points" ? "points" : "comments"}${
+          match === "exact" ? " · exact match" : ""
+        }`}
       >
         {stories.map((story) => (
           <StoryItem
@@ -82,6 +96,8 @@ export default function Command() {
             onToggleSort={toggleSort}
             range={range}
             onCycleRange={cycleRange}
+            match={match}
+            onToggleMatch={toggleMatch}
           />
         ))}
       </List.Section>
@@ -95,12 +111,16 @@ function StoryItem({
   onToggleSort,
   range,
   onCycleRange,
+  match,
+  onToggleMatch,
 }: {
   story: Story;
   sort: SortMode;
   onToggleSort: () => void;
   range: TimeRange;
   onCycleRange: () => void;
+  match: MatchMode;
+  onToggleMatch: () => void;
 }) {
   const hasArticle = story.articleUrl !== null;
   const primaryUrl = story.articleUrl ?? story.discussionUrl;
@@ -150,6 +170,12 @@ function StoryItem({
             icon={Icon.Clock}
             onAction={onCycleRange}
             shortcut={{ modifiers: ["cmd"], key: "t" }}
+          />
+          <Action
+            title={match === "fuzzy" ? "Use Exact Match" : "Use Fuzzy Match"}
+            icon={Icon.MagnifyingGlass}
+            onAction={onToggleMatch}
+            shortcut={Keyboard.Shortcut.Common.Edit}
           />
         </ActionPanel>
       }

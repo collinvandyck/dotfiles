@@ -3,6 +3,7 @@
 
 export type TimeRange = "24h" | "week" | "month" | "year" | "all";
 export type SortMode = "points" | "comments";
+export type MatchMode = "fuzzy" | "exact";
 
 export interface Story {
   id: string;
@@ -52,9 +53,16 @@ export function buildSearchURL(params: {
   query: string;
   range: TimeRange;
   nowSeconds: number;
+  match?: MatchMode;
   hitsPerPage?: number;
 }): string {
-  const { query, range, nowSeconds, hitsPerPage = 50 } = params;
+  const {
+    query,
+    range,
+    nowSeconds,
+    match = "fuzzy",
+    hitsPerPage = 50,
+  } = params;
   const search = new URLSearchParams({
     query,
     tags: "story",
@@ -64,6 +72,13 @@ export function buildSearchURL(params: {
   const cutoff = timeRangeToCutoff(range, nowSeconds);
   if (cutoff !== null) {
     search.set("numericFilters", `created_at_i>${cutoff}`);
+  }
+
+  // Exact turns off Algolia's fuzzy behaviors: typo correction and last-word
+  // prefix expansion. Fuzzy leaves Algolia's defaults in place.
+  if (match === "exact") {
+    search.set("typoTolerance", "false");
+    search.set("queryType", "prefixNone");
   }
 
   return `${SEARCH_ENDPOINT}?${search.toString()}`;
