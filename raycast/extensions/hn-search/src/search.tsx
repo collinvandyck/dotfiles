@@ -41,6 +41,11 @@ export default function Command() {
   const stories = sortStories((data?.hits ?? []).map(toStory), sort);
   const toggleSort = () =>
     setSort((s) => (s === "points" ? "comments" : "points"));
+  const cycleRange = () =>
+    setRange((r) => {
+      const i = TIME_RANGES.findIndex((t) => t.value === r);
+      return TIME_RANGES[(i + 1) % TIME_RANGES.length].value;
+    });
 
   return (
     <List
@@ -69,6 +74,8 @@ export default function Command() {
             story={story}
             sort={sort}
             onToggleSort={toggleSort}
+            range={range}
+            onCycleRange={cycleRange}
           />
         ))}
       </List.Section>
@@ -80,13 +87,21 @@ function StoryItem({
   story,
   sort,
   onToggleSort,
+  range,
+  onCycleRange,
 }: {
   story: Story;
   sort: SortMode;
   onToggleSort: () => void;
+  range: TimeRange;
+  onCycleRange: () => void;
 }) {
   const hasArticle = story.articleUrl !== null;
   const primaryUrl = story.articleUrl ?? story.discussionUrl;
+  const nextRange =
+    TIME_RANGES[
+      (TIME_RANGES.findIndex((t) => t.value === range) + 1) % TIME_RANGES.length
+    ];
 
   return (
     <List.Item
@@ -123,6 +138,12 @@ function StoryItem({
             icon={Icon.Switch}
             onAction={onToggleSort}
             shortcut={Keyboard.Shortcut.Common.Save}
+          />
+          <Action
+            title={`Time Range: ${nextRange.title}`}
+            icon={Icon.Clock}
+            onAction={onCycleRange}
+            shortcut={{ modifiers: ["cmd"], key: "t" }}
           />
         </ActionPanel>
       }
