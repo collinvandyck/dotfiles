@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Action, ActionPanel, Icon, List, Keyboard } from "@raycast/api";
+import { Action, ActionPanel, Icon, List, Keyboard, open } from "@raycast/api";
 import { useFetch, useLocalStorage } from "@raycast/utils";
 import {
   buildSearchURL,
@@ -153,6 +153,18 @@ function StoryItem({
             title="Open HN Discussion"
             icon={Icon.SpeechBubble}
             url={story.discussionUrl}
+          />
+          <Action
+            title="Open Article and Comments"
+            icon={Icon.AppWindowGrid2x2}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "return" }}
+            onAction={async () => {
+              await open(primaryUrl);
+              // Ask HN and the like have no separate article; avoid a dup tab.
+              if (hasArticle) {
+                await open(story.discussionUrl);
+              }
+            }}
           />
           <Action.CopyToClipboard
             title="Copy Link"
