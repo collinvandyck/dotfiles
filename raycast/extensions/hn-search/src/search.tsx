@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Action, ActionPanel, Icon, List, Keyboard } from "@raycast/api";
-import { useFetch } from "@raycast/utils";
+import { useFetch, useLocalStorage } from "@raycast/utils";
 import {
   buildSearchURL,
   sortStories,
@@ -25,14 +25,21 @@ const TIME_RANGES: { value: TimeRange; title: string }[] = [
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
-  const [range, setRange] = useState<TimeRange>("week");
   const [sort, setSort] = useState<SortMode>("points");
+  // Persisted across launches so the last-picked window sticks.
+  const {
+    value: range = "week",
+    setValue: setRange,
+    isLoading: isRangeLoading,
+  } = useLocalStorage<TimeRange>("time-range", "week");
   // Fixed at mount so keystrokes don't churn the time window (and the fetch URL).
   const [nowSeconds] = useState(() => Math.floor(Date.now() / 1000));
 
   const { data, isLoading } = useFetch<SearchResponse>(
     buildSearchURL({ query: searchText, range, nowSeconds }),
     {
+      // Wait for the stored range before firing, so we don't flash the default.
+      execute: !isRangeLoading,
       keepPreviousData: true,
       failureToastOptions: { title: "Could not reach Hacker News" },
     },
@@ -41,15 +48,14 @@ export default function Command() {
   const stories = sortStories((data?.hits ?? []).map(toStory), sort);
   const toggleSort = () =>
     setSort((s) => (s === "points" ? "comments" : "points"));
-  const cycleRange = () =>
-    setRange((r) => {
-      const i = TIME_RANGES.findIndex((t) => t.value === r);
-      return TIME_RANGES[(i + 1) % TIME_RANGES.length].value;
-    });
+  const cycleRange = () => {
+    const i = TIME_RANGES.findIndex((t) => t.value === range);
+    void setRange(TIME_RANGES[(i + 1) % TIME_RANGES.length].value);
+  };
 
   return (
     <List
-      isLoading={isLoading}
+      isLoading={isLoading || isRangeLoading}
       throttle
       onSearchTextChange={setSearchText}
       searchBarPlaceholder="Search Hacker News…"
@@ -57,7 +63,7 @@ export default function Command() {
         <List.Dropdown
           tooltip="Time range"
           value={range}
-          onChange={(v) => setRange(v as TimeRange)}
+          onChange={(v) => void setRange(v as TimeRange)}
         >
           {TIME_RANGES.map((r) => (
             <List.Dropdown.Item key={r.value} title={r.title} value={r.value} />
