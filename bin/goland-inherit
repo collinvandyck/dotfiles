@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# goland-inherit — copy a root worktree's .idea config into the current worktree,
+# so a fresh GoLand worktree keeps the root's build tags, run configs, code style,
+# inspections, etc. Paths inside .idea use IntelliJ's $PROJECT_DIR$/$MODULE_DIR$
+# macros, so a straight copy resolves in the new location.
+#
+# Usage: goland-inherit [ROOT] [--force]
+#   ROOT     worktree to inherit .idea from; defaults to the main worktree.
+#   --force  overwrite an existing .idea in the target (backs it up first).
+
+set -euo pipefail
+
+# .idea entries that are per-machine or session junk — never inherited.
+DENYLIST=(shelf httpRequests dataSources dataSources.local.xml usage.statistics.xml)
+
+msg() { printf '%s\n' "$*" >&2; }
+die() { msg "$*"; exit 2; }
+
+usage() {
+	cat >&2 <<'EOF'
+usage: goland-inherit [ROOT] [--force]
+
+  ROOT     worktree to inherit .idea from (default: the main worktree)
+  --force  overwrite an existing .idea in the target (a backup is kept)
+EOF
+}
+
+# main_root — absolute path of the main worktree, even from inside a linked one.
+main_root() {
+	local common
+	common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) \
+		|| die "not in a git repository"
+	dirname "$common"
+}
+
+# target_root — the current worktree's root; .idea is written here.
+target_root() {
+	git rev-parse --show-toplevel 2>/dev/null || die "not in a git repository"
+}
+
+main() {
+	local root="" force="" arg
+	for arg in "$@"; do
+		case $arg in
+		--force) force=1 ;;
+		-h | --help) usage; exit 0 ;;
+		-*) die "unknown option: $arg" ;;
+		*) [[ -z $root ]] && root=$arg || die "unexpected argument: $arg" ;;
+		esac
+	done
+
+	local target; target=$(target_root)
+	target=$(cd "$target" && pwd)
+	[[ -z $root ]] && root=$(main_root)
+	root=$(cd "$root" 2>/dev/null && pwd) || die "no such directory: $root"
+
+	[[ $root == "$target" ]] \
+		&& die "already at the root worktree ($root); run from a linked worktree or pass a ROOT"
+
+	[[ -d $root/.idea ]] || { msg "no .idea in $root — nothing to inherit"; exit 0; }
+
+	msg "would inherit .idea from $root"   # replaced by the copy in Task 2
+}
+
+main "$@"
