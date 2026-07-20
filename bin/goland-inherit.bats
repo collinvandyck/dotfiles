@@ -94,6 +94,50 @@ teardown() { rm -rf "$TMP"; }
 	[ ! -f "$WT/.idea/workspace.xml" ]
 }
 
+@test "refuses to overwrite an existing target .idea without --force" {
+	seed_idea "$REPO"
+	mkdir -p "$WT/.idea"
+	printf 'mine' > "$WT/.idea/keep.xml"
+	cd "$WT"
+	run "$BIN"
+	[ "$status" -ne 0 ]
+	[[ "$output" == *"--force"* ]]
+	[ -f "$WT/.idea/keep.xml" ]           # untouched
+}
+
+@test "--force backs up the old .idea and copies fresh" {
+	seed_idea "$REPO"
+	mkdir -p "$WT/.idea"
+	printf 'mine' > "$WT/.idea/keep.xml"
+	cd "$WT"
+	run "$BIN" --force
+	[ "$status" -eq 0 ]
+	[ -f "$WT/.idea/workspace.xml" ]      # fresh copy landed
+	[ ! -f "$WT/.idea/keep.xml" ]         # old contents no longer in .idea
+	ls -d "$WT"/.idea.bak-* >/dev/null    # a backup exists
+	grep -q mine "$WT"/.idea.bak-*/keep.xml
+}
+
+@test "--force with GoLand running aborts when the confirm is declined" {
+	seed_idea "$REPO"
+	mkdir -p "$WT/.idea"
+	stub_pgrep hit                        # GoLand appears to be running
+	cd "$WT"
+	GUM_CONFIRM=1 run "$BIN" --force      # 1 = No
+	[ "$status" -ne 0 ]
+	grep -q confirm "$TMP/gum.log"
+}
+
+@test "--force with GoLand running proceeds when the confirm is accepted" {
+	seed_idea "$REPO"
+	mkdir -p "$WT/.idea"
+	stub_pgrep hit
+	cd "$WT"
+	GUM_CONFIRM=0 run "$BIN" --force      # 0 = Yes
+	[ "$status" -eq 0 ]
+	[ -f "$WT/.idea/workspace.xml" ]
+}
+
 # --- helpers ---
 
 # seed_idea DIR — a realistic .idea with wanted files, denylisted junk, and a

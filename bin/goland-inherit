@@ -49,6 +49,10 @@ strip_project_id() {
 	mv "$tmp" "$f"
 }
 
+# goland_running — true if any GoLand process is alive (coarse but sufficient:
+# GoLand rewrites .idea on close, so any running instance is worth a warning).
+goland_running() { pgrep -f goland >/dev/null 2>&1; }
+
 # copy_idea SRC DST — copy a .idea dir, then prune the denylist and strip ProjectId.
 copy_idea() {
 	local src=$1 dst=$2 entry
@@ -79,6 +83,17 @@ main() {
 		&& die "already at the root worktree ($root); run from a linked worktree or pass a ROOT"
 
 	[[ -d $root/.idea ]] || { msg "no .idea in $root — nothing to inherit"; exit 0; }
+
+	if [[ -e $target/.idea ]]; then
+		[[ -n $force ]] || die "$target/.idea already exists; pass --force to overwrite (a backup is kept)"
+		if goland_running; then
+			gum confirm "GoLand appears to be running — it may overwrite .idea on close. Continue?" \
+				|| die "aborted"
+		fi
+		local bak="$target/.idea.bak-$(date +%s)"
+		mv "$target/.idea" "$bak"
+		msg "backed up existing .idea to $bak"
+	fi
 
 	copy_idea "$root/.idea" "$target/.idea"
 	msg "inherited .idea from $root"
