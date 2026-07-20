@@ -231,10 +231,13 @@ teardown() {
 	mkdir -p "$REPO/.idea"
 	printf '<project version="4"/>' > "$REPO/.idea/workspace.xml"
 	printf '<module/>' > "$REPO/.idea/myrepo.iml"
-	run "$BATS_TEST_DIRNAME/worktrees" add withidea
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" add withidea
 	[ "$status" -eq 0 ]
 	[ -f "$TMP/myrepo-withidea/.idea/workspace.xml" ]
 	[ -f "$TMP/myrepo-withidea/.idea/myrepo.iml" ]
+	# stdout is the dir for wt to cd into — the hook's chatter must stay on stderr
+	[[ "$output" == *"/myrepo-withidea" ]]
+	[[ "$output" != *inherited* ]]
 }
 
 @test "add succeeds and writes no .idea when the root has none" {

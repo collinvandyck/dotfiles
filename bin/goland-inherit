@@ -41,6 +41,8 @@ target_root() {
 
 # strip_project_id FILE — drop the ProjectId component so worktrees don't share a
 # UUID. (IntelliJ keys caches off the project path, so this is just tidiness.)
+# Line-oriented: GoLand serializes ProjectId as its own line, so a whole-line drop
+# is safe.
 strip_project_id() {
 	local f=$1 tmp
 	[[ -f $f ]] || return 0
@@ -49,9 +51,11 @@ strip_project_id() {
 	mv "$tmp" "$f"
 }
 
-# goland_running — true if any GoLand process is alive (coarse but sufficient:
+# goland_running — true if a GoLand instance is alive (coarse but sufficient:
 # GoLand rewrites .idea on close, so any running instance is worth a warning).
-goland_running() { pgrep -f goland >/dev/null 2>&1; }
+# Match the app bundle, not the bare word "goland" — the latter also matches this
+# script's own command line (…/goland-inherit), so the guard would always fire.
+goland_running() { pgrep -f 'GoLand.app' >/dev/null 2>&1; }
 
 # copy_idea SRC DST — copy a .idea dir, then prune the denylist and strip ProjectId.
 copy_idea() {
@@ -90,7 +94,7 @@ main() {
 			gum confirm "GoLand appears to be running — it may overwrite .idea on close. Continue?" \
 				|| die "aborted"
 		fi
-		local bak="$target/.idea.bak-$(date +%s)"
+		local bak="$target/.idea.bak-$(date +%s)-$$"
 		mv "$target/.idea" "$bak"
 		msg "backed up existing .idea to $bak"
 	fi

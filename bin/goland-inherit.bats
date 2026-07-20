@@ -72,6 +72,7 @@ teardown() { rm -rf "$TMP"; }
 	[ ! -e "$WT/.idea/httpRequests" ]
 	[ ! -e "$WT/.idea/dataSources" ]
 	[ ! -e "$WT/.idea/dataSources.local.xml" ]
+	[ ! -e "$WT/.idea/usage.statistics.xml" ]
 }
 
 @test "strips the ProjectId component from the copied workspace.xml" {
@@ -148,6 +149,7 @@ seed_idea() {
 	printf '<module><component name="Go"><buildTags/></component></module>' > "$d/myrepo.iml"
 	printf 'style' > "$d/codeStyles/Project.xml"
 	printf 'secret' > "$d/dataSources.local.xml"
+	printf 'stats' > "$d/usage.statistics.xml"
 	cat > "$d/workspace.xml" <<-'XML'
 		<project version="4">
 		  <component name="ProjectId" id="abc123" />
