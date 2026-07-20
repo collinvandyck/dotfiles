@@ -227,6 +227,23 @@ teardown() {
 	[[ "$output" != *"/myrepo-here" ]]
 }
 
+@test "add inherits the root's .idea into the new worktree" {
+	mkdir -p "$REPO/.idea"
+	printf '<project version="4"/>' > "$REPO/.idea/workspace.xml"
+	printf '<module/>' > "$REPO/.idea/myrepo.iml"
+	run "$BATS_TEST_DIRNAME/worktrees" add withidea
+	[ "$status" -eq 0 ]
+	[ -f "$TMP/myrepo-withidea/.idea/workspace.xml" ]
+	[ -f "$TMP/myrepo-withidea/.idea/myrepo.iml" ]
+}
+
+@test "add succeeds and writes no .idea when the root has none" {
+	run "$BATS_TEST_DIRNAME/worktrees" add noidea
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-noidea" ]
+	[ ! -e "$TMP/myrepo-noidea/.idea" ]
+}
+
 # --- helpers ---
 
 # gum stub: confirm honors $GUM_CONFIRM (default 1 = No); choose/filter record the

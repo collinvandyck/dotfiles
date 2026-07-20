@@ -11,6 +11,10 @@ set -euo pipefail
 BRANCH_PREFIX=collin/
 BASE_DEFAULT=origin/main
 
+# absolute dir of this script, so we can call sibling helpers (goland-inherit)
+# whether we're run via PATH or by absolute path (bats).
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # gum theming — one accent, applied across confirm/choose so the tool feels of a piece.
 C_ACCENT="${WT_ACCENT:-212}"
 export GUM_CONFIRM_PROMPT_FOREGROUND="$C_ACCENT"
@@ -166,6 +170,11 @@ post_create() {
   fi
   if [[ -f $path/mise.toml ]]; then
     (cd "$path" && mise trust && mise install) >&2
+  fi
+  # inherit the main worktree's GoLand config so build tags / run configs
+  # survive into the new worktree. best-effort — never fail creation.
+  if [[ -d $root/.idea && ! -e $path/.idea ]]; then
+    (cd "$path" && "$SCRIPT_DIR/goland-inherit" "$root") >&2 || true
   fi
   return 0
 }
