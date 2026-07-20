@@ -1,6 +1,6 @@
 ---
 name: writing-mermaid-diagrams
-description: Use when authoring or editing mermaid diagrams (especially sequence diagrams) to avoid parser-breaking characters in note and label text.
+description: Use BEFORE authoring or editing ANY mermaid diagram (flowchart/graph, sequence, class, state, ER, gantt) in markdown, notes, or docs. Covers syntax that renders wrong or breaks the parser — line breaks in node and edge labels (use <br/>, not backslash-n), and quotes, brackets, pipes, and other special characters in label and note text. Consult it before writing the first diagram line, not after it renders wrong.
 ---
 
 # Writing Mermaid Diagrams
@@ -27,5 +27,14 @@ Note over Tree: act gone, pointer → S3, data lost
 
 ## Other common pitfalls
 
-- Line breaks inside a note or label: use `<br/>`, not a literal newline.
+- Line breaks inside a node or edge label: use the `<br/>` (or `<br>`) HTML tag, not a `\n` escape. Many renderers (GitHub, Obsidian) show a literal `\n` inside a quoted label as the two characters backslash-n rather than a newline; `<br/>` is the portable way to force the break.
 - Always fence the diagram with a ```` ```mermaid ```` code block so it renders.
+
+Incorrect (renders `\n` literally):
+```
+A["line one\nline two"]
+```
+Correct:
+```
+A["line one<br/>line two"]
+```
