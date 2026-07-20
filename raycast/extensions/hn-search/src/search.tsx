@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Action, ActionPanel, Icon, List, Keyboard, open } from "@raycast/api";
 import { useFetch, useLocalStorage } from "@raycast/utils";
 import {
@@ -28,7 +28,13 @@ const TIME_RANGE_TITLES: Record<TimeRange, string> = {
 
 export default function Command() {
   const [searchText, setSearchText] = useState("");
-  // Persisted across launches so the last-picked window and sort stick.
+  const [seeded, setSeeded] = useState(false);
+  // Persisted across launches so the last query, window, sort, and match stick.
+  const {
+    value: storedQuery = "",
+    setValue: setStoredQuery,
+    isLoading: isQueryLoading,
+  } = useLocalStorage<string>("query", "");
   const {
     value: range = "week",
     setValue: setRange,
@@ -47,11 +53,24 @@ export default function Command() {
   // Fixed at mount so keystrokes don't churn the time window (and the fetch URL).
   const [nowSeconds] = useState(() => Math.floor(Date.now() / 1000));
 
+  // Restore the last query from storage once, then keep the two in sync.
+  useEffect(() => {
+    if (!isQueryLoading && !seeded) {
+      setSearchText(storedQuery);
+      setSeeded(true);
+    }
+  }, [isQueryLoading, seeded, storedQuery]);
+
+  const onSearchTextChange = (text: string) => {
+    setSearchText(text);
+    void setStoredQuery(text);
+  };
+
   const { data, isLoading } = useFetch<SearchResponse>(
     buildSearchURL({ query: searchText, range, nowSeconds, match }),
     {
-      // Wait for stored prefs before firing, so we don't flash the defaults.
-      execute: !isRangeLoading && !isMatchLoading,
+      // Wait for the restored query and stored prefs before firing.
+      execute: seeded && !isRangeLoading && !isMatchLoading,
       keepPreviousData: true,
       failureToastOptions: { title: "Could not reach Hacker News" },
     },
@@ -66,9 +85,16 @@ export default function Command() {
 
   return (
     <List
-      isLoading={isLoading || isRangeLoading || isSortLoading || isMatchLoading}
+      isLoading={
+        isLoading ||
+        isRangeLoading ||
+        isSortLoading ||
+        isMatchLoading ||
+        isQueryLoading
+      }
       throttle
-      onSearchTextChange={setSearchText}
+      searchText={searchText}
+      onSearchTextChange={onSearchTextChange}
       searchBarPlaceholder="Search Hacker News…"
       searchBarAccessory={
         <List.Dropdown
