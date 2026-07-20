@@ -5,12 +5,23 @@ import {
   buildSearchURL,
   sortStories,
   toStory,
+  isNewsStory,
   type Story,
 } from "./hn";
 
 // A fixed "now" keeps the time-window cases deterministic.
 const NOW = 1_700_000_000;
 const DAY = 86_400;
+
+const baseHit = {
+  objectID: "1",
+  title: "T",
+  url: "https://example.com",
+  author: "pg",
+  points: 1,
+  num_comments: 0,
+  created_at_i: NOW,
+};
 
 describe("timeRangeToCutoff", () => {
   it("returns null for 'all' so no time filter is applied", () => {
@@ -187,6 +198,32 @@ describe("toStory", () => {
     });
     expect(s.points).toBe(0);
     expect(s.comments).toBe(0);
+  });
+});
+
+describe("isNewsStory", () => {
+  it("keeps a plain story", () => {
+    expect(
+      isNewsStory({ ...baseHit, _tags: ["story", "author_pg", "story_1"] }),
+    ).toBe(true);
+  });
+
+  it("drops Show HN", () => {
+    expect(isNewsStory({ ...baseHit, _tags: ["story", "show_hn"] })).toBe(
+      false,
+    );
+  });
+
+  it("drops Ask HN", () => {
+    expect(isNewsStory({ ...baseHit, _tags: ["story", "ask_hn"] })).toBe(false);
+  });
+
+  it("drops polls", () => {
+    expect(isNewsStory({ ...baseHit, _tags: ["story", "poll"] })).toBe(false);
+  });
+
+  it("keeps a hit that has no _tags", () => {
+    expect(isNewsStory({ ...baseHit })).toBe(true);
   });
 });
 

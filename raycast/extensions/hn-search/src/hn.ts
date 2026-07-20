@@ -26,10 +26,16 @@ export interface AlgoliaHit {
   points?: number;
   num_comments?: number;
   created_at_i: number;
+  _tags?: string[];
 }
 
 const SEARCH_ENDPOINT = "https://hn.algolia.com/api/v1/search";
 const DAY = 86_400;
+
+// Community/non-news post types to exclude. The `story` tag alone still includes
+// these, so we filter them out by their extra tag. (Jobs/polls aren't `story`,
+// but poll is listed defensively.)
+const NON_NEWS_TAGS = ["show_hn", "ask_hn", "launch_hn", "poll"];
 
 const RANGE_SECONDS: Record<Exclude<TimeRange, "all">, number> = {
   "24h": DAY,
@@ -104,6 +110,13 @@ export function buildSearchURL(params: {
 export function sortStories(stories: Story[], sort: SortMode): Story[] {
   const key = sort === "points" ? "points" : "comments";
   return [...stories].sort((a, b) => b[key] - a[key]);
+}
+
+// True for ordinary news stories — excludes Show HN, Ask HN, and the like.
+// A hit with no _tags is kept (nothing marks it as a community post).
+export function isNewsStory(hit: AlgoliaHit): boolean {
+  const tags = hit._tags ?? [];
+  return !tags.some((tag) => NON_NEWS_TAGS.includes(tag));
 }
 
 export function toStory(hit: AlgoliaHit): Story {
