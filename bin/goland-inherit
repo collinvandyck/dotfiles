@@ -39,6 +39,26 @@ target_root() {
 	git rev-parse --show-toplevel 2>/dev/null || die "not in a git repository"
 }
 
+# strip_project_id FILE — drop the ProjectId component so worktrees don't share a
+# UUID. (IntelliJ keys caches off the project path, so this is just tidiness.)
+strip_project_id() {
+	local f=$1 tmp
+	[[ -f $f ]] || return 0
+	tmp=$(mktemp)
+	grep -v 'name="ProjectId"' "$f" > "$tmp" || true
+	mv "$tmp" "$f"
+}
+
+# copy_idea SRC DST — copy a .idea dir, then prune the denylist and strip ProjectId.
+copy_idea() {
+	local src=$1 dst=$2 entry
+	cp -R "$src" "$dst"
+	for entry in "${DENYLIST[@]}"; do
+		rm -rf "${dst:?}/$entry"
+	done
+	strip_project_id "$dst/workspace.xml"
+}
+
 main() {
 	local root="" force="" arg
 	for arg in "$@"; do
@@ -60,7 +80,8 @@ main() {
 
 	[[ -d $root/.idea ]] || { msg "no .idea in $root — nothing to inherit"; exit 0; }
 
-	msg "would inherit .idea from $root"   # replaced by the copy in Task 2
+	copy_idea "$root/.idea" "$target/.idea"
+	msg "inherited .idea from $root"
 }
 
 main "$@"

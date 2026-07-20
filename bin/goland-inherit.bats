@@ -53,7 +53,64 @@ teardown() { rm -rf "$TMP"; }
 	[ ! -e "$WT/.idea" ]
 }
 
+@test "copies the root's .idea into a fresh target worktree" {
+	seed_idea "$REPO"
+	cd "$WT"
+	run "$BIN"
+	[ "$status" -eq 0 ]
+	[ -f "$WT/.idea/workspace.xml" ]
+	[ -f "$WT/.idea/myrepo.iml" ]
+	[ -d "$WT/.idea/codeStyles" ]
+}
+
+@test "prunes denylisted entries from the copy" {
+	seed_idea "$REPO"
+	cd "$WT"
+	run "$BIN"
+	[ "$status" -eq 0 ]
+	[ ! -e "$WT/.idea/shelf" ]
+	[ ! -e "$WT/.idea/httpRequests" ]
+	[ ! -e "$WT/.idea/dataSources" ]
+	[ ! -e "$WT/.idea/dataSources.local.xml" ]
+}
+
+@test "strips the ProjectId component from the copied workspace.xml" {
+	seed_idea "$REPO"
+	cd "$WT"
+	run "$BIN"
+	[ "$status" -eq 0 ]
+	! grep -q 'name="ProjectId"' "$WT/.idea/workspace.xml"
+	grep -q 'name="RunManager"' "$WT/.idea/workspace.xml"
+}
+
+@test "an explicit ROOT arg is copied instead of the main worktree" {
+	seed_idea "$REPO"
+	mkdir -p "$TMP/other/.idea"
+	printf 'from-other' > "$TMP/other/.idea/marker.xml"
+	cd "$WT"
+	run "$BIN" "$TMP/other"
+	[ "$status" -eq 0 ]
+	[ -f "$WT/.idea/marker.xml" ]
+	[ ! -f "$WT/.idea/workspace.xml" ]
+}
+
 # --- helpers ---
+
+# seed_idea DIR — a realistic .idea with wanted files, denylisted junk, and a
+# workspace.xml carrying both a ProjectId (should be stripped) and a RunManager.
+seed_idea() {
+	local d=$1/.idea
+	mkdir -p "$d/codeStyles" "$d/shelf" "$d/httpRequests" "$d/dataSources"
+	printf '<module><component name="Go"><buildTags/></component></module>' > "$d/myrepo.iml"
+	printf 'style' > "$d/codeStyles/Project.xml"
+	printf 'secret' > "$d/dataSources.local.xml"
+	cat > "$d/workspace.xml" <<-'XML'
+		<project version="4">
+		  <component name="ProjectId" id="abc123" />
+		  <component name="RunManager"><configuration name="run"/></component>
+		</project>
+	XML
+}
 
 # gum stub: confirm honors $GUM_CONFIRM (default 1 = No); logs args to $GUM_LOG.
 stub_gum() {
