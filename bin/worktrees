@@ -239,7 +239,15 @@ remove() {
   # about to vanish (the script's own cwd, not yet the shell's).
   [[ -n $here ]] && cd "$root"
 
-  git -C "$root" worktree remove "$path"
+  # a clean worktree removes without fuss. a dirty one (modified or untracked
+  # files) makes git refuse — surface why, then confirm before forcing, since
+  # forcing discards the uncommitted work.
+  local err
+  if ! err=$(git -C "$root" worktree remove "$path" 2>&1); then
+    msg "$err"
+    gum_confirm "force-remove $path and discard its changes?" || die "aborted"
+    git -C "$root" worktree remove --force "$path"
+  fi
   msg "removed $path"
 
   local branch="$BRANCH_PREFIX$slug"

@@ -227,6 +227,23 @@ teardown() {
 	[[ "$output" != *"/myrepo-here" ]]
 }
 
+@test "rm of a dirty worktree force-removes it once confirmed" {
+	git worktree add -q "$TMP/myrepo-dirty" -b collin/dirty
+	touch "$TMP/myrepo-dirty/untracked"
+	GUM_CONFIRM=0 run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm dirty
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-dirty" ]
+}
+
+@test "rm of a dirty worktree leaves it in place when the force prompt is declined" {
+	git worktree add -q "$TMP/myrepo-dirty" -b collin/dirty
+	touch "$TMP/myrepo-dirty/untracked"
+	# GUM_CONFIRM defaults to 1 (No) — the worktree must survive.
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm dirty
+	[ "$status" -ne 0 ]
+	[ -d "$TMP/myrepo-dirty" ]
+}
+
 @test "add inherits the root's .idea into the new worktree" {
 	mkdir -p "$REPO/.idea"
 	printf '<project version="4"/>' > "$REPO/.idea/workspace.xml"
