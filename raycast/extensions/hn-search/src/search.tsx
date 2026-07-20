@@ -3,7 +3,6 @@ import { Action, ActionPanel, Icon, List, Keyboard, open } from "@raycast/api";
 import { useFetch, useLocalStorage } from "@raycast/utils";
 import {
   buildSearchURL,
-  isNewsStory,
   nextTimeRange,
   sortStories,
   toStory,
@@ -58,10 +57,7 @@ export default function Command() {
     },
   );
 
-  const stories = sortStories(
-    (data?.hits ?? []).filter(isNewsStory).map(toStory),
-    sort,
-  );
+  const stories = sortStories((data?.hits ?? []).map(toStory), sort);
   const toggleSort = () =>
     void setSort(sort === "points" ? "comments" : "points");
   const toggleMatch = () =>

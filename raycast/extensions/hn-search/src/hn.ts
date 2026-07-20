@@ -26,16 +26,15 @@ export interface AlgoliaHit {
   points?: number;
   num_comments?: number;
   created_at_i: number;
-  _tags?: string[];
 }
 
 const SEARCH_ENDPOINT = "https://hn.algolia.com/api/v1/search";
 const DAY = 86_400;
 
-// Community/non-news post types to exclude. The `story` tag alone still includes
-// these, so we filter them out by their extra tag. (Jobs/polls aren't `story`,
-// but poll is listed defensively.)
-const NON_NEWS_TAGS = ["show_hn", "ask_hn", "launch_hn", "poll"];
+// Community/non-news post types. The `story` tag still includes Show HN / Ask HN
+// (they're stories with an extra tag), so we exclude them server-side via
+// facetFilters negation on _tags.
+const NON_NEWS_TAGS = ["show_hn", "ask_hn", "poll"];
 
 const RANGE_SECONDS: Record<Exclude<TimeRange, "all">, number> = {
   "24h": DAY,
@@ -91,6 +90,13 @@ export function buildSearchURL(params: {
     hitsPerPage: String(hitsPerPage),
   });
 
+  // Exclude community post types (Show HN, Ask HN, polls) server-side. The
+  // `tags=story` set still includes them, so negate their tags via facetFilters.
+  search.set(
+    "facetFilters",
+    JSON.stringify(NON_NEWS_TAGS.map((tag) => `_tags:-${tag}`)),
+  );
+
   const cutoff = timeRangeToCutoff(range, nowSeconds);
   if (cutoff !== null) {
     search.set("numericFilters", `created_at_i>${cutoff}`);
@@ -110,13 +116,6 @@ export function buildSearchURL(params: {
 export function sortStories(stories: Story[], sort: SortMode): Story[] {
   const key = sort === "points" ? "points" : "comments";
   return [...stories].sort((a, b) => b[key] - a[key]);
-}
-
-// True for ordinary news stories — excludes Show HN, Ask HN, and the like.
-// A hit with no _tags is kept (nothing marks it as a community post).
-export function isNewsStory(hit: AlgoliaHit): boolean {
-  const tags = hit._tags ?? [];
-  return !tags.some((tag) => NON_NEWS_TAGS.includes(tag));
 }
 
 export function toStory(hit: AlgoliaHit): Story {
