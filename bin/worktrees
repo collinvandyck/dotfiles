@@ -38,6 +38,12 @@ gum_filter() {
   [[ -z $input ]] && return 1
   printf '%s\n' "$input" | gum filter --no-fuzzy --no-fuzzy-sort --height "${WT_PICK_HEIGHT:-15}"
 }
+# gum_filter_multi — like gum_filter, but tab-select several (one match per line out).
+gum_filter_multi() {
+  local input; input=$(cat)
+  [[ -z $input ]] && return 1
+  printf '%s\n' "$input" | gum filter --no-limit --no-fuzzy --no-fuzzy-sort --height "${WT_PICK_HEIGHT:-15}"
+}
 
 # --- repo geometry ---
 
@@ -212,40 +218,78 @@ switch() {
 
 list() { git -C "$(main_root)" worktree list >&2; }
 
-# remove [SLUG] — drop a worktree (fzf-style pick if no slug), then offer to delete its branch.
+# remove [SLUG] — drop worktrees, then offer to delete each one's branch. A slug
+# resolves to a single worktree; with no slug the picker lets you tab-select
+# several. The same checks run per worktree, so a dirty pick still prompts.
 remove() {
-  local query=${1:-} hit slug path root
+  local query=${1:-} root
   root=$(main_root)
 
+  # resolve the picks to parallel slug/path arrays up front, before anything is
+  # removed, so mid-loop lookups can't go stale.
+  local -a slugs=() paths=()
+  local hit
   if [[ -z $query ]]; then
-    local pick
-    pick=$(list_slugs | cut -f1 | gum_filter) || return 0
-    [[ -z $pick ]] && return 0
-    hit=$(match "$pick") || die "no such worktree: $pick"
+    local picks pick
+    picks=$(list_slugs | cut -f1 | gum_filter_multi) || return 0
+    [[ -z $picks ]] && return 0
+    while IFS= read -r pick; do
+      [[ -z $pick ]] && continue
+      hit=$(match "$pick") || die "no such worktree: $pick"
+      slugs+=("${hit%%$'\t'*}"); paths+=("${hit#*$'\t'}")
+    done <<< "$picks"
   else
     hit=$(match "$query") || die "no worktree matches: $query"
+    slugs+=("${hit%%$'\t'*}"); paths+=("${hit#*$'\t'}")
   fi
 
-  slug=${hit%%$'\t'*}; path=${hit#*$'\t'}
-
-  # if we're standing in the worktree we're about to remove, we'd be left in a
-  # dir that no longer exists — note it now so we can hand root back to the
-  # shell function to cd into once it's gone.
-  local here="" cur
+  # resolve each target to its real path now, while they still exist — we compare
+  # against these after removal, and BSD realpath fails on a vanished path.
+  local -a rpaths=(); local cur cwd_idx="" i
+  for i in "${!paths[@]}"; do rpaths+=("$(realpath "${paths[$i]}")"); done
   cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
-  [[ -n $cur && $(realpath "$path") == "$(realpath "$cur")" ]] && here=1
+  if [[ -n $cur ]]; then
+    cur=$(realpath "$cur")
+    for i in "${!rpaths[@]}"; do [[ ${rpaths[$i]} == "$cur" ]] && cwd_idx=$i; done
+  fi
+  # if the cwd is among the targets we must step out to root before removing it —
+  # git won't drop the worktree you're standing in, and our own git calls would
+  # otherwise run in a dir that's about to vanish.
+  [[ -n $cwd_idx ]] && cd "$root"
 
-  # step out of the doomed dir first, else later git calls run in a cwd that's
-  # about to vanish (the script's own cwd, not yet the shell's).
-  [[ -n $here ]] && cd "$root"
+  # remove each pick with the same checks; remove_one echoes the path it removed,
+  # so a declined force-confirm (empty echo, non-zero) skips just that one. we
+  # only hand root back to the shell if the cwd was actually removed — a declined
+  # dirty cwd survives, and you should stay put. an explicit single-slug rm still
+  # exits non-zero when its only target declined; in the picker it's a plain skip.
+  local rc=0 here="" removed
+  for i in "${!slugs[@]}"; do
+    if removed=$(remove_one "${slugs[$i]}" "${paths[$i]}" "$root"); then
+      # removed holds the path we just dropped; if it was the cwd, hand root back.
+      [[ -n $removed && $i -eq ${cwd_idx:--1} ]] && here=1
+    else
+      rc=$?
+    fi
+  done
+  [[ -z $query ]] && rc=0
 
-  # a clean worktree removes without fuss. a dirty one (modified or untracked
-  # files) makes git refuse — surface why, then confirm before forcing, since
-  # forcing discards the uncommitted work.
+  [[ -n $here ]] && printf '%s\n' "$root"
+  return $rc
+}
+
+# remove_one SLUG PATH ROOT — remove one worktree, then offer to delete its
+# branch, and echo the removed path (the caller's record — not shown to the
+# user). A clean worktree goes without fuss; a dirty one (modified or untracked
+# files) makes git refuse, so we surface why and confirm before forcing, since
+# forcing discards the uncommitted work. A declined force-confirm removes
+# nothing and returns non-zero.
+remove_one() {
+  local slug=$1 path=$2 root=$3
+
   local err
   if ! err=$(git -C "$root" worktree remove "$path" 2>&1); then
     msg "$err"
-    gum_confirm "force-remove $path and discard its changes?" || die "aborted"
+    gum_confirm "force-remove $path and discard its changes?" || { msg "aborted $path"; return 2; }
     git -C "$root" worktree remove --force "$path"
   fi
   msg "removed $path"
@@ -256,8 +300,7 @@ remove() {
     msg "deleted $branch"
   fi
 
-  [[ -n $here ]] && printf '%s\n' "$root"
-  return 0
+  printf '%s\n' "$path"
 }
 
 # from_pr [URL|NUMBER] — a worktree checked out to a PR head. With no arg, pick one
@@ -321,7 +364,7 @@ usage: wt [command | slug]
   wt                     pick a worktree to switch to
   wt add <slug> [base]   create <repo>-<slug> on branch collin/<slug>, off origin/main
   wt ls                  list worktrees
-  wt rm [slug]           remove a worktree, then optionally delete its branch
+  wt rm [slug]           remove a worktree (no slug: tab-select several), then optionally delete each branch
   wt pr [url|number]     create a worktree from a pull request (no arg: pick one)
   wt -h                  show this help
 EOF

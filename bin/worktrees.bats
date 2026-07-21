@@ -244,6 +244,62 @@ teardown() {
 	[ -d "$TMP/myrepo-dirty" ]
 }
 
+@test "rm with no arg multi-selects and removes every picked worktree, staying put" {
+	git worktree add -q "$TMP/myrepo-one" -b collin/one
+	git worktree add -q "$TMP/myrepo-two" -b collin/two
+	git worktree add -q "$TMP/myrepo-keep" -b collin/keep
+	GUM_CHOICE=$'one\ntwo' run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-one" ]
+	[ ! -d "$TMP/myrepo-two" ]
+	[ -d "$TMP/myrepo-keep" ]
+	[ -z "$output" ]
+}
+
+@test "rm multi-select opens the picker with multi-selection enabled" {
+	git worktree add -q "$TMP/myrepo-one" -b collin/one
+	GUM_CHOICE=one run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm
+	[ "$status" -eq 0 ]
+	grep -q -- '--no-limit' "$GUM_LOG"
+}
+
+@test "rm multi-select that includes the cwd removes all and returns you to root" {
+	git worktree add -q "$TMP/myrepo-here" -b collin/here
+	git worktree add -q "$TMP/myrepo-other" -b collin/other
+	cd "$TMP/myrepo-here"
+	GUM_CHOICE=$'here\nother' run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-here" ]
+	[ ! -d "$TMP/myrepo-other" ]
+	[[ "$output" == *"/myrepo" ]]
+	[[ "$output" != *"/myrepo-"* ]]
+}
+
+@test "rm multi-select skips a dirty pick whose force-confirm is declined but removes the rest" {
+	git worktree add -q "$TMP/myrepo-clean" -b collin/clean
+	git worktree add -q "$TMP/myrepo-dirty" -b collin/dirty
+	touch "$TMP/myrepo-dirty/untracked"
+	# GUM_CONFIRM defaults to 1 (No) — the dirty force-confirm is declined.
+	GUM_CHOICE=$'clean\ndirty' run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-clean" ]
+	[ -d "$TMP/myrepo-dirty" ]
+}
+
+@test "rm multi-select from inside a declined dirty pick leaves you put" {
+	git worktree add -q "$TMP/myrepo-clean" -b collin/clean
+	git worktree add -q "$TMP/myrepo-dirty" -b collin/dirty
+	touch "$TMP/myrepo-dirty/untracked"
+	cd "$TMP/myrepo-dirty"
+	# GUM_CONFIRM defaults to 1 (No) — the dirty force-confirm is declined, so the
+	# cwd survives and we should stay put rather than being handed back to root.
+	GUM_CHOICE=$'dirty\nclean' run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" rm
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-dirty" ]
+	[ ! -d "$TMP/myrepo-clean" ]
+	[ -z "$output" ]
+}
+
 @test "add inherits the root's .idea into the new worktree" {
 	mkdir -p "$REPO/.idea"
 	printf '<project version="4"/>' > "$REPO/.idea/workspace.xml"
