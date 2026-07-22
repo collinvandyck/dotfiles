@@ -9,7 +9,7 @@
 # @raycast.packageName Grafana
 # @raycast.icon images/grafana.png
 # @raycast.iconDark images/grafana-logo-iconDark.png
-# @raycast.argument1 { "type": "text", "placeholder": "cluster", "optional": false }
+# @raycast.argument1 { "type": "text", "placeholder": "cell", "optional": false }
 
 # Reads GRAFANA_HOST and HISTORY_LOGS_DATASOURCE_UID from ~/.env
 if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
@@ -22,7 +22,19 @@ DATASOURCE_TYPE="loki"
 ORG_ID="1"
 TIME_FROM="now-1h"
 TIME_TO="now"
-EXPR="{cluster=\"${CLUSTER}\", k8s_component=\"history\"} | json | level = \`error\`"
+# Define the LogQL query here. Write it exactly as in Grafana — backticks and
+# quotes need no escaping. Use __CELL__ where the cell should be substituted.
+read -r -d '' QUERY <<'LOGQL' || true
+{cluster="__CELL__", k8s_component="history"}
+!= `context deadline exceeded`
+|= `"level":"error"`
+| json
+LOGQL
+
+# Substitute the cell and drop the trailing newline the heredoc leaves behind.
+EXPR="${QUERY//__CELL__/$CLUSTER}"
+EXPR="${EXPR%$'\n'}"
+
 PANES=$(jq -n -c \
 	--arg uid "$DATASOURCE_UID" \
 	--arg type "$DATASOURCE_TYPE" \
@@ -37,9 +49,12 @@ PANES=$(jq -n -c \
         "expr": $expr,
         "queryType": "range",
         "datasource": { "type": $type, "uid": $uid },
-        "editorMode": "code"
+        "editorMode": "code",
+        "direction": "forward"
       }],
-      "range": { "from": $from, "to": $to }
+      "range": { "from": $from, "to": $to },
+      "panelsState": { "logs": { "sortOrder": "Ascending" } },
+      "compact": false
     }
   }')
 
