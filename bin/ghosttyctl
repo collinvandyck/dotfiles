@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#
+# ~/.dotfiles/bin/ghosttyctl
+#
+# Control Ghostty via its AppleScript interface (macOS, Ghostty 1.3+).
+
+set -e
+
+usage() {
+	cat <<'EOF'
+Usage: ghosttyctl <command> [args...]
+
+Commands:
+  new-tab <command...>   Open a new Ghostty tab and run the command in it.
+EOF
+}
+
+# new-tab runs the given args as a command in a fresh Ghostty tab (a new window
+# if none is open). The command is typed into an interactive shell, so shell
+# functions and aliases (e.g. ct, ctt) are available.
+new_tab() {
+	if [ "$#" -eq 0 ]; then
+		echo "ghosttyctl new-tab: a command is required" >&2
+		return 2
+	fi
+
+	local script
+	script=$(
+		cat <<'APPLESCRIPT'
+on run argv
+	set inp to (item 1 of argv) & return
+	tell application "Ghostty"
+		activate
+		if (count of windows) is 0 then
+			new window with configuration {initial input:inp}
+		else
+			new tab in front window with configuration {initial input:inp}
+		end if
+	end tell
+	return
+end run
+APPLESCRIPT
+	)
+
+	# The command is passed as an argv item, so it needs no AppleScript escaping.
+	osascript -e "$script" "$*"
+}
+
+case "${1:-}" in
+new-tab)
+	shift
+	new_tab "$@"
+	;;
+-h | --help | help)
+	usage
+	;;
+**)
+	echo "ghosttyctl: unknown command: ${1:-}" >&2
+	usage >&2
+	exit 2
+	;;
+esac

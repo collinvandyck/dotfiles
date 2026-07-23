@@ -3,7 +3,7 @@ set shell := ["zsh", "-cu"]
 default:
     @just --list --unsorted
 
-shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update goland/apply-vmoptions"
+shell-scripts := "install-all install-common install-darwin install-homebrew install-js install-k8s install-launchd install-linux install-paths install-rust install-systemd install-go bin/dotfiles-version bin/symlink bin/update bin/ghosttyctl goland/apply-vmoptions"
 
 install:
     ./install-all
