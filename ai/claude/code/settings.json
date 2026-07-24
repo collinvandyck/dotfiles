@@ -60,6 +60,10 @@
       "~/go/pkg/mod"
     ]
   },
+  "skillOverrides": {
+    "ch-cell-query": "off",
+    "cell-metrics-query": "off"
+  },
   "hooks": {
     "PreToolUse": [
       {
