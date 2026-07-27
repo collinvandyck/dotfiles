@@ -1,7 +1,7 @@
 ---
 name: local-pr-review
 description: Perform a local review of a PR
-allowed-tools: Bash, Read, WebFetch, Skill(write-generated-doc)
+allowed-tools: Bash, Read, WebFetch, Skill(write-generated-doc), Skill(writing-mermaid-diagrams), Skill(notion), mcp__notion__notion-fetch, mcp__notion__notion-query-data-sources, mcp__notion__notion-create-pages, mcp__notion__notion-update-page
 disable-model-invocation: true
 argument-hint: "<PR number or url>"
 ---
@@ -19,12 +19,13 @@ Your goal is to review the supplied PR in a local fashion.
     - Be sure that it's an actual issue. Think hard if you need to.
     - Do not report correctness issues that are actually safe.
     - Use analogies and visual diagrams when appropriate
-    - diagrams should be ascii-art inside of fenced code blocks
+    - diagrams should be mermaid inside of fenced code blocks tagged `mermaid`, never ascii-art — read the `writing-mermaid-diagrams` skill before the first diagram line
     - use fenced code blocks to showcase relevant code snippets to increase understanding
     - Keep explanations conversational. For complex concepts, use multiple analogies.
 
 If you need additional information from the user, ask beforehand.
-Finally, write the generated doc and open it.
+
+Finally, write the generated doc and open it. PR reviews are routed to Notion rather than Obsidian, so carry the PR URL, the PR's own title, and the author's GitHub handle into that step — the database row needs all three.
 
 # Branch
 
