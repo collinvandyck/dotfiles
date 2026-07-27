@@ -5,6 +5,11 @@ bindkey "^[[1;3D" backward-word
 # emacs is the king of line editing
 # bindkey '\e' vi-cmd-mode
 
+# C-x C-e to edit the current command line in $EDITOR (like bash)
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
 #KEYTIMEOUT=1 # 100ms
 
 prepend-sudo() {
