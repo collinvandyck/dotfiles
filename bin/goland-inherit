@@ -14,8 +14,15 @@ set -euo pipefail
 # .idea entries that are per-machine or session junk — never inherited.
 DENYLIST=(shelf httpRequests dataSources dataSources.local.xml usage.statistics.xml)
 
+# Displaced .idea dirs go here rather than beside the worktree, so --force doesn't
+# leave untracked junk in git status. Overridable so the tests stay hermetic.
+BACKUP_DIR=${GOLAND_INHERIT_BACKUP_DIR:-/tmp/goland-inherit}
+
 msg() { printf '%s\n' "$*" >&2; }
-die() { msg "$*"; exit 2; }
+die() {
+	msg "$*"
+	exit 2
+}
 
 usage() {
 	cat >&2 <<'EOF'
@@ -29,8 +36,8 @@ EOF
 # main_root — absolute path of the main worktree, even from inside a linked one.
 main_root() {
 	local common
-	common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) \
-		|| die "not in a git repository"
+	common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) ||
+		die "not in a git repository"
 	dirname "$common"
 }
 
@@ -47,7 +54,7 @@ strip_project_id() {
 	local f=$1 tmp
 	[[ -f $f ]] || return 0
 	tmp=$(mktemp)
-	grep -v 'name="ProjectId"' "$f" > "$tmp" || true
+	grep -v 'name="ProjectId"' "$f" >"$tmp" || true
 	mv "$tmp" "$f"
 }
 
@@ -72,29 +79,38 @@ main() {
 	for arg in "$@"; do
 		case $arg in
 		--force) force=1 ;;
-		-h | --help) usage; exit 0 ;;
+		-h | --help)
+			usage
+			exit 0
+			;;
 		-*) die "unknown option: $arg" ;;
 		*) [[ -z $root ]] && root=$arg || die "unexpected argument: $arg" ;;
 		esac
 	done
 
-	local target; target=$(target_root)
+	local target
+	target=$(target_root)
 	target=$(cd "$target" && pwd)
 	[[ -z $root ]] && root=$(main_root)
 	root=$(cd "$root" 2>/dev/null && pwd) || die "no such directory: $root"
 
-	[[ $root == "$target" ]] \
-		&& die "already at the root worktree ($root); run from a linked worktree or pass a ROOT"
+	[[ $root == "$target" ]] &&
+		die "already at the root worktree ($root); run from a linked worktree or pass a ROOT"
 
-	[[ -d $root/.idea ]] || { msg "no .idea in $root — nothing to inherit"; exit 0; }
+	[[ -d $root/.idea ]] || {
+		msg "no .idea in $root — nothing to inherit"
+		exit 0
+	}
 
 	if [[ -e $target/.idea ]]; then
 		[[ -n $force ]] || die "$target/.idea already exists; pass --force to overwrite (a backup is kept)"
 		if goland_running; then
-			gum confirm "GoLand appears to be running — it may overwrite .idea on close. Continue?" \
-				|| die "aborted"
+			gum confirm "GoLand appears to be running — it may overwrite .idea on close. Continue?" ||
+				die "aborted"
 		fi
-		local bak="$target/.idea.bak-$(date +%s)-$$"
+		local bak
+		bak="$BACKUP_DIR/$(basename "$target").idea.bak-$(date +%s)-$$"
+		mkdir -p "$BACKUP_DIR"
 		mv "$target/.idea" "$bak"
 		msg "backed up existing .idea to $bak"
 	fi
