@@ -60,7 +60,6 @@
       "~/go/pkg/mod"
     ]
   },
-  "model": "claude-opus-4-8[1m]",
   "skillOverrides": {
     "ch-cell-query": "off",
     "cell-metrics-query": "off"
@@ -142,7 +141,7 @@
       }
     }
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:collin",
