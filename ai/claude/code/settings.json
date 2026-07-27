@@ -60,6 +60,7 @@
       "~/go/pkg/mod"
     ]
   },
+  "model": "opus[1m]",
   "skillOverrides": {
     "ch-cell-query": "off",
     "cell-metrics-query": "off"
@@ -141,11 +142,10 @@
       }
     }
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:collin",
   "preferredNotifChannel": "ghostty",
-  "skipAutoPermissionPrompt": true,
-  "model": "opus[1m]"
+  "skipAutoPermissionPrompt": true
 }
