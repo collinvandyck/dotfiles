@@ -81,6 +81,42 @@ teardown() {
 	[ ! -d "$TMP/myrepo-test" ]
 }
 
+@test "a bare slug containing a slash is rejected and creates nothing" {
+	before="$(git worktree list | wc -l)"
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" collin/foo
+	[ "$status" -ne 0 ]
+	[ -z "$output" ]
+	grep -q "bad slug" "$GUM_LOG"
+	[ ! -e "$TMP/myrepo-collin" ]
+	[ "$before" -eq "$(git worktree list | wc -l)" ]
+}
+
+@test "add rejects a slug containing a slash before touching the repo" {
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" add collin/foo
+	[ "$status" -ne 0 ]
+	[ -z "$output" ]
+	grep -q "bad slug" "$GUM_LOG"
+	[ ! -e "$TMP/myrepo-collin" ]
+	! git show-ref --verify --quiet refs/heads/collin/collin/foo
+}
+
+@test "add rejects slugs that would escape or hide the worktree dir" {
+	for bad in ../escape .hidden 'a b;rm' '$(whoami)' 'a~b'; do
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" add "$bad"
+		[ "$status" -ne 0 ]
+		grep -q "bad slug" "$GUM_LOG"
+	done
+	# only the main worktree remains
+	[ "$(git worktree list | wc -l)" -eq 1 ]
+}
+
+@test "add accepts dots, dashes and underscores inside a slug" {
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" add v1.2_fix-x
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-v1.2_fix-x" ]
+	[ "$(git -C "$TMP/myrepo-v1.2_fix-x" rev-parse --abbrev-ref HEAD)" = "collin/v1.2_fix-x" ]
+}
+
 @test "a bare slug that uniquely matches an existing worktree prints its path and creates nothing" {
 	git worktree add -q "$TMP/myrepo-vis-admin" -b collin/vis-admin
 	before="$(git worktree list | wc -l)"
