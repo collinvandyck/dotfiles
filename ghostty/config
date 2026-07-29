@@ -36,7 +36,7 @@ window-position-y = 500
 window-theme = "system"
 confirm-close-surface = false
 copy-on-select = clipboard
-window-step-resize = true
+window-step-resize = false
 window-decoration = auto
 split-preserve-zoom = navigation
 
