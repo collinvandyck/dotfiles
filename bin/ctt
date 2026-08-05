@@ -119,6 +119,7 @@ _ct_filter_warnings() {
 			-e 'Continuing with current version...' \
 			-e 'Warning: Failed to update runbooks repository' \
 			-e 'Requesting read-write access to cluster' \
+			-e 'Requesting read-only access to cluster' \
 		;
 }
 
