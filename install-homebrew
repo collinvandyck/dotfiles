@@ -182,6 +182,7 @@ brew install --quiet --yes --formula \
 	tokei \
 	tmux \
 	tree \
+	tree-sitter-cli \
 	typescript-language-server \
 	uv \
 	viddy \
