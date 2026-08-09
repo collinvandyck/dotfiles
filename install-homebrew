@@ -6,6 +6,21 @@ export HOMEBREW_NO_ENV_HINTS=1
 # enable homebrew in path in case we just installed it.
 export PATH=/opt/homebrew/bin:$PATH
 
+# retries a command a few times to smooth over transient network blips
+# (e.g. a cask postinstall script hitting a flaky DNS lookup)
+retry() {
+	local attempts=3 delay=5 n=1
+	until "$@"; do
+		if ((n >= attempts)); then
+			echo "Command failed after ${attempts} attempts, giving up: $*" >&2
+			return 0
+		fi
+		echo "Attempt ${n}/${attempts} failed, retrying in ${delay}s: $*" >&2
+		sleep "$delay"
+		((n++))
+	done
+}
+
 # install homebrew
 if [ ! "$(command -v brew)" ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -186,44 +201,47 @@ brew install --quiet --yes --formula \
 	zoxide \
 	;
 
-brew install --quiet --yes --cask --force \
-	1password-cli \
-	agentsview \
-	alacritty \
-	anki \
-	caffeine \
-	chatbox \
-	cleanshot \
-	codex \
-	discord \
-	font-fira-code-nerd-font \
-	font-fantasque-sans-mono \
-	font-fantasque-sans-mono-nerd-font \
-	font-hack-nerd-font \
-	gcloud-cli \
-	hammerspoon \
-	hidock \
-	imhex \
-	kitty \
-	mitmproxy \
-	obsidian \
-	racket \
-	raycast \
-	signal \
-	tableplus \
-	sublime-text \
-	utm \
-	yaak \
-	zed \
-	;
+casks=(
+	1password-cli
+	agentsview
+	alacritty
+	anki
+	caffeine
+	chatbox
+	cleanshot
+	codex
+	discord
+	font-fira-code-nerd-font
+	font-fantasque-sans-mono
+	font-fantasque-sans-mono-nerd-font
+	font-hack-nerd-font
+	gcloud-cli
+	hammerspoon
+	hidock
+	imhex
+	kitty
+	mitmproxy
+	obsidian
+	racket
+	raycast
+	signal
+	tableplus
+	sublime-text
+	utm
+	yaak
+	zed
+)
+for cask in "${casks[@]}"; do
+	retry brew install --quiet --yes --cask --force "$cask"
+done
 
-[[ -z "${SKIP_FIREFOX_INSTALL:-}" ]] && brew install --quiet --cask --force \
+[[ -z "${SKIP_FIREFOX_INSTALL:-}" ]] && retry brew install --quiet --cask --force \
 	firefox \
 	;
 
 # only install jetbrains toolbox once.
 if ! brew list | grep jetbrains-toolbox &>/dev/null; then
-	brew install --quiet --yes --cask --force jetbrains-toolbox
+	retry brew install --quiet --yes --cask --force jetbrains-toolbox
 fi
 
 brew autoremove --quiet
