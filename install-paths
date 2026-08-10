@@ -82,6 +82,8 @@ if ! [[ -d /usr/local/bin ]]; then
 	sudo chown "$USER" /usr/local/bin
 fi
 
+ln -sf ~/.dotfiles/jqp/.jqp.yaml ~
+
 # symlink obsidian vault to ~/code/notes (macOS only; iCloud path)
 obsidian_vault="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/notes"
 if [[ -d "$obsidian_vault" ]]; then
