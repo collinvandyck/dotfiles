@@ -146,5 +146,6 @@
   "skipWorkflowUsageWarning": true,
   "theme": "custom:collin",
   "preferredNotifChannel": "ghostty",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "model": "opus[1m]"
 }
