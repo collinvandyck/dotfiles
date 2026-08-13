@@ -26,9 +26,26 @@ if [ ! "$(command -v brew)" ]; then
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-brew tap spring-io/tap             # required for springboot
-brew tap launchdarkly/homebrew-tap # for the LD cli
-brew tap steveyegge/beads
+taps=(
+	charmbracelet/tap
+	datastax/astra-cli
+	docker/tap
+	gastownhall/beads
+	hashicorp/tap
+	k06a/tap
+	launchdarkly/homebrew-tap
+	launchdarkly/tap
+	noahgorstein/tap
+	sozercan/repo
+	spring-io/tap
+	steipete/tap
+	xaf/omni
+)
+
+for tap in "${taps[@]}"; do
+	brew tap "$tap"
+	brew trust --quiet "$tap"
+done
 
 # update homebrew packages
 brew update --quiet
@@ -231,6 +248,7 @@ casks=(
 	utm
 	yaak
 	zed
+	docker/tap/sbx
 )
 for cask in "${casks[@]}"; do
 	retry brew install --quiet --yes --cask --force "$cask"
