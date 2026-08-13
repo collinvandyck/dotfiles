@@ -1,6 +1,7 @@
 ---
 name: fastmod
 description: Use when making many repetitive code edits across files — bulk rename, mass find-and-replace, codebase-wide substitution.
+disable-model-invocation: true
 ---
 
 # fastmod
