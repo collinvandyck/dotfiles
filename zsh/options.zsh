@@ -4,6 +4,9 @@ fi
 
 setopt noauto_cd
 
+# allow trailing '# comments' on interactive commands so they land in history
+setopt interactive_comments
+
 # setup easy access to cd paths
 cdpath=(
 	$HOME/code/rust-learning/aoc-2022
