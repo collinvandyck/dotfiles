@@ -39,6 +39,7 @@ copy-on-select = clipboard
 window-step-resize = false
 window-decoration = auto
 split-preserve-zoom = navigation
+clipboard-paste-protection = false
 
 keybind = "alt+j=next_tab"
 keybind = "alt+k=previous_tab"
