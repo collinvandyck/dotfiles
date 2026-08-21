@@ -11,12 +11,14 @@
 # @raycast.iconDark images/grafana-logo-iconDark.png
 # @raycast.argument1 { "type": "text", "placeholder": "cell", "optional": false }
 
+. "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
 # Reads GRAFANA_HOST and HISTORY_LOGS_DATASOURCE_UID from ~/.env
 if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 : "${GRAFANA_HOST:?set GRAFANA_HOST in ~/.env}"
 : "${HISTORY_LOGS_DATASOURCE_UID:?set HISTORY_LOGS_DATASOURCE_UID in ~/.env}"
 
-CLUSTER="$1"
+CLUSTER="$(normalize_cell "$1")"
 DATASOURCE_UID="$HISTORY_LOGS_DATASOURCE_UID"
 DATASOURCE_TYPE="loki"
 ORG_ID="1"

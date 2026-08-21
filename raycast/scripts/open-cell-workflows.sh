@@ -9,10 +9,12 @@
 # @raycast.packageName Temporal
 # @raycast.argument1 { "type": "text", "placeholder": "cell (e.g. s-aw028)", "optional": false }
 
+. "$(dirname "${BASH_SOURCE[0]}")/common.sh"
+
 # Reads TEMPORAL_OPS_NAMESPACE from ~/.env
 if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 
-CELL="$1"
+CELL="$(normalize_cell "$1")"
 
 # starts-with control plane workflows
 open "https://cloud.temporal.io/namespaces/${TEMPORAL_CP_NAMESPACE}/workflows?query=%60WorkflowId%60+STARTS_WITH+%22cell-entity-${CELL}%22"
