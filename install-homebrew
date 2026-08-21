@@ -240,6 +240,7 @@ casks=(
 	kitty
 	mitmproxy
 	obsidian
+	openlogi
 	racket
 	raycast
 	signal
