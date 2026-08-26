@@ -43,6 +43,12 @@ When the repo's PR template has `### What changed?` / `### Why?` / `### How did 
 
 Tick the boxes that actually apply. Don't invent categories.
 
+## The testing section
+
+Leave it empty unless a reviewer needs something from it. For a docs change, an annotation, a rename, there is nothing to say, and the bare header with untouched checkboxes says it.
+
+What never goes there is your own process: which commands you ran, that the build passed, that the linter came back clean, that some tool is missing from your machine so CI will have to cover it. The reviewer is not auditing your workstation. Put a result there only when it changes what they should look at — a benchmark number, a test that reproduces the bug, a case you couldn't cover.
+
 ## Scale the description to the change
 
 **Small PRs** (a few files, narrow fix): keep it small. A one-liner in "Why?" is fine.
@@ -86,7 +92,7 @@ Avoid excessively long branch names. Err on the side of brevity without sacrific
 
 - Conversational and direct. Dry humor is welcome when it fits — don't force it.
 - Admit tradeoffs openly: "This is a shortcut.", "Good enough for now.", "This is a stopping point, not the finish line."
-- Name the footgun when there is one. Explain *why* something is safe or unsafe, not just that it is.
+- Name the footgun when there is one *in this change*. Explain *why* something is safe or unsafe, not just that it is.
 - Forward-reference follow-up work when relevant ("A follow-up branch will...", "A later PR will...").
 
 # Links and References
@@ -129,6 +135,8 @@ Include these freely when they exist:
 - Don't list trivial test scenarios exhaustively. "Unit tests pass" or a short bulleted test plan is enough unless the tests themselves are the point of the PR.
 - Don't add emojis as decoration. The occasional 🔪 / 👹 is a deliberate signal, not a sparkle.
 - Don't turn "How did you test it?" into a recipe. A few bullets or a paragraph is plenty.
+- Don't narrate local verification. "The build passes", "the linter is clean", "I don't have `promtool` locally so CI will catch it" — all of it is noise. See "The testing section".
+- Don't smuggle in unrelated findings. A bug you tripped over in some script, a stale file you noticed on the way past: that goes in Slack or a ticket, not in a PR about something else.
 
 # Before Creating the PR
 
