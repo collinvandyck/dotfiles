@@ -9,7 +9,7 @@
 # @raycast.packageName Grafana
 # @raycast.icon images/grafana.png
 # @raycast.iconDark images/grafana-logo-iconDark.png
-# @raycast.argument1 { "type": "text", "placeholder": "cell", "optional": false }
+# @raycast.argument1 { "type": "text", "placeholder": "cell (blank = last)", "optional": true }
 
 . "$(dirname "${BASH_SOURCE[0]}")/common.sh"
 
@@ -18,7 +18,7 @@ if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 : "${GRAFANA_HOST:?set GRAFANA_HOST in ~/.env}"
 : "${HISTORY_LOGS_DATASOURCE_UID:?set HISTORY_LOGS_DATASOURCE_UID in ~/.env}"
 
-CLUSTER="$(normalize_cell "$1")"
+use_cell "$1"
 DATASOURCE_UID="$HISTORY_LOGS_DATASOURCE_UID"
 DATASOURCE_TYPE="loki"
 ORG_ID="1"
@@ -34,7 +34,7 @@ read -r -d '' QUERY <<'LOGQL' || true
 LOGQL
 
 # Substitute the cell and drop the trailing newline the heredoc leaves behind.
-EXPR="${QUERY//__CELL__/$CLUSTER}"
+EXPR="${QUERY//__CELL__/$CELL}"
 EXPR="${EXPR%$'\n'}"
 
 PANES=$(jq -n -c \
