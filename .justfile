@@ -22,21 +22,37 @@ test:
     python3 bin/pipefmt_test.py
     just raycast-test
 
-# Foreground watcher for a raycast extension; hot-rebuilds on save, runs until Ctrl-C (last build stays registered).
-raycast-dev ext="cells":
+# Raycast only holds one extension in dev mode at a time, so this one names its
+# extension instead of defaulting to all of them. A new extension has to go
+# through a dev run once before Raycast knows it exists — building alone leaves
+# the bundle on disk unregistered. The registration survives Ctrl-C.
+
+# Watch one extension and hot-rebuild on save; runs until Ctrl-C.
+raycast-dev ext:
     cd raycast/extensions/{{ext}} && npx ray develop
 
-raycast-build ext="cells":
-    cd raycast/extensions/{{ext}} && npx ray build
-
-# Runs every extension's vitest suite; each is a no-op until its deps are
-# installed (npm install in raycast/extensions/<ext>).
-raycast-test:
+# Build one extension, or every extension when none is named.
+raycast-build ext="":
     #!/usr/bin/env bash
     set -euo pipefail
+    # Assigned first so an unknown extension aborts rather than looping zero times.
+    exts="$(just _raycast-exts "{{ext}}")"
     cd "$(git rev-parse --show-toplevel)/raycast/extensions"
-    for ext in */; do
-        ext="${ext%/}"
+    for ext in $exts; do
+        echo "== $ext"
+        (cd "$ext" && npx ray build)
+    done
+
+# A suite is a no-op until its deps are installed (npm install in the
+# extension's directory), which keeps `just ci` working on a fresh clone.
+
+# Run one extension's vitest suite, or every extension's when none is named.
+raycast-test ext="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    exts="$(just _raycast-exts "{{ext}}")"
+    cd "$(git rev-parse --show-toplevel)/raycast/extensions"
+    for ext in $exts; do
         if [ -d "$ext/node_modules" ]; then
             echo "== $ext"
             (cd "$ext" && npx vitest run)
@@ -44,6 +60,23 @@ raycast-test:
             echo "$ext: node_modules missing, skipping vitest (run npm install to enable)"
         fi
     done
+
+# The extension to act on, or all of them when the argument is empty. Names
+# can't contain spaces, so callers can iterate the output unquoted.
+[private]
+_raycast-exts ext="":
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if [ -n "{{ext}}" ]; then
+        if [ ! -d "$(git rev-parse --show-toplevel)/raycast/extensions/{{ext}}" ]; then
+            echo "no such extension: {{ext}}" >&2
+            exit 1
+        fi
+        echo "{{ext}}"
+        exit 0
+    fi
+    cd "$(git rev-parse --show-toplevel)/raycast/extensions"
+    for dir in */; do echo "${dir%/}"; done
 
 # shellcheck runs on the curated bash/sh set (it can't parse zsh); fmt/fix
 # discover any tracked .sh/.zsh or bash/zsh-shebang file, skipping the few with
