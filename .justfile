@@ -22,24 +22,28 @@ test:
     python3 bin/pipefmt_test.py
     just raycast-test
 
-# Foreground watcher for the HN extension; hot-rebuilds on save, runs until Ctrl-C (last build stays registered).
-raycast-dev:
-    cd raycast/extensions/hn-search && npx ray develop
+# Foreground watcher for a raycast extension; hot-rebuilds on save, runs until Ctrl-C (last build stays registered).
+raycast-dev ext="cells":
+    cd raycast/extensions/{{ext}} && npx ray develop
 
-raycast-build:
-    cd raycast/extensions/hn-search && npx ray build
+raycast-build ext="cells":
+    cd raycast/extensions/{{ext}} && npx ray build
 
-# Runs the extension's vitest suite; a no-op until its deps are installed
-# (npm install in raycast/extensions/hn-search).
+# Runs every extension's vitest suite; each is a no-op until its deps are
+# installed (npm install in raycast/extensions/<ext>).
 raycast-test:
     #!/usr/bin/env bash
     set -euo pipefail
-    cd "$(git rev-parse --show-toplevel)/raycast/extensions/hn-search"
-    if [ -d node_modules ]; then
-        npx vitest run
-    else
-        echo "hn-search: node_modules missing, skipping vitest (run npm install to enable)"
-    fi
+    cd "$(git rev-parse --show-toplevel)/raycast/extensions"
+    for ext in */; do
+        ext="${ext%/}"
+        if [ -d "$ext/node_modules" ]; then
+            echo "== $ext"
+            (cd "$ext" && npx vitest run)
+        else
+            echo "$ext: node_modules missing, skipping vitest (run npm install to enable)"
+        fi
+    done
 
 # shellcheck runs on the curated bash/sh set (it can't parse zsh); fmt/fix
 # discover any tracked .sh/.zsh or bash/zsh-shebang file, skipping the few with
