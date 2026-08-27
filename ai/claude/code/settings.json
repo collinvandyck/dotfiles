@@ -60,6 +60,7 @@
       "~/go/pkg/mod"
     ]
   },
+  "model": "opus[1m]",
   "skillOverrides": {
     "ch-cell-query": "off",
     "cell-metrics-query": "off"
@@ -131,22 +132,22 @@
     "mcp-server-dev@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "temporal@temporal-marketplace": true
   },
   "extraKnownMarketplaces": {
     "temporal-marketplace": {
       "source": {
         "source": "github",
-        "repo": "temporalio/claude-temporal-plugin"
+        "repo": "temporalio/agent-skills"
       }
     }
   },
-  "autoMemoryEnabled": false,
   "effortLevel": "high",
+  "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:collin",
   "preferredNotifChannel": "ghostty",
-  "skipAutoPermissionPrompt": true,
-  "model": "opus[1m]"
+  "skipAutoPermissionPrompt": true
 }
