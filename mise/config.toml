@@ -1,4 +1,5 @@
 [tools]
+hunk = "latest"
 just = "latest"
 shellcheck = "latest"
 shfmt = "latest"
