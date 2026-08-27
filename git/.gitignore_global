@@ -16,3 +16,6 @@ profile*.svg
 /gen
 
 **/.claude/settings.local.json
+
+*.hprof
+
