@@ -79,3 +79,5 @@ init-starship
 init-zoxide
 init-atuin
 init-direnv
+
+[[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh
