@@ -40,7 +40,14 @@ raycast-build ext="":
     cd "$(git rev-parse --show-toplevel)/raycast/extensions"
     for ext in $exts; do
         echo "== $ext"
-        (cd "$ext" && npx ray build)
+        (
+            cd "$ext"
+            if [ ! -x node_modules/.bin/ray ]; then
+                echo "Installing dependencies"
+                npm ci
+            fi
+            npx ray build
+        )
     done
 
 # A suite is a no-op until its deps are installed (npm install in the
