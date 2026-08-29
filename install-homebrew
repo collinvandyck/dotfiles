@@ -47,6 +47,17 @@ for tap in "${taps[@]}"; do
 	brew trust --quiet "$tap"
 done
 
+# local tap for pinned casks that homebrew-cask doesn't carry (it only ever
+# ships the latest version). The cask definitions live in this repo; we symlink
+# the whole Casks dir in so new ones are picked up without any extra wiring.
+local_tap="$USER/local-casks"
+if ! brew tap | grep -qx "$local_tap"; then
+	brew tap-new --no-git --quiet "$local_tap"
+fi
+local_tap_dir="$(brew --repository "$local_tap")"
+rm -rf "$local_tap_dir/Casks"
+ln -sfn ~/.dotfiles/homebrew/casks "$local_tap_dir/Casks"
+
 # update homebrew packages
 brew update --quiet
 
@@ -249,6 +260,7 @@ casks=(
 	yaak
 	zed
 	docker/tap/sbx
+	"$local_tap/raycast"
 )
 for cask in "${casks[@]}"; do
 	retry brew install --quiet --yes --cask --force "$cask"
