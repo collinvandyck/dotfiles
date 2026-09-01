@@ -29,6 +29,7 @@ export DO_NOT_TRACK=1
 export CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY=1
 export CLAUDE_CODE_NO_FLICKER=1
 export CLAUDE_CODE_SCROLL_SPEED=3
+export CLAUDE_CODE_ENABLE_TODO_TOOLS=1
 
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
