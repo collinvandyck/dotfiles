@@ -14,6 +14,36 @@ rustup component add rust-src rust-analyzer
 rustup target add wasm32-unknown-unknown x86_64-pc-windows-gnu aarch64-apple-darwin
 rustup toolchain install nightly
 
+echo "Installing dr"
+
+# The old per-program installs are real files in ~/.cargo/bin and would shadow
+# the symlinks below.
+for old in cargo-tweak dotrun ghurl paths-to-tree spacer; do
+	cargo uninstall "$old" &>/dev/null || true
+done
+
+# dr keeps a persistent target dir so reinstalls are incremental. The just
+# recipes point at the same one.
+#
+# The install runs from inside dr/ on purpose: rustup resolves
+# rust-toolchain.toml from the working directory, not from --path, so
+# installing from elsewhere would silently build with default stable.
+DR_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DR_TARGET="$HOME/.cache/dr-target"
+mkdir -p "$DR_TARGET"
+(
+	cd "$DR_ROOT/dr"
+	CARGO_TARGET_DIR="$DR_TARGET" cargo install --locked --path .
+)
+
+while read -r name; do
+	ln -sf ~/.cargo/bin/dr ~/.cargo/bin/"$name"
+done < <(dr aliases)
+
+if [[ $# == 1 && $1 == "--local" ]]; then
+	exit 0
+fi
+
 echo "Installing Rust programs"
 
 mkdir -p ~/.cargo/tmp
@@ -23,16 +53,6 @@ export CARGO_TARGET_DIR=~/.cargo/tmp
 cargo_install() {
 	cargo install --locked "$@"
 }
-
-for proj in ~/.dotfiles/bin/rust/*; do
-	[[ "$proj" = *paths-to-tree* ]] && continue
-	[[ "$proj" = *spacer* ]] && continue
-	cargo_install --path $proj
-done
-
-if [[ $# == 1 && $1 == "--local" ]]; then
-	exit 0
-fi
 
 cargo_install cargo-nextest
 cargo_install cargo-watch

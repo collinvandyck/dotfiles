@@ -1,39 +1,40 @@
 use anyhow::{Context, Result, bail};
 use colored::{Color, Colorize};
 use itertools::Itertools;
-use std::io::{self, BufRead, BufReader, Write};
+use std::{
+    io::{self, BufRead, BufReader, Write},
+    process::ExitCode,
+};
 
-// Converts a list of paths into a tree structure
-//
-// ├─ one
-// │  ├─ two
-// │  └─ three
-// │     └─ four
-// └─ five
-//    └─ six
-fn main() -> Result<()> {
+/// Converts a list of paths read from stdin into a tree.
+///
+/// ├─ one
+/// │  ├─ two
+/// │  └─ three
+/// │     └─ four
+/// └─ five
+///    └─ six
+#[derive(clap::Args, Debug)]
+pub struct Args {}
+
+pub fn run(_args: Args) -> Result<ExitCode> {
     let rd = BufReader::new(io::stdin());
     let lines = rd
         .lines()
         .map(|l| l.context("read line"))
         .collect::<Result<Vec<_>, _>>()?;
     let app = App::default();
-    app.parse(lines).context("parse")?.map(|root| {
+    if let Some(root) = app.parse(lines).context("parse")? {
         root.print();
-    });
-    Ok(())
+    }
+    Ok(ExitCode::SUCCESS)
 }
 
 #[derive(Debug, Default, PartialEq, Eq)]
 struct App {}
 
 impl App {
-    #[allow(unused)]
-    fn new() -> Self {
-        Self {}
-    }
-
-    fn parse(&self, lines: impl Lines) -> Result<Option<Entry>> {
+    fn parse(&self, lines: impl Lines) -> Result<Option<Entry<'_>>> {
         let mut root: Option<Entry> = None;
         for line in lines.lines() {
             let line = line.trim();
@@ -43,11 +44,11 @@ impl App {
             let entry = match root {
                 Some(ref mut entry) => entry,
                 None => {
-                    root = Some(Entry::root(self, &line));
+                    root = Some(Entry::root(self, line));
                     root.as_mut().unwrap()
                 }
             };
-            entry.add(&line)?;
+            entry.add(line)?;
         }
         Ok(root)
     }
@@ -78,7 +79,7 @@ impl std::fmt::Debug for Cursor<'_> {
 }
 
 impl<'a> Entry<'a> {
-    #[allow(unused)]
+    #[cfg(test)]
     fn new(app: &'a App, name: impl AsRef<str>, children: impl IntoIterator<Item = Entry<'a>>) -> Self {
         Self {
             name: name.as_ref().to_string(),
@@ -125,7 +126,7 @@ impl<'a> Entry<'a> {
         } else {
             self.name.color(Color::BrightCyan)
         };
-        if write!(std::io::stdout(), "{prefix}{name}\n").is_err() {
+        if writeln!(std::io::stdout(), "{prefix}{name}").is_err() {
             // can't write to stdout, just quit
             return;
         }
@@ -149,13 +150,11 @@ impl<'a> Entry<'a> {
         if path.is_empty() {
             return Ok(());
         }
-        if self.name == "." {
-            if path[0] == "." {
-                path = &path[1..];
-            }
+        if self.name == "." && path[0] == "." {
+            path = &path[1..];
         }
         if self.name == "/" {
-            if path[0] != "" {
+            if !path[0].is_empty() {
                 bail!("root got bad first segment: {}", path[0])
             }
             path = &path[1..];
@@ -164,14 +163,14 @@ impl<'a> Entry<'a> {
             bail!("bad match");
         };
         for child in self.children.iter_mut() {
-            if &&child.name == name {
+            if &child.name == name {
                 return child.add_parts(rest);
             }
         }
         let mut e = Entry {
             name: name.to_string(),
             children: vec![],
-            app: &self.app,
+            app: self.app,
         };
         e.add_parts(rest)?;
         self.children.push(e);
@@ -212,12 +211,14 @@ impl Lines for &'static str {
 mod tests {
     use super::*;
 
+    /// Empty input produces no tree at all.
     #[test]
     fn empty() {
         let app = App::default();
         assert_eq!(app.parse("").unwrap(), None);
     }
 
+    /// An absolute path roots the tree at "/".
     #[test]
     fn one() {
         let app = App::default();
@@ -237,6 +238,7 @@ mod tests {
         );
     }
 
+    /// A dot-relative path roots the tree at ".".
     #[test]
     fn one_dotted() {
         let app = App::default();
@@ -256,6 +258,7 @@ mod tests {
         );
     }
 
+    /// Sibling and nested paths merge into shared parents.
     #[test]
     fn mixed() {
         let input = "

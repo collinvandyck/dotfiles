@@ -1,39 +1,25 @@
 use anyhow::{Context, Result};
-use clap::Parser;
 use std::{
     io::{self, BufRead, BufReader},
-    process::{Command, Stdio},
+    process::{Command, ExitCode, Stdio},
     sync::mpsc::RecvTimeoutError,
     time::Duration,
 };
 
-#[derive(clap::Parser, Debug)]
-struct Args {
+/// Runs a command and prints a blank line whenever its output goes quiet.
+#[derive(clap::Args, Debug)]
+pub struct Args {
     /// wait this long before printing a line
     #[arg(long, default_value = "1s")]
-    after: humantime::Duration,
+    pub after: humantime::Duration,
 
-    #[arg(trailing_var_arg = true)]
-    cmd: Vec<String>,
-}
-fn main() {
-    if let Err(err) = run() {
-        eprintln!("{err}");
-        std::process::exit(1);
-    }
+    #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
+    pub cmd: Vec<String>,
 }
 
-struct KillOnDrop(std::process::Child);
-impl Drop for KillOnDrop {
-    fn drop(&mut self) {
-        let _ = self.0.kill();
-    }
-}
-
-fn run() -> Result<()> {
-    let args = Args::parse();
+pub fn run(args: Args) -> Result<ExitCode> {
     let [cmd, rest @ ..] = args.cmd.as_slice() else {
-        return Ok(());
+        return Ok(ExitCode::SUCCESS);
     };
     let child = Command::new(cmd)
         .args(rest)
@@ -47,12 +33,6 @@ fn run() -> Result<()> {
     let stderr = child.0.stderr.take().unwrap();
     let mut stdout = BufReader::new(stdout);
     let mut stderr = BufReader::new(stderr);
-    struct Record {
-        ok: bool,
-        stdout: bool,
-        line: String,
-        res: io::Result<usize>,
-    }
     let (tx, rx) = std::sync::mpsc::sync_channel(1024);
     std::thread::spawn({
         let tx = tx.clone();
@@ -93,11 +73,7 @@ fn run() -> Result<()> {
                     if !ok {
                         continue;
                     }
-                    if stdout {
-                        println!("{line}");
-                    } else {
-                        eprintln!("{line}");
-                    }
+                    emit(stdout, &line);
                 }
                 Err(RecvTimeoutError::Timeout) => {
                     println!();
@@ -112,11 +88,7 @@ fn run() -> Result<()> {
                     if !ok {
                         continue;
                     }
-                    if stdout {
-                        println!("{line}");
-                    } else {
-                        eprintln!("{line}");
-                    }
+                    emit(stdout, &line);
                     wait_space = true;
                 }
                 Err(_) => break,
@@ -124,7 +96,30 @@ fn run() -> Result<()> {
         }
     }
     match child.0.wait().context("wait child")?.code() {
-        Some(code) => std::process::exit(code),
-        None => std::process::exit(1),
+        Some(code) => Ok(ExitCode::from(code as u8)),
+        None => Ok(ExitCode::FAILURE),
+    }
+}
+
+struct Record {
+    ok: bool,
+    stdout: bool,
+    line: String,
+    res: io::Result<usize>,
+}
+
+struct KillOnDrop(std::process::Child);
+
+impl Drop for KillOnDrop {
+    fn drop(&mut self) {
+        let _ = self.0.kill();
+    }
+}
+
+fn emit(stdout: bool, line: &str) {
+    if stdout {
+        println!("{line}");
+    } else {
+        eprintln!("{line}");
     }
 }

@@ -11,6 +11,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # ubuntu-latest ships cargo, so `just dr-check` and `just dr-test` run
+      # here rather than skipping. Clippy is not in the image, so rustup fetches
+      # the toolchain dr/rust-toolchain.toml pins; cache it along with the
+      # registry and the target dir the justfile points cargo at.
+      - name: Cache Rust toolchain and build
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.rustup
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.cache/dr-target
+          key: dr-${{ runner.os }}-${{ hashFiles('dr/Cargo.lock', 'dr/rust-toolchain.toml') }}
+          restore-keys: dr-${{ runner.os }}-
+
       - name: Install mise
         uses: jdx/mise-action@v2
         with:

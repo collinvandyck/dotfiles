@@ -1,5 +1,10 @@
 set shell := ["zsh", "-cu"]
 
+# Shared with install-rust, so local dr work warms the cache the installer
+# reads. Exported to every recipe; harmless, since nothing else here runs cargo
+# and install-rust sets its own value explicitly for the crates.io tools.
+export CARGO_TARGET_DIR := env("HOME") / ".cache/dr-target"
+
 default:
     @just --list --unsorted
 
@@ -17,10 +22,46 @@ versions:
 version tool:
     @./bin/dotfiles-version {{tool}}
 
+# The dr recipes no-op without a Rust toolchain, so `just ci` still works on a
+# machine that has not run install-rust yet.
+
+# Build dr in release mode.
+dr-build:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, skipping"; exit 0; fi
+    cd dr && cargo build --release --locked
+
+# Run dr's tests.
+dr-test:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, skipping tests"; exit 0; fi
+    cd dr && cargo test --locked
+
+# Format dr in place.
+dr-fmt:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, skipping"; exit 0; fi
+    cd dr && cargo fmt
+
+# Check dr's formatting and lints.
+dr-check:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, skipping checks"; exit 0; fi
+    cd dr
+    # cargo fmt prints six warnings about nightly-only options in rustfmt.toml
+    # on every run. They are inert on stable; only the exit code matters.
+    cargo fmt --check
+    cargo clippy --all-targets --locked -- -D warnings
+
 test:
     bats **/*.bats
     python3 bin/pipefmt_test.py
     just raycast-test
+    just dr-test
 
 # Raycast only holds one extension in dev mode at a time, so this one names its
 # extension instead of defaulting to all of them. A new extension has to go
@@ -129,4 +170,5 @@ lint mode:
 ci:
     just lint shellcheck
     just lint fmt
+    just dr-check
     just test
