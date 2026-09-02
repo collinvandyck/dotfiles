@@ -18,4 +18,5 @@ profile*.svg
 **/.claude/settings.local.json
 
 *.hprof
+*.test
 
