@@ -16,6 +16,11 @@ gui:
   autoForwardBranches: none
   # If true, periodically fetch from remote
   autoFetch: false
+  theme:
+    # The default is ANSI blue, which Aizen Dark maps to a light pastel (#84b4f8). In the patch view the diff
+    # keeps its own red/green foreground, so removed lines land at ~1:1 contrast. A dark bg keeps them legible.
+    selectedLineBgColor: ["#38405a"]
+    inactiveViewSelectedLineBgColor: ["#262a36"]
 os:
   copyToClipboardCmd: printf "\033]52;c;$(printf {{text}} | base64)\a" > /dev/tty
   edit: 'nvim {{filename}}'
