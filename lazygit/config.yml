@@ -27,6 +27,7 @@ os:
   editAtLine: 'nvim +{{line}} {{filename}}'
   editAtLineAndWait: 'nvim +{{line}} {{filename}}'
 git:
+  ignoreWhitespaceInDiffView: true
   commit:
     autoWrapCommitMessages: true
     autoWrapWidth: 80
