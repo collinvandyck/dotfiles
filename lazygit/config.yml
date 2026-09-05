@@ -54,6 +54,15 @@ customCommands:
     key: 'w'
     title: 'wip'
     command: "git add -A && git commit -m wip || true"
+  # Stamp refs/mb at the merge base with origin/main, then `W` -> "Enter ref to diff" -> `mb` to put diff mode in
+  # three-dot territory: every commit you select diffs against the merge base instead of against origin/main's tip.
+  # Git resolves a bare `mb` via refs/<name>, so the ref stays out of the branches and tags panels. Re-press after a
+  # fetch, since the merge base moves when origin/main does.
+  - key: '<c-g>'
+    context: 'global'
+    description: 'Stamp refs/mb at the merge-base with origin/main'
+    command: 'git update-ref refs/mb "$(git merge-base origin/main HEAD)"'
+    loadingText: 'Finding merge base'
   - key: '<c-f>' # Ctrl-f (think "full screen") to show selected commit
     context: 'commits'
     command: "git -c delta.pager='less -R +g' show {{.SelectedLocalCommit.Sha}}"
