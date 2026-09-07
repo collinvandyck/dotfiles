@@ -12,8 +12,8 @@
     quotepath = false
     editor = nvim
     autocrlf = input
-    #pager = "bat --pager='less -R'"
     pager = delta
+    #pager = "bat --pager='less -R'"
 
 [color]
     pager = true
@@ -25,12 +25,11 @@
 
 [delta]
     navigate = true # use n and N to move between diff sections.
-    # syntax-theme = Monokai Extended
     line-numbers = true
-    #side-by-side=true
     hyperlinks = true
-    #diff-so-fancy = true
-
+    dark = true
+    diff-so-fancy = false
+    hyperlinks-file-link-format="goland://open?file={path}&line={line}"
 
 # key commands to remember not in aliases
 #
