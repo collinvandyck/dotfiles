@@ -113,6 +113,7 @@ brew install --quiet --yes --formula \
 	delta \
 	detect-secrets \
 	devcontainer \
+	diff-so-fancy \
 	direnv \
 	duckdb \
 	dust \
