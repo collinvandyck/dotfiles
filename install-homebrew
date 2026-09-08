@@ -267,6 +267,17 @@ for cask in "${casks[@]}"; do
 	retry brew install --quiet --yes --cask --force "$cask"
 done
 
+# Raycast can update itself without updating Homebrew's installation receipt.
+# Restore the pinned cask if the installed app has moved off the 1.x line.
+raycast_version=$(
+	/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" \
+		/Applications/Raycast.app/Contents/Info.plist 2>/dev/null || true
+)
+if [[ "$raycast_version" != 1.* ]]; then
+	echo "Raycast ${raycast_version:-version unknown} is not 1.x; reinstalling the pinned cask"
+	retry brew reinstall --quiet --yes --cask --force "$local_tap/raycast"
+fi
+
 [[ -z "${SKIP_FIREFOX_INSTALL:-}" ]] && retry brew install --quiet --cask --force \
 	firefox \
 	;
