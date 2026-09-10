@@ -76,3 +76,6 @@ args=(--cell-id "$CELL" --benchgo-enabled --namespace "$CELL-marathon" --yaml "$
 [[ -n "$CLOUD_PROVIDER" ]] && args+=(--cloud-provider "$CLOUD_PROVIDER")
 
 run omni scaffold environment create "${args[@]}"
+
+# if successful, set the cell.
+set-cell "$CELL"
