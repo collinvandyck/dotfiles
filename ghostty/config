@@ -1,5 +1,8 @@
 # vim:filetype=toml
 
+# update to stable once the resizing issue is fixed.
+auto-update-channel = tip
+
 #window-width = 180
 #window-height = 65
 cursor-style = "block"
