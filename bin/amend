@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+	echo -e "usage: $(basename "$0") [-a] [-n]" >&2
+	exit 1
+}
+
+ALL=
+NO_EDIT=
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+	-a)
+		ALL=1
+		shift
+		;;
+	-n)
+		NO_EDIT=1
+		shift
+		;;
+	-na | -an)
+		NO_EDIT=1
+		ALL=1
+		shift
+		;;
+	**)
+		usage
+		;;
+	esac
+done
+
+cmd="git commit --amend"
+[ -n "$ALL" ] && cmd="$cmd -a"
+[ -n "$NO_EDIT" ] && cmd="$cmd --no-edit"
+
+$cmd
