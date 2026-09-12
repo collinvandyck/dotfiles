@@ -13,7 +13,7 @@
 
 # Guidelines
 
-- Always use web search when there is even a slightest chance that I'm talking about something that happened after your knowledge cutoff. NEVER assume things from memory, it is always better to do a web search rather than assume things and give me a wrong answer.
+- Prefer to use web search when there is even a slightest chance that I'm talking about something that happened after your knowledge cutoff.
 
 ## Abbreviations
 
