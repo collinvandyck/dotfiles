@@ -25,6 +25,22 @@ Your goal is to review the supplied PR in a local fashion.
 
 If you need additional information from the user, ask beforehand.
 
+# Walkthrough addendum
+
+Every review ends with a code walkthrough, placed after the findings under a `---` divider and a `# Addendum: code walkthrough` heading. Open it with one line saying it's a tour of what the code does and what the PR changed, for someone picking up the review cold, and that the findings aren't repeated.
+
+The walkthrough explains the mechanism, not the verdict. Build it from the code you read at the PR head, not from the PR description. Scale it to the PR: a one-file fix gets a few paragraphs, a cross-layer change gets the full treatment. Cover, in roughly this order:
+
+- **The problem.** What the system couldn't do, or did wrong, before this PR, in terms a reader outside the team can follow. An analogy helps here.
+- **Where the code sits.** A mermaid flowchart of the call path from real callers down to the code the PR touches, followed by a short paragraph on the layers and which ones the PR changes.
+- **One section per change** (`## Change N: <what it does>`). Show the before and after with fenced snippets from the real code, then explain why the new shape is correct. Point out load-bearing details: struct tags, zero values, ordering, fallbacks.
+- **Behavior tables** where inputs map to outcomes (flag combinations, fallback rules, case analysis). Name who actually sends each input when you can.
+- **Scope and invariants.** Why the change applies where it does and not elsewhere, and any invariant that bounds what the code can be handed.
+- **Compatibility**, when relevant: replay/determinism, wire formats, existing state (Terraform, schemas), mixed-version rollout. Keep it to the mechanism, since the findings already give the verdict.
+- **Test coverage map.** A table of test files and what each pins, then a sentence on what no test exercises.
+
+Don't restate findings in the walkthrough. When the walkthrough touches something a finding covers, refer back to it ("the sequence diagram in finding 1") rather than repeating it.
+
 Finally, write the generated doc and open it. PR reviews are routed to Notion rather than Obsidian, so carry the PR URL, the PR's own title, and the author's GitHub handle into that step — the database row needs all three.
 
 # Branch
