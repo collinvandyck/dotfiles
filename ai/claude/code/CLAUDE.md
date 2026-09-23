@@ -24,6 +24,11 @@
 
 - **strongly prefer** using Edit/Write/Update/etc skills instead of one-off shell or python scripts unless the situation calls for it.
 
+## General Coding Guidelines
+
+- Be very judicious with adding code comments. Not every struct or func or method needs to have a comment. Only apply comments if it truly helps understand nuanced logic.
+- For tests, you *should* add a brief one line comment on each test func (Go) that explains what it is testing.
+
 ## Markdown
 
 When writing markdown to a file (e.g. you are generating a code walkthrough), do not insert artificial line breaks.
