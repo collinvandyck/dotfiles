@@ -121,6 +121,10 @@ local function startWatchdog(taps)
 	return timer
 end
 
+hs.urlevent.bind("testalert", function(eventName, params)
+	hs.alert.show("Received test alert")
+end)
+
 -- globals so the taps aren't garbage collected and can be inspected from the console
 ctrlBracketRemap = setupCtrlBracketEsc()
 fineStepTap = setupFineStepKeys()
