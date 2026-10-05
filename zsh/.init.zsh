@@ -74,13 +74,13 @@ init-completions
 init-cloud-tools
 init-fzf
 init-just
+# before mise: its precmd hook rebuilds PATH from what it saw at activation and appends anything added later, which
+# would push the shims behind /usr/bin.
+enable-shims
 init-mise
 init-starship
 init-zoxide
 init-atuin
 init-direnv
-
-# last so nothing above can push the shims back down PATH
-enable-shims
 
 [[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh
