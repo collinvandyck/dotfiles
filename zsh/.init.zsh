@@ -80,4 +80,7 @@ init-zoxide
 init-atuin
 init-direnv
 
+# last so nothing above can push the shims back down PATH
+enable-shims
+
 [[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh

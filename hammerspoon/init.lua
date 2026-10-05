@@ -121,8 +121,69 @@ local function startWatchdog(taps)
 	return timer
 end
 
+-- browsers whose tabs can be selected over AppleScript, in the order they're searched
+local scriptableBrowsers = {
+	{ name = "Google Chrome", selectTab = "set active tab index of w to i" },
+	{ name = "Brave Browser", selectTab = "set active tab index of w to i" },
+	{ name = "Microsoft Edge", selectTab = "set active tab index of w to i" },
+	{ name = "Safari", selectTab = "set current tab of w to tab i of w" },
+}
+
+-- the tab is matched by host rather than full URL because the login page redirects away from the URL that was opened
+local function focusTabByHost(host)
+	for _, browser in ipairs(scriptableBrowsers) do
+		if hs.application.get(browser.name) then
+			local ok, found = hs.osascript.applescript(string.format(
+				[[
+				tell application "%s"
+					repeat with w in windows
+						repeat with i from 1 to count of tabs of w
+							if URL of tab i of w contains "%s" then
+								%s
+								set index of w to 1
+								activate
+								return true
+							end if
+						end repeat
+					end repeat
+				end tell
+				return false
+				]],
+				browser.name,
+				host,
+				browser.selectTab
+			))
+			if ok and found then
+				return
+			end
+		end
+	end
+
+	for _, browser in ipairs(scriptableBrowsers) do
+		local app = hs.application.get(browser.name)
+		if app then
+			app:activate()
+			return
+		end
+	end
+end
+
 hs.urlevent.bind("testalert", function(eventName, params)
 	hs.alert.show("Received test alert")
+end)
+
+-- sent by shims/open in dotfiles when it opens a login URL in the background
+hs.urlevent.bind("shim-open-auth", function(eventName, params)
+	-- only hostname characters, since it gets spliced into AppleScript
+	local host = (params.url or ""):match("^%a+://([%w%.%-]+)")
+	if not host then
+		return
+	end
+	hs.notify
+		.new(function()
+			focusTabByHost(host)
+		end, { title = "Login waiting", informativeText = host, withdrawAfter = 30 })
+		:send()
 end)
 
 -- globals so the taps aren't garbage collected and can be inspected from the console

@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# Opens known OIDC/OAuth login URLs in the background (open -g) so the browser doesn't steal focus, then posts a
+# notification so the waiting login doesn't go unnoticed. Everything else passes through to /usr/bin/open untouched.
+#
+# SHIM_OPEN_NOTIFIER picks the notifier: terminal-notifier (default), hammerspoon, or none. hammerspoon falls back to
+# terminal-notifier when Hammerspoon isn't running, since opening its URL would otherwise launch it.
+#
+# SHIM_OPEN_BROWSER is the bundle id terminal-notifier activates on click. The default https handler is OpenIn, so the
+# browser can't be looked up.
+
+notifier="${SHIM_OPEN_NOTIFIER:-terminal-notifier}"
+browser_bundle_id="${SHIM_OPEN_BROWSER:-com.google.Chrome}"
+
+auth_patterns=(
+	'https://*.okta.com/oauth2/*'
+	'https://*.okta.com/activate*'
+	'https://login.microsoftonline.com/*'
+	'https://microsoft.com/devicelogin*'
+	'https://login.microsoft.com/device*'
+	'https://oidc.*.amazonaws.com/authorize*'
+	'https://device.sso.*.amazonaws.com/*'
+	'https://*.awsapps.com/start*'
+	'https://accounts.google.com/o/oauth2/*'
+	'https://github.com/login/device*'
+	'https://github.com/login/oauth/*'
+)
+
+main() {
+	local arg pattern
+	for arg in "$@"; do
+		for pattern in "${auth_patterns[@]}"; do
+			# $pattern is unquoted so it matches as a glob.
+			# shellcheck disable=SC2053
+			if [[ $arg == $pattern ]]; then
+				/usr/bin/open -g "$@"
+				local status=$?
+				# Backgrounded and detached from stdio so a slow or broken notifier can't hold up the login.
+				[[ $status == 0 ]] && notify "$arg" </dev/null >/dev/null 2>&1 &
+				exit "$status"
+			fi
+		done
+	done
+
+	exec /usr/bin/open "$@"
+}
+
+notify() {
+	local url=$1
+	local host=${url#*://}
+	host=${host%%/*}
+
+	case "$notifier" in
+	hammerspoon)
+		if pgrep -xq Hammerspoon; then
+			/usr/bin/open -g "hammerspoon://shim-open-auth?url=$(urlencode "$url")"
+		else
+			notify_terminal_notifier "$host"
+		fi
+		;;
+	terminal-notifier)
+		notify_terminal_notifier "$host"
+		;;
+	*) ;;
+	esac
+}
+
+notify_terminal_notifier() {
+	command -v terminal-notifier >/dev/null || return
+	terminal-notifier \
+		-title "Login waiting" \
+		-message "$1" \
+		-group shim-open-auth \
+		-activate "$browser_bundle_id"
+}
+
+urlencode() {
+	local LC_ALL=C s=$1 out='' c i
+	for ((i = 0; i < ${#s}; i++)); do
+		c=${s:i:1}
+		case $c in
+		[a-zA-Z0-9.~_-]) out+=$c ;;
+		*) printf -v c '%%%02X' "'$c" && out+=$c ;;
+		esac
+	done
+	printf '%s' "$out"
+}
+
+main "$@"
