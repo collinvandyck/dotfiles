@@ -70,7 +70,7 @@
 
 [branch]
     sort = -committerdate
-    autoSetupMerge = false
+    autoSetupMerge = simple
 
 [tag]
     sort = version:refname
