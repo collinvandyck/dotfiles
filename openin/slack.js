@@ -2,8 +2,9 @@
   // slack subdomain -> team id. add workspaces as you run into them.
   const TEAMS = {
     temporaltechnologies: 'TT31S6VK5',
-    temporal: 'TT31S6VK5',
+    temporal: 'E0BAG5UK4MB',
   };
+
 
   const url = ctx.url;
   const before = url.href;
