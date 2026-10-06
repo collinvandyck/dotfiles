@@ -356,7 +356,168 @@ teardown() {
 	[ ! -e "$TMP/myrepo-noidea/.idea" ]
 }
 
+@test "sweep removes a worktree whose merged PR head is its HEAD and stays put" {
+	wt_with_commit done
+	oid="$(git -C "$TMP/myrepo-done" rev-parse HEAD)"
+	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid" GUM_CHOICE=remove \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-done" ]
+	[ -z "$output" ]
+}
+
+@test "sweep links the PR number to the PR url" {
+	wt_with_commit done
+	oid="$(git -C "$TMP/myrepo-done" rev-parse HEAD)"
+	url=https://github.com/o/r/pull/7
+	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid"$'\t'"$url" GUM_CHOICE=skip WT_HYPERLINKS=1 \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	grep -qF $'\e]8;;'"$url"$'\e\\#7\e]8;;\e\\' "$GUM_LOG"
+}
+
+@test "sweep prints the PR number without escapes when stderr isn't a terminal" {
+	wt_with_commit done
+	oid="$(git -C "$TMP/myrepo-done" rev-parse HEAD)"
+	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid"$'\thttps://github.com/o/r/pull/7' GUM_CHOICE=skip \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	grep -qF "merged #7 (" "$GUM_LOG"
+}
+
+@test "sweep leaves a candidate in place when it's skipped" {
+	wt_with_commit done
+	oid="$(git -C "$TMP/myrepo-done" rev-parse HEAD)"
+	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid" GUM_CHOICE=skip \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-done" ]
+}
+
+@test "sweep never offers a recent worktree with an open PR" {
+	wt_with_commit wip
+	oid="$(git -C "$TMP/myrepo-wip" rev-parse HEAD)"
+	GH_PR_LIST=$'8\tOPEN\tcollin/wip\t'"$oid" GUM_CHOICE=remove \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-wip" ]
+}
+
+@test "sweep keeps a worktree with commits beyond its merged PR head" {
+	wt_with_commit more
+	oid="$(git -C "$TMP/myrepo-more" rev-parse HEAD)"
+	git -C "$TMP/myrepo-more" commit -q --allow-empty -m "after the merge"
+	GH_PR_LIST=$'7\tMERGED\tcollin/more\t'"$oid" GUM_CHOICE=remove \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-more" ]
+}
+
+@test "sweep offers a worktree with nothing beyond origin/main" {
+	git worktree add -q "$TMP/myrepo-empty" -b collin/empty origin/main
+	GUM_CHOICE=remove run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-empty" ]
+}
+
+@test "sweep offers a detached worktree whose commits are all on a remote branch" {
+	git switch -q -c other
+	git commit -q --allow-empty -m other
+	git push -q origin other
+	git switch -q main
+	git worktree add -q --detach "$TMP/myrepo-det" other
+	GUM_CHOICE=remove run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-det" ]
+}
+
+@test "sweep looks up a pr-N worktree by number and offers it once that PR merged" {
+	wt_with_commit pr-9
+	oid="$(git -C "$TMP/myrepo-pr-9" rev-parse HEAD)"
+	GH_PR_VIEW=$'MERGED\t'"$oid" GUM_CHOICE=remove \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-pr-9" ]
+	grep -q "pr view 9" "$TMP/gh.log"
+}
+
+@test "sweep offers a stale worktree but not a recent one with the same unpushed work" {
+	git worktree add -q "$TMP/myrepo-old" -b collin/old
+	GIT_COMMITTER_DATE="2020-01-01T00:00:00 +0000" git -C "$TMP/myrepo-old" commit -q --allow-empty -m old
+	wt_with_commit fresh
+	GUM_CHOICE=remove run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-old" ]
+	[ -d "$TMP/myrepo-fresh" ]
+}
+
+@test "sweep prompts for one worktree at a time and quit stops before the next" {
+	git worktree add -q "$TMP/myrepo-a" -b collin/a origin/main
+	git worktree add -q "$TMP/myrepo-b" -b collin/b origin/main
+	GUM_CHOICE=quit run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ -d "$TMP/myrepo-a" ]
+	[ -d "$TMP/myrepo-b" ]
+	[ "$(grep -c '^choose' "$GUM_LOG")" -eq 1 ]
+}
+
+@test "sweep that removes the cwd returns you to root" {
+	git worktree add -q "$TMP/myrepo-here" -b collin/here origin/main
+	cd "$TMP/myrepo-here"
+	GUM_CHOICE=remove run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-here" ]
+	[[ "$output" == *"/myrepo" ]]
+}
+
+@test "sweep offers to delete the checked-out branch even when it doesn't match the slug" {
+	git worktree add -q "$TMP/myrepo-flip" -b collin/renamed
+	git -C "$TMP/myrepo-flip" commit -q --allow-empty -m work
+	oid="$(git -C "$TMP/myrepo-flip" rev-parse HEAD)"
+	GH_PR_LIST=$'7\tMERGED\tcollin/renamed\t'"$oid" GUM_CHOICE=remove GUM_CONFIRM=0 \
+		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/myrepo-flip" ]
+	! git show-ref --verify --quiet refs/heads/collin/renamed
+}
+
+@test "sweep --all sweeps every repo under the dir from outside any repo" {
+	git init -q --bare "$TMP/origin2.git"
+	git init -q -b main "$TMP/second"
+	git -C "$TMP/second" commit -q --allow-empty -m init
+	git -C "$TMP/second" remote add origin "$TMP/origin2.git"
+	git -C "$TMP/second" push -q -u origin main
+	git -C "$TMP/second" worktree add -q "$TMP/second-x" -b collin/x origin/main
+	git worktree add -q "$TMP/myrepo-y" -b collin/y origin/main
+	cd "$TMP"
+	GUM_CHOICE=remove run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep --all "$TMP"
+	[ "$status" -eq 0 ]
+	[ ! -d "$TMP/second-x" ]
+	[ ! -d "$TMP/myrepo-y" ]
+	[ -z "$output" ]
+}
+
+@test "sweep skips the PR lookup for a repo with no sibling worktrees" {
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	[ ! -f "$TMP/gh.log" ]
+}
+
+@test "sweep prunes worktree entries whose dir is already gone" {
+	git worktree add -q "$TMP/myrepo-gone" -b collin/gone
+	rm -rf "$TMP/myrepo-gone"
+	run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
+	[ "$status" -eq 0 ]
+	! git worktree list | grep -q myrepo-gone
+}
+
 # --- helpers ---
+
+# wt_with_commit SLUG — a sibling worktree on collin/SLUG with one commit of its own.
+wt_with_commit() {
+	git worktree add -q "$TMP/myrepo-$1" -b "collin/$1"
+	git -C "$TMP/myrepo-$1" commit -q --allow-empty -m "$1"
+}
 
 # gum stub: confirm honors $GUM_CONFIRM (default 1 = No); choose/filter record the
 # menu to $GUM_MENU_LOG (if set) then echo $GUM_CHOICE or pass the menu through;
@@ -389,14 +550,16 @@ stub_logger() {
 	chmod +x "$TMP/bin/$1"
 }
 
-# gh stub: logs args like stub_logger, and for `pr list` prints $GH_PR_LIST so the
-# picker has rows to choose from.
+# gh stub: logs args like stub_logger, prints $GH_PR_LIST for `pr list` so the
+# picker has rows to choose from, and $GH_PR_VIEW for `pr view`.
 stub_gh() {
 	cat > "$TMP/bin/gh" <<-EOF
 		#!/usr/bin/env sh
 		echo "\$*" >> "$TMP/gh.log"
 		if [ "\$1" = "pr" ] && [ "\$2" = "list" ]; then
 			printf '%s\n' "\${GH_PR_LIST:-}"
+		elif [ "\$1" = "pr" ] && [ "\$2" = "view" ]; then
+			printf '%s\n' "\${GH_PR_VIEW:-}"
 		fi
 	EOF
 	chmod +x "$TMP/bin/gh"
