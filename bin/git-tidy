@@ -1,0 +1,261 @@
+#!/usr/bin/env bash
+#
+# git-tidy — find local branches that look finished (merged PRs, work already in main, abandoned checkouts) and
+# offer each for deletion, one at a time. Run it as `git tidy`. Branches checked out in a worktree belong to
+# `wt sweep` and are left alone here.
+#
+# A deleted branch is archived first, under refs/archive/<branch>, so `git tidy restore` can bring it back. `-n`
+# only reports, one tab-separated row per candidate (verdict, branch, age, unpushed commits). See git-tidy.bats.
+
+set -euo pipefail
+
+BASE_DEFAULT=origin/main
+
+# names that are leftovers by construction. heads/* also makes refs like heads/main ambiguous.
+JUNK_PATTERNS=('backup' 'backup-*' 'backup/*' 'codex/*' 'worktree-agent-*' 'heads/*')
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# shellcheck source=bin/_git-common
+source "$SCRIPT_DIR/_git-common"
+
+# --- commands ---
+
+# tidy — offer each candidate in turn: delete (archive, then drop the branch), skip, or quit. Branches with
+# commits no remote holds show those commits first, since deleting is the only thing standing between them and gc
+# once the archive ref expires.
+tidy() {
+	collect || return 0
+
+	# read every row before prompting, so each prompt reads from the tty rather than from a loop's redirected stdin.
+	local -a rows=()
+	mapfile -t rows <<<"$CAND_ROWS"
+
+	local row verdict branch age unpushed safe url choice archived=0
+	for row in "${rows[@]}"; do
+		IFS=$'\t' read -r verdict branch age unpushed safe url <<<"$row"
+		[[ $safe == - ]] && safe=""
+		# link the "#N" that ends a merged/closed verdict.
+		[[ $url != - && $verdict == *" #"* ]] && verdict="${verdict% *} $(hyperlink "$url" "${verdict##* }")"
+		msg ""
+		msg "$branch"
+		msg "  $verdict ($age since last commit, $unpushed unpushed)"
+		((unpushed > 0)) && show_unpushed "$branch" "$safe"
+		choice=$(printf '%s\n' delete skip quit | gum_choose) || choice=quit
+		case $choice in
+		delete) archive "$branch" && archived=$((archived + 1)) ;;
+		quit) break ;;
+		*) : ;;
+		esac
+	done
+
+	((archived > 0)) && msg "archived $archived; \`git tidy restore\` brings one back"
+	return 0
+}
+
+# report — print the candidates and change nothing.
+report() {
+	collect || return 0
+	local rows
+	rows=$(cut -f1-4 <<<"$CAND_ROWS")
+	if [[ -t 1 ]]; then
+		{
+			printf 'VERDICT\tBRANCH\tAGE\tUNPUSHED\n'
+			printf '%s\n' "$rows"
+		} | column -t -s $'\t'
+	else
+		printf '%s\n' "$rows"
+	fi
+	msg "$(wc -l <<<"$rows" | tr -d ' ') of $CAND_TOTAL branches look finished"
+}
+
+# restore [BRANCH] — recreate an archived branch where it was and drop its archive ref. With no BRANCH, pick one.
+restore() {
+	local root branch=${1:-}
+	root=$(main_root)
+	if [[ -z $branch ]]; then
+		branch=$(git -C "$root" for-each-ref refs/archive --format='%(refname:lstrip=2)' | gum_filter) || return 0
+		[[ -z $branch ]] && return 0
+	fi
+	git -C "$root" show-ref --verify --quiet "refs/archive/$branch" || die "nothing archived as $branch"
+	branch_exists "$branch" "$root" && die "branch $branch already exists; rename it or delete it first"
+
+	local sha
+	sha=$(git -C "$root" rev-parse "refs/archive/$branch")
+	git -C "$root" branch -- "$branch" "$sha"
+	git -C "$root" update-ref -d "refs/archive/$branch"
+	msg "restored $branch at ${sha:0:12}"
+}
+
+# --- helpers ---
+
+# collect — fetch, classify every local branch, and set CAND_ROWS (classify's rows, sorted by verdict) and
+# CAND_TOTAL (branches considered). Fails, after saying so, when there's nothing to tidy.
+collect() {
+	local root base prs checked_out
+	root=$(main_root)
+
+	# freshen remote state so "gone" and "pushed" are judged against what origin has now.
+	git -C "$root" fetch -q --prune origin 2>/dev/null || msg "fetch failed, judging against stale remote refs"
+	base=$(git -C "$root" symbolic-ref -q --short refs/remotes/origin/HEAD || echo "$BASE_DEFAULT")
+	prs=$(list_prs "$root" --limit "${GIT_TIDY_PR_LIMIT:-1000}" 2>/dev/null) || prs=""
+	checked_out=$(git -C "$root" worktree list --porcelain | awk '/^branch /{ sub("refs/heads/", "", $2); print $2 }')
+
+	local branch track rows="" row
+	CAND_TOTAL=0
+	while IFS=$'\t' read -r branch track; do
+		[[ $branch == "${base#*/}" ]] && continue
+		grep -qxF "$branch" <<<"$checked_out" && continue
+		[[ $(git -C "$root" config --bool "branch.$branch.keep" || true) == true ]] && continue
+		CAND_TOTAL=$((CAND_TOTAL + 1))
+		row=$(classify "$root" "$base" "$prs" "$branch" "$track")
+		[[ -n $row ]] && rows+="$row"$'\n'
+	done < <(git -C "$root" for-each-ref refs/heads --format='%(refname:lstrip=2)%09%(upstream:track)')
+
+	CAND_ROWS=$(printf '%s' "$rows" | sort -s -t $'\t' -k1,1)
+	if [[ -z $CAND_ROWS ]]; then
+		msg "nothing to tidy among $CAND_TOTAL branches"
+		return 1
+	fi
+}
+
+# show_unpushed BRANCH SAFE — list the commits on BRANCH that no remote (nor SAFE, a PR head, if set) holds.
+#
+# With hyperlinks on, a commit GitHub still has links to it there. Unpushed only means no remote ref holds the
+# commit; GitHub keeps commits that were pushed and later orphaned (a force-push, a deleted branch), so we ask.
+show_unpushed() {
+	local root web="" short sha subject lines=""
+	root=$(main_root)
+	local -a not=(--remotes)
+	[[ -n $2 ]] && not+=("$2")
+	if hyperlinks_on; then
+		lookup_web_url "$root"
+		web=$REPO_WEB_URL
+	fi
+
+	while IFS=' ' read -r short sha subject; do
+		if [[ -n $web ]] && (cd "$root" && gh api "repos/{owner}/{repo}/commits/$sha" --silent </dev/null 2>/dev/null); then
+			short=$(hyperlink "$web/commit/$sha" "$short")
+		fi
+		lines+="    $short $subject"$'\n'
+	done < <(git -C "$root" log --format='%h %H %s' -n 10 "refs/heads/$1" --not "${not[@]}")
+	msg "${lines%$'\n'}"
+}
+
+# lookup_web_url ROOT — set REPO_WEB_URL to the GitHub URL of ROOT's repo, asking gh only once per run. Empty when
+# gh can't tell.
+lookup_web_url() {
+	[[ -n ${REPO_WEB_URL+set} ]] && return 0
+	REPO_WEB_URL=$(cd "$1" && gh repo view --json url --jq .url 2>/dev/null) || REPO_WEB_URL=""
+}
+
+# archive BRANCH — move BRANCH to refs/archive/BRANCH, then delete it. The archive ref keeps a reflog, so archiving
+# a second branch of the same name leaves the first one's tip recoverable there.
+archive() {
+	local root branch=$1 sha
+	root=$(main_root)
+	sha=$(git -C "$root" rev-parse "refs/heads/$branch")
+	git -C "$root" update-ref --create-reflog -m "git-tidy: archive $branch" "refs/archive/$branch" "$sha" ||
+		{
+			msg "couldn't archive $branch; left it alone"
+			return 1
+		}
+	git -C "$root" branch -D -- "$branch" >/dev/null
+	msg "archived $branch (${sha:0:12})"
+}
+
+# classify ROOT BASE PRS BRANCH TRACK — print "verdict<TAB>branch<TAB>age<TAB>unpushed<TAB>pr head" for a branch
+# that looks finished, nothing for one to keep. The PR head is the extra commit unpushed counts as safe, empty
+# when there's none. A branch with an open PR is always kept. Otherwise, first match wins:
+#   merged/closed  its PR is done and the branch tip is part of the PR head GitHub kept
+#   in BASE        the tip is already an ancestor of BASE
+#   squashed       BASE holds a commit with the same diff as the whole branch
+#   upstream gone  it tracked a remote branch that has since been deleted
+#   junk           the name matches JUNK_PATTERNS or shadows a tag
+#   stale          no commit in GIT_TIDY_STALE_DAYS (default 28)
+classify() {
+	local root=$1 base=$2 prs=$3 branch=$4 track=$5
+	local ref=refs/heads/$branch num="" state="" oid="" url="" contained="" age unpushed reason=""
+	age=$((($(date +%s) - $(git -C "$root" log -1 --format=%ct "$ref")) / 86400))
+
+	IFS=$'\t' read -r num state oid url < <(pr_for_branch "$prs" "$branch") || true
+	[[ $state == OPEN ]] && return 0
+
+	local -a safe=(--remotes)
+	if [[ -n $oid ]] && pr_head_local "$root" "$num" "$oid"; then
+		safe+=("$oid")
+		git -C "$root" merge-base --is-ancestor "$ref" "$oid" && contained=1
+	fi
+	unpushed=$(git -C "$root" rev-list --count "$ref" --not "${safe[@]}")
+
+	if [[ -n $contained && ($state == MERGED || $state == CLOSED) ]]; then
+		reason="${state,,} #$num"
+	elif git -C "$root" merge-base --is-ancestor "$ref" "$base"; then
+		reason="in $base"
+	elif squashed "$root" "$base" "$ref"; then
+		reason="squashed into $base"
+	elif [[ $track == "[gone]" ]]; then
+		reason="upstream gone"
+	elif is_junk "$root" "$branch"; then
+		reason=junk
+	elif ((age > ${GIT_TIDY_STALE_DAYS:-28})); then
+		reason=stale
+	fi
+
+	[[ -z $reason ]] && return 0
+	printf '%s\t%s\t%sd\t%s\t%s\t%s\n' "$reason" "$branch" "$age" "$unpushed" "${safe[1]:--}" "${url:--}"
+}
+
+# squashed ROOT BASE REF — succeed when BASE already has the branch's changes as one commit, the shape a squash
+# merge leaves. We squash the branch into a throwaway commit on its merge base and ask git cherry whether BASE
+# has a commit with the same patch-id.
+squashed() {
+	local root=$1 base=$2 ref=$3 mb tmp
+	mb=$(git -C "$root" merge-base "$base" "$ref") || return 1
+	tmp=$(git -C "$root" commit-tree "$ref^{tree}" -p "$mb" -m git-tidy) || return 1
+	[[ $(git -C "$root" cherry "$base" "$tmp") == -* ]]
+}
+
+# is_junk ROOT BRANCH — succeed when the name matches JUNK_PATTERNS or shadows a tag, which makes the bare name
+# ambiguous to git (usually a branch made by checking out a tag with -b and the tag's own name).
+is_junk() {
+	local root=$1 branch=$2 p
+	for p in "${JUNK_PATTERNS[@]}"; do
+		# shellcheck disable=SC2053 # p is a glob on purpose.
+		[[ $branch == $p ]] && return 0
+	done
+	git -C "$root" show-ref --verify --quiet "refs/tags/$branch"
+}
+
+usage() {
+	cat >&2 <<'EOF'
+usage: git tidy [-n | restore [branch]]
+
+  git tidy                    offer each finished-looking branch for deletion, one at a time
+  git tidy -n                 list them and change nothing
+  git tidy restore [branch]   bring back an archived branch (no branch: pick one)
+  git tidy -h                 show this help
+
+Deleted branches are archived under refs/archive/ first. Branches checked out in a
+worktree are skipped; `wt sweep` handles those. Mark a branch to keep with
+`git config branch.<name>.keep true`.
+EOF
+}
+
+main() {
+	case ${1:-} in
+	"") tidy ;;
+	-n) report ;;
+	restore)
+		shift
+		restore "$@"
+		;;
+	-h | --help | help) usage ;;
+	*)
+		usage
+		exit 2
+		;;
+	esac
+}
+
+main "$@"

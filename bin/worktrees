@@ -11,81 +11,48 @@ set -euo pipefail
 BRANCH_PREFIX=collin/
 BASE_DEFAULT=origin/main
 
-# absolute dir of this script, so we can call sibling helpers (goland-inherit)
+# absolute dir of this script, so we can reach sibling helpers (_git-common, goland-inherit)
 # whether we're run via PATH or by absolute path (bats).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# gum theming — one accent, applied across confirm/choose so the tool feels of a piece.
-C_ACCENT="${WT_ACCENT:-212}"
-export GUM_CONFIRM_PROMPT_FOREGROUND="$C_ACCENT"
-export GUM_CHOOSE_CURSOR_FOREGROUND="$C_ACCENT"
-export GUM_CHOOSE_SELECTED_FOREGROUND="$C_ACCENT"
-export GUM_FILTER_INDICATOR_FOREGROUND="$C_ACCENT"
-export GUM_FILTER_MATCH_FOREGROUND="$C_ACCENT"
-export GUM_FILTER_PROMPT_FOREGROUND="$C_ACCENT"
-
-# --- output helpers ---
-
-msg() { gum style --foreground "$C_ACCENT" "$*" >&2 2>/dev/null || printf '%s\n' "$*" >&2; }
-die() { msg "$*"; exit 2; }
-
-gum_confirm() { gum confirm "$@"; }
-gum_choose() { gum choose; }   # fixed menus
-# long lists — inline, word-start match, input order preserved. Buffers stdin so
-# we can skip the picker entirely on empty input (gum otherwise lists files).
-gum_filter() {
-  local input; input=$(cat)
-  [[ -z $input ]] && return 1
-  printf '%s\n' "$input" | gum filter --no-fuzzy --no-fuzzy-sort --height "${WT_PICK_HEIGHT:-15}"
-}
-# gum_filter_multi — like gum_filter, but tab-select several (one match per line out).
-gum_filter_multi() {
-  local input; input=$(cat)
-  [[ -z $input ]] && return 1
-  printf '%s\n' "$input" | gum filter --no-limit --no-fuzzy --no-fuzzy-sort --height "${WT_PICK_HEIGHT:-15}"
-}
+# shellcheck source=bin/_git-common
+source "$SCRIPT_DIR/_git-common"
 
 # --- repo geometry ---
 
-# main_root — absolute path of the *main* worktree, correct even from inside a linked one.
-main_root() {
-  local common
-  common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) \
-    || die "not in a git repository"
-  dirname "$common"
-}
-
 # worktree_path SLUG — the conventional sibling path for a slug.
 worktree_path() {
-  local root; root=$(main_root)
-  printf '%s/%s-%s\n' "$(dirname "$root")" "$(basename "$root")" "$1"
+	local root
+	root=$(main_root)
+	printf '%s/%s-%s\n' "$(dirname "$root")" "$(basename "$root")" "$1"
 }
 
 # list_slugs [ROOT] — every sibling worktree as "slug<TAB>path", most recently active
 # first (by the worktree HEAD's commit time). ROOT defaults to the current repo.
 list_slugs() {
-  local root=${1:-} name
-  [[ -z $root ]] && root=$(main_root)
-  name=$(basename "$root")
-  git -C "$root" worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r p; do
-    local b=${p##*/} ts
-    case $b in
-    "$name"-*)
-      ts=$(git -C "$p" log -1 --format=%ct 2>/dev/null || echo 0)
-      printf '%s\t%s\t%s\n' "$ts" "${b#"$name"-}" "$p" ;;
-    *) : ;;
-    esac
-  done | sort -rn -k1,1 | cut -f2-
+	local root=${1:-} name
+	[[ -z $root ]] && root=$(main_root)
+	name=$(basename "$root")
+	git -C "$root" worktree list --porcelain | awk '/^worktree /{print $2}' | while read -r p; do
+		local b=${p##*/} ts
+		case $b in
+		"$name"-*)
+			ts=$(git -C "$p" log -1 --format=%ct 2>/dev/null || echo 0)
+			printf '%s\t%s\t%s\n' "$ts" "${b#"$name"-}" "$p"
+			;;
+		*) : ;;
+		esac
+	done | sort -rn -k1,1 | cut -f2-
 }
-
-branch_exists() { git -C "${2:-$(main_root)}" show-ref --verify --quiet "refs/heads/$1"; }
 
 # slugify ARGS... — join args and collapse whitespace runs to single dashes, so
 # `wt test this and that` becomes the slug test-this-and-that.
 slugify() {
-  local s; s=$(printf '%s' "$*" | tr -s '[:space:]' '-')
-  s=${s#-}; s=${s%-}
-  printf '%s' "$s"
+	local s
+	s=$(printf '%s' "$*" | tr -s '[:space:]' '-')
+	s=${s#-}
+	s=${s%-}
+	printf '%s' "$s"
 }
 
 # check_slug SLUG — a slug is pasted into both a sibling directory name and a branch
@@ -93,142 +60,165 @@ slugify() {
 # rejected rather than quietly rewritten: `wt collin/foo` would otherwise ask for a
 # worktree nested under a dir named collin, on branch collin/collin/foo.
 check_slug() {
-  local s=$1
-  [[ $s == *[!A-Za-z0-9._-]* ]] && die "bad slug '$s' — use letters, digits, '-', '_' or '.'"
-  [[ $s == .* || $s == *..* ]] && die "bad slug '$s' — no leading '.' and no '..'"
-  return 0
+	local s=$1
+	[[ $s == *[!A-Za-z0-9._-]* ]] && die "bad slug '$s' — use letters, digits, '-', '_' or '.'"
+	[[ $s == .* || $s == *..* ]] && die "bad slug '$s' — no leading '.' and no '..'"
+	return 0
 }
 
 # gh_owner_repo URL — extract lowercased owner/repo from a github url or remote
 # (https or ssh), else empty.
 gh_owner_repo() {
-  local u=${1%.git}
-  case $u in
-  *://*) u=${u#*://}; u=${u#*/} ;;   # scheme://host/owner/repo/... -> owner/repo/...
-  *@*:*) u=${u#*:} ;;                # git@host:owner/repo -> owner/repo
-  *) : ;;
-  esac
-  printf '%s\n' "$u" | cut -d/ -f1,2 | tr 'A-Z' 'a-z'
+	local u=${1%.git}
+	case $u in
+	*://*)
+		u=${u#*://}
+		u=${u#*/}
+		;;                 # scheme://host/owner/repo/... -> owner/repo/...
+	*@*:*) u=${u#*:} ;; # git@host:owner/repo -> owner/repo
+	*) : ;;
+	esac
+	printf '%s\n' "$u" | cut -d/ -f1,2 | tr 'A-Z' 'a-z'
 }
 
 # match QUERY — echo "slug<TAB>path" for an existing worktree: exact wins, else unique
 # substring, else gum-pick among the hits. Returns non-zero when nothing matches.
 match() {
-  local query=$1 exact="" pr
-  local -a pairs=()
-  while IFS=$'\t' read -r s p; do
-    [[ -z $s ]] && continue
-    [[ $s == "$query" ]] && exact="$s"$'\t'"$p"
-    [[ $s == *"$query"* ]] && pairs+=("$s"$'\t'"$p")
-  done < <(list_slugs)
+	local query=$1 exact="" pr
+	local -a pairs=()
+	while IFS=$'\t' read -r s p; do
+		[[ -z $s ]] && continue
+		[[ $s == "$query" ]] && exact="$s"$'\t'"$p"
+		[[ $s == *"$query"* ]] && pairs+=("$s"$'\t'"$p")
+	done < <(list_slugs)
 
-  [[ -n $exact ]] && { printf '%s\n' "$exact"; return 0; }
-  case ${#pairs[@]} in
-  0) return 1 ;;
-  1) printf '%s\n' "${pairs[0]}"; return 0 ;;
-  *)
-    local pick
-    pick=$(printf '%s\n' "${pairs[@]}" | cut -f1 | gum_filter) || return 1
-    [[ -z $pick ]] && return 1
-    for pr in "${pairs[@]}"; do
-      [[ ${pr%%$'\t'*} == "$pick" ]] && { printf '%s\n' "$pr"; return 0; }
-    done
-    return 1
-    ;;
-  esac
+	[[ -n $exact ]] && {
+		printf '%s\n' "$exact"
+		return 0
+	}
+	case ${#pairs[@]} in
+	0) return 1 ;;
+	1)
+		printf '%s\n' "${pairs[0]}"
+		return 0
+		;;
+	*)
+		local pick
+		pick=$(printf '%s\n' "${pairs[@]}" | cut -f1 | gum_filter) || return 1
+		[[ -z $pick ]] && return 1
+		for pr in "${pairs[@]}"; do
+			[[ ${pr%%$'\t'*} == "$pick" ]] && {
+				printf '%s\n' "$pr"
+				return 0
+			}
+		done
+		return 1
+		;;
+	esac
 }
 
 # --- commands ---
 
 # create SLUG [BASE] — fetch, cut the worktree, run post-create hooks, print its path.
 create() {
-  local slug base=${2:-$BASE_DEFAULT}
-  slug=$(slugify "${1:-}")
-  [[ -z $slug ]] && die "usage: wt add <slug> [base]"
-  check_slug "$slug"
+	local slug base=${2:-$BASE_DEFAULT}
+	slug=$(slugify "${1:-}")
+	[[ -z $slug ]] && die "usage: wt add <slug> [base]"
+	check_slug "$slug"
 
-  local root name parent path branch
-  root=$(main_root); name=${root##*/}; parent=${root%/*}
-  path="$parent/$name-$slug"
-  branch="$BRANCH_PREFIX$slug"
+	local root name parent path branch
+	root=$(main_root)
+	name=${root##*/}
+	parent=${root%/*}
+	path="$parent/$name-$slug"
+	branch="$BRANCH_PREFIX$slug"
 
-  # freshen the base's remote so we branch from current, not a stale tracking ref.
-  if [[ $base == */* ]]; then
-    local remote=${base%%/*}
-    git -C "$root" remote get-url "$remote" &>/dev/null && git -C "$root" fetch -q "$remote"
-  fi
+	# freshen the base's remote so we branch from current, not a stale tracking ref.
+	if [[ $base == */* ]]; then
+		local remote=${base%%/*}
+		git -C "$root" remote get-url "$remote" &>/dev/null && git -C "$root" fetch -q "$remote"
+	fi
 
-  if [[ -e $path ]]; then
-    gum_confirm "worktree dir $path already exists — cd into it?" && { printf '%s\n' "$path"; return 0; }
-    die "aborted"
-  fi
+	if [[ -e $path ]]; then
+		gum_confirm "worktree dir $path already exists — cd into it?" && {
+			printf '%s\n' "$path"
+			return 0
+		}
+		die "aborted"
+	fi
 
-  if branch_exists "$branch"; then
-    local choice
-    choice=$(printf '%s\n' "check out existing branch" "force a new branch (-B)" "cancel" | gum_choose) || die "aborted"
-    case $choice in
-    "check out existing branch") git -C "$root" worktree add -q "$path" "$branch" ;;
-    "force a new branch (-B)") git -C "$root" worktree add -q "$path" -B "$branch" "$base" ;;
-    *) die "aborted" ;;
-    esac
-  else
-    git -C "$root" worktree add -q "$path" -b "$branch" "$base"
-  fi
+	if branch_exists "$branch"; then
+		local choice
+		choice=$(printf '%s\n' "check out existing branch" "force a new branch (-B)" "cancel" | gum_choose) || die "aborted"
+		case $choice in
+		"check out existing branch") git -C "$root" worktree add -q "$path" "$branch" ;;
+		"force a new branch (-B)") git -C "$root" worktree add -q "$path" -B "$branch" "$base" ;;
+		*) die "aborted" ;;
+		esac
+	else
+		git -C "$root" worktree add -q "$path" -b "$branch" "$base"
+	fi
 
-  post_create "$path" "$root"
-  msg "created $path"
-  printf '%s\n' "$path"
+	post_create "$path" "$root"
+	msg "created $path"
+	printf '%s\n' "$path"
 }
 
 # post_create PATH ROOT — link .claude from the main repo (and hide it from git),
 # kick mise if configured.
 post_create() {
-  local path=$1 root=$2
-  if [[ -e $root/.claude && ! -e $path/.claude ]]; then
-    ln -s "$root/.claude" "$path/.claude"
-    git_exclude "$path" .claude
-  fi
-  if [[ -f $path/mise.toml ]]; then
-    (cd "$path" && mise trust && mise install) >&2
-  fi
-  # inherit the main worktree's GoLand config so build tags / run configs
-  # survive into the new worktree. best-effort — never fail creation.
-  if [[ -d $root/.idea && ! -e $path/.idea ]]; then
-    (cd "$path" && "$SCRIPT_DIR/goland-inherit" "$root") >&2 || true
-  fi
-  return 0
+	local path=$1 root=$2
+	if [[ -e $root/.claude && ! -e $path/.claude ]]; then
+		ln -s "$root/.claude" "$path/.claude"
+		git_exclude "$path" .claude
+	fi
+	if [[ -f $path/mise.toml ]]; then
+		(cd "$path" && mise trust && mise install) >&2
+	fi
+	# inherit the main worktree's GoLand config so build tags / run configs
+	# survive into the new worktree. best-effort — never fail creation.
+	if [[ -d $root/.idea && ! -e $path/.idea ]]; then
+		(cd "$path" && "$SCRIPT_DIR/goland-inherit" "$root") >&2 || true
+	fi
+	return 0
 }
 
 # git_exclude PATH PATTERN — add PATTERN to the worktree's info/exclude, once.
 git_exclude() {
-  local path=$1 pat=$2 file
-  file=$(git -C "$path" rev-parse --path-format=absolute --git-path info/exclude) || return 0
-  mkdir -p "$(dirname "$file")"
-  grep -qxF "$pat" "$file" 2>/dev/null || printf '%s\n' "$pat" >> "$file"
+	local path=$1 pat=$2 file
+	file=$(git -C "$path" rev-parse --path-format=absolute --git-path info/exclude) || return 0
+	mkdir -p "$(dirname "$file")"
+	grep -qxF "$pat" "$file" 2>/dev/null || printf '%s\n' "$pat" >>"$file"
 }
 
 # resolve SLUG — the bare `wt <slug>` hot path: cd to a match, else create it.
 resolve() {
-  local query=$1 hit
-  check_slug "$query"
-  if hit=$(match "$query"); then
-    printf '%s\n' "${hit#*$'\t'}"
-  else
-    create "$query"
-  fi
+	local query=$1 hit
+	check_slug "$query"
+	if hit=$(match "$query"); then
+		printf '%s\n' "${hit#*$'\t'}"
+	else
+		create "$query"
+	fi
 }
 
 # switch — no-arg `wt`: pick any worktree and print its path. [root] leads the list
 # and takes you back to the main worktree, unless you're already there.
 switch() {
-  local pick hit root cur
-  root=$(main_root)
-  cur=$(git rev-parse --show-toplevel 2>/dev/null || true)
-  pick=$( { [[ $cur != "$root" ]] && printf '[root]\n'; list_slugs | cut -f1; } | gum_filter) || return 0
-  [[ -z $pick ]] && return 0
-  [[ $pick == "[root]" ]] && { printf '%s\n' "$root"; return 0; }
-  hit=$(match "$pick") || return 0
-  printf '%s\n' "${hit#*$'\t'}"
+	local pick hit root cur
+	root=$(main_root)
+	cur=$(git rev-parse --show-toplevel 2>/dev/null || true)
+	pick=$({
+		[[ $cur != "$root" ]] && printf '[root]\n'
+		list_slugs | cut -f1
+	} | gum_filter) || return 0
+	[[ -z $pick ]] && return 0
+	[[ $pick == "[root]" ]] && {
+		printf '%s\n' "$root"
+		return 0
+	}
+	hit=$(match "$pick") || return 0
+	printf '%s\n' "${hit#*$'\t'}"
 }
 
 list() { git -C "$(main_root)" worktree list >&2; }
@@ -237,59 +227,62 @@ list() { git -C "$(main_root)" worktree list >&2; }
 # resolves to a single worktree; with no slug the picker lets you tab-select
 # several. The same checks run per worktree, so a dirty pick still prompts.
 remove() {
-  local query=${1:-} root
-  root=$(main_root)
+	local query=${1:-} root
+	root=$(main_root)
 
-  # resolve the picks to parallel slug/path arrays up front, before anything is
-  # removed, so mid-loop lookups can't go stale.
-  local -a slugs=() paths=()
-  local hit
-  if [[ -z $query ]]; then
-    local picks pick
-    picks=$(list_slugs | cut -f1 | gum_filter_multi) || return 0
-    [[ -z $picks ]] && return 0
-    while IFS= read -r pick; do
-      [[ -z $pick ]] && continue
-      hit=$(match "$pick") || die "no such worktree: $pick"
-      slugs+=("${hit%%$'\t'*}"); paths+=("${hit#*$'\t'}")
-    done <<< "$picks"
-  else
-    hit=$(match "$query") || die "no worktree matches: $query"
-    slugs+=("${hit%%$'\t'*}"); paths+=("${hit#*$'\t'}")
-  fi
+	# resolve the picks to parallel slug/path arrays up front, before anything is
+	# removed, so mid-loop lookups can't go stale.
+	local -a slugs=() paths=()
+	local hit
+	if [[ -z $query ]]; then
+		local picks pick
+		picks=$(list_slugs | cut -f1 | gum_filter_multi) || return 0
+		[[ -z $picks ]] && return 0
+		while IFS= read -r pick; do
+			[[ -z $pick ]] && continue
+			hit=$(match "$pick") || die "no such worktree: $pick"
+			slugs+=("${hit%%$'\t'*}")
+			paths+=("${hit#*$'\t'}")
+		done <<<"$picks"
+	else
+		hit=$(match "$query") || die "no worktree matches: $query"
+		slugs+=("${hit%%$'\t'*}")
+		paths+=("${hit#*$'\t'}")
+	fi
 
-  # resolve each target to its real path now, while they still exist — we compare
-  # against these after removal, and BSD realpath fails on a vanished path.
-  local -a rpaths=(); local cur cwd_idx="" i
-  for i in "${!paths[@]}"; do rpaths+=("$(realpath "${paths[$i]}")"); done
-  cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
-  if [[ -n $cur ]]; then
-    cur=$(realpath "$cur")
-    for i in "${!rpaths[@]}"; do [[ ${rpaths[$i]} == "$cur" ]] && cwd_idx=$i; done
-  fi
-  # if the cwd is among the targets we must step out to root before removing it —
-  # git won't drop the worktree you're standing in, and our own git calls would
-  # otherwise run in a dir that's about to vanish.
-  [[ -n $cwd_idx ]] && cd "$root"
+	# resolve each target to its real path now, while they still exist — we compare
+	# against these after removal, and BSD realpath fails on a vanished path.
+	local -a rpaths=()
+	local cur cwd_idx="" i
+	for i in "${!paths[@]}"; do rpaths+=("$(realpath "${paths[$i]}")"); done
+	cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
+	if [[ -n $cur ]]; then
+		cur=$(realpath "$cur")
+		for i in "${!rpaths[@]}"; do [[ ${rpaths[$i]} == "$cur" ]] && cwd_idx=$i; done
+	fi
+	# if the cwd is among the targets we must step out to root before removing it —
+	# git won't drop the worktree you're standing in, and our own git calls would
+	# otherwise run in a dir that's about to vanish.
+	[[ -n $cwd_idx ]] && cd "$root"
 
-  # remove each pick with the same checks; remove_one echoes the path it removed,
-  # so a declined force-confirm (empty echo, non-zero) skips just that one. we
-  # only hand root back to the shell if the cwd was actually removed — a declined
-  # dirty cwd survives, and you should stay put. an explicit single-slug rm still
-  # exits non-zero when its only target declined; in the picker it's a plain skip.
-  local rc=0 here="" removed
-  for i in "${!slugs[@]}"; do
-    if removed=$(remove_one "${slugs[$i]}" "${paths[$i]}" "$root"); then
-      # removed holds the path we just dropped; if it was the cwd, hand root back.
-      [[ -n $removed && $i -eq ${cwd_idx:--1} ]] && here=1
-    else
-      rc=$?
-    fi
-  done
-  [[ -z $query ]] && rc=0
+	# remove each pick with the same checks; remove_one echoes the path it removed,
+	# so a declined force-confirm (empty echo, non-zero) skips just that one. we
+	# only hand root back to the shell if the cwd was actually removed — a declined
+	# dirty cwd survives, and you should stay put. an explicit single-slug rm still
+	# exits non-zero when its only target declined; in the picker it's a plain skip.
+	local rc=0 here="" removed
+	for i in "${!slugs[@]}"; do
+		if removed=$(remove_one "${slugs[$i]}" "${paths[$i]}" "$root"); then
+			# removed holds the path we just dropped; if it was the cwd, hand root back.
+			[[ -n $removed && $i -eq ${cwd_idx:--1} ]] && here=1
+		else
+			rc=$?
+		fi
+	done
+	[[ -z $query ]] && rc=0
 
-  [[ -n $here ]] && printf '%s\n' "$root"
-  return $rc
+	[[ -n $here ]] && printf '%s\n' "$root"
+	return $rc
 }
 
 # remove_one SLUG PATH ROOT [BRANCH] — remove one worktree, then offer to delete
@@ -300,23 +293,26 @@ remove() {
 # discards the uncommitted work. A declined force-confirm removes nothing and
 # returns non-zero.
 remove_one() {
-  local slug=$1 path=$2 root=$3
-  local branch=${4-$BRANCH_PREFIX$slug}
+	local slug=$1 path=$2 root=$3
+	local branch=${4-$BRANCH_PREFIX$slug}
 
-  local err
-  if ! err=$(git -C "$root" worktree remove "$path" 2>&1); then
-    msg "$err"
-    gum_confirm "force-remove $path and discard its changes?" || { msg "aborted $path"; return 2; }
-    git -C "$root" worktree remove --force "$path"
-  fi
-  msg "removed $path"
+	local err
+	if ! err=$(git -C "$root" worktree remove "$path" 2>&1); then
+		msg "$err"
+		gum_confirm "force-remove $path and discard its changes?" || {
+			msg "aborted $path"
+			return 2
+		}
+		git -C "$root" worktree remove --force "$path"
+	fi
+	msg "removed $path"
 
-  if [[ -n $branch ]] && branch_exists "$branch" "$root" && gum_confirm "delete branch $branch?"; then
-    git -C "$root" branch -D "$branch" >&2
-    msg "deleted $branch"
-  fi
+	if [[ -n $branch ]] && branch_exists "$branch" "$root" && gum_confirm "delete branch $branch?"; then
+		git -C "$root" branch -D "$branch" >&2
+		msg "deleted $branch"
+	fi
 
-  printf '%s\n' "$path"
+	printf '%s\n' "$path"
 }
 
 # sweep [--all DIR] — offer the worktrees that look finished for removal, one at a
@@ -324,85 +320,87 @@ remove_one() {
 # confirms. --all sweeps every repo directly under DIR. Like rm, stdout stays empty
 # unless the cwd was removed, in which case it's that repo's root.
 sweep() {
-  local -a roots=()
-  case ${1:-} in
-  "") roots+=("$(main_root)") ;;
-  --all)
-    local dir=${2:-} d
-    [[ -d $dir ]] || die "usage: wt sweep [--all DIR]"
-    for d in "$dir"/*/; do
-      [[ -d $d.git ]] && roots+=("$(cd "$d" && pwd -P)")
-    done
-    ;;
-  *) die "usage: wt sweep [--all DIR]" ;;
-  esac
+	local -a roots=()
+	case ${1:-} in
+	"") roots+=("$(main_root)") ;;
+	--all)
+		local dir=${2:-} d
+		[[ -d $dir ]] || die "usage: wt sweep [--all DIR]"
+		for d in "$dir"/*/; do
+			[[ -d $d.git ]] && roots+=("$(cd "$d" && pwd -P)")
+		done
+		;;
+	*) die "usage: wt sweep [--all DIR]" ;;
+	esac
 
-  local cur
-  cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
-  [[ -n $cur ]] && cur=$(realpath "$cur")
+	local cur
+	cur=$(git rev-parse --path-format=absolute --show-toplevel 2>/dev/null || true)
+	[[ -n $cur ]] && cur=$(realpath "$cur")
 
-  SWEEP_HERE="" SWEEP_QUIT=""
-  local root
-  for root in "${roots[@]}"; do
-    sweep_repo "$root" "$cur"
-    [[ -n $SWEEP_QUIT ]] && break
-  done
-  [[ -n $SWEEP_HERE ]] && printf '%s\n' "$SWEEP_HERE"
-  return 0
+	SWEEP_HERE="" SWEEP_QUIT=""
+	local root
+	for root in "${roots[@]}"; do
+		sweep_repo "$root" "$cur"
+		[[ -n $SWEEP_QUIT ]] && break
+	done
+	[[ -n $SWEEP_HERE ]] && printf '%s\n' "$SWEEP_HERE"
+	return 0
 }
 
 # sweep_repo ROOT CUR — sweep one repo's sibling worktrees. Sets SWEEP_HERE when it
 # removes CUR and SWEEP_QUIT when the user quits.
 sweep_repo() {
-  local root=$1 cur=$2 name base prs listed
-  name=$(basename "$root")
+	local root=$1 cur=$2 name base prs listed
+	name=$(basename "$root")
 
-  # drop entries whose dir is already gone; a repo with nothing left to sweep
-  # isn't worth a fetch or a gh call.
-  git -C "$root" worktree prune
-  listed=$(list_slugs "$root")
-  [[ -z $listed ]] && return 0
+	# drop entries whose dir is already gone; a repo with nothing left to sweep
+	# isn't worth a fetch or a gh call.
+	git -C "$root" worktree prune
+	listed=$(list_slugs "$root")
+	[[ -z $listed ]] && return 0
 
-  # freshen remote state so "pushed" and "merged" are judged against what origin has now.
-  git -C "$root" fetch -q --prune origin 2>/dev/null || msg "$name: fetch failed, judging against stale remote refs"
-  base=$(git -C "$root" symbolic-ref -q --short refs/remotes/origin/HEAD || echo "$BASE_DEFAULT")
-  prs=$(cd "$root" && gh pr list --state all --author @me --limit "${WT_SWEEP_PR_LIMIT:-300}" \
-    --json number,state,headRefName,headRefOid,url \
-    --template '{{range .}}{{.number}}{{"\t"}}{{.state}}{{"\t"}}{{.headRefName}}{{"\t"}}{{.headRefOid}}{{"\t"}}{{.url}}{{"\n"}}{{end}}' \
-    2>/dev/null) || prs=""
+	# freshen remote state so "pushed" and "merged" are judged against what origin has now.
+	git -C "$root" fetch -q --prune origin 2>/dev/null || msg "$name: fetch failed, judging against stale remote refs"
+	base=$(git -C "$root" symbolic-ref -q --short refs/remotes/origin/HEAD || echo "$BASE_DEFAULT")
+	prs=$(list_prs "$root" --author @me --limit "${WT_SWEEP_PR_LIMIT:-300}" 2>/dev/null) || prs=""
 
-  # classify everything before prompting, so each prompt reads from the tty
-  # rather than from a loop's redirected stdin.
-  local -a slugs=() paths=() branches=() verdicts=()
-  local slug path verdict
-  while IFS=$'\t' read -r slug path; do
-    [[ -z $slug ]] && continue
-    verdict=$(classify "$root" "$base" "$prs" "$slug" "$path")
-    [[ $verdict == keep ]] && continue
-    slugs+=("$slug"); paths+=("$path"); verdicts+=("$verdict")
-    branches+=("$(git -C "$path" branch --show-current)")
-  done <<< "$listed"
+	# classify everything before prompting, so each prompt reads from the tty
+	# rather than from a loop's redirected stdin.
+	local -a slugs=() paths=() branches=() verdicts=()
+	local slug path verdict
+	while IFS=$'\t' read -r slug path; do
+		[[ -z $slug ]] && continue
+		verdict=$(classify "$root" "$base" "$prs" "$slug" "$path")
+		[[ $verdict == keep ]] && continue
+		slugs+=("$slug")
+		paths+=("$path")
+		verdicts+=("$verdict")
+		branches+=("$(git -C "$path" branch --show-current)")
+	done <<<"$listed"
 
-  local i choice rpath
-  for i in "${!slugs[@]}"; do
-    msg ""
-    msg "$name-${slugs[$i]}  [${branches[$i]:-detached}]"
-    msg "  ${verdicts[$i]}"
-    choice=$(printf '%s\n' remove skip quit | gum_choose) || choice=quit
-    case $choice in
-    remove)
-      rpath=$(realpath "${paths[$i]}")
-      # git won't remove the worktree we're standing in.
-      [[ $rpath == "$cur" ]] && cd "$root"
-      if remove_one "${slugs[$i]}" "${paths[$i]}" "$root" "${branches[$i]}" >/dev/null; then
-        [[ $rpath == "$cur" ]] && SWEEP_HERE=$root
-      fi
-      ;;
-    quit) SWEEP_QUIT=1; return 0 ;;
-    *) : ;;
-    esac
-  done
-  return 0
+	local i choice rpath
+	for i in "${!slugs[@]}"; do
+		msg ""
+		msg "$name-${slugs[$i]}  [${branches[$i]:-detached}]"
+		msg "  ${verdicts[$i]}"
+		choice=$(printf '%s\n' remove skip quit | gum_choose) || choice=quit
+		case $choice in
+		remove)
+			rpath=$(realpath "${paths[$i]}")
+			# git won't remove the worktree we're standing in.
+			[[ $rpath == "$cur" ]] && cd "$root"
+			if remove_one "${slugs[$i]}" "${paths[$i]}" "$root" "${branches[$i]}" >/dev/null; then
+				[[ $rpath == "$cur" ]] && SWEEP_HERE=$root
+			fi
+			;;
+		quit)
+			SWEEP_QUIT=1
+			return 0
+			;;
+		*) : ;;
+		esac
+	done
+	return 0
 }
 
 # classify ROOT BASE PRS SLUG PATH — print why a worktree can go, or "keep".
@@ -412,130 +410,112 @@ sweep_repo() {
 #   orphan         detached with nothing unpushed, or nothing beyond BASE
 #   stale          no commit in WT_STALE_DAYS (default 28)
 classify() {
-  local root=$1 base=$2 prs=$3 slug=$4 path=$5
-  local branch age unpushed num="" state="" oid="" url="" pr contained=""
-  local -a flags=()
-  branch=$(git -C "$path" branch --show-current)
-  age=$(( ($(date +%s) - $(git -C "$path" log -1 --format=%ct)) / 86400 ))
-  flags+=("${age}d since last commit")
+	local root=$1 base=$2 prs=$3 slug=$4 path=$5
+	local branch age unpushed num="" state="" oid="" url="" pr contained=""
+	local -a flags=()
+	branch=$(git -C "$path" branch --show-current)
+	age=$((($(date +%s) - $(git -C "$path" log -1 --format=%ct)) / 86400))
+	flags+=("${age}d since last commit")
 
-  # a review checkout is looked up by number, since it's usually someone else's
-  # PR; anything else by branch, preferring an open PR, else the newest.
-  if [[ $slug =~ ^pr-([0-9]+)$ ]]; then
-    num=${BASH_REMATCH[1]}
-    IFS=$'\t' read -r state oid url < <(cd "$root" && gh pr view "$num" --json state,headRefOid,url \
-      --template '{{.state}}{{"\t"}}{{.headRefOid}}{{"\t"}}{{.url}}{{"\n"}}' 2>/dev/null) || true
-  elif [[ -n $branch ]]; then
-    IFS=$'\t' read -r num state oid url < <(printf '%s\n' "$prs" | awk -F'\t' -v b="$branch" '
-      $3 == b && $2 == "OPEN" { open = $1 "\t" $2 "\t" $4 "\t" $5 }
-      $3 == b && $1 + 0 > max { max = $1 + 0; best = $1 "\t" $2 "\t" $4 "\t" $5 }
-      END { if (open != "") print open; else if (best != "") print best }') || true
-  fi
-  pr=$(hyperlink "$url" "#$num")
+	# a review checkout is looked up by number, since it's usually someone else's
+	# PR; anything else by branch, preferring an open PR, else the newest.
+	if [[ $slug =~ ^pr-([0-9]+)$ ]]; then
+		num=${BASH_REMATCH[1]}
+		IFS=$'\t' read -r state oid url < <(cd "$root" && gh pr view "$num" --json state,headRefOid,url \
+			--template '{{.state}}{{"\t"}}{{.headRefOid}}{{"\t"}}{{.url}}{{"\n"}}' 2>/dev/null) || true
+	elif [[ -n $branch ]]; then
+		IFS=$'\t' read -r num state oid url < <(pr_for_branch "$prs" "$branch") || true
+	fi
+	pr=$(hyperlink "$url" "#$num")
 
-  # GitHub keeps refs/pull/N/head after the branch is deleted, so commits in the
-  # PR head count as safe even when no remote branch holds them.
-  local -a safe=(--remotes)
-  if [[ -n $oid ]]; then
-    git -C "$root" cat-file -e "$oid^{commit}" 2>/dev/null ||
-      git -C "$root" fetch -q origin "refs/pull/$num/head" 2>/dev/null || true
-    if git -C "$root" cat-file -e "$oid^{commit}" 2>/dev/null; then
-      safe+=("$oid")
-      git -C "$path" merge-base --is-ancestor HEAD "$oid" && contained=1
-    fi
-  fi
-  unpushed=$(git -C "$path" rev-list --count HEAD --not "${safe[@]}")
-  ((unpushed > 0)) && flags+=("$unpushed unpushed")
-  [[ -n $(git -C "$path" status --porcelain) ]] && flags+=(dirty)
-  [[ $state == OPEN ]] && flags+=("open $pr")
+	# commits in the PR head count as safe even when no remote branch holds them.
+	local -a safe=(--remotes)
+	if [[ -n $oid ]] && pr_head_local "$root" "$num" "$oid"; then
+		safe+=("$oid")
+		git -C "$path" merge-base --is-ancestor HEAD "$oid" && contained=1
+	fi
+	unpushed=$(git -C "$path" rev-list --count HEAD --not "${safe[@]}")
+	((unpushed > 0)) && flags+=("$unpushed unpushed")
+	[[ -n $(git -C "$path" status --porcelain) ]] && flags+=(dirty)
+	[[ $state == OPEN ]] && flags+=("open $pr")
 
-  local reason=""
-  if [[ -n $contained && ($state == MERGED || $state == CLOSED) ]]; then
-    if [[ $slug == pr-* ]]; then reason="review $pr ${state,,}"; else reason="${state,,} $pr"; fi
-  elif [[ -z $branch ]] && ((unpushed == 0)); then
-    reason="orphan: detached, nothing unpushed"
-  elif (($(git -C "$path" rev-list --count "$base..HEAD") == 0)); then
-    reason="orphan: nothing beyond $base"
-  elif ((age > ${WT_STALE_DAYS:-28})); then
-    reason="stale"
-  fi
+	local reason=""
+	if [[ -n $contained && ($state == MERGED || $state == CLOSED) ]]; then
+		if [[ $slug == pr-* ]]; then reason="review $pr ${state,,}"; else reason="${state,,} $pr"; fi
+	elif [[ -z $branch ]] && ((unpushed == 0)); then
+		reason="orphan: detached, nothing unpushed"
+	elif (($(git -C "$path" rev-list --count "$base..HEAD") == 0)); then
+		reason="orphan: nothing beyond $base"
+	elif ((age > ${WT_STALE_DAYS:-28})); then
+		reason="stale"
+	fi
 
-  if [[ -z $reason ]]; then
-    echo keep
-    return 0
-  fi
-  local detail
-  detail=$(printf '%s, ' "${flags[@]}")
-  printf '%s (%s)\n' "$reason" "${detail%, }"
-}
-
-# hyperlink URL TEXT — TEXT wrapped in an OSC 8 terminal hyperlink to URL. Plain TEXT
-# when there's no URL or stderr isn't a terminal; WT_HYPERLINKS=1 forces the link.
-hyperlink() {
-  local url=$1 text=$2
-  if [[ -n $url && (-t 2 || -n ${WT_HYPERLINKS:-}) ]]; then
-    # shellcheck disable=SC1003 # \\ is printf's escaped backslash, the string terminator.
-    printf '\e]8;;%s\e\\%s\e]8;;\e\\' "$url" "$text"
-  else
-    printf '%s' "$text"
-  fi
+	if [[ -z $reason ]]; then
+		echo keep
+		return 0
+	fi
+	local detail
+	detail=$(printf '%s, ' "${flags[@]}")
+	printf '%s (%s)\n' "$reason" "${detail%, }"
 }
 
 # from_pr [URL|NUMBER] — a worktree checked out to a PR head. With no arg, pick one
 # from the open PRs (type to narrow).
 from_pr() {
-  local ref=${1:-}
-  if [[ -z $ref ]]; then
-    ref=$(pick_pr) || return 0
-    [[ -z $ref ]] && return 0
-  fi
+	local ref=${1:-}
+	if [[ -z $ref ]]; then
+		ref=$(pick_pr) || return 0
+		[[ -z $ref ]] && return 0
+	fi
 
-  local root name parent num path branch
-  root=$(main_root); name=${root##*/}; parent=${root%/*}
+	local root name parent num path branch
+	root=$(main_root)
+	name=${root##*/}
+	parent=${root%/*}
 
-  # A PR url must belong to this repo — otherwise we'd mislabel the worktree and
-  # check out the wrong project's PR. (A bare number is always this repo.)
-  if [[ $ref == *://* || $ref == *github.com* ]]; then
-    local want here
-    want=$(gh_owner_repo "$ref")
-    here=$(gh_owner_repo "$(git -C "$root" remote get-url origin 2>/dev/null || true)")
-    [[ -n $here && $want == "$here" ]] || die "this PR url is for '$want', but you're in '$here'"
-  fi
+	# A PR url must belong to this repo — otherwise we'd mislabel the worktree and
+	# check out the wrong project's PR. (A bare number is always this repo.)
+	if [[ $ref == *://* || $ref == *github.com* ]]; then
+		local want here
+		want=$(gh_owner_repo "$ref")
+		here=$(gh_owner_repo "$(git -C "$root" remote get-url origin 2>/dev/null || true)")
+		[[ -n $here && $want == "$here" ]] || die "this PR url is for '$want', but you're in '$here'"
+	fi
 
-  num=${ref##*/}
-  path="$parent/$name-pr-$num"
-  branch="${BRANCH_PREFIX}pr-$num"
+	num=${ref##*/}
+	path="$parent/$name-pr-$num"
+	branch="${BRANCH_PREFIX}pr-$num"
 
-  [[ -e $path ]] && die "worktree dir $path already exists"
-  git -C "$root" worktree add -q --detach "$path"
+	[[ -e $path ]] && die "worktree dir $path already exists"
+	git -C "$root" worktree add -q --detach "$path"
 
-  # Check out the PR into our own branch. gh leaves the upstream pointing at the
-  # PR's branch, so `git pull` follows the author. We then make pushes go to our
-  # own origin/<branch>: push.default=current (repo-wide) picks the same-named
-  # branch, and pushRemote=origin sends it to origin even for a fork PR.
-  (cd "$path" && gh pr checkout "$ref" --branch "$branch") >&2
-  git -C "$root" config push.default current
-  git -C "$root" config branch."$branch".pushRemote origin
+	# Check out the PR into our own branch. gh leaves the upstream pointing at the
+	# PR's branch, so `git pull` follows the author. We then make pushes go to our
+	# own origin/<branch>: push.default=current (repo-wide) picks the same-named
+	# branch, and pushRemote=origin sends it to origin even for a fork PR.
+	(cd "$path" && gh pr checkout "$ref" --branch "$branch") >&2
+	git -C "$root" config push.default current
+	git -C "$root" config branch."$branch".pushRemote origin
 
-  post_create "$path" "$root"
-  msg "created $path"
-  printf '%s\n' "$path"
+	post_create "$path" "$root"
+	msg "created $path"
+	printf '%s\n' "$path"
 }
 
 # pick_pr — list open PRs (number, author, title, branch) so any of them can be
 # filtered on, let the user narrow, echo the chosen PR number.
 pick_pr() {
-  local line
-  line=$(gh pr list --limit "${WT_PR_LIMIT:-100}" \
-    --json number,author,title,headRefName \
-    --template '{{range .}}{{.number}}{{"\t"}}{{.author.login}}{{"\t"}}{{.title}}{{"\t"}}{{.headRefName}}{{"\n"}}{{end}}' \
-    | gum_filter) || return 1
-  [[ -z $line ]] && return 1
-  printf '%s\n' "${line%%$'\t'*}"
+	local line
+	line=$(gh pr list --limit "${WT_PR_LIMIT:-100}" \
+		--json number,author,title,headRefName \
+		--template '{{range .}}{{.number}}{{"\t"}}{{.author.login}}{{"\t"}}{{.title}}{{"\t"}}{{.headRefName}}{{"\n"}}{{end}}' |
+		gum_filter) || return 1
+	[[ -z $line ]] && return 1
+	printf '%s\n' "${line%%$'\t'*}"
 }
 
 usage() {
-  cat >&2 <<'EOF'
+	cat >&2 <<'EOF'
 usage: wt [command | slug]
 
   wt <slug>              switch to a matching worktree, or create it if none match
@@ -550,17 +530,29 @@ EOF
 }
 
 main() {
-  local cmd=${1:-}
-  case $cmd in
-  "") switch ;;
-  -h | --help | help) usage ;;
-  add) shift; create "$@" ;;
-  ls | list) list ;;
-  rm | remove) shift; remove "$@" ;;
-  pr) shift; from_pr "$@" ;;
-  sweep) shift; sweep "$@" ;;
-  *) resolve "$(slugify "$@")" ;;
-  esac
+	local cmd=${1:-}
+	case $cmd in
+	"") switch ;;
+	-h | --help | help) usage ;;
+	add)
+		shift
+		create "$@"
+		;;
+	ls | list) list ;;
+	rm | remove)
+		shift
+		remove "$@"
+		;;
+	pr)
+		shift
+		from_pr "$@"
+		;;
+	sweep)
+		shift
+		sweep "$@"
+		;;
+	*) resolve "$(slugify "$@")" ;;
+	esac
 }
 
 main "$@"

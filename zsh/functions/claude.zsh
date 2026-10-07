@@ -46,11 +46,11 @@ cr() {
 		local num_sessions=${1:-50}
 		local sel
 		sel=$(
-			find ~/.claude/projects -name '*.jsonl' -mindepth 2 -maxdepth 2 -print0 \
-			| xargs -0 ls -t 2>/dev/null \
-			| head -$num_sessions \
-			| while read -r f; do
-				line=$(jq -rs '
+			find ~/.claude/projects -name '*.jsonl' -mindepth 2 -maxdepth 2 -print0 |
+				xargs -0 ls -t 2>/dev/null |
+				head -$num_sessions |
+				while read -r f; do
+					line=$(jq -rs '
 					(input_filename | split("/") | .[-2]) as $folder |
 					(map(.sessionId  // empty)              | last) as $id |
 					(map(.customTitle // empty)             | last) as $custom |
@@ -59,19 +59,19 @@ cr() {
 					 // (map(.cwd // empty) | first)) as $cwd |
 					"\($cwd)\t\($id)\t\($custom // $ai // $id)"
 				' "$f")
-				IFS=$'\t' read -r cwd id session <<< "$line"
-				printf '%s\t%s\t%s\t%s\n' "$f" "$cwd" "$id" "${(D)cwd}:$session"
-			done \
-			| fzf --ansi \
-						--delimiter='\t' \
-						--with-nth=4 \
-						--no-hscroll \
-						--height=100% --layout=reverse --border --prompt='cr › ' \
-						--preview 'cr-preview-glow {1}' \
-						--preview-window='right,55%,wrap'
+					IFS=$'\t' read -r cwd id session <<<"$line"
+					printf '%s\t%s\t%s\t%s\n' "$f" "$cwd" "$id" "${(D)cwd}:$session"
+				done |
+				fzf --ansi \
+					--delimiter='\t' \
+					--with-nth=4 \
+					--no-hscroll \
+					--height=100% --layout=reverse --border --prompt='cr › ' \
+					--preview 'cr-preview-glow {1}' \
+					--preview-window='right,55%,wrap'
 		) || return 1
 		local f cwd id rest
-		IFS=$'\t' read -r f cwd id rest <<< "$sel"
+		IFS=$'\t' read -r f cwd id rest <<<"$sel"
 		(cd "$cwd" && claude --resume "$id")
 	}
 	while launch-finder; do :; done

@@ -370,7 +370,7 @@ teardown() {
 	wt_with_commit done
 	oid="$(git -C "$TMP/myrepo-done" rev-parse HEAD)"
 	url=https://github.com/o/r/pull/7
-	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid"$'\t'"$url" GUM_CHOICE=skip WT_HYPERLINKS=1 \
+	GH_PR_LIST=$'7\tMERGED\tcollin/done\t'"$oid"$'\t'"$url" GUM_CHOICE=skip GIT_COMMON_HYPERLINKS=1 \
 		run --separate-stderr "$BATS_TEST_DIRNAME/worktrees" sweep
 	[ "$status" -eq 0 ]
 	grep -qF $'\e]8;;'"$url"$'\e\\#7\e]8;;\e\\' "$GUM_LOG"
@@ -525,7 +525,7 @@ wt_with_commit() {
 stub_gum() {
 	cat > "$TMP/bin/gum" <<-'EOF'
 		#!/usr/bin/env sh
-		[ -n "${GUM_LOG:-}" ] && echo "$*" >> "$GUM_LOG"
+		[ -n "${GUM_LOG:-}" ] && printf '%s\n' "$*" >> "$GUM_LOG"
 		sub=$1; shift
 		case "$sub" in
 			confirm) exit "${GUM_CONFIRM:-1}" ;;
@@ -545,7 +545,7 @@ stub_gum() {
 stub_logger() {
 	cat > "$TMP/bin/$1" <<-EOF
 		#!/usr/bin/env sh
-		echo "\$*" >> "$TMP/$1.log"
+		printf '%s\n' "\$*" >> "$TMP/$1.log"
 	EOF
 	chmod +x "$TMP/bin/$1"
 }
@@ -555,7 +555,7 @@ stub_logger() {
 stub_gh() {
 	cat > "$TMP/bin/gh" <<-EOF
 		#!/usr/bin/env sh
-		echo "\$*" >> "$TMP/gh.log"
+		printf '%s\n' "\$*" >> "$TMP/gh.log"
 		if [ "\$1" = "pr" ] && [ "\$2" = "list" ]; then
 			printf '%s\n' "\${GH_PR_LIST:-}"
 		elif [ "\$1" = "pr" ] && [ "\$2" = "view" ]; then

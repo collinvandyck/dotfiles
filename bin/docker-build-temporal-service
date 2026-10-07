@@ -44,7 +44,7 @@ runit() {
 	fi
 }
 
-SHA="${SHA[1, 9]}-collin"
+SHA="${SHA[1,9]}-collin"
 
 runit make docker-build/temporal-service "PLATFORM=$PLATFORM" "DOCKER_IMAGE_TAG=$SHA"
 runit make docker-push/temporal-service "DOCKER_IMAGE_TAG=$SHA"

@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+#
+# _git-common — helpers shared by the git tools in this dir (worktrees, git-tidy). Source it, don't run it. Callers
+# own their shell options (set -euo pipefail).
+
+# gum theming — one accent, applied across confirm/choose so the tools feel of a piece.
+C_ACCENT="${GIT_COMMON_ACCENT:-212}"
+export GUM_CONFIRM_PROMPT_FOREGROUND="$C_ACCENT"
+export GUM_CHOOSE_CURSOR_FOREGROUND="$C_ACCENT"
+export GUM_CHOOSE_SELECTED_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_INDICATOR_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_MATCH_FOREGROUND="$C_ACCENT"
+export GUM_FILTER_PROMPT_FOREGROUND="$C_ACCENT"
+
+# --- output helpers ---
+
+msg() { gum style --foreground "$C_ACCENT" "$*" >&2 2>/dev/null || printf '%s\n' "$*" >&2; }
+die() {
+	msg "$*"
+	exit 2
+}
+
+gum_confirm() { gum confirm "$@"; }
+gum_choose() { gum choose; } # fixed menus
+# long lists — inline, word-start match, input order preserved. Buffers stdin so
+# we can skip the picker entirely on empty input (gum otherwise lists files).
+gum_filter() {
+	local input
+	input=$(cat)
+	[[ -z $input ]] && return 1
+	printf '%s\n' "$input" | gum filter --no-fuzzy --no-fuzzy-sort --height "${GIT_COMMON_PICK_HEIGHT:-15}"
+}
+# gum_filter_multi — like gum_filter, but tab-select several (one match per line out).
+gum_filter_multi() {
+	local input
+	input=$(cat)
+	[[ -z $input ]] && return 1
+	printf '%s\n' "$input" | gum filter --no-limit --no-fuzzy --no-fuzzy-sort --height "${GIT_COMMON_PICK_HEIGHT:-15}"
+}
+
+# hyperlinks_on — succeed when chatter should carry links: stderr is a terminal, or GIT_COMMON_HYPERLINKS=1.
+hyperlinks_on() { [[ -t 2 || -n ${GIT_COMMON_HYPERLINKS:-} ]]; }
+
+# hyperlink URL TEXT — TEXT wrapped in an OSC 8 terminal hyperlink to URL. Plain TEXT when there's no URL or
+# hyperlinks are off.
+hyperlink() {
+	local url=$1 text=$2
+	if [[ -n $url ]] && hyperlinks_on; then
+		# shellcheck disable=SC1003 # \\ is printf's escaped backslash, the string terminator.
+		printf '\e]8;;%s\e\\%s\e]8;;\e\\' "$url" "$text"
+	else
+		printf '%s' "$text"
+	fi
+}
+
+# --- repo geometry ---
+
+# main_root — absolute path of the *main* worktree, correct even from inside a linked one.
+main_root() {
+	local common
+	common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) ||
+		die "not in a git repository"
+	dirname "$common"
+}
+
+branch_exists() { git -C "${2:-$(main_root)}" show-ref --verify --quiet "refs/heads/$1"; }
+
+# --- pull requests ---
+
+# list_prs ROOT [GH_ARGS...] — PRs in any state, one per line as
+# "number<TAB>state<TAB>head branch<TAB>head oid<TAB>url". GH_ARGS narrow the list (--author, --limit).
+list_prs() {
+	local root=$1
+	shift
+	(cd "$root" && gh pr list --state all "$@" \
+		--json number,state,headRefName,headRefOid,url \
+		--template '{{range .}}{{.number}}{{"\t"}}{{.state}}{{"\t"}}{{.headRefName}}{{"\t"}}{{.headRefOid}}{{"\t"}}{{.url}}{{"\n"}}{{end}}')
+}
+
+# pr_for_branch PRS BRANCH — BRANCH's PR from list_prs output as "number<TAB>state<TAB>head oid<TAB>url",
+# preferring an open one, else the newest. Prints nothing when there's no PR.
+pr_for_branch() {
+	printf '%s\n' "$1" | awk -F'\t' -v b="$2" '
+		$3 == b && $2 == "OPEN" { open = $1 "\t" $2 "\t" $4 "\t" $5 }
+		$3 == b && $1 + 0 > max { max = $1 + 0; best = $1 "\t" $2 "\t" $4 "\t" $5 }
+		END { if (open != "") print open; else if (best != "") print best }'
+}
+
+# pr_head_local ROOT NUM OID — succeed once PR NUM's head commit OID is in the local object store, fetching
+# refs/pull/NUM/head if it isn't. GitHub keeps that ref after the branch is deleted, so commits it holds are
+# as safe as pushed ones.
+pr_head_local() {
+	local root=$1 num=$2 oid=$3
+	git -C "$root" cat-file -e "$oid^{commit}" 2>/dev/null && return 0
+	git -C "$root" fetch -q origin "refs/pull/$num/head" 2>/dev/null || true
+	git -C "$root" cat-file -e "$oid^{commit}" 2>/dev/null
+}
