@@ -37,6 +37,10 @@ it is your goal to do the following:
 
 - **Important**: after each milestone is verified, commit the changes and ensure the working tree is clean.
 
+- Check `git status` before accepting a sub-agent's work, and look at every untracked file. A stray build artifact or scratch file is a defect in the milestone, not something to commit around.
+
+- A sub-agent runs the commands you hand it verbatim, so every command in its prompt must already follow the project's rules. For example, give `go build -o /dev/null <pkg>` rather than a bare `go build`, which writes a binary into the tree when its pattern matches a single main package.
+
 # User Context
 
 $ARGUMENTS
