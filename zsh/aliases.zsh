@@ -50,6 +50,12 @@ clt() { (cd ~/code/temporal && cl "$@"); }
 dy() { echo -n "$(pwd)" | pbcopy; }
 viw() { vi $(which "$@"); }
 
+ANTHROPIC_MODEL_VARIANT='5-5[1m]'
+
+alias haiku="cl --model 'claude-haiku-${ANTHROPIC_MODEL_VARIANT}'"
+alias sonnet="cl --model 'claude-sonnet-${ANTHROPIC_MODEL_VARIANT}'"
+alias opus="cl --model 'claude-opus-${ANTHROPIC_MODEL_VARIANT}'"
+
 # rust aliases
 alias co='cargo'
 alias we='watchexec'
