@@ -4,6 +4,8 @@ alias sa='cd ~/code/temporal/saas-temporal'
 alias oss='cd ~/code/temporal/temporal'
 alias cds='sa && cd ./cds'
 alias awslocal='uvx --from awscli-local awslocal'
+alias stop-ci='(sa && (cd ./cds && make stop-dependencies-ci))'
+alias start-ci='(sa && (cd ./cds && make stop-dependencies-ci start-dependencies-ci))'
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
