@@ -28,11 +28,11 @@ local function setupCtrlBracketEsc()
 	return tap
 end
 
--- make volume/brightness keys use 1/4 steps by default (as if shift+option were held)
+-- make brightness keys use 1/4 steps by default (as if shift+option were held); flip SOUND_* to true for volume too
 local function setupFineStepKeys()
 	local fineStepKeys = {
-		SOUND_UP = true,
-		SOUND_DOWN = true,
+		SOUND_UP = false,
+		SOUND_DOWN = false,
 		BRIGHTNESS_UP = true,
 		BRIGHTNESS_DOWN = true,
 	}
