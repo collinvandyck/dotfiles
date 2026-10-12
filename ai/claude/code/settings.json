@@ -106,6 +106,14 @@
     }
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "autoCompactWindow": 250000
+    }
+  },
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
