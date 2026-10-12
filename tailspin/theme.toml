@@ -1,0 +1,97 @@
+# tokyonight-flavored tailspin theme.
+#
+# tailspin only accepts the 16 ANSI color names, so the actual hues come from the terminal palette. Colors follow
+# tokyonight's syntax conventions: strings green, numbers yellow (its orange), keys/properties cyan, identifiers
+# blue, constants magenta, and punctuation faint.
+#
+# Reference for every field: `tspin --generate-default-theme`.
+
+[[keywords]]
+words = ['INFO', 'tardigrade']
+style = { fg = "green" }
+
+[[regexes]]
+regex = 'event_type: (\w+)'
+style = { fg = "cyan", bold = true, underline = true }
+
+[numbers]
+style = { fg = "yellow" }
+
+[uuids]
+number = { fg = "blue", italic = true }
+letter = { fg = "magenta", italic = true }
+separator = { faint = true }
+
+[quotes]
+quote_token = '"'
+style = { fg = "green" }
+
+[ipv4]
+number = { fg = "blue" }
+separator = { fg = "cyan", faint = true }
+
+[ipv6]
+number = { fg = "blue" }
+letter = { fg = "magenta" }
+separator = { fg = "cyan", faint = true }
+
+[dates]
+date = { fg = "magenta" }
+time = { fg = "blue" }
+zone = { fg = "cyan", faint = true }
+separator = { faint = true }
+
+[durations]
+value = { fg = "yellow" }
+separator = { faint = true }
+unit = { fg = "cyan", italic = true }
+
+[paths]
+segment = { fg = "blue" }
+separator = { fg = "cyan", faint = true }
+
+[urls]
+http = { fg = "red", faint = true }
+https = { fg = "green", faint = true }
+host = { fg = "blue" }
+path = { fg = "cyan" }
+query_params_key = { fg = "magenta" }
+query_params_value = { fg = "green" }
+symbols = { faint = true }
+
+[emails]
+local_part = { fg = "blue", underline = true }
+at_sign = { fg = "magenta" }
+domain = { fg = "blue", underline = true }
+dot = { faint = true }
+
+[pointers]
+number = { fg = "yellow", italic = true }
+letter = { fg = "magenta", italic = true }
+x = { fg = "red", faint = true }
+
+[processes]
+name = { fg = "blue" }
+id = { fg = "yellow" }
+bracket = { faint = true }
+
+[key_value_pairs]
+key = { fg = "cyan" }
+separator = { faint = true }
+
+[json]
+key = { fg = "cyan" }
+quote_token = { faint = true }
+curly_bracket = { fg = "magenta", faint = true }
+square_bracket = { fg = "magenta", faint = true }
+comma = { faint = true }
+colon = { faint = true }
+
+[jvm_stack_traces]
+caused_by = { fg = "magenta", bold = true }
+package = { faint = true }
+exception = { fg = "red", bold = true }
+frame = { fg = "red", faint = true }
+file = { fg = "blue" }
+unknown_source = { faint = true }
+line_number = { fg = "yellow" }
