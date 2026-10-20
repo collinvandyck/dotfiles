@@ -43,7 +43,19 @@ teardown() {
 @test "injects context, duration, namespace, and write for k9s on own cell" {
 	run "$BATS_TEST_DIRNAME/ctt" k9s
 	[ "$status" -eq 0 ]
-	[ "$output" = "omni k9s --write -n temporal -d 8h --context collin-cluster" ]
+	[ "$output" = "omni k9s --write -n temporal -d 8h --context collin-cluster --headless --splashless --logoless" ]
+}
+
+@test "injects ui flags for k9s on another cell" {
+	run "$BATS_TEST_DIRNAME/ctt" k9s -c other-cell
+	[ "$status" -eq 0 ]
+	[ "$output" = "omni k9s -n temporal -d 8h --headless --splashless --logoless -c other-cell" ]
+}
+
+@test "does not duplicate a k9s ui flag that is already provided" {
+	run "$BATS_TEST_DIRNAME/ctt" k9s --splashless
+	[ "$status" -eq 0 ]
+	[ "$output" = "omni k9s --write -n temporal -d 8h --context collin-cluster --headless --logoless --splashless" ]
 }
 
 @test "injects write for k9s when own cell is given explicitly via --context" {
@@ -126,7 +138,7 @@ teardown() {
 	[ "$status" -eq 0 ]
 	# only the dry-run echo is emitted, and --dry-run itself is stripped
 	[ "${#lines[@]}" -eq 1 ]
-	[ "$output" = "omni k9s --write -n temporal -d 8h --context collin-cluster" ]
+	[ "$output" = "omni k9s --write -n temporal -d 8h --context collin-cluster --headless --splashless --logoless" ]
 	[[ "$output" != *"--dry-run"* ]]
 }
 

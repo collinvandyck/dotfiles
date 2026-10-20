@@ -20,6 +20,7 @@ ctt() {
 		_ct_inject_namespace
 		;;
 	k9s)
+		_ct_inject_k9s_ui
 		_ct_inject_context "${args[1]}"
 		_ct_inject_duration
 		_ct_inject_namespace
@@ -80,6 +81,16 @@ _ct_inject_k9s_write() {
 	[[ "$(_ct_context_value)" == "$CELL" ]] || return
 	[[ " ${args[*]} " == *" --write "* ]] && return
 	args=("${args[1]}" --write "${args[@]:1}")
+}
+
+# access runs k9s with its own config dir, so ui prefs go in as flags instead
+_ct_inject_k9s_ui() {
+	local -a missing=()
+	local flag
+	for flag in --headless --splashless --logoless; do
+		[[ " ${args[*]} " == *" $flag "* ]] || missing+=("$flag")
+	done
+	args=("${args[1]}" "${missing[@]}" "${args[@]:1}")
 }
 
 # echoes the context currently set in args (via -c or --context), if any
