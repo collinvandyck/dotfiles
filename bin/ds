@@ -16,7 +16,7 @@ export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-flash[1m]'
 export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-flash[1m]'
 export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
 export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
-export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_EFFORT_LEVEL=high
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 
 # deepseek can't return anthropic's safeguard verdicts, so skip the server probe and its notice.
