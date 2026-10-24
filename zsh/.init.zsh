@@ -4,7 +4,9 @@ stty -ixon
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000
 
-export TERM=xterm-256color
+# Not needed anymore since I retired tmux.
+# export TERM=xterm-256color
+
 setopt BANG_HIST              # Treat the '!' character specially during expansion.
 setopt HIST_BEEP              # Beep when accessing nonexistent history.
 setopt HIST_EXPIRE_DUPS_FIRST # Expire duplicate entries first when trimming history.
