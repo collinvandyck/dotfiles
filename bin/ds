@@ -19,6 +19,11 @@ export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
 export CLAUDE_CODE_EFFORT_LEVEL=max
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
 
+# deepseek can't return anthropic's safeguard verdicts, so skip the server probe and its notice.
+export CLAUDE_CODE_AUTO_MODE_SERVER=0
+# keep auto mode classifier calls on the small model instead of the 1m-context one.
+export CLAUDE_CODE_AUTO_MODE_MODEL=deepseek-flash
+
 # defer to the normal claude wrapper so the usual flags and env still apply.
 CLAUDE=${DS_CLAUDE_BIN:-$HOME/.dotfiles/bin/claude}
 exec "$CLAUDE" "$@"

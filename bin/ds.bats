@@ -25,6 +25,8 @@ setup() {
 	[[ "$output" == *"CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash"* ]]
 	[[ "$output" == *"CLAUDE_CODE_EFFORT_LEVEL=max"* ]]
 	[[ "$output" == *"CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432"* ]]
+	[[ "$output" == *"CLAUDE_CODE_AUTO_MODE_SERVER=0"* ]]
+	[[ "$output" == *"CLAUDE_CODE_AUTO_MODE_MODEL=deepseek-flash"* ]]
 }
 
 @test "drops an anthropic api key so the auth token wins" {
