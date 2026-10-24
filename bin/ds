@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# launches claude code against deepseek's anthropic-compatible endpoint.
+# expects DEEPSEEK_API_KEY to be exported already; see
+# https://api-docs.deepseek.com/quick_start/agent_integrations/claude_code
+: "${DEEPSEEK_API_KEY:?DEEPSEEK_API_KEY is not set}"
+
+export ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+export ANTHROPIC_AUTH_TOKEN=$DEEPSEEK_API_KEY
+# an api key in the env would take precedence over the auth token above.
+unset ANTHROPIC_API_KEY
+
+export ANTHROPIC_MODEL='deepseek-flash[1m]'
+export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-flash[1m]'
+export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-flash[1m]'
+export ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash
+export CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash
+export CLAUDE_CODE_EFFORT_LEVEL=max
+export CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432
+
+# defer to the normal claude wrapper so the usual flags and env still apply.
+CLAUDE=${DS_CLAUDE_BIN:-$HOME/.dotfiles/bin/claude}
+exec "$CLAUDE" "$@"
