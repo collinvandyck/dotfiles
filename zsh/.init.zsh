@@ -89,6 +89,4 @@ init-direnv
 
 [[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh
 
-if command -v ct-wrapper &>/dev/null; then
-	alias ct='ct-wrapper ct'
-fi
+eval "$(squelch init zsh --cmd ct --skip-arg --tui)" &>/dev/null
