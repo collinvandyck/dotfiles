@@ -48,6 +48,9 @@ alias vim=nvim
 alias tt=temporal-tools
 alias cat=bat
 alias pcp='pwd | pbcopy'
+alias mdp=~/code/gh-markdown-preview/preview.py
+alias code='cd ~/code'
+alias glow='glow -w $COLUMNS'
 
 clt() { (cd ~/code/temporal && cl "$@"); }
 dy() { echo -n "$(pwd)" | pbcopy; }
