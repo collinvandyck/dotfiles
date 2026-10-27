@@ -12,6 +12,9 @@ const CLICKHOUSE_VIS = "a1c8349c-753a-4a4c-b2b9-71e3f927e6cb";
 const LOKI = "e008932a-e9dc-4b7a-819f-68b662f3dc51";
 const INFRA_DB = "c8ea5458-e200-47da-aabc-eea36405a733";
 
+// How often every grafana link auto-refreshes, so a tab left open stays live.
+const REFRESH = "1m";
+
 export interface Dashboard {
   id: string;
   title: string;
@@ -286,6 +289,7 @@ function grafana(env: Env, path: string, params: Params): string {
       search.append(key, one);
     }
   }
+  search.set("refresh", REFRESH);
   // URLSearchParams writes spaces as "+", which only means a space to a parser
   // doing form decoding. The shell scripts sent %20 and grafana is happy with
   // it, so keep that. A literal "+" in a value is already %2B by this point.
@@ -296,7 +300,7 @@ function grafana(env: Env, path: string, params: Params): string {
 // Grafana's Explore takes its whole state as one url-encoded JSON blob.
 function explore(env: Env, panes: unknown): string {
   const encoded = encodeURIComponent(JSON.stringify(panes));
-  return `https://${env.grafanaHost}/explore?schemaVersion=1&panes=${encoded}&orgId=1`;
+  return `https://${env.grafanaHost}/explore?schemaVersion=1&panes=${encoded}&orgId=1&refresh=${REFRESH}`;
 }
 
 function promExplore(env: Env, expr: string, legendFormat: string): string {

@@ -45,6 +45,16 @@ use_cell() {
 	trap remember_cell EXIT
 }
 
+# Opens a grafana link with auto-refresh on, so a dashboard left open in a tab
+# keeps up with the cell instead of freezing at the moment it was opened.
+open_grafana() {
+	local url="$1"
+	case "$url" in
+	*\?*) open "$url&refresh=1m" ;;
+	*) open "$url?refresh=1m" ;;
+	esac
+}
+
 # EXIT trap installed by use_cell. Preserves the script's exit status.
 remember_cell() {
 	local status=$?

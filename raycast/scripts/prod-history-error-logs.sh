@@ -61,4 +61,4 @@ PANES=$(jq -n -c \
   }')
 
 ENCODED_PANES=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1]))" "$PANES")
-open "https://${GRAFANA_HOST}/explore?schemaVersion=1&panes=${ENCODED_PANES}&orgId=${ORG_ID}"
+open_grafana "https://${GRAFANA_HOST}/explore?schemaVersion=1&panes=${ENCODED_PANES}&orgId=${ORG_ID}"

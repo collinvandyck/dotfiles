@@ -16,6 +16,16 @@ setup() {
 		exit "\${2:-0}"
 	EOF
 	chmod +x "$STUB_DIR/run.sh"
+
+	# Records the urls open_grafana hands to `open` instead of launching them.
+	OPEN_LOG="$STUB_DIR/open.log"
+	cat >"$STUB_DIR/open" <<-'EOF'
+		#!/usr/bin/env sh
+		printf '%s\n' "$1" >> "$OPEN_LOG"
+	EOF
+	chmod +x "$STUB_DIR/open"
+	PATH="$STUB_DIR:$PATH"
+	export OPEN_LOG
 }
 
 teardown() {
@@ -72,4 +82,20 @@ last_cell() {
 	[ "$status" -eq 1 ]
 	[[ "$output" == *"Cell required"* ]]
 	[ ! -f "$HOME/.last-cell" ]
+}
+
+@test "open_grafana appends a 1m refresh to a url with a query string" {
+	run bash -c ". '$BATS_TEST_DIRNAME/common.sh'; open_grafana 'https://g.example/d/x?orgId=1'"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[ "$output" = "https://g.example/d/x?orgId=1&refresh=1m" ]
+}
+
+@test "open_grafana starts the query string when the url has none" {
+	run bash -c ". '$BATS_TEST_DIRNAME/common.sh'; open_grafana 'https://g.example/d/x'"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[ "$output" = "https://g.example/d/x?refresh=1m" ]
 }

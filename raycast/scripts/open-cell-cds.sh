@@ -16,4 +16,4 @@ if [ -f "$HOME/.env" ]; then . "$HOME/.env"; fi
 
 use_cell "$1"
 
-open "https://${GRAFANA_HOST}/d/PfEgf9BVk/cds-overview?orgId=1&from=now-1h&to=now&timezone=utc&var-env=prod&var-cluster=${CELL}&var-datasource=af7fe237-211e-413e-9723-41a73886bcbb&var-clickhouse_datasource=aey7czk2sodtse&var-logs_datasource=e008932a-e9dc-4b7a-819f-68b662f3dc51&var-quantile=0.99&var-logsource=e008932a-e9dc-4b7a-819f-68b662f3dc51&var-request_operation=\$__all&var-storage_operation=\$__all&var-persistence_operation=\$__all&var-namespace=\$__all&var-deployments=history&var-rate=1m"
+open_grafana "https://${GRAFANA_HOST}/d/PfEgf9BVk/cds-overview?orgId=1&from=now-1h&to=now&timezone=utc&var-env=prod&var-cluster=${CELL}&var-datasource=af7fe237-211e-413e-9723-41a73886bcbb&var-clickhouse_datasource=aey7czk2sodtse&var-logs_datasource=e008932a-e9dc-4b7a-819f-68b662f3dc51&var-quantile=0.99&var-logsource=e008932a-e9dc-4b7a-819f-68b662f3dc51&var-request_operation=\$__all&var-storage_operation=\$__all&var-persistence_operation=\$__all&var-namespace=\$__all&var-deployments=history&var-rate=1m"

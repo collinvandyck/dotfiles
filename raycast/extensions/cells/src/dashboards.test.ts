@@ -39,6 +39,16 @@ describe("the catalog", () => {
   );
 });
 
+describe("grafana links", () => {
+  const grafanaUrls = DASHBOARDS.filter((d) => d.id !== "workflows").flatMap(
+    (d) => d.urls(CELL, ENV).map((url) => [d.id, url] as const),
+  );
+
+  it.each(grafanaUrls)("%s refreshes every minute", (_id, url) => {
+    expect(new URL(url).searchParams.getAll("refresh")).toEqual(["1m"]);
+  });
+});
+
 describe("cell obs", () => {
   it("opens one tab per bundled dashboard", () => {
     expect(dashboard("obs").urls(CELL, ENV)).toHaveLength(9);
