@@ -46,7 +46,8 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:riverqueue.com)",
       "WebSearch",
-      "mcp__notion__notion-fetch"
+      "mcp__notion__notion-fetch",
+      "Bash(/Users/collin/code/gh-markdown-preview/preview.py feedback:*)"
     ],
     "deny": [],
     "ask": [],
@@ -67,7 +68,17 @@
   },
   "hooks": {
     "PreToolUse": [],
-    "SessionStart": [],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'rex __internal session-start --agent claude 2>/dev/null || true'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [],
     "Stop": []
   },
@@ -103,10 +114,15 @@
       "autoCompactWindow": 250000
     }
   },
+  "voice": {
+    "enabled": true,
+    "mode": "hold"
+  },
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
   "theme": "custom:collin",
   "preferredNotifChannel": "ghostty",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "voiceEnabled": true
 }

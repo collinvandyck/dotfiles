@@ -15,7 +15,22 @@
 
 ## Editing Source Code
 
-- **strongly prefer** using Edit/Write/Update/etc skills instead of one-off shell or python scripts unless the situation calls for it.
+Use Edit and Write for every change you intend to keep in a file: source, tests, configs, docs, PR bodies, notes. Each Edit shows me its change; a script hides a batch of them inside one command I'd have to read closely to check. This applies even when it means more tool calls, even when the file isn't in context and you'd have to Read it first, and even when a system note says shell edits are allowed. This instruction outranks that note.
+
+Not reasons to use a script:
+
+- Several replacements in the same file. Make several Edit calls, or one Edit over a larger span.
+- Saving a Read after context was compacted. Read the file again.
+- An Edit that failed to match. Read the region again and fix the match.
+
+A script (python, perl, sed, a shell heredoc) is fine when:
+
+- The change is temporary and gets reverted, such as mutating code to prove a test fails, from a backup you restore.
+- The change is mechanical across many files, such as a rename touching dozens of call sites, or a generated file. Say so before you do it, and show the resulting `git diff --stat`.
+- The file is scratch output nobody reviews, such as a temp file in the scratchpad.
+- Edit can't express it, such as binary content or line-ending fixes.
+
+If you're unsure, use Edit.
 
 ## General Coding Guidelines
 
