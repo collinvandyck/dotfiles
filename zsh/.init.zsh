@@ -89,4 +89,4 @@ init-direnv
 
 [[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh
 
-eval "$(squelch init zsh --cmd ct --skip-arg --tui)" &>/dev/null
+#eval "$(squelch init zsh --cmd ct --skip-arg --tui)" &>/dev/null
