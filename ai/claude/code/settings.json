@@ -95,7 +95,8 @@
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
     "typescript-lsp@claude-plugins-official": true,
-    "temporal@temporal-marketplace": true
+    "temporal@temporal-marketplace": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "temporal-marketplace": {
