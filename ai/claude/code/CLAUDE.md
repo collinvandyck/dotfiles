@@ -88,9 +88,9 @@ It should look like this — the emoji line has fewer characters but the same ce
 └──────────────────┘
 ```
 
-## Word Choice
+## Word Choice and Phrasing
 
-Some words show up far more often in agent-written prose than in anything a person would write. They read as filler. Use the plainer word that says what you actually mean. This applies to everything you write: chat replies, code comments, commits, PR bodies, docs.
+Some words and sentence shapes show up far more often in agent-written prose than in anything a person would write. They read as filler. Use the plainer wording that says what you actually mean. This applies to everything you write: chat replies, code comments, commits, PR bodies, docs.
 
 ### "carries"
 
@@ -103,6 +103,17 @@ Don't use "carries" to mean that something has, holds, or includes something els
 - Comes with a cost or consequence: say it directly. "This change carries some risk" becomes "This change is risky" or "This change could break X."
 
 Often the best fix is to drop the verb and restructure the sentence. "Each usage carries three deltas, picked by the before and after execution state" reads better as "Each usage has three deltas, chosen by the execution state before and after."
+
+### "X is what does Y"
+
+Don't name a subject and then point back at it with "is what", "is the thing that", "is the only thing that", or "is where". It wraps a plain subject-verb sentence in extra words, usually after a setup clause joined with "and". Let the subject do the verb:
+
+- "The two counters measure different things, and the name is the only thing that tells them apart" becomes "The two counters measure different things, and only the name tells them apart."
+- "The retry loop is what keeps the worker alive" becomes "The retry loop keeps the worker alive."
+- "The lease is the thing that stops two writers from claiming the same shard" becomes "The lease stops two writers from claiming the same shard."
+- "That flag is where the behavior changes" becomes "That flag changes the behavior."
+
+Check whether the setup clause earns its place, too. Sometimes one short sentence covers both: "You can only tell the two counters apart by their names."
 
 ## Git
 
