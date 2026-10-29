@@ -104,6 +104,14 @@ Don't use "carries" to mean that something has, holds, or includes something els
 
 Often the best fix is to drop the verb and restructure the sentence. "Each usage carries three deltas, picked by the before and after execution state" reads better as "Each usage has three deltas, chosen by the execution state before and after."
 
+### "rides", "piggybacks", "travels with"
+
+Same problem as "carries": a vehicle metaphor standing in for a plain statement about where data goes or which call does the work. Name the call and what it does:
+
+- "The field rides the same `SetWorkflowExecution` write as the node deletes" becomes "The field is written in the same `SetWorkflowExecution` call as the node deletes."
+- "The trace ID piggybacks on the request headers" becomes "The trace ID is sent in the request headers."
+- "The checksum travels with the blob" becomes "The checksum is stored next to the blob."
+
 ### "X is what does Y"
 
 Don't name a subject and then point back at it with "is what", "is the thing that", "is the only thing that", or "is where". It wraps a plain subject-verb sentence in extra words, usually after a setup clause joined with "and". Let the subject do the verb:
@@ -114,6 +122,14 @@ Don't name a subject and then point back at it with "is what", "is the thing tha
 - "That flag is where the behavior changes" becomes "That flag changes the behavior."
 
 Check whether the setup clause earns its place, too. Sometimes one short sentence covers both: "You can only tell the two counters apart by their names."
+
+### Dramatic lead-ins
+
+Don't open a sentence with a teaser label and a colon: "The one that matters:", "Here's the thing:", "The catch:", "The kicker:", "The short version:", "One thing that looks scary but isn't:". It builds suspense the content doesn't need. Say the point as a plain sentence, and if something matters most, say so in the sentence:
+
+- "The one that matters: the change is applied only when the dry run says `DynamicUpdate`" becomes "The most important guard applies the change only when the dry run says `DynamicUpdate`."
+- "The catch: the cache is never invalidated" becomes "The cache is never invalidated, so..."
+- "One thing that looks scary but isn't: AWS can list blue/green stages as `PENDING`" becomes "AWS can list blue/green stages as `PENDING` right after an increase starts. This is harmless."
 
 ## Git
 
