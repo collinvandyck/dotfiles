@@ -1,6 +1,7 @@
 ---
 name: oncall-week-summary
 description: Use when starting or handing off a CDS on-call shift, or when asked to summarize the last week of alerts and incidents — "I'm going on call", "what happened last week", "catch me up on alerts", "summarize #alerts-eng-cds", "which cells are problematic". Covers pulling the alert channels and #incidents out of Slack, breaking alerts down by cell, triaging incidents, and publishing the result to Notion.
+disable-model-invocation: true
 ---
 
 # On-Call Week Summary
