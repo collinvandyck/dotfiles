@@ -90,11 +90,21 @@ It should look like this — the emoji line has fewer characters but the same ce
 
 ## Word Choice and Phrasing
 
-Some words and sentence shapes show up far more often in agent-written prose than in anything a person would write. They read as filler. Use the plainer wording that says what you actually mean. This applies to everything you write: chat replies, code comments, commits, PR bodies, docs.
+Some words and sentence shapes show up far more often in agent-written prose than in anything a person would write. They read as filler. Use the plainer wording that says what you actually mean. This applies to everything you write, including chat replies, code comments, commits, PR bodies, and docs.
 
-### "carries"
+Each pattern below starts with a principle, followed by examples. The examples are a starting set, not a complete list. Apply the principle to any word or sentence that fits it, whether or not it's listed.
 
-Don't use "carries" to mean that something has, holds, or includes something else. Pick the verb that names the actual relationship:
+The same check applies to wording you pick up from notes, tickets, code comments, or earlier messages. Don't repeat a metaphor or a teaser label just because the source used it.
+
+Standard engineering terms are fine, such as "spin up", "fan out", "fall back", "bubble up", and "hot path". The goal is prose a senior engineer would write, not stiff prose.
+
+### Metaphorical verbs
+
+Use the verb that literally describes what the code or data does. Ask whether the sentence could literally happen. A request can't carry anything, a field can't ride a write, a purge can't touch a bucket, and a snapshot can't mix namespaces. When it couldn't, name what actually happens, such as which call writes the data or what gets read, sent, stored, deleted, or changed. The same goes for a metaphorical phrase that stands in for a specific mechanism. If "a two-key operation" means "it needs `--confirm` and refuses while workflows are open", say that.
+
+Watch for action verbs on things that just sit there. A snapshot, table, file, or bucket contains or stores data. It doesn't mix, gather, or scatter it, and those verbs suggest someone shuffled the data on purpose.
+
+"Carries" is the most common case. Pick the verb that names the actual relationship:
 
 - Has or owns it: "has". "Each usage carries three deltas" becomes "Each usage has three deltas."
 - Contains it as a field or part: "includes" or "contains". "The request carries a namespace ID" becomes "The request includes a namespace ID."
@@ -104,9 +114,7 @@ Don't use "carries" to mean that something has, holds, or includes something els
 
 Often the best fix is to drop the verb and restructure the sentence. "Each usage carries three deltas, picked by the before and after execution state" reads better as "Each usage has three deltas, chosen by the execution state before and after."
 
-### "rides", "piggybacks", "travels with", "touches"
-
-Same problem as "carries": a physical metaphor standing in for a plain statement about what the code does. Code doesn't ride, travel, or touch anything. Say what actually happens, such as which call writes the data or what gets read, deleted, or changed.
+More examples:
 
 - "The field rides the same `SetWorkflowExecution` write as the node deletes" becomes "The field is written in the same `SetWorkflowExecution` call as the node deletes."
 - "The trace ID piggybacks on the request headers" becomes "The trace ID is sent in the request headers."
@@ -114,10 +122,11 @@ Same problem as "carries": a physical metaphor standing in for a plain statement
 - "A full purge touches three places" becomes "A full purge deletes data from three places."
 - "This PR touches the scheduler" becomes "This PR changes the scheduler."
 - "The query touches every shard" becomes "The query reads from every shard."
+- "Full-cell snapshots that mix every namespace on the cell" becomes "Full-cell snapshots that contain every namespace on the cell."
 
-### "X is what does Y"
+### Cleft sentences ("X is what does Y")
 
-Don't name a subject and then point back at it with "is what", "is the thing that", "is the only thing that", or "is where". It wraps a plain subject-verb sentence in extra words, usually after a setup clause joined with "and". Let the subject do the verb:
+Let the subject do the verb. Don't name a subject and then point back at it with "is what", "is the thing that", "is the only thing that", "is where", or any rearrangement of the same shape. It wraps a plain subject-verb sentence in extra words, often after a setup clause joined with "and".
 
 - "The two counters measure different things, and the name is the only thing that tells them apart" becomes "The two counters measure different things, and only the name tells them apart."
 - "The retry loop is what keeps the worker alive" becomes "The retry loop keeps the worker alive."
@@ -126,16 +135,13 @@ Don't name a subject and then point back at it with "is what", "is the thing tha
 
 Check whether the setup clause earns its place, too. Sometimes one short sentence covers both: "You can only tell the two counters apart by their names."
 
-### Dramatic lead-ins
+### Setup, colon, payoff
 
-Don't open a sentence with a teaser label and a colon: "The one that matters:", "Here's the thing:", "The catch:", "The kicker:", "The short version:", "One thing that looks scary but isn't:". It builds suspense the content doesn't need. Say the point as a plain sentence, and if something matters most, say so in the sentence:
+Write a complete thought as a sentence. Don't split it into a setup, a colon, and a payoff, and don't open with a teaser label such as "The one that matters:", "Here's the thing:", "The catch:", "The kicker:", or "The short version:". Both build suspense the content doesn't need. If something matters most, say so in the sentence.
 
 - "The one that matters: the change is applied only when the dry run says `DynamicUpdate`" becomes "The most important guard applies the change only when the dry run says `DynamicUpdate`."
 - "The catch: the cache is never invalidated" becomes "The cache is never invalidated, so..."
 - "One thing that looks scary but isn't: AWS can list blue/green stages as `PENDING`" becomes "AWS can list blue/green stages as `PENDING` right after an increase starts. This is harmless."
-
-The same goes for any sentence split into a setup, a colon, and a payoff. If the part after the colon is a full thought, write it as its own sentence or join the two with a normal conjunction:
-
 - "Two engineers run it together: one runs the commands and the other checks each list before anything is deleted" becomes "Two engineers run it together. One runs the commands, and the other checks each list before anything is deleted."
 - "The fix is simple: retry on 429" becomes "Retry on 429."
 
