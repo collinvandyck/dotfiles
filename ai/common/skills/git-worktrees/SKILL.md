@@ -32,6 +32,8 @@ When you create a new worktree, prefer the format `$project-$suffix`, where $suf
 
 Worktrees created should also have a branch of the form `collin/$suffix`. For example, `collin/cds-123-feature-slug`. The branch's base should be the latest fetched origin/main unless otherwise specified.
 
+After the worktree has been created, if the main worktree has an `.idea` folder in the root, then you will want to copy the config over from the root into the new worktree. Do not copy the .idea folder but instead run `goland-inherit --force`.
+
 # Footguns
 
 The worktree must be a sibling of the root project, never a directory inside it. `git worktree add` will happily create one nested in the main working tree, where it then shows up as untracked cruft in `git status`. If you get the path wrong, `git worktree move` fixes it.
