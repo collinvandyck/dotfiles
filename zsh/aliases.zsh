@@ -53,6 +53,7 @@ alias code='cd ~/code'
 alias glow='glow -w $COLUMNS'
 
 clt() { (cd ~/code/temporal && cl "$@"); }
+cltr() { (cd ~/code/temporal && cl --resume); }
 dy() { echo -n "$(pwd)" | pbcopy; }
 viw() { vi $(which "$@"); }
 
