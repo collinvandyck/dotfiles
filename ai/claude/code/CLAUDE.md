@@ -104,13 +104,16 @@ Don't use "carries" to mean that something has, holds, or includes something els
 
 Often the best fix is to drop the verb and restructure the sentence. "Each usage carries three deltas, picked by the before and after execution state" reads better as "Each usage has three deltas, chosen by the execution state before and after."
 
-### "rides", "piggybacks", "travels with"
+### "rides", "piggybacks", "travels with", "touches"
 
-Same problem as "carries": a vehicle metaphor standing in for a plain statement about where data goes or which call does the work. Name the call and what it does:
+Same problem as "carries": a physical metaphor standing in for a plain statement about what the code does. Code doesn't ride, travel, or touch anything. Say what actually happens, such as which call writes the data or what gets read, deleted, or changed.
 
 - "The field rides the same `SetWorkflowExecution` write as the node deletes" becomes "The field is written in the same `SetWorkflowExecution` call as the node deletes."
 - "The trace ID piggybacks on the request headers" becomes "The trace ID is sent in the request headers."
 - "The checksum travels with the blob" becomes "The checksum is stored next to the blob."
+- "A full purge touches three places" becomes "A full purge deletes data from three places."
+- "This PR touches the scheduler" becomes "This PR changes the scheduler."
+- "The query touches every shard" becomes "The query reads from every shard."
 
 ### "X is what does Y"
 
@@ -130,6 +133,13 @@ Don't open a sentence with a teaser label and a colon: "The one that matters:", 
 - "The one that matters: the change is applied only when the dry run says `DynamicUpdate`" becomes "The most important guard applies the change only when the dry run says `DynamicUpdate`."
 - "The catch: the cache is never invalidated" becomes "The cache is never invalidated, so..."
 - "One thing that looks scary but isn't: AWS can list blue/green stages as `PENDING`" becomes "AWS can list blue/green stages as `PENDING` right after an increase starts. This is harmless."
+
+The same goes for any sentence split into a setup, a colon, and a payoff. If the part after the colon is a full thought, write it as its own sentence or join the two with a normal conjunction:
+
+- "Two engineers run it together: one runs the commands and the other checks each list before anything is deleted" becomes "Two engineers run it together. One runs the commands, and the other checks each list before anything is deleted."
+- "The fix is simple: retry on 429" becomes "Retry on 429."
+
+A colon that introduces a list or a code block is fine.
 
 ## Subagents
 
