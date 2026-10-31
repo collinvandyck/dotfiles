@@ -5,11 +5,11 @@ description: Use when the user wants to review markdown in the browser and have 
 
 # mdp feedback loop
 
-The user reviews rendered markdown in `mdp --feedback` (`~/code/gh-markdown-preview/preview.py`). They highlight text or click the + beside a block, leave comments, and press **Submit feedback**. Each submit is a batch. Your job is to start the preview when they haven't, pick batches up, make the edits, and answer each thread in the page. Live reload shows your edits; the page polls for your replies.
+The user reviews rendered markdown in `mdp --feedback` (`preview.py` in gh-markdown-preview). They highlight text or click the + beside a block, leave comments, and press **Submit feedback**. Each submit is a batch. Your job is to start the preview when they haven't, pick batches up, make the edits, and answer each thread in the page. Live reload shows your edits; the page polls for your replies.
 
 ## Commands
 
-Always call the script by its absolute path, with nothing in front of it (no `cd ... &&`, no env vars). The permission allow rule matches that exact prefix, so this keeps the loop prompt-free. The `mdp` alias doesn't exist in your shell.
+Always call the script by its absolute path, with nothing in front of it (no `cd ... &&`, no env vars). An allow rule on that exact prefix keeps the loop prompt-free. The `mdp` alias doesn't exist in your shell.
 
 ```sh
 /Users/collin/code/gh-markdown-preview/preview.py feedback roots                     # served roots with feedback, and whether anyone is listening
@@ -27,9 +27,10 @@ ROOT is the served root, usually the git toplevel of the worktree being previewe
 Start the server yourself unless the user says one is already running with `--feedback`. A server the user started without `--feedback` doesn't collect comments, so start a new one rather than reuse it.
 
 1. Work out PATH: the file or folder the user wants to review. A folder opens on its README or index.
-2. Run it with `run_in_background: true` so it outlives the turn, through `python3` so the existing `python3` allow rule covers it:
+2. Run it with `run_in_background: true` so it outlives the turn, through `python3` so a `python3` allow rule covers it. When PATH is a folder, also pass `--root PATH`. Without it the server shares the whole git toplevel, not just the folder the user asked for:
    ```sh
-   python3 /Users/collin/code/gh-markdown-preview/preview.py PATH --feedback
+   python3 /Users/collin/code/gh-markdown-preview/preview.py PATH --feedback             # a file
+   python3 /Users/collin/code/gh-markdown-preview/preview.py PATH --feedback --root PATH # a folder
    ```
    Leave off `--no-open`. The server opens the page in the user's browser. Each run gets its own port, so this never collides with another preview.
 3. Read the task's output file. The server prints `serving ROOT`, `open URL`, and the exact `feedback wait` command for that root. Take ROOT from there. Don't guess it.
