@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-ENVRC=~/code/temporal/.envrc
+ENVRC=~/.envrc
 PRELUDE="export CELL="
 
 usage() {
@@ -22,4 +22,4 @@ die() {
 
 sed -i -E "s/^$PRELUDE.*/$PRELUDE$1/" $ENVRC
 grep "^$PRELUDE$1$" $ENVRC &>/dev/null || die "setting failed"
-cd ~/code/temporal && direnv allow
+cd ~/ && direnv allow
