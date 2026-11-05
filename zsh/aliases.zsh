@@ -6,6 +6,8 @@ alias cds='sa && cd ./cds'
 alias awslocal='uvx --from awscli-local awslocal'
 alias stop-ci='(cd ./cds && make stop-dependencies-ci)'
 alias start-ci='(cd ./cds && make stop-dependencies-ci start-dependencies-ci)'
+alias saw='sa && wt'
+alias ck='ctt k9s'
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
