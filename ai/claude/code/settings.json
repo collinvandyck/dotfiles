@@ -68,7 +68,8 @@
   "model": "claude-opus-5-5[1m]",
   "skillOverrides": {
     "ch-cell-query": "off",
-    "cell-metrics-query": "off"
+    "cell-metrics-query": "off",
+    "obsidian": "off"
   },
   "hooks": {
     "PreToolUse": [],
