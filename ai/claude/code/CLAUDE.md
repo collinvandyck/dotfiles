@@ -149,7 +149,7 @@ A colon that introduces a list or a code block is fine.
 
 ## Subagents
 
-When a subagent's job is to gather and summarize, such as reading Slack threads, Jira tickets, incident.io incidents, or Notion pages, launch it with `model: "sonnet"`. Leave the model at its default for work that needs judgment: code review, debugging, design, root-cause analysis, or anything that writes code.
+When a subagent's job is to gather and summarize, such as reading Slack threads, Jira tickets, incident.io incidents, or Notion pages, launch it with `model: "sonnet"`. Use the main model for code review, debugging, design, and root-cause analysis. For subagents that write code during plan execution, use Sonnet when the task touches one or two files and the plan spells out the code, and the main model when the task needs integration or design judgment. Always pass `model` explicitly.
 
 ## Git
 
