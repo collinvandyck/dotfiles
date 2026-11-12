@@ -41,6 +41,22 @@ if [[ $# -gt 0 ]] && grep -qxF -- "$1" <<<"$(subcommands)"; then
 	exec $CLAUDE "$@"
 fi
 
+# superpowers injects its bootstrap into every session, so it's off unless --super is passed.
+superpowers=false
+passthrough=()
+for arg in "$@"; do
+	if [[ "$arg" == "--super" ]]; then
+		superpowers=true
+	else
+		passthrough+=("$arg")
+	fi
+done
+set -- ${passthrough[@]+"${passthrough[@]}"}
+
+if [[ "$superpowers" == false ]]; then
+	args+=(--settings '{"enabledPlugins":{"superpowers@superpowers-marketplace":false}}')
+fi
+
 for mixin in "${mixins[@]}"; do
 	if [[ -d "$mixin" ]]; then
 		args+=("--add-dir" "$mixin")
