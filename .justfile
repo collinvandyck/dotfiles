@@ -32,6 +32,18 @@ dr-build:
     if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, skipping"; exit 0; fi
     cd dr && cargo build --release --locked
 
+# Install dr into ~/.cargo/bin and symlink its commands, like install-rust does
+# minus the toolchain setup and other crates. Runs from dr/ so rustup honors
+# rust-toolchain.toml.
+dr-install:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    if ! command -v cargo &>/dev/null; then echo "dr: cargo missing, run install-rust first"; exit 1; fi
+    cd dr && cargo install --locked --path .
+    while read -r name; do
+        ln -sf ~/.cargo/bin/dr ~/.cargo/bin/"$name"
+    done < <(~/.cargo/bin/dr aliases)
+
 # Run dr's tests.
 dr-test:
     #!/usr/bin/env bash

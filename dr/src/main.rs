@@ -25,6 +25,7 @@ enum Cmd {
     Spacer(cmd::spacer::Args),
     PathsToTree(cmd::paths_to_tree::Args),
     CargoTweak(cmd::cargo_tweak::Args),
+    CcFind(cmd::cc_find::Args),
 }
 
 fn main() -> Result<ExitCode> {
@@ -40,6 +41,7 @@ fn main() -> Result<ExitCode> {
         Cmd::Spacer(args) => cmd::spacer::run(args),
         Cmd::PathsToTree(args) => cmd::paths_to_tree::run(args),
         Cmd::CargoTweak(args) => cmd::cargo_tweak::run(args),
+        Cmd::CcFind(args) => cmd::cc_find::run(args),
     }
 }
 
@@ -92,7 +94,7 @@ mod tests {
     fn aliases_are_visible_subcommands() {
         assert_eq!(
             aliases(),
-            vec!["dotrun", "ghurl", "spacer", "paths-to-tree", "cargo-tweak"]
+            vec!["dotrun", "ghurl", "spacer", "paths-to-tree", "cargo-tweak", "cc-find"]
         );
     }
 
