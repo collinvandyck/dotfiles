@@ -10,6 +10,7 @@ export interface Env {
   cpNamespace: string;
   testCpNamespace: string;
   infraNamespace: string;
+  testInfraNamespace: string;
   historyLogsDatasourceUid: string;
 }
 
@@ -60,6 +61,7 @@ export function loadEnv(path = join(homedir(), ".env")): Env {
     cpNamespace: vars.TEMPORAL_CP_NAMESPACE ?? "",
     testCpNamespace: vars.TEMPORAL_TEST_CP_NAMESPACE ?? "",
     infraNamespace: vars.TEMPORAL_INFRA_NAMESPACE ?? "",
+    testInfraNamespace: vars.TEMPORAL_TEST_INFRA_NAMESPACE ?? "",
     historyLogsDatasourceUid: vars.HISTORY_LOGS_DATASOURCE_UID ?? "",
   };
 }

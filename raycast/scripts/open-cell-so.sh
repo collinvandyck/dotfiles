@@ -13,4 +13,4 @@
 
 use_cell "$1"
 
-open "https://cloud.temporal.io/support/cells/${CELL}"
+open "https://${SUPPORT_HOST}/support/cells/${CELL}"

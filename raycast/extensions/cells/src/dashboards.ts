@@ -3,24 +3,76 @@
 
 import type { Env } from "./env";
 
-// Grafana datasource UIDs. They're per-org constants, not per-cell, so they
-// live here rather than in ~/.env.
-const PROMETHEUS = "af7fe237-211e-413e-9723-41a73886bcbb";
-const CLICKHOUSE = "aey7czk2sodtse";
-// A second clickhouse datasource, used by the visibility and OSS dashboards.
-const CLICKHOUSE_VIS = "a1c8349c-753a-4a4c-b2b9-71e3f927e6cb";
-const LOKI = "e008932a-e9dc-4b7a-819f-68b662f3dc51";
-const INFRA_DB = "c8ea5458-e200-47da-aabc-eea36405a733";
-
 // How often every grafana link auto-refreshes, so a tab left open stays live.
 const REFRESH = "1m";
+
+// The grafana variables and namespaces that differ between prod cells and
+// staging cells. Datasource UIDs are per-org constants, not per-cell, so they
+// live here rather than in ~/.env.
+export interface Profile {
+  id: "prod" | "staging";
+  // Heads the list, followed by the cell name.
+  sectionTitle: string;
+  // var-env on most dashboards.
+  env: string;
+  // var-env on the dashboards whose env list names thanos explicitly.
+  thanosEnv: string;
+  prometheus: string;
+  clickhouse: string;
+  // A second clickhouse datasource, used by the visibility dashboard.
+  clickhouseVis: string;
+  // Blank when the environment has no loki datasource.
+  loki: string;
+  infraDbName: string;
+  infraDb: string;
+  cpNamespaces(env: Env): string[];
+  infraNamespace(env: Env): string;
+  historyLogsDatasource(env: Env): string;
+}
+
+export const PROD: Profile = {
+  id: "prod",
+  sectionTitle: "Cell",
+  env: "prod",
+  thanosEnv: "prod thanos",
+  prometheus: "af7fe237-211e-413e-9723-41a73886bcbb",
+  clickhouse: "aey7czk2sodtse",
+  clickhouseVis: "a1c8349c-753a-4a4c-b2b9-71e3f927e6cb",
+  loki: "e008932a-e9dc-4b7a-819f-68b662f3dc51",
+  infraDbName: "Prod/InfraDB",
+  infraDb: "c8ea5458-e200-47da-aabc-eea36405a733",
+  cpNamespaces: (env) => [env.cpNamespace, env.testCpNamespace],
+  infraNamespace: (env) => env.infraNamespace,
+  historyLogsDatasource: (env) => env.historyLogsDatasourceUid,
+};
+
+// Only env, prometheus, clickhouse, and loki come from a known-good staging
+// link. The rest are guesses: thanosEnv follows env, clickhouseVis reuses the
+// staging clickhouse, and the infra DB is still prod's.
+export const STAGING: Profile = {
+  id: "staging",
+  sectionTitle: "Staging cell",
+  env: "dev thanos",
+  thanosEnv: "dev thanos",
+  prometheus: "ef667c0e-d08c-4b40-9761-479514828632",
+  clickhouse: "bevsfyywc7hfka",
+  clickhouseVis: "bevsfyywc7hfka",
+  loki: "",
+  infraDbName: PROD.infraDbName,
+  infraDb: PROD.infraDb,
+  cpNamespaces: (env) => [env.testCpNamespace],
+  infraNamespace: (env) => env.testInfraNamespace,
+  historyLogsDatasource: () => "",
+};
 
 export interface Dashboard {
   id: string;
   title: string;
   subtitle: string;
   // Most entries return one URL; the bundles return several.
-  urls(cell: string, env: Env): string[];
+  urls(cell: string, env: Env, profile: Profile): string[];
+  // Hides the entry when the profile lacks what it needs. Omitted means always.
+  available?(env: Env, profile: Profile): boolean;
 }
 
 // The dashboards, in the order they show up in the list. "Cell Obs" leads
@@ -30,18 +82,17 @@ export const DASHBOARDS: Dashboard[] = [
     id: "obs",
     title: "Cell Obs",
     subtitle: "every dashboard at once",
-    urls: (cell, env) =>
-      OBS_BUNDLE.flatMap((id) => dashboard(id).urls(cell, env)),
+    urls: (cell, env, profile) =>
+      OBS_BUNDLE.flatMap((id) => dashboard(id).urls(cell, env, profile)),
   },
   {
     id: "overview",
     title: "Cell Overview",
     subtitle: "temporal cloud overview",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/kb7xn2wqp9ufm8/temporal-cloud-overview", {
-        ...base(cell),
-        "var-infra_db_name": "Prod/InfraDB",
-        "var-infra_db_datasource": INFRA_DB,
+        ...base(cell, profile),
+        ...infraDb(profile),
         "var-rate": "$__rate_interval",
         "var-deployments": ["frontend", "matching", "history"],
         "var-quantile": "0.99",
@@ -52,11 +103,10 @@ export const DASHBOARDS: Dashboard[] = [
     id: "namespaces",
     title: "Namespace Overview",
     subtitle: "per-namespace traffic",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/namen2wqp9ufsp/temporal-cloud-namespace-overview", {
-        ...base(cell),
-        "var-infra_db_name": "Prod/InfraDB",
-        "var-infra_db_datasource": INFRA_DB,
+        ...base(cell, profile),
+        ...infraDb(profile),
         "var-rate": "$__rate_interval",
         "var-deployments": ["frontend", "matching", "history"],
         "var-quantile": "0.99",
@@ -68,14 +118,13 @@ export const DASHBOARDS: Dashboard[] = [
     id: "tasks",
     title: "Task Processing",
     subtitle: "queues and task lag",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(
         env,
         "/d/ta7xn2wqp9upro/temporal-cloud-overview-task-processing",
         {
-          ...base(cell),
-          "var-infra_db_name": "Prod/InfraDB",
-          "var-infra_db_datasource": INFRA_DB,
+          ...base(cell, profile),
+          ...infraDb(profile),
           "var-rate": "$__rate_interval",
           "var-deployments": ["frontend", "matching", "history"],
           "var-quantile": "0.99",
@@ -87,11 +136,11 @@ export const DASHBOARDS: Dashboard[] = [
     id: "cds",
     title: "CDS Overview",
     subtitle: "persistence layer",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/PfEgf9BVk/cds-overview", {
-        ...base(cell),
+        ...base(cell, profile),
         "var-quantile": "0.99",
-        "var-logsource": LOKI,
+        "var-logsource": profile.loki,
         "var-request_operation": "$__all",
         "var-storage_operation": "$__all",
         "var-persistence_operation": "$__all",
@@ -105,9 +154,9 @@ export const DASHBOARDS: Dashboard[] = [
     id: "history",
     title: "OSS History",
     subtitle: "history service",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/jh_LXEin2/history", {
-        ...base(cell),
+        ...base(cell, profile),
         "var-service": "history-headless",
         "var-quantile": "0.99",
         "var-rate": "$__rate_interval",
@@ -118,11 +167,11 @@ export const DASHBOARDS: Dashboard[] = [
     id: "visibility",
     title: "Visibility",
     subtitle: "list and count queries",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/gVq0CdNnk/visibility", {
-        ...base(cell),
-        "var-env": "prod thanos",
-        "var-clickhouse_datasource": CLICKHOUSE_VIS,
+        ...base(cell, profile),
+        "var-env": profile.thanosEnv,
+        "var-clickhouse_datasource": profile.clickhouseVis,
         "var-pct": "0.99",
         "var-rate": "1m",
         "var-ch_rate": "60",
@@ -133,13 +182,13 @@ export const DASHBOARDS: Dashboard[] = [
     id: "bookkeeper",
     title: "Boss / BK / ZK Stack",
     subtitle: "bookie write metrics",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/9V7duAXVk/boss-bk-zk-stack", {
         orgId: "1",
         from: "now-1h",
         to: "now",
         timezone: "utc",
-        "var-datasource": PROMETHEUS,
+        "var-datasource": profile.prometheus,
         "var-cluster": cell,
         "var-percentile": "0.99",
         "var-namespace": "$__all",
@@ -151,17 +200,17 @@ export const DASHBOARDS: Dashboard[] = [
     id: "cassandra",
     title: "Cassandra",
     subtitle: "ring health",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/e788eea6-8b64-42c1-bbf7-de48e8dfbae9/cassandra", {
         orgId: "1",
         from: "now-1h",
         to: "now",
         timezone: "utc",
-        "var-env": "prod",
+        "var-env": profile.env,
         "var-cluster": cell,
         // This one names the prometheus datasource var-source, not var-datasource.
-        "var-source": PROMETHEUS,
-        "var-clickhouse_datasource": CLICKHOUSE,
+        "var-source": profile.prometheus,
+        "var-clickhouse_datasource": profile.clickhouse,
       }),
     ],
   },
@@ -169,10 +218,10 @@ export const DASHBOARDS: Dashboard[] = [
     id: "flow-control",
     title: "Astra Flow Control",
     subtitle: "shedding and backpressure",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/dejp8oai7wxdsd/astra-flowcontrol", {
-        ...base(cell),
-        "var-env": "prod thanos",
+        ...base(cell, profile),
+        "var-env": profile.thanosEnv,
         "var-quantile": "0.99",
         "var-rate": "$__rate_interval",
         "var-storage_operation": "$__all",
@@ -184,12 +233,11 @@ export const DASHBOARDS: Dashboard[] = [
     id: "rate-limits",
     title: "Rate Limits",
     subtitle: "throttling by namespace",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       grafana(env, "/d/fecvva5moraz3e/rate-limits", {
-        ...base(cell),
+        ...base(cell, profile),
         "var-namespaces": "$__all",
-        "var-infra_db_name": "Prod/InfraDB",
-        "var-infra_db_datasource": INFRA_DB,
+        ...infraDb(profile),
         "var-rate": "$__rate_interval",
         "var-deployments": ["frontend", "matching", "history"],
       }),
@@ -199,9 +247,10 @@ export const DASHBOARDS: Dashboard[] = [
     id: "alerts",
     title: "Firing Alerts",
     subtitle: "cds alerts, explore",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       promExplore(
         env,
+        profile,
         `ALERTS{team="cds", cluster="${cell}", alertstate="firing"}`,
         "{{ alertname }}",
       ),
@@ -211,9 +260,10 @@ export const DASHBOARDS: Dashboard[] = [
     id: "persistence-errors",
     title: "Persistence Errors",
     subtitle: "error rate by namespace, explore",
-    urls: (cell, env) => [
+    urls: (cell, env, profile) => [
       promExplore(
         env,
+        profile,
         `sum by (temporal_namespace) (rate(persistence_errors{cluster="${cell}", service_name="history"}[$__rate_interval]))`,
         "{{ database_name }}",
       ),
@@ -223,22 +273,25 @@ export const DASHBOARDS: Dashboard[] = [
     id: "error-logs",
     title: "History Error Logs",
     subtitle: "loki, deadline exceeded filtered out",
-    urls: (cell, env) => [historyErrorLogs(cell, env)],
+    urls: (cell, env, profile) => [
+      historyErrorLogs(cell, env, profile.historyLogsDatasource(env)),
+    ],
+    available: (env, profile) => profile.historyLogsDatasource(env) !== "",
   },
   {
     id: "workflows",
     title: "Cell Workflows",
     subtitle: "control plane and infra workflows",
-    urls: (cell, env) => [
-      cloudWorkflows(
-        env.cpNamespace,
-        `\`WorkflowId\` STARTS_WITH "cell-entity-${cell}"`,
-      ),
-      cloudWorkflows(
-        env.testCpNamespace,
-        `\`WorkflowId\` STARTS_WITH "cell-entity-${cell}"`,
-      ),
-      cloudWorkflows(env.infraNamespace, `\`CellId\`="${cell}"`),
+    urls: (cell, env, profile) => [
+      ...profile
+        .cpNamespaces(env)
+        .map((ns) =>
+          cloudWorkflows(
+            ns,
+            `\`WorkflowId\` STARTS_WITH "cell-entity-${cell}"`,
+          ),
+        ),
+      cloudWorkflows(profile.infraNamespace(env), `\`CellId\`="${cell}"`),
     ],
   },
 ];
@@ -264,21 +317,32 @@ export function dashboard(id: string): Dashboard {
   return found;
 }
 
+export function availableDashboards(env: Env, profile: Profile): Dashboard[] {
+  return DASHBOARDS.filter((d) => d.available?.(env, profile) ?? true);
+}
+
 type Params = Record<string, string | string[]>;
 
 // The parameters nearly every cell dashboard takes. Spread it first so an entry
 // can override a value (visibility uses a different clickhouse datasource).
-function base(cell: string): Params {
+function base(cell: string, profile: Profile): Params {
   return {
     orgId: "1",
     from: "now-1h",
     to: "now",
     timezone: "utc",
-    "var-env": "prod",
+    "var-env": profile.env,
     "var-cluster": cell,
-    "var-datasource": PROMETHEUS,
-    "var-clickhouse_datasource": CLICKHOUSE,
-    "var-logs_datasource": LOKI,
+    "var-datasource": profile.prometheus,
+    "var-clickhouse_datasource": profile.clickhouse,
+    "var-logs_datasource": profile.loki,
+  };
+}
+
+function infraDb(profile: Profile): Params {
+  return {
+    "var-infra_db_name": profile.infraDbName,
+    "var-infra_db_datasource": profile.infraDb,
   };
 }
 
@@ -303,13 +367,18 @@ function explore(env: Env, panes: unknown): string {
   return `https://${env.grafanaHost}/explore?schemaVersion=1&panes=${encoded}&orgId=1&refresh=${REFRESH}`;
 }
 
-function promExplore(env: Env, expr: string, legendFormat: string): string {
+function promExplore(
+  env: Env,
+  profile: Profile,
+  expr: string,
+  legendFormat: string,
+): string {
   return explore(env, {
     "2e4": {
-      datasource: PROMETHEUS,
+      datasource: profile.prometheus,
       queries: [
         {
-          datasource: { type: "prometheus", uid: PROMETHEUS },
+          datasource: { type: "prometheus", uid: profile.prometheus },
           editorMode: "code",
           exemplar: true,
           expr,
@@ -326,8 +395,7 @@ function promExplore(env: Env, expr: string, legendFormat: string): string {
   });
 }
 
-function historyErrorLogs(cell: string, env: Env): string {
-  const uid = env.historyLogsDatasourceUid;
+function historyErrorLogs(cell: string, env: Env, uid: string): string {
   const expr = [
     `{cluster="${cell}", k8s_component="history"}`,
     "!= `context deadline exceeded`",

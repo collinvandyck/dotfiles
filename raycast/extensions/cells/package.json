@@ -16,6 +16,13 @@
       "subtitle": "Temporal",
       "description": "Pick a cell, then open any of its dashboards.",
       "mode": "view"
+    },
+    {
+      "name": "staging-cell-dashboards",
+      "title": "Staging Cell Dashboards",
+      "subtitle": "Temporal",
+      "description": "Pick a staging cell, then open any of its dashboards on the test datasources.",
+      "mode": "view"
     }
   ],
   "dependencies": {

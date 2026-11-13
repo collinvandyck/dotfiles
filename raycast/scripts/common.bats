@@ -36,6 +36,16 @@ last_cell() {
 	cat "$HOME/.last-cell"
 }
 
+write_env() {
+	cat >"$HOME/.env" <<-'EOF'
+		GRAFANA_HOST=grafana.example
+		TEMPORAL_CP_NAMESPACE=prod.cp
+		TEMPORAL_TEST_CP_NAMESPACE=test.cp
+		TEMPORAL_INFRA_NAMESPACE=prod.infra
+		TEMPORAL_TEST_INFRA_NAMESPACE=test.infra
+	EOF
+}
+
 @test "normalizes the cell and remembers it" {
 	run "$STUB_DIR/run.sh" "aw021"
 	[ "$status" -eq 0 ]
@@ -82,6 +92,90 @@ last_cell() {
 	[ "$status" -eq 1 ]
 	[[ "$output" == *"Cell required"* ]]
 	[ ! -f "$HOME/.last-cell" ]
+}
+
+@test "staging remembers its cell apart from the prod cell" {
+	printf '%s\n' "s-aw028" >"$HOME/.last-cell"
+
+	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" "cds-collin-261109"
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261109" ]
+
+	run cat "$HOME/.last-staging-cell"
+	[ "$output" = "s-cds-collin-261109" ]
+	run last_cell
+	[ "$output" = "s-aw028" ]
+}
+
+@test "staging ignores the remembered prod cell" {
+	printf '%s\n' "s-aw028" >"$HOME/.last-cell"
+	printf '%s\n' "s-cds-collin-261109" >"$HOME/.last-staging-cell"
+
+	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261109" ]
+}
+
+@test "staging falls back to CELL in ~/.envrc when nothing is remembered" {
+	printf 'source_up\nexport CELL=s-cds-collin-261026\n' >"$HOME/.envrc"
+
+	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261026" ]
+}
+
+@test "staging prefers the remembered staging cell over ~/.envrc" {
+	printf 'export CELL=s-cds-collin-261026\n' >"$HOME/.envrc"
+	printf '%s\n' "s-cds-collin-261109" >"$HOME/.last-staging-cell"
+
+	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261109" ]
+}
+
+@test "the prod history script opens the prod datasources" {
+	write_env
+
+	run "$BATS_TEST_DIRNAME/open-cell-history.sh" "aw021"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[[ "$output" == *"var-env=prod&"* ]]
+	[[ "$output" == *"var-datasource=af7fe237-211e-413e-9723-41a73886bcbb&"* ]]
+	[[ "$output" == *"var-cluster=s-aw021&"* ]]
+}
+
+@test "the staging history script opens the test datasources" {
+	write_env
+
+	run "$BATS_TEST_DIRNAME/staging-cell-history.sh" "cds-collin-261109"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[[ "$output" == *"var-env=dev%20thanos&"* ]]
+	[[ "$output" == *"var-datasource=ef667c0e-d08c-4b40-9761-479514828632&"* ]]
+	[[ "$output" == *"var-clickhouse_datasource=bevsfyywc7hfka&"* ]]
+	[[ "$output" == *"var-cluster=s-cds-collin-261109&"* ]]
+}
+
+@test "the staging workflows script opens only the test namespaces" {
+	write_env
+
+	run "$BATS_TEST_DIRNAME/staging-cell-workflows.sh" "cds-collin-261109"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[ "${#lines[@]}" -eq 2 ]
+	[[ "${lines[0]}" == "https://cloud.temporal.io/namespaces/test.cp/workflows?"* ]]
+	[[ "${lines[1]}" == "https://cloud.temporal.io/namespaces/test.infra/workflows?"* ]]
+}
+
+@test "the staging support page opens on thundergun" {
+	run "$BATS_TEST_DIRNAME/open-staging-cell.sh" "cds-collin-261109"
+	[ "$status" -eq 0 ]
+
+	run cat "$OPEN_LOG"
+	[ "$output" = "https://staging.thundergun.io/support/cells/s-cds-collin-261109" ]
 }
 
 @test "open_grafana appends a 1m refresh to a url with a query string" {
