@@ -1,0 +1,246 @@
+#!/usr/bin/env python3
+"""
+gopls-idle: an LSP proxy that runs gopls and stops it after a period of inactivity.
+
+The proxy sits between the editor (Claude Code) and gopls on stdio. When no LSP traffic has flowed for
+GOPLS_IDLE_TIMEOUT seconds and no requests are in flight, it terminates gopls and frees its memory. The next message
+from the editor starts a fresh gopls and replays the session (initialize, initialized, the last configuration, and a
+didOpen for every open document, read from disk) before forwarding the message. The editor never sees the restart.
+
+Environment:
+  GOPLS_IDLE_TIMEOUT  seconds of inactivity before gopls is stopped (default 900)
+  GOPLS_IDLE_BIN      gopls binary to run (default "gopls")
+  GOPLS_IDLE_LOG      file to append proxy logs to (default: no logging)
+
+Arguments are passed through to gopls.
+"""
+
+import json
+import os
+import subprocess
+import sys
+import threading
+import time
+from urllib.parse import unquote, urlparse
+
+IDLE_TIMEOUT = float(os.environ.get("GOPLS_IDLE_TIMEOUT", "900"))
+GOPLS_BIN = os.environ.get("GOPLS_IDLE_BIN", "gopls")
+LOG_PATH = os.environ.get("GOPLS_IDLE_LOG")
+CHECK_INTERVAL = min(30.0, max(1.0, IDLE_TIMEOUT / 4))
+
+
+def log(msg):
+    if not LOG_PATH:
+        return
+    with open(LOG_PATH, "a") as f:
+        f.write(f"{time.strftime('%Y-%m-%dT%H:%M:%S')} [{os.getpid()}] {msg}\n")
+
+
+def read_message(stream):
+    length = None
+    while True:
+        line = stream.readline()
+        if not line:
+            return None
+        line = line.strip()
+        if not line:
+            break
+        name, _, value = line.decode("ascii").partition(":")
+        if name.strip().lower() == "content-length":
+            length = int(value.strip())
+    if length is None:
+        raise ValueError("LSP message without Content-Length")
+    body = stream.read(length)
+    if len(body) < length:
+        return None
+    return json.loads(body)
+
+
+def encode_message(msg):
+    body = json.dumps(msg, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    return b"Content-Length: %d\r\n\r\n" % len(body) + body
+
+
+def uri_to_path(uri):
+    return unquote(urlparse(uri).path)
+
+
+class Proxy:
+    def __init__(self, args):
+        self.args = args
+        self.out = sys.stdout.buffer
+        self.out_lock = threading.Lock()
+
+        # child_lock serializes the gopls lifecycle: start, replay, forward, and idle stop.
+        self.child_lock = threading.Lock()
+        self.child = None
+        self.retired = set()
+        self.generation = 0
+
+        # state_lock guards the activity bookkeeping shared with the gopls reader thread.
+        self.state_lock = threading.Lock()
+        self.last_activity = time.monotonic()
+        self.pending = set()
+
+        self.init_params = None
+        self.initialized = False
+        self.config_params = None
+        self.open_docs = {}
+        self.exiting = False
+
+        self.replay_init_id = None
+        self.replay_init_done = threading.Event()
+
+    def run(self):
+        threading.Thread(target=self.watch_idle, daemon=True).start()
+        stdin = sys.stdin.buffer
+        while True:
+            msg = read_message(stdin)
+            if msg is None:
+                log("editor closed stdin")
+                self.stop_child()
+                os._exit(0)
+            self.handle_client(msg)
+
+    def handle_client(self, msg):
+        method = msg.get("method")
+        self.track_client(msg, method)
+
+        with self.child_lock:
+            if self.child is None:
+                if method == "shutdown":
+                    self.write_out({"jsonrpc": "2.0", "id": msg["id"], "result": None})
+                    return
+                if method == "exit":
+                    os._exit(0)
+                self.start_child(replay=self.init_params is not None and method != "initialize")
+            self.write_child(msg)
+
+        if method == "exit":
+            self.exiting = True
+
+    def track_client(self, msg, method):
+        params = msg.get("params") or {}
+        if method == "initialize":
+            self.init_params = params
+        elif method == "initialized":
+            self.initialized = True
+        elif method == "workspace/didChangeConfiguration":
+            self.config_params = params
+        elif method == "textDocument/didOpen":
+            doc = params["textDocument"]
+            self.open_docs[doc["uri"]] = {"languageId": doc["languageId"], "version": doc["version"]}
+        elif method == "textDocument/didChange":
+            doc = params["textDocument"]
+            if doc["uri"] in self.open_docs:
+                self.open_docs[doc["uri"]]["version"] = doc["version"]
+        elif method == "textDocument/didClose":
+            self.open_docs.pop(params["textDocument"]["uri"], None)
+
+        with self.state_lock:
+            self.last_activity = time.monotonic()
+            if method is not None and "id" in msg:
+                self.pending.add(msg["id"])
+
+    def start_child(self, replay):
+        self.generation += 1
+        log(f"starting {GOPLS_BIN} (generation {self.generation}, replay={replay})")
+        proc = subprocess.Popen([GOPLS_BIN, *self.args], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self.child = proc
+        threading.Thread(target=self.read_child, args=(proc,), daemon=True).start()
+        if replay:
+            self.replay()
+
+    def replay(self):
+        self.replay_init_id = f"gopls-idle-init-{self.generation}"
+        self.replay_init_done.clear()
+        self.write_child({"jsonrpc": "2.0", "id": self.replay_init_id, "method": "initialize",
+                          "params": self.init_params})
+        if not self.replay_init_done.wait(timeout=120):
+            log("replayed initialize got no response within 120s")
+        if self.initialized:
+            self.write_child({"jsonrpc": "2.0", "method": "initialized", "params": {}})
+        if self.config_params is not None:
+            self.write_child({"jsonrpc": "2.0", "method": "workspace/didChangeConfiguration",
+                              "params": self.config_params})
+        for uri, doc in list(self.open_docs.items()):
+            try:
+                with open(uri_to_path(uri), encoding="utf-8") as f:
+                    text = f.read()
+            except OSError as e:
+                log(f"dropping {uri} from replay: {e}")
+                self.open_docs.pop(uri, None)
+                continue
+            self.write_child({"jsonrpc": "2.0", "method": "textDocument/didOpen", "params": {
+                "textDocument": {"uri": uri, "languageId": doc["languageId"], "version": doc["version"],
+                                 "text": text},
+            }})
+        log(f"replayed {len(self.open_docs)} open documents")
+
+    def read_child(self, proc):
+        while True:
+            try:
+                msg = read_message(proc.stdout)
+            except (ValueError, json.JSONDecodeError) as e:
+                log(f"bad message from gopls: {e}")
+                msg = None
+            if msg is None:
+                break
+            is_response = "method" not in msg and "id" in msg
+            if is_response and msg["id"] == self.replay_init_id:
+                self.replay_init_done.set()
+                continue
+            with self.state_lock:
+                self.last_activity = time.monotonic()
+                if is_response:
+                    self.pending.discard(msg["id"])
+            self.write_out(msg)
+
+        code = proc.wait()
+        if proc in self.retired:
+            self.retired.discard(proc)
+            return
+        log(f"gopls exited with code {code}")
+        os._exit(0 if self.exiting else (code or 1))
+
+    def watch_idle(self):
+        while True:
+            time.sleep(CHECK_INTERVAL)
+            with self.child_lock:
+                if self.child is None:
+                    continue
+                with self.state_lock:
+                    idle = time.monotonic() - self.last_activity
+                    busy = bool(self.pending)
+                if busy or idle < IDLE_TIMEOUT:
+                    continue
+                log(f"idle for {idle:.0f}s, stopping gopls")
+                self.stop_child()
+
+    def stop_child(self):
+        proc = self.child
+        if proc is None:
+            return
+        self.child = None
+        self.retired.add(proc)
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+
+    def write_child(self, msg):
+        try:
+            self.child.stdin.write(encode_message(msg))
+            self.child.stdin.flush()
+        except BrokenPipeError:
+            log("gopls stdin closed")
+
+    def write_out(self, msg):
+        with self.out_lock:
+            self.out.write(encode_message(msg))
+            self.out.flush()
+
+
+if __name__ == "__main__":
+    Proxy(sys.argv[1:]).run()

@@ -1,0 +1,16 @@
+{
+  "name": "dotfiles",
+  "owner": {
+    "name": "Collin Van Dyck"
+  },
+  "metadata": {
+    "description": "Local plugins kept in dotfiles"
+  },
+  "plugins": [
+    {
+      "name": "gopls-idle",
+      "source": "./gopls-idle",
+      "description": "gopls behind the gopls-idle proxy, which stops gopls when idle and restarts it on demand"
+    }
+  ]
+}

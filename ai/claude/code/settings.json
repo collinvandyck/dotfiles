@@ -104,7 +104,8 @@
   },
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": false,
+    "gopls-idle@dotfiles": true,
     "lua-lsp@claude-plugins-official": true,
     "mcp-server-dev@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
@@ -117,6 +118,12 @@
       "source": {
         "source": "github",
         "repo": "temporalio/agent-skills"
+      }
+    },
+    "dotfiles": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/collin/.dotfiles/ai/claude/code/plugins"
       }
     }
   },

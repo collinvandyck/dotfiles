@@ -1,0 +1,21 @@
+{
+  "name": "gopls-idle",
+  "description": "gopls behind the gopls-idle proxy, which stops gopls when idle and restarts it on demand",
+  "version": "0.1.0",
+  "author": {
+    "name": "Collin Van Dyck"
+  },
+  "lspServers": {
+    "gopls": {
+      "command": "gopls-idle",
+      "extensionToLanguage": {
+        ".go": "go"
+      },
+      "env": {
+        "GOPLS_IDLE_TIMEOUT": "900",
+        "GOPLS_IDLE_LOG": "/Users/collin/.cache/gopls-idle.log"
+      },
+      "requestTimeout": 180000
+    }
+  }
+}
