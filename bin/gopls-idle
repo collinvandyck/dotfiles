@@ -17,6 +17,7 @@ Arguments are passed through to gopls.
 
 import json
 import os
+import signal
 import subprocess
 import sys
 import threading
@@ -92,6 +93,8 @@ class Proxy:
         self.replay_init_done = threading.Event()
 
     def run(self):
+        for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
+            signal.signal(sig, self.on_signal)
         threading.Thread(target=self.watch_idle, daemon=True).start()
         stdin = sys.stdin.buffer
         while True:
@@ -101,6 +104,11 @@ class Proxy:
                 self.stop_child()
                 os._exit(0)
             self.handle_client(msg)
+
+    def on_signal(self, signum, _frame):
+        log(f"received {signal.Signals(signum).name}, stopping gopls")
+        self.stop_child()
+        os._exit(128 + signum)
 
     def handle_client(self, msg):
         method = msg.get("method")
