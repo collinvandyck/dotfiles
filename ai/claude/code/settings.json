@@ -81,6 +81,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh '/Users/collin/.claude/hooks/ct-safety-guard.sh'",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "SessionStart": [
