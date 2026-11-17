@@ -88,6 +88,16 @@ It should look like this — the emoji line has fewer characters but the same ce
 └──────────────────┘
 ```
 
+## Artifacts
+
+These override the artifact design guidance on page width and layout.
+
+- Don't wrap the page in a narrow centered container or cap its width. Let content fill the viewport; I resize my browser window to get the width I want.
+- Use multiple columns only when the content has parts that belong side by side, such as a before/after comparison, a step and its command, or a reference panel next to a procedure. Don't move asides, notes, or code into a margin column to fill space. A short aside goes under its paragraph as a callout.
+- Tables, diagrams, and code blocks use the full width.
+- Collapse to one column at phone width.
+- Never make an element that holds running text a grid or flex container. Every inline child (`<code>`, `<a>`, `<em>`) and every run of text between them becomes its own grid or flex item, so the sentence breaks apart and `<code>` spans can land in a narrow track and wrap one or two characters per line. To put a counter, icon, or label beside text, wrap the text in its own element and make that wrapper the grid item, or position the counter absolutely.
+
 ## Word Choice and Phrasing
 
 Some words and sentence shapes show up far more often in agent-written prose than in anything a person would write. They read as filler. Use the plainer wording that says what you actually mean. This applies to everything you write, including chat replies, code comments, commits, PR bodies, and docs.
