@@ -1,8 +1,5 @@
-local function exec_json(argv)
-  local r = rex.exec(argv)
-  if not r.ok then error(table.concat(argv, " ") .. ": " .. r.stderr) end
-  return rex.json.decode(r.stdout)
-end
+-- Actions run inside the server, whose PATH doesn't include the rex CLI, so they use rex.call instead of
+-- shelling out to rex.
 
 -- Written by the rex-cwd.sh Claude hook after each Bash call. It follows the agent's cd, unlike the process cwd.
 local function hook_cwd(block_id)
@@ -23,7 +20,7 @@ rex.action{
   title = "Shell below Claude (Claude's cwd)",
   run = function(ctx)
     local sid = ctx.session_id
-    local blocks = exec_json{"rex", "block", "ls", "-s", sid, "--json"}.blocks
+    local blocks = rex.call("session.list_blocks", {session_id = sid}).blocks
     local win
     for _, b in ipairs(blocks) do
       if b.block_id == ctx.block_id then win = b.window_id end
@@ -33,8 +30,9 @@ rex.action{
     -- Prefer the focused pane if it's Claude, otherwise the first Claude pane in the window.
     local target
     for _, b in ipairs(blocks) do
-      if b.window_id == win then
-        local fg = exec_json{"rex", "block", "call", "-s", sid, "-b", b.block_id, "process"}.foreground
+      if b.window_id == win and b.placement == "placed" then
+        local ok, proc = pcall(rex.call, "block.method", {session_id = sid, block_id = b.block_id, method = "process"})
+        local fg = ok and proc.foreground or nil
         if is_claude(fg) and (not target or b.block_id == ctx.block_id) then
           target = {block = b.block_id, cwd = hook_cwd(b.block_id) or fg.cwd}
         end
@@ -43,8 +41,19 @@ rex.action{
     if not target then error("no Claude pane in this window") end
 
     if (rex.args or {}).dry then return target end
-    rex.exec{"rex", "split", "-s", sid, "-b", target.block, "--split=below", "--ratio", "30",
-      "-c", target.cwd, "--label", "claude-shell"}
+    rex.call("session.new_split", {
+      session_id = sid,
+      anchor_id = target.block,
+      direction = "vertical",
+      side = "after",
+      ratio = 0.7,
+      focus = true,
+      layout = {block = {
+        flavor = "com.superlogical.terminal.shell",
+        label = "claude-shell",
+        options = {cwd = target.cwd},
+      }},
+    })
     return target
   end,
 }
