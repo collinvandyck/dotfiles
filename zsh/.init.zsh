@@ -71,6 +71,9 @@ init-completions() {
 init-cloud-tools() {
 	source-if ~/.cloud-tools/ct_setup_shell.sh
 }
+init-rex() {
+	cmd_exists rex && eval "$(rex completion zsh)"
+}
 
 init-completions
 init-cloud-tools
@@ -86,6 +89,7 @@ init-starship
 init-zoxide
 init-atuin
 init-direnv
+init-rex
 
 [[ -f ~/.initrc.zsh ]] && source ~/.initrc.zsh
 
