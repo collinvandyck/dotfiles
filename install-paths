@@ -116,6 +116,7 @@ symlink ~/.dotfiles/lsd ~/.config/lsd
 symlink ~/.dotfiles/mutagen/.mutagen.yml ~/.mutagen.yml
 symlink ~/.dotfiles/nvim ~/.config/nvim
 symlink ~/.dotfiles/powerline ~/.config/powerline
+symlink ~/.dotfiles/rex/init.lua ~/.config/rex/
 symlink ~/.dotfiles/ripgrep/.ripgrep.conf ~/.ripgrep.conf
 symlink ~/.dotfiles/runcom/.imwheelrc ~
 symlink ~/.dotfiles/runcom/p10k.zsh ~/.p10k.zsh
