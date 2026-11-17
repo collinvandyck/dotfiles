@@ -68,11 +68,33 @@
   "model": "claude-opus-5-5[1m]",
   "skillOverrides": {
     "ch-cell-query": "off",
-    "cell-metrics-query": "off",
-    "obsidian": "off"
+    "cell-metrics-query": "off"
   },
   "hooks": {
-    "PreToolUse": [],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/collin/.claude/hooks/mermaid-diagram-check.sh'",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh '/Users/collin/.claude/hooks/rex-cwd.sh'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
@@ -113,7 +135,8 @@
   "effortLevel": "high",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "high"
+      "effortLevel": "high",
+      "autoCompactWindow": 400000
     },
     "claude-sonnet-5-5": {
       "autoCompactWindow": 250000
@@ -126,7 +149,7 @@
   "autoMemoryEnabled": false,
   "skipDangerousModePermissionPrompt": true,
   "skipWorkflowUsageWarning": true,
-  "theme": "custom:collin",
+  "theme": "auto",
   "preferredNotifChannel": "ghostty",
   "skipAutoPermissionPrompt": true,
   "voiceEnabled": true
