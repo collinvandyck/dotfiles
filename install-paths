@@ -39,7 +39,6 @@ ln -sf ~/.dotfiles/ai/claude/code/skills ~/.claude/
 # own hook files in individually rather than symlinking the whole directory.
 mkdir -p ~/.claude/hooks
 ln -sf ~/.dotfiles/ai/claude/code/hooks/herdr-tab-title.sh ~/.claude/hooks/
-ln -sf ~/.dotfiles/ai/claude/code/hooks/rex-cwd.sh ~/.claude/hooks/
 
 mkdir -p ~/.agents
 ln -sf ~/.dotfiles/ai/claude/code/skills ~/.agents/

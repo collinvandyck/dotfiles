@@ -1,13 +1,45 @@
 -- Actions run inside the server, whose PATH doesn't include the rex CLI, so they use rex.call instead of
 -- shelling out to rex.
 
--- Written by the rex-cwd.sh Claude hook after each Bash call. It follows the agent's cd, unlike the process cwd.
-local function hook_cwd(block_id)
-  local f = io.open(os.getenv("HOME") .. "/.cache/rex-cwd/" .. block_id:gsub("^block:", ""), "r")
+local function read_file(path)
+  local f = io.open(path, "r")
   if not f then return nil end
-  local dir = f:read("*l")
+  local s = f:read("*a")
   f:close()
-  if dir and dir ~= "" then return dir end
+  return s
+end
+
+-- Returns the cwd from the last transcript entry that has one. Claude's process cwd never changes, but each
+-- transcript entry records the cwd the agent was in, so it follows the agent's cd. The last line can be a large
+-- tool result, so read a growing tail of the file until a cwd shows up.
+local function last_cwd(path)
+  local f = io.open(path, "r")
+  if not f then return nil end
+  local size = f:seek("end")
+  local n = 256 * 1024
+  while true do
+    f:seek("set", math.max(0, size - n))
+    local tail = f:read("*a") or ""
+    local cwd
+    for c in tail:gmatch('"cwd":"([^"]*)"') do cwd = c end
+    if cwd or n >= size then
+      f:close()
+      return cwd
+    end
+    n = n * 4
+  end
+end
+
+-- Maps a Claude process to its session's current cwd. ~/.claude/sessions/<pid>.json names the session, and its
+-- transcript lives under ~/.claude/projects/<start cwd with every non-alphanumeric character replaced by ->.
+local function claude_cwd(pid)
+  local home = os.getenv("HOME")
+  local raw = read_file(("%s/.claude/sessions/%d.json"):format(home, pid))
+  if not raw then return nil end
+  local ok, sess = pcall(rex.json.decode, raw)
+  if not ok or not sess.sessionId or not sess.cwd then return nil end
+  local project = sess.cwd:gsub("[^%w]", "-")
+  return last_cwd(("%s/.claude/projects/%s/%s.jsonl"):format(home, project, sess.sessionId))
 end
 
 -- Claude's process name is its version, so match the path it was invoked as.
@@ -34,7 +66,7 @@ rex.action{
         local ok, proc = pcall(rex.call, "block.method", {session_id = sid, block_id = b.block_id, method = "process"})
         local fg = ok and proc.foreground or nil
         if is_claude(fg) and (not target or b.block_id == ctx.block_id) then
-          target = {block = b.block_id, cwd = hook_cwd(b.block_id) or fg.cwd}
+          target = {block = b.block_id, cwd = claude_cwd(fg.pid) or fg.cwd}
         end
       end
     end
