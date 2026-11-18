@@ -23,7 +23,7 @@ setup() {
 	[[ "$output" == *"ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-flash[1m]"* ]]
 	[[ "$output" == *"ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-flash"* ]]
 	[[ "$output" == *"CLAUDE_CODE_SUBAGENT_MODEL=deepseek-flash"* ]]
-	[[ "$output" == *"CLAUDE_CODE_EFFORT_LEVEL=max"* ]]
+	[[ "$output" == *"CLAUDE_CODE_EFFORT_LEVEL=high"* ]]
 	[[ "$output" == *"CLAUDE_CODE_AUTO_COMPACT_WINDOW=786432"* ]]
 	[[ "$output" == *"CLAUDE_CODE_AUTO_MODE_SERVER=0"* ]]
 	[[ "$output" == *"CLAUDE_CODE_AUTO_MODE_MODEL=deepseek-flash"* ]]
