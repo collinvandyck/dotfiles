@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CELL="s-cds-collin-$(date +%y%m%d)"
+CELL=""
 TEMPLATE=v5-aws-small
 CLOUD_PROVIDER=""
 DRY_RUN=""
@@ -58,7 +58,6 @@ while [[ $# -gt 0 ]]; do
 	esac
 done
 
-[[ -z "$CELL" ]] && die "cell required"
 [[ -z "$TEMPLATE" ]] && die "template required"
 
 # omni's cloud provider defaults to aws regardless of the template name, so a
@@ -72,10 +71,19 @@ if [[ -z "$CLOUD_PROVIDER" ]]; then
 	esac
 fi
 
+# Default cell name is s-collin-YYMMDD-<cloud>. With no provider, omni lands on aws.
+if [[ -z "$CELL" ]]; then
+	case "${CLOUD_PROVIDER:-aws}" in
+	azure) suffix=az ;;
+	*) suffix="${CLOUD_PROVIDER:-aws}" ;;
+	esac
+	CELL="s-collin-$(date +%y%m%d)-$suffix"
+fi
+
 args=(--cell-id "$CELL" --benchgo-enabled --namespace "$CELL-marathon" --yaml "$TEMPLATE")
 [[ -n "$CLOUD_PROVIDER" ]] && args+=(--cloud-provider "$CLOUD_PROVIDER")
 
 run omni scaffold environment create "${args[@]}"
 
 # if successful, set the cell.
-set-cell "$CELL"
+run set-cell "$CELL"

@@ -13,6 +13,9 @@ setup() {
 		printf 'omni %s\n' "$*"
 	EOF
 	chmod +x "$STUB_DIR/omni"
+	# keep the real set-cell from rewriting ~/.envrc
+	printf '#!/usr/bin/env sh\n' > "$STUB_DIR/set-cell"
+	chmod +x "$STUB_DIR/set-cell"
 	PATH="$STUB_DIR:$PATH"
 }
 
@@ -79,6 +82,31 @@ teardown() {
 	[[ "$output" == *"omni scaffold environment create"* ]]
 	[[ "$output" == *"--cloud-provider gcp"* ]]
 	[ ! -f "$STUB_DIR/ran" ]
+}
+
+@test "default cell name is s-collin-YYMMDD-<cloud> for the inferred provider" {
+	run "$BATS_TEST_DIRNAME/create-cell" --template v5-gcp-small -n
+	[ "$status" -eq 0 ]
+	[[ "$output" == *"--cell-id s-collin-$(date +%y%m%d)-gcp "* ]]
+	[[ "$output" == *"--namespace s-collin-$(date +%y%m%d)-gcp-marathon"* ]]
+}
+
+@test "default cell name uses an explicit --cloud-provider" {
+	run "$BATS_TEST_DIRNAME/create-cell" --template v5-gcp-small -p aws -n
+	[ "$status" -eq 0 ]
+	[[ "$output" == *"--cell-id s-collin-$(date +%y%m%d)-aws "* ]]
+}
+
+@test "default cell name shortens azure to az" {
+	run "$BATS_TEST_DIRNAME/create-cell" --template v6-micro-walker-nightly -p azure -n
+	[ "$status" -eq 0 ]
+	[[ "$output" == *"--cell-id s-collin-$(date +%y%m%d)-az "* ]]
+}
+
+@test "default cell name falls back to aws when no provider is known" {
+	run "$BATS_TEST_DIRNAME/create-cell" --template v6-micro-walker-nightly -n
+	[ "$status" -eq 0 ]
+	[[ "$output" == *"--cell-id s-collin-$(date +%y%m%d)-aws "* ]]
 }
 
 @test "-n is an alias for --dry-run" {
