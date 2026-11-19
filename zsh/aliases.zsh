@@ -10,6 +10,7 @@ alias saw='sa && wt'
 alias ck='ctt k9s'
 alias sai='zi saas-temporal'
 alias omesi='zi omes'
+alias trdr="tr -d \"\r\""
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
