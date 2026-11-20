@@ -27,17 +27,6 @@ export SEM_NO_TELEMETRY=1
 export DISABLE_TELEMETRY=1
 export DO_NOT_TRACK=1
 
-# Claude Code mods kept in temporal-utils. Loading them from CLAUDE_CODE_PLUGIN_DIRS instead of linking them into
-# ~/.claude/skills makes Claude Code write their API types next to them. A machine without temporal-utils sets nothing.
-() {
-	local root=~/code/temporal/temporal-utils/ai/plugins name
-	local -a dirs
-	for name in cell-ops watch pr-status; do
-		[[ -d $root/$name ]] && dirs+=($root/$name)
-	done
-	((${#dirs})) && export CLAUDE_CODE_PLUGIN_DIRS=${(j.:.)dirs}
-}
-
 # this is to prevent apt/systemd from asking to restart services.
 # with this setting the services will automatically be restarted.
 export NEEDRESTART_MODE=a

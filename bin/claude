@@ -23,6 +23,11 @@ CLAUDE=~/.local/bin/claude
 args=(--ide)
 mixins=(~/code/temporal)
 
+# Claude Code mods kept in temporal-utils. --plugin-dir, unlike a link in ~/.claude/skills, makes Claude Code write each
+# mod's API types next to it. A machine without temporal-utils skips them.
+mods_root=~/code/temporal/temporal-utils/ai/plugins
+mods=(cell-ops watch pr-status)
+
 # subcommands that manage claude rather than start a session. parsed from `claude -h` and cached per installed
 # version. some subcommands are hidden from help, so they're listed explicitly.
 subcommands() {
@@ -60,6 +65,12 @@ fi
 for mixin in "${mixins[@]}"; do
 	if [[ -d "$mixin" ]]; then
 		args+=("--add-dir" "$mixin")
+	fi
+done
+
+for mod in "${mods[@]}"; do
+	if [[ -d "$mods_root/$mod" ]]; then
+		args+=("--plugin-dir" "$mods_root/$mod")
 	fi
 done
 
