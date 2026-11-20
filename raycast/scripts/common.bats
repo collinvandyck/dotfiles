@@ -24,8 +24,19 @@ setup() {
 		printf '%s\n' "$1" >> "$OPEN_LOG"
 	EOF
 	chmod +x "$STUB_DIR/open"
+
+	# Stands in for test-cells: prints TEST_CELLS_OUT, or fails when a test
+	# hasn't written one.
+	TEST_CELLS_OUT="$STUB_DIR/test-cells.out"
+	cat >"$STUB_DIR/test-cells" <<-'EOF'
+		#!/usr/bin/env sh
+		[ -f "$TEST_CELLS_OUT" ] || exit 1
+		cat "$TEST_CELLS_OUT"
+	EOF
+	chmod +x "$STUB_DIR/test-cells"
+
 	PATH="$STUB_DIR:$PATH"
-	export OPEN_LOG
+	export OPEN_LOG TEST_CELLS_OUT
 }
 
 teardown() {
@@ -34,6 +45,19 @@ teardown() {
 
 last_cell() {
 	cat "$HOME/.last-cell"
+}
+
+last_staging_cell() {
+	cat "$HOME/.last-staging-cell"
+}
+
+# Sets what the test-cells stub prints, one cell per argument.
+stub_test_cells() {
+	printf '%s\n' "$@" >"$TEST_CELLS_OUT"
+}
+
+run_staging() {
+	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" "$@"
 }
 
 write_env() {
@@ -130,6 +154,78 @@ write_env() {
 
 	run env CELL_PROFILE=staging "$STUB_DIR/run.sh" ""
 	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261109" ]
+}
+
+@test "staging writes the test-cells output to ~/.staging-cells" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp
+
+	run_staging ""
+	[ "$status" -eq 0 ]
+
+	run cat "$HOME/.staging-cells"
+	[ "${lines[*]}" = "s-collin-261120-aws s-collin-261120-gcp" ]
+}
+
+@test "staging keeps the previous test cells when test-cells fails" {
+	printf '%s\n' s-collin-261120-gcp >"$HOME/.staging-cells"
+
+	run_staging ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-collin-261120-gcp" ]
+}
+
+@test "staging picks the first test cell when nothing is remembered" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp
+
+	run_staging ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-collin-261120-aws" ]
+
+	run last_staging_cell
+	[ "$output" = "s-collin-261120-aws" ]
+}
+
+@test "staging picks the first test cell when the remembered one is gone" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp
+	printf '%s\n' "s-cds-collin-261109" >"$HOME/.last-staging-cell"
+
+	run_staging ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-collin-261120-aws" ]
+
+	run last_staging_cell
+	[ "$output" = "s-collin-261120-aws" ]
+}
+
+@test "staging keeps the remembered cell when test-cells still lists it" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp
+	printf '%s\n' "s-collin-261120-gcp" >"$HOME/.last-staging-cell"
+
+	run_staging ""
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-collin-261120-gcp" ]
+}
+
+@test "staging uses the first test cell the argument is a substring of" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp s-collin-261121-gcp
+
+	run_staging " gcp "
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-collin-261120-gcp" ]
+
+	run last_staging_cell
+	[ "$output" = "s-collin-261120-gcp" ]
+}
+
+@test "staging uses an argument that matches no test cell as given" {
+	stub_test_cells s-collin-261120-aws s-collin-261120-gcp
+
+	run_staging "cds-collin-261109"
+	[ "$status" -eq 0 ]
+	[ "$output" = "s-cds-collin-261109" ]
+
+	run last_staging_cell
 	[ "$output" = "s-cds-collin-261109" ]
 }
 
