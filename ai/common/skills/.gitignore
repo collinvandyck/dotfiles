@@ -4,4 +4,7 @@ activity-summary
 local-stack
 omesctl
 visibility-migration
+cell-ops
+watch
+pr-status
 synced/

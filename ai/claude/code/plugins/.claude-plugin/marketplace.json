@@ -11,6 +11,11 @@
       "name": "gopls-idle",
       "source": "./gopls-idle",
       "description": "gopls behind the gopls-idle proxy, which stops gopls when idle and restarts it on demand"
+    },
+    {
+      "name": "typescript-native",
+      "source": "./typescript-native",
+      "description": "TypeScript 7's built-in language server (tsc --lsp) in place of typescript-language-server"
     }
   ]
 }

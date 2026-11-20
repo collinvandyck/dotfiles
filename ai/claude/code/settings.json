@@ -120,7 +120,8 @@
     "mcp-server-dev@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
     "superpowers@superpowers-marketplace": true,
-    "typescript-lsp@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": false,
+    "typescript-native@dotfiles": true,
     "temporal@temporal-marketplace": true
   },
   "extraKnownMarketplaces": {
