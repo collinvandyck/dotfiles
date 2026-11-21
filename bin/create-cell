@@ -87,3 +87,4 @@ run omni scaffold environment create "${args[@]}"
 
 # if successful, set the cell.
 run set-cell "$CELL"
+run test-cells --refresh
