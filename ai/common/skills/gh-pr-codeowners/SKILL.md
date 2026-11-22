@@ -1,5 +1,6 @@
 ---
 description: Given a PR, compute the minimal set of CODEOWNERS groups whose approval satisfies all required review rules for the changed files.
+model: sonnet
 ---
 
 # Skill: aistp

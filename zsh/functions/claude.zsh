@@ -17,6 +17,22 @@ clpr() {
 	)
 }
 
+# runs the codeowner check
+clprco() {
+	[[ $# == 0 ]] && {
+		echo "usage: $0 [url] [...]"
+		return 1
+	}
+	local title="clprco $1"
+	if [[ $1 =~ '([^/]+)/pull/([0-9]+)' ]]; then
+		title="clprco ${match[1]}/${match[2]}"
+	fi
+	(
+		cd ~/code/temporal
+		claude --model sonnet --name "$title" --effort high -- "/gh-pr-codeowners $*"
+	)
+}
+
 qq() {
 	# disableAllHooks: skip the superpowers SessionStart hook, which otherwise
 	# injects "you MUST invoke a skill" context and forces an extra skill/tool

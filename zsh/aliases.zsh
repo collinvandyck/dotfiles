@@ -11,6 +11,7 @@ alias ck='ctt k9s'
 alias sai='zi saas-temporal'
 alias omesi='zi omes'
 alias trdr="tr -d \"\r\""
+alias groc='go run ./cmd/tools/omesctl'
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
