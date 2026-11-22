@@ -1,7 +1,7 @@
 ---
 name: gh-watch-prs
 description: Use when asked to watch, babysit, or retry CI on one or more GitHub PRs with failing checks — wait for their builds to settle, fix failures the PR's own changes caused, rerun failures that look flaky, and keep going until they go green or a per-PR cap is hit.
-allowed-tools: Agent, Read, Edit, Write, Skill, Bash(gh pr checks:*), Bash(gh pr view:*), Bash(gh pr diff:*), Bash(gh run view:*), Bash(gh run list:*), Bash(gh run rerun:*), Bash(git:*), Bash(make:*), Bash(go:*), Bash(bash:*), Bash(awk:*), Bash(grep:*)
+allowed-tools: Agent, Read, Edit, Write, Skill, Bash(gh pr checks:*), Bash(gh pr view:*), Bash(gh pr diff:*), Bash(gh run view:*), Bash(gh run list:*), Bash(gh run rerun:*), Bash(gh api:*), Bash(git:*), Bash(make:*), Bash(go:*), Bash(gofmt:*), Bash(bash:*), Bash(awk:*), Bash(grep:*), Bash(jq:*)
 argument-hint: "[prs]"
 disable-model-invocation: true
 ---
@@ -26,7 +26,9 @@ Only run the loop inline if the user explicitly asks you to watch in the foregro
 
 ## The gh commands that matter
 
-- `gh pr checks <PR> --repo <REPO>` — current check state. Tab-separated rows: `<name>\t<state>\t<duration>\t<url>`. States are `pass`, `fail`, `pending`, `skipping`. The build is **settled** when zero rows are `pending`.
+- `gh pr checks <PR> --repo <REPO>` — current check state. Tab-separated rows: `<name>\t<state>\t<duration>\t<url>`. States are `pass`, `fail`, `pending`, `skipping`. The build is **settled** when zero rows are `pending`, with two exceptions the poll script below handles (see "Stuck checks").
+- `gh pr view <PR> --repo <REPO> --json isDraft` — whether the PR is a draft. Many workflows skip drafts (see "Draft PRs").
+- `gh api repos/<REPO>/actions/jobs/<JOB_ID>` — one job's status and its steps, each with a `status` and `conclusion`. The job id is the number after `/job/` in a check's URL.
 - `gh run view <RUN_ID> --repo <REPO> --log-failed` — logs from the failed steps only. Pipe through `tail` or `grep`; the full log can be enormous.
 - `gh pr diff <PR> --repo <REPO> --name-only` and `gh pr diff <PR> --repo <REPO>` — what the PR changes.
 - `gh pr view <PR> --repo <REPO> --json headRefName,headRepositoryOwner` — the PR's branch.
@@ -43,8 +45,8 @@ Different PRs settle and retry on their own schedules. Keep per-PR rerun and fix
 For each PR, run this loop until it goes green or both caps run out:
 
 1. **Wait for the build to settle.** Run the poll script below via Bash with `run_in_background: true`, so the harness re-invokes you when the build settles instead of blocking. Foreground `sleep` is blocked in this harness, but `sleep` inside a backgrounded command is fine.
-2. **Find the failed runs.** From the settled `gh pr checks` output, take the rows whose state is `fail`, pull the `<RUN_ID>` out of each URL, and dedupe. Failures can span multiple workflow runs.
-3. **If no failures, the PR is green.** Stop looping for this PR.
+2. **Find the failed runs.** From the poll script's output, take the rows whose state starts with `fail`, pull the `<RUN_ID>` out of each URL, and dedupe. Failures can span multiple workflow runs.
+3. **If no failures, the PR is green**, except for what CI skipped. Stop looping for this PR. On a draft, don't call it green outright: list the checks that skipped because it's a draft (see "Draft PRs").
 4. **Triage each failing check.** Read its `--log-failed` output and compare it with the PR diff. Classify it as one of:
    - **Caused by the PR.** The failure names a file, test, package, or generated artifact the PR changed, or it follows directly from the change: a test asserting the old behavior, a stale generated file, a lint error on a changed line, a compile error. A failure that repeats identically after a rerun also counts.
    - **Flaky or infra.** Timeouts, network errors, runner or registry failures, OOM-killed jobs, or a test in code the PR doesn't change and doesn't affect.
@@ -62,7 +64,7 @@ Work in a local checkout of the PR's branch:
 2. If the worktree has uncommitted changes, don't touch it. Stop and report. Otherwise `git fetch` and `git pull --ff-only` so it matches the remote branch.
 3. Follow the repo's `CLAUDE.md` for how to build, test, and regenerate files. Reproduce the failure locally first when the repo makes that cheap: run the failing test, generator, or lint target.
 4. Make the fix with the Edit tool. Fix what the PR's change broke and nothing else. Typical fixes are regenerating checked-in output, updating a test or golden file that asserted the behavior the PR intentionally changed, or fixing a compile or lint error.
-5. Re-run the same local check and confirm it passes.
+5. Re-run the same local check and confirm it passes. Also run the repo's formatter over the files you changed, e.g. `gofmt -l <files>` for Go, and fix what it lists. CI's lint can enable formatter checks the local lint config doesn't, so a clean local lint run doesn't prove the formatting passes.
 6. Commit with the `git-create-commit` skill and push to the PR's branch with a plain `git push`.
 
 Invoking this skill authorizes pushing fix commits to the PR's own branch, and only there. Never force-push, rewrite history, push to any other branch, or comment on the PR.
@@ -80,14 +82,41 @@ The same script serves the initial build wait, every rerun wait, and every wait 
 
 ```bash
 #!/bin/bash
-# Wait until a PR has no pending checks, then print its final status (state\tname, sorted).
-PR="$1"; REPO="$2"
+# Wait until a PR's build settles, then print each check as state\tname\turl, sorted. A pending check counts as settled
+# once every step of its job but the post-run cleanup has finished, or once it has been pending past MAX_WAIT seconds.
+PR="$1"; REPO="$2"; MAX_WAIT="${3:-2700}"
+start=$(date +%s)
 while true; do
   OUT=$(gh pr checks "$PR" --repo "$REPO" 2>/dev/null)
-  PENDING=$(echo "$OUT" | awk -F'\t' '{print $2}' | grep -c -E '^pending$')
-  if [ -n "$OUT" ] && [ "$PENDING" -eq 0 ]; then
+  waiting=0
+  RESULT=""
+  while IFS=$'\t' read -r name state _ url _; do
+    [ -z "$name" ] && continue
+    if [ "$state" = pending ]; then
+      job=$(grep -oE 'job/[0-9]+' <<<"$url" | grep -oE '[0-9]+')
+      steps=""
+      if [ -n "$job" ]; then
+        steps=$(gh api "repos/$REPO/actions/jobs/$job" \
+          -q '[.steps[] | select(((.name | startswith("Post ")) or .name == "Complete job") | not)]' 2>/dev/null)
+      fi
+      if [ -n "$steps" ] && [ "$(jq length <<<"$steps")" -gt 0 ] \
+        && [ "$(jq '[.[] | select(.status != "completed")] | length' <<<"$steps")" -eq 0 ]; then
+        if [ "$(jq '[.[] | select(.conclusion == "failure" or .conclusion == "cancelled")] | length' <<<"$steps")" -gt 0 ]; then
+          state="fail (stuck in post-run cleanup)"
+        else
+          state="pass (stuck in post-run cleanup)"
+        fi
+      elif [ $(( $(date +%s) - start )) -ge "$MAX_WAIT" ]; then
+        state="stuck (pending past ${MAX_WAIT}s)"
+      else
+        waiting=$((waiting + 1))
+      fi
+    fi
+    RESULT+="$state"$'\t'"$name"$'\t'"$url"$'\n'
+  done <<<"$OUT"
+  if [ -n "$OUT" ] && [ "$waiting" -eq 0 ]; then
     echo "PR $PR: build settled."
-    echo "$OUT" | awk -F'\t' '{print $2"\t"$1}' | sort
+    printf '%s' "$RESULT" | sort
     exit 0
   fi
   sleep 30
@@ -96,19 +125,30 @@ done
 
 After a push, start the poll only once CI has picked up the new commit. Compare `gh pr view <PR> --repo <REPO> --json headRefOid` with the `headSha` of the newest runs (`gh run list --repo <REPO> --branch <BRANCH> --json headSha,status --limit 5`), or wait about a minute before starting the poll.
 
-To pull the failed run ids out of a settled checks listing:
+To pull the failed run ids out of the poll's output, saved to a file:
 
 ```bash
-gh pr checks "$PR" --repo "$REPO" 2>/dev/null \
-  | awk -F'\t' '$2=="fail"{print $4}' \
+awk -F'\t' '$1 ~ /^fail/{print $3}' "$POLL_OUTPUT" \
   | grep -oE 'runs/[0-9]+' | grep -oE '[0-9]+' | sort -u
 ```
+
+## Stuck checks
+
+A job can finish its real work and then hang in a post-run cleanup step, such as a setup action's `Post Run` step saving its cache. The API keeps reporting the job as `in_progress`, so `gh pr checks` shows it as `pending` indefinitely, while the PR page may already look done. The poll script reads the job's steps and settles such a check with the result of its real steps, marked `(stuck in post-run cleanup)`. Report it as passed or failed by that result, and say it was stuck. Don't rerun a job only because it's stuck in cleanup.
+
+A check that stays pending past `MAX_WAIT` (45 minutes by default, the script's third argument) for any other reason settles as `stuck`. Report it with its URL rather than waiting on it. Pass a larger `MAX_WAIT` for repos whose builds legitimately take longer.
+
+## Draft PRs
+
+Many workflows skip draft PRs, typically with `if: github.event.pull_request.draft == false`, and run when the PR is marked ready for review. On a draft, those checks show as `skipping`, which looks the same as a check that never applies to the PR. Check `isDraft` before you report. On a draft, list each `skipping` check, and name the ones that check correctness (a PR body lint, a code review bot) as not yet run, since they can still fail once the PR leaves draft. Grep `.github/workflows` for `draft` to tell a draft-gated check from one that doesn't apply. Never mark the PR ready for review to get them to run.
 
 ## Report
 
 When every PR is done, report:
 
 - Which PRs went green, and how: reruns, fixes, or both.
+- For a draft, the checks that skipped because it's a draft and will run once it's ready for review.
+- Any check that settled as stuck, in post-run cleanup or past `MAX_WAIT`, with its URL.
 - Each fix commit: its short sha, the branch, what failed, and what the fix changed.
 - Which PRs still fail, with each failing check name, its run URL, a few log lines showing the failure, and why it wasn't fixed (cap reached, needs a decision, outside the PR's scope).
 
@@ -123,3 +163,6 @@ When every PR is done, report:
 - **Foreground sleep.** It's blocked here. Keep `sleep` inside the backgrounded poll command.
 - **Rerunning the whole run.** Use `--failed` so passing jobs aren't re-executed.
 - **Missing a second failing run.** Failures can be spread across runs. Dedupe run ids and handle each one.
+- **Calling a draft green.** Checks gated on `draft == false` show as `skipping` and haven't run. Say so.
+- **Waiting forever on a pending check.** A job stuck in post-run cleanup, or one that never finishes, stays `pending`. The poll script settles both; report them.
+- **Trusting the local lint for formatting.** Run the formatter over changed files before pushing a fix.
