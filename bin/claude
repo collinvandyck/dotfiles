@@ -50,11 +50,13 @@ fi
 superpowers=false
 passthrough=()
 for arg in "$@"; do
-	if [[ "$arg" == "--super" ]]; then
-		superpowers=true
-	else
-		passthrough+=("$arg")
-	fi
+	case "$arg" in
+	--super) superpowers=true ;;
+	# experimental. a session started with code mode can only be resumed with it on, so pass --code-mode again with
+	# --continue or --resume.
+	--code-mode) export CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1 ;;
+	*) passthrough+=("$arg") ;;
+	esac
 done
 set -- ${passthrough[@]+"${passthrough[@]}"}
 
