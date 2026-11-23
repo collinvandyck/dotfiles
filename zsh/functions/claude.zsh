@@ -33,6 +33,18 @@ clprco() {
 	)
 }
 
+execsummary() {
+	[[ $# == 0 ]] && {
+		echo "usage: $0 [...]"
+		return 1
+	}
+	local title="exec-summary"
+	(
+		cd ~/code/temporal
+		claude --name "$title" --effort high -- "/executive-summary $*"
+	)
+}
+
 qq() {
 	# disableAllHooks: skip the superpowers SessionStart hook, which otherwise
 	# injects "you MUST invoke a skill" context and forces an extra skill/tool
