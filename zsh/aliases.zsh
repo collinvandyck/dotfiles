@@ -12,6 +12,8 @@ alias sai='zi saas-temporal'
 alias omesi='zi omes'
 alias trdr="tr -d \"\r\""
 alias groc='go run ./cmd/tools/omesctl'
+alias vic='vi ~/.dotfiles/ai/claude/code/CLAUDE.md'
+alias vitc='vi ~/code/temporal/CLAUDE.md'
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
