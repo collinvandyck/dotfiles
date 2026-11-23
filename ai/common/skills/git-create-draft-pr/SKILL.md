@@ -6,7 +6,15 @@ allowed-tools: Bash, Read, WebFetch, Skill(write-generated-doc)
 
 # Overview
 
-Create a draft PR in Collin's tone — direct, dry, honest about tradeoffs (see Voice below) — with the clarity and concision shaped by the `writing-clearly-and-concisely` skill. Tone comes from Collin; the mechanics come from the skill. Apply it to both the title and the description. Use the repo's PR template if one exists.
+Create a draft PR in Collin's tone — direct, dry, honest about tradeoffs (see Voice below)
+The tone should be supplemented by the following skills:
+
+- `writing-clearly-and-concisely`
+- `git-create-commit`
+
+Tone comes from Collin; the mechanics come from the skills.
+Apply it to both the title and the description.
+Use the repo's PR template if one exists.
 
 **IMPORTANT** you must use the writing-clearly-and-concisely skill.
 
@@ -69,13 +77,12 @@ What never goes there is your own process: which commands you ran, that the buil
 
 **Large PRs**: switch to `## What` / `## How` / `## Test plan`, and add freeform sections as needed:
 
-- `## Summary` — one paragraph up top
-- `## Roadmap` — when this PR is one step in a sequence; list the steps with `(YOU ARE HERE)` on the current one
-- `## Background` — if reviewers need context they won't have
-- `## How to read this PR` — when commit order matters; a table mapping commit prefixes to what to expect is great
-- `## A stopping point` / `## Not Done` — honest about what's deferred and why
-- `## Alternatives` / `## Alternatives considered` — tradeoffs you ruled out
-- `## Reviewing` — direct note to reviewers (e.g., "easier to review in commit order")
+- `### Summary` — one paragraph up top
+- `### Roadmap` — when this PR is one step in a sequence; list the steps with `(YOU ARE HERE)` on the current one
+- `### Background` — if reviewers need context they won't have
+- `### Changes` — Each high level change is detailed with a '### 📌 XYZ' heading. If it makes sense, add code snippets to illustrate the change.
+- `### Not Done` — if there was work that was intentionally left out, mention it.
+- `### Alternatives` / `## Alternatives considered` — tradeoffs you ruled out
 
 For multi-commit PRs structured for commit-order review, say so explicitly.
 

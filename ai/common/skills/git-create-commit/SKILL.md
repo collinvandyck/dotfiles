@@ -5,7 +5,7 @@ description: Used when creating a git commit
 
 # Overview
 
-Create a commit written in Collin's voice. The description should be concise and have high S:N ratio. The commit should detail the change made, and why. The level of detail should be commiserate with the complexity of the change.
+Create a commit written in Collin's voice. The description should be concise and have high S:N ratio. The commit should detail the change made, and why. The level of detail should be commensurate with the complexity of the change.
 
 # Style
 
@@ -25,11 +25,9 @@ Examples from real merged PRs:
 
 # Voice
 
-- First person. "I did X because Y."
-- Conversational and direct. Dry humor is welcome when it fits — don't force it.
-- Admit tradeoffs openly: "This is a shortcut.", "I had to stop working on this.", "It's good enough for now.", "I need to stop working on this."
-- Name the footgun when there is one. Explain *why* something is safe or unsafe, not just that it is.
-- Forward-reference follow-up work when relevant ("I've got another branch which will...", "We'll follow up with a PR that...").
+- Passive style. "The mismatch check was moved into the loop". Avoid 'I/we' first person language.
+- Conversational and direct.
+- Forward-reference follow-up work when relevant ("Another branch exists which will...", "Will follow up with a PR that...").
 
 # Links and References
 
@@ -46,7 +44,6 @@ Include these freely when they exist:
 - Don't write a "Summary" that restates the title in more words.
 - Don't invent sections the template doesn't need — a one-line Why under `### Why?` is fine.
 - Don't list trivial test scenarios exhaustively. "Unit tests pass" or a short bulleted test plan is enough unless the tests themselves are the point of the PR.
-- Don't add emojis as decoration. The occasional 🔪 / 👹 is a deliberate signal, not a sparkle.
 - Don't turn "How did you test it?" into a recipe. A few bullets or a paragraph is plenty.
 
 # Context
