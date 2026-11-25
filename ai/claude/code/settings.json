@@ -51,7 +51,8 @@
       "WebSearch",
       "mcp__claude_ai_Notion__notion-fetch",
       "mcp__claude_ai_Atlassian",
-      "Bash(/Users/collin/code/gh-markdown-preview/preview.py feedback:*)"
+      "Bash(/Users/collin/code/gh-markdown-preview/preview.py feedback:*)",
+      "Edit(~/code/temporal/temporal-utils/ai/plugins/**)"
     ],
     "deny": [],
     "ask": [],
