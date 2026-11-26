@@ -14,6 +14,7 @@ alias trdr="tr -d \"\r\""
 alias groc='go run ./cmd/tools/omesctl'
 alias vic='vi ~/.dotfiles/ai/claude/code/CLAUDE.md'
 alias vitc='vi ~/code/temporal/CLAUDE.md'
+alias k9t='ct k9s -d 8h -n temporal'
 
 # misc
 command -v batcat &>/dev/null && alias bat='batcat'
